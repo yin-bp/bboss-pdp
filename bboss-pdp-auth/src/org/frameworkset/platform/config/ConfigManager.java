@@ -97,7 +97,7 @@ public class ConfigManager implements ResourceInitial {
     	inited = true;
     	
     	 try {
-    		 log.debug("装载系统配置文件config-manager.xml.....开始");
+    		 log.debug("装载系统配置文件conf/config-manager.xml.....开始");
     		 loadConfiguration(null);
     		 
     		 startSystems();
@@ -217,7 +217,7 @@ public class ConfigManager implements ResourceInitial {
      * 系统信息配置文件
      */
     private String defaultConfigFile =
-        "config-manager.xml";
+        "conf/config-manager.xml";
 
 
     private File configure;
