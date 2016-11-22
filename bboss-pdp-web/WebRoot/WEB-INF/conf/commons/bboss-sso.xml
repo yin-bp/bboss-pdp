@@ -1,0 +1,14 @@
+<properties>
+	<!-- 
+	author：biaoping.yin
+    CopyRight：bboss
+    Date:2016.10.25
+	-->
+	<property name="/sso/*.page,/login.page,/security/cookieLocale.page,/security/generateVerifyCode.freepage"	
+	path:sso="/jsp/login_admin1.jsp"
+	path:ssofailed="/jsp/common/ssofailed.jsp"
+	path:login="/jsp/login_admin1.jsp"
+	f:enableuseraccountsso="false"
+	class="org.frameworkset.platform.action.SSOControler" />
+	
+</properties>
