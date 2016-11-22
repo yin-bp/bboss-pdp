@@ -2,6 +2,9 @@
 	contentType="text/html; charset=utf-8"%>
 
 <%@ taglib uri="/WEB-INF/tld/admin-taglib.tld" prefix="admin"%>
+<!-- BEGIN PAGE LEVEL STYLES -->
+        <link href="${pageContext.request.contextPath}/assets/pages/css/error.min.css" rel="stylesheet" type="text/css" />
+        <!-- END PAGE LEVEL STYLES -->
 <!-- BEGIN CONTENT BODY -->
 
 <!-- BEGIN PAGE BAR -->

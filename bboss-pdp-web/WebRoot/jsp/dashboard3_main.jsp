@@ -3,7 +3,15 @@
 
 <%@ taglib uri="/WEB-INF/tld/admin-taglib.tld" prefix="admin" %>
                
-                    
+                                  
+                    <!-- BEGIN PAGE LEVEL PLUGINS -->
+        <link href="${pageContext.request.contextPath}/assets/global/plugins/bootstrap-daterangepicker/daterangepicker.min.css" rel="stylesheet" type="text/css" />
+        <link href="${pageContext.request.contextPath}/assets/global/plugins/morris/morris.css" rel="stylesheet" type="text/css" />
+        <link href="${pageContext.request.contextPath}/assets/global/plugins/fullcalendar/fullcalendar.min.css" rel="stylesheet" type="text/css" />
+        <link href="${pageContext.request.contextPath}/assets/global/plugins/jqvmap/jqvmap/jqvmap.css" rel="stylesheet" type="text/css" />
+       
+        <!-- END PAGE LEVEL PLUGINS -->
+                   
                          
                         <!-- BEGIN PAGE HEADER-->
                         <!-- BEGIN THEME PANEL -->
@@ -3305,10 +3313,12 @@
                             </div>
                         </div>
                    
-                   
-                 
-                <script src="${pageContext.request.contextPath}/assets/global/plugins/horizontal-timeline/horizontal-timeline.min.js" type="text/javascript"></script>
-                <script src="${pageContext.request.contextPath}/assets/pages/scripts/dashboard.min.js" type="text/javascript"></script>
+                     <!-- BEGIN PAGE LEVEL PLUGINS -->
+       
+        <!-- END PAGE LEVEL PLUGINS -->
+                
+        <script src="${pageContext.request.contextPath}/assets/global/plugins/horizontal-timeline/horizontal-timeline.js" type="text/javascript"></script>
+                 <script src="${pageContext.request.contextPath}/assets/pages/scripts/dashboard.min.js" type="text/javascript"></script>
               
                  
                 <script   type="text/javascript"> 
@@ -3322,5 +3332,7 @@
 		                 delay: 10,
 		                 time: 1000
 		             });
+		            
 		        });</script>
+		        
                 <!-- END CONTENT BODY -->

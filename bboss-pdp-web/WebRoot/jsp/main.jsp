@@ -3,7 +3,13 @@
 
 <%@ taglib uri="/WEB-INF/tld/admin-taglib.tld" prefix="admin" %>
                     
-                   
+                    <!-- BEGIN PAGE LEVEL PLUGINS -->
+        <link href="${pageContext.request.contextPath}/assets/global/plugins/bootstrap-daterangepicker/daterangepicker.min.css" rel="stylesheet" type="text/css" />
+        <link href="${pageContext.request.contextPath}/assets/global/plugins/morris/morris.css" rel="stylesheet" type="text/css" />
+        <link href="${pageContext.request.contextPath}/assets/global/plugins/fullcalendar/fullcalendar.min.css" rel="stylesheet" type="text/css" />
+        <link href="${pageContext.request.contextPath}/assets/global/plugins/jqvmap/jqvmap/jqvmap.css" rel="stylesheet" type="text/css" />
+       
+        <!-- END PAGE LEVEL PLUGINS -->
                   
            
                         <!-- BEGIN PAGE HEADER-->
@@ -3476,10 +3482,33 @@
                             </div>
                         </div>
                                  
-                 
-                <script src="${pageContext.request.contextPath}/assets/global/plugins/horizontal-timeline/horizontal-timeline.min.js" type="text/javascript"></script>
+                  <!-- BEGIN PAGE LEVEL PLUGINS -->
+        <script src="${pageContext.request.contextPath}/assets/global/plugins/moment.min.js" type="text/javascript"></script>
+        <script src="${pageContext.request.contextPath}/assets/global/plugins/bootstrap-daterangepicker/daterangepicker.min.js" type="text/javascript"></script>
+        <script src="${pageContext.request.contextPath}/assets/global/plugins/morris/morris.min.js" type="text/javascript"></script>
+        <script src="${pageContext.request.contextPath}/assets/global/plugins/morris/raphael-min.js" type="text/javascript"></script>
+        <script src="${pageContext.request.contextPath}/assets/global/plugins/counterup/jquery.waypoints.min.js" type="text/javascript"></script>
+        <script src="${pageContext.request.contextPath}/assets/global/plugins/counterup/jquery.counterup.min.js" type="text/javascript"></script>
+       
+        <script src="${pageContext.request.contextPath}/assets/global/plugins/fullcalendar/fullcalendar.min.js" type="text/javascript"></script>
+        <script src="${pageContext.request.contextPath}/assets/global/plugins/horizontal-timeline/horizontal-timeline.js" type="text/javascript"></script>
+        <script src="${pageContext.request.contextPath}/assets/global/plugins/flot/jquery.flot.min.js" type="text/javascript"></script>
+        <script src="${pageContext.request.contextPath}/assets/global/plugins/flot/jquery.flot.resize.min.js" type="text/javascript"></script>
+        <script src="${pageContext.request.contextPath}/assets/global/plugins/flot/jquery.flot.categories.min.js" type="text/javascript"></script>
+        <script src="${pageContext.request.contextPath}/assets/global/plugins/jquery-easypiechart/jquery.easypiechart.min.js" type="text/javascript"></script>
+        <script src="${pageContext.request.contextPath}/assets/global/plugins/jquery.sparkline.min.js" type="text/javascript"></script>
+        <script src="${pageContext.request.contextPath}/assets/global/plugins/jqvmap/jqvmap/jquery.vmap.js" type="text/javascript"></script>
+        <script src="${pageContext.request.contextPath}/assets/global/plugins/jqvmap/jqvmap/maps/jquery.vmap.russia.js" type="text/javascript"></script>
+        <script src="${pageContext.request.contextPath}/assets/global/plugins/jqvmap/jqvmap/maps/jquery.vmap.world.js" type="text/javascript"></script>
+        <script src="${pageContext.request.contextPath}/assets/global/plugins/jqvmap/jqvmap/maps/jquery.vmap.europe.js" type="text/javascript"></script>
+        <script src="${pageContext.request.contextPath}/assets/global/plugins/jqvmap/jqvmap/maps/jquery.vmap.germany.js" type="text/javascript"></script>
+        <script src="${pageContext.request.contextPath}/assets/global/plugins/jqvmap/jqvmap/maps/jquery.vmap.usa.js" type="text/javascript"></script>
+        <script src="${pageContext.request.contextPath}/assets/global/plugins/jqvmap/jqvmap/data/jquery.vmap.sampledata.js" type="text/javascript"></script>
+        <!-- END PAGE LEVEL PLUGINS -->
+         <!-- BEGIN PAGE LEVEL SCRIPTS -->
                 <script src="${pageContext.request.contextPath}/assets/pages/scripts/dashboard.min.js" type="text/javascript"></script>
-                <script   type="text/javascript"> 
+             <!-- END PAGE LEVEL SCRIPTS -->
+                  <script   type="text/javascript"> 
 		        jQuery(document).ready(function() {
 		        	//DesktopMenus.initTheme(); // init metronic core componets
 		        	 if (!$().counterUp) {

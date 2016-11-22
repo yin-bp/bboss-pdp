@@ -39,10 +39,7 @@ License: You must have a valid license purchased only from themeforest(the above
         <link href="${pageContext.request.contextPath}/assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
         <!-- END GLOBAL MANDATORY STYLES -->
         <!-- BEGIN PAGE LEVEL PLUGINS -->
-        <link href="${pageContext.request.contextPath}/assets/global/plugins/bootstrap-daterangepicker/daterangepicker.min.css" rel="stylesheet" type="text/css" />
-        <link href="${pageContext.request.contextPath}/assets/global/plugins/morris/morris.css" rel="stylesheet" type="text/css" />
-        <link href="${pageContext.request.contextPath}/assets/global/plugins/fullcalendar/fullcalendar.min.css" rel="stylesheet" type="text/css" />
-        <link href="${pageContext.request.contextPath}/assets/global/plugins/jqvmap/jqvmap/jqvmap.css" rel="stylesheet" type="text/css" />
+         
         <link href="${pageContext.request.contextPath}/assets/pages/css/error.min.css" rel="stylesheet" type="text/css" />
         <!-- END PAGE LEVEL PLUGINS -->
         <!-- BEGIN THEME GLOBAL STYLES -->
@@ -1438,7 +1435,8 @@ License: You must have a valid license purchased only from themeforest(the above
         <script src="${pageContext.request.contextPath}/assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
         <!-- END CORE PLUGINS -->
         <!-- BEGIN PAGE LEVEL PLUGINS -->
-        <script src="${pageContext.request.contextPath}/assets/global/plugins/moment.min.js" type="text/javascript"></script>
+        <pg:true actual="${theme eq 'admin_3'}">
+      	 <script src="${pageContext.request.contextPath}/assets/global/plugins/moment.min.js" type="text/javascript"></script>
         <script src="${pageContext.request.contextPath}/assets/global/plugins/bootstrap-daterangepicker/daterangepicker.min.js" type="text/javascript"></script>
         <script src="${pageContext.request.contextPath}/assets/global/plugins/morris/morris.min.js" type="text/javascript"></script>
         <script src="${pageContext.request.contextPath}/assets/global/plugins/morris/raphael-min.js" type="text/javascript"></script>
@@ -1455,7 +1453,6 @@ License: You must have a valid license purchased only from themeforest(the above
         <script src="${pageContext.request.contextPath}/assets/global/plugins/amcharts/ammap/maps/js/worldLow.js" type="text/javascript"></script>
         <script src="${pageContext.request.contextPath}/assets/global/plugins/amcharts/amstockcharts/amstock.js" type="text/javascript"></script>
         <script src="${pageContext.request.contextPath}/assets/global/plugins/fullcalendar/fullcalendar.min.js" type="text/javascript"></script>
-        <script src="${pageContext.request.contextPath}/assets/global/plugins/horizontal-timeline/horizontal-timeline.js" type="text/javascript"></script>
         <script src="${pageContext.request.contextPath}/assets/global/plugins/flot/jquery.flot.min.js" type="text/javascript"></script>
         <script src="${pageContext.request.contextPath}/assets/global/plugins/flot/jquery.flot.resize.min.js" type="text/javascript"></script>
         <script src="${pageContext.request.contextPath}/assets/global/plugins/flot/jquery.flot.categories.min.js" type="text/javascript"></script>
@@ -1468,14 +1465,14 @@ License: You must have a valid license purchased only from themeforest(the above
         <script src="${pageContext.request.contextPath}/assets/global/plugins/jqvmap/jqvmap/maps/jquery.vmap.germany.js" type="text/javascript"></script>
         <script src="${pageContext.request.contextPath}/assets/global/plugins/jqvmap/jqvmap/maps/jquery.vmap.usa.js" type="text/javascript"></script>
         <script src="${pageContext.request.contextPath}/assets/global/plugins/jqvmap/jqvmap/data/jquery.vmap.sampledata.js" type="text/javascript"></script>
+        </pg:true>
         <!-- END PAGE LEVEL PLUGINS -->
         <!-- BEGIN THEME GLOBAL SCRIPTS -->
         <script src="${pageContext.request.contextPath}/assets/global/scripts/app.min.js" type="text/javascript"></script>
         <!-- END THEME GLOBAL SCRIPTS -->
         <!-- BEGIN PAGE LEVEL SCRIPTS -->
         <script src="${pageContext.request.contextPath}/assets/pages/scripts/desktop-menus.js" type="text/javascript"></script>
-        <script src="${pageContext.request.contextPath}/assets/pages/scripts/dashboard.min.js" type="text/javascript"></script>
-        <!-- END PAGE LEVEL SCRIPTS -->
+         <!-- END PAGE LEVEL SCRIPTS -->
         <!-- BEGIN THEME LAYOUT SCRIPTS -->
         <script src="${pageContext.request.contextPath}/assets/layouts/layout/scripts/layout.min.js" type="text/javascript"></script>
         <script src="${pageContext.request.contextPath}/assets/layouts/layout/scripts/demo.min.js" type="text/javascript"></script>
