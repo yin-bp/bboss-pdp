@@ -59,7 +59,7 @@ License: You must have a valid license purchased only from themeforest(the above
         <link rel="shortcut icon" href="favicon.ico" /> </head>
     <!-- END HEAD -->
 
-    <body class="page-header-fixed page-sidebar-closed-hide-logo <c:if test="${theme eq 'admin_1'}">page-content-white page-sidebar-fixed</c:if> page-footer-fixed">
+    <body class="page-header-fixed page-sidebar-closed-hide-logo <pg:true actual="${theme eq 'admin_1'}">page-content-white page-sidebar-fixed</pg:true> page-footer-fixed">
         <div class="page-wrapper">
             <!-- BEGIN HEADER -->
             <div class="page-header navbar navbar-fixed-top">

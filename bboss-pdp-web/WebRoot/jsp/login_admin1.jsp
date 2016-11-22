@@ -82,10 +82,10 @@ License: You must have a valid license purchased only from themeforest(the above
                     <!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
                     <label class="control-label visible-ie8 visible-ie9">选择风格</label>
                     <select class="form-control form-control-solid placeholder-no-fix" name="theme" >
+                    					 <option value="admin_1_darkblue">经典_darkblue</option>   
                       		 			  <option value="admin_1_default">经典-默认</option>
                                           <option value="admin_1_light2">经典_light2</option>
-                                          
-                                          <option value="admin_1_darkblue">经典_darkblue</option>                                          
+                                                                                                                          
                                           <option value="admin_1_grey">经典_grey</option>
                                           <option value="admin_1_light">经典_light</option>
                                           <option value="admin_1_blue">经典_blue</option>

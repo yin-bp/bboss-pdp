@@ -22,8 +22,8 @@ import com.frameworkset.util.StringUtil;
  */
 public class MenuTag extends BaseTag {
 
-	private static String dashboard3_header = "<ul class=\"page-sidebar-menu  page-header-fixed page-sidebar-menu-hover-submenu \" data-keep-expanded=\"false\" data-auto-scroll=\"true\" data-slide-speed=\"200\" style=\"padding-top: 20px\">"; 
-	private static String dashboard1_header = "<ul class=\"page-sidebar-menu  \" data-keep-expanded=\"false\" data-auto-scroll=\"true\" data-slide-speed=\"200\" style=\"padding-top: 20px\">"; 
+	private static String dashboard3_header = "<ul class=\"page-sidebar-menu  page-header-fixed page-sidebar-menu-hover-submenu \" data-keep-expanded=\"false\" data-auto-scroll=\"true\" data-slide-speed=\"200\" style=\"padding-top: 0px\">"; 
+	private static String dashboard1_header = "<ul class=\"page-sidebar-menu  \" data-keep-expanded=\"false\" data-auto-scroll=\"true\" data-slide-speed=\"200\" style=\"padding-top: 0px\">"; 
 	
 	public static final String personcenter_name = "personal_center";
 	
@@ -44,26 +44,26 @@ public class MenuTag extends BaseTag {
 		datas.append("    </div>");
 		datas.append("    <!-- END SIDEBAR TOGGLER BUTTON -->");
 		datas.append("</li>");
-		datas.append("<!-- DOC: To remove the search box from the sidebar you just need to completely remove the below \"sidebar-search-wrapper\" LI element -->");
-		datas.append("<li class=\"sidebar-search-wrapper\">");
-		datas.append("    <!-- BEGIN RESPONSIVE QUICK SEARCH FORM -->");
-		datas.append("    <!-- DOC: Apply \"sidebar-search-bordered\" class the below search form to have bordered search box -->");
-		datas.append("    <!-- DOC: Apply \"sidebar-search-bordered sidebar-search-solid\" class the below search form to have bordered & solid search box -->");
-		datas.append("    <form class=\"sidebar-search  \" action=\"page_general_search_3.html\" method=\"POST\">");
-		datas.append("        <a href=\"javascript:;\" class=\"remove\">");
-		datas.append("             <i class=\"icon-close\"></i>");
-		datas.append("         </a>");
-		datas.append("         <div class=\"input-group\">");
-		datas.append("            <input type=\"text\" class=\"form-control\" placeholder=\"Search...\">");
-		datas.append("            <span class=\"input-group-btn\">");
-		datas.append("                 <a href=\"javascript:;\" class=\"btn submit\">");
-		datas.append("                      <i class=\"icon-magnifier\"></i>");
-		datas.append("               </a>");
-		datas.append("           </span>");
-		datas.append("        </div>");
-		datas.append("    </form>");
-		datas.append("    <!-- END RESPONSIVE QUICK SEARCH FORM -->");
-		datas.append(" </li>"); 
+//		datas.append("<!-- DOC: To remove the search box from the sidebar you just need to completely remove the below \"sidebar-search-wrapper\" LI element -->");
+//		datas.append("<li class=\"sidebar-search-wrapper\">");
+//		datas.append("    <!-- BEGIN RESPONSIVE QUICK SEARCH FORM -->");
+//		datas.append("    <!-- DOC: Apply \"sidebar-search-bordered\" class the below search form to have bordered search box -->");
+//		datas.append("    <!-- DOC: Apply \"sidebar-search-bordered sidebar-search-solid\" class the below search form to have bordered & solid search box -->");
+//		datas.append("    <form class=\"sidebar-search  \" action=\"page_general_search_3.html\" method=\"POST\">");
+//		datas.append("        <a href=\"javascript:;\" class=\"remove\">");
+//		datas.append("             <i class=\"icon-close\"></i>");
+//		datas.append("         </a>");
+//		datas.append("         <div class=\"input-group\">");
+//		datas.append("            <input type=\"text\" class=\"form-control\" placeholder=\"Search...\">");
+//		datas.append("            <span class=\"input-group-btn\">");
+//		datas.append("                 <a href=\"javascript:;\" class=\"btn submit\">");
+//		datas.append("                      <i class=\"icon-magnifier\"></i>");
+//		datas.append("               </a>");
+//		datas.append("           </span>");
+//		datas.append("        </div>");
+//		datas.append("    </form>");
+//		datas.append("    <!-- END RESPONSIVE QUICK SEARCH FORM -->");
+//		datas.append(" </li>"); 
 	}
 	
 	private void renderItem(String contextpath,AccessControl control,MenuHelper menuHelper,Item item,boolean selected,StringBuilder datas,boolean isfirst)

@@ -15,14 +15,28 @@ var DesktopMenus = function() {
              
               if(statusTxt=="error" )
               {
-            	  if(xhr.status == 404)
+            	  if(xhr.status == 403)
 	    		  {
             		  if(menuid != '')
-            			  $(".page-content").load('404?menupath_menuid='+menuid);
+            			  $(".page-content").load('../jsp/common/403.jsp?menupath_menuid='+menuid);
             		  else
-            			  $(".page-content").load('404');
+            			  $(".page-content").load('../jsp/common/403.jsp');
 	    		  }
-            	  //alert("Error: "+xhr.status+": "+xhr.statusText);
+            	  else if(xhr.status > 400  &&  xhr.status < 500)
+	    		  {
+            		  if(menuid != '')
+            			  $(".page-content").load('../jsp/common/404.jsp?menupath_menuid='+menuid);
+            		  else
+            			  $(".page-content").load('../jsp/common/404.jsp');
+	    		  }
+            	  else if(xhr.status >= 500 && xhr.status < 600)
+	    		  {
+            		  if(menuid != '')
+            			  $(".page-content").load('../jsp/common/500.jsp?menupath_menuid='+menuid);
+            		  else
+            			  $(".page-content").load('../jsp/common/500.jsp');
+	    		  }
+            	  
               }
             	  
             });
