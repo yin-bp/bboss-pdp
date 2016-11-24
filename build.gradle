@@ -140,7 +140,7 @@ configure([project(":bboss-pdp-auth")]) { subproject ->
 }//configure
 
 
-configure([project(":bboss-pdp-web")]) { subproject ->
+configure([project(":bboss-pdp-web"),project(":bboss-pdp-config")]) { subproject ->
 	apply plugin: 'war'    
 	eclipse {
 		jdt {
@@ -152,6 +152,21 @@ configure([project(":bboss-pdp-web")]) { subproject ->
 		}
 	}
 	
+	dependencies {
+	   
+	 	compile project(':bboss-pdp-auth')
+	   
+	  
+	   compileOnly (            
+	          
+	            [group: 'javax.servlet', name: 'javax.servlet-api', version: "3.0.1", transitive: false],
+	            //[group: 'javax.servlet', name: 'jsp-api', version: '2.0', transitive: false],
+	            [group: 'javax.servlet.jsp', name: 'javax.servlet.jsp-api', version: '2.3.1', transitive: false],
+	          
+	    	)
+	    
+	   
+	}
 	/**war {
 	    //from 'WebRoot'
 	    // adds a file-set to the root of the archive

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>角色管理-新增</title>
+
+    <link href="css/bootstrap.min.css?v=3.3.5" rel="stylesheet">
+    <link href="css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+    <link href="css/animate.min.css" rel="stylesheet">
+    <link href="css/plugins/zTree/metroStyle.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+
+<body class="gray-bg">
+<div class="row wrapper border-bottom white-bg sdp-head">
+    <div class="col-sm-12">
+        <ol class="breadcrumb">
+            <li>位置: 系统管理</li>
+            <li><a href="role.html">角色管理</a></li>
+            <li>新增</li>
+        </ol>
+    </div>
+</div>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+    </div>
+</div>
+<script src="js/jquery.min.js?v=2.1.4"></script>
+<script src="js/bootstrap.min.js?v=3.3.5"></script>
+<script src="js/plugins/zTree/jquery.ztree.all.min.js"></script>
+<script language="JavaScript">
+    var zTreeObj;
+    // zTree 的参数配置，深入使用请参考 API 文档（setting 配置详解）
+    var setting = {
+        view:{
+            showIcon:false
+        }
+    };
+    // zTree 的数据属性，深入使用请参考 API 文档（zTreeNode 节点数据详解）
+    var zNodes = [
+        {
+            name:"工作台"
+        },
+        {
+            name:"系统管理",
+            children:[
+                {name:"操作员管理"}, {name:"角色管理"}, {name:"菜单管理"}, {name:"组织管理"}, {name:"基础数据管理"}, {name:"应用接入管理"}
+            ]
+        },
+        {
+            name:"用户管理"
+        },
+        {
+            name:"业务平台管理"
+        },
+        {
+            name:"合作伙伴",
+            children:[
+                {name:"合作伙伴信息"}, {name:"合作伙伴账号"}, {name:"合作伙伴审核"}, {name:"考核评级"}
+            ]
+        },
+        {
+            name:"结算管理",
+            children:[
+                {name:"分摊比例管理"}, {name:"结算规则配置"}, {name:"结算单管理"}
+            ]
+        },
+        {
+            name:"产品中心",
+            children:[
+                {name:"产品管理"}, {name:"服务管理"}, {name:"产品服务审核"}
+            ]
+        },
+        {
+            name:"订单中心",
+            children:[
+                {name:"业务受理"}, {name:"订单管理"}
+            ]
+        },
+        {
+            name:"优惠策略"
+        }
+    ];
+    $(document).ready(function(){
+        zTreeObj = $.fn.zTree.init($("#menuTree"), setting, zNodes);
+    });
+</script>
+</body>
+</html>

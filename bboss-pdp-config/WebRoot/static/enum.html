@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>基础数据管理</title>
+
+    <link href="css/bootstrap.min.css?v=3.3.5" rel="stylesheet">
+    <link href="css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+    <link href="css/animate.min.css" rel="stylesheet">
+    <link href="css/plugins/zTree/metroStyle.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+
+<body class="gray-bg">
+<div class="row wrapper border-bottom white-bg sdp-head">
+    <div class="col-sm-12">
+        <ol class="breadcrumb">
+            <li>位置: 系统管理</li>
+            <li>基础数据管理</li>
+        </ol>
+    </div>
+</div>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-3">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>基础数据树</h5>
+                    <div class="ibox-tools">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:void(0);">
+                            <i class="fa fa-wrench"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-user">
+                            <li><a href="#">新增基础数据类型</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="ibox-content" style="min-height:360px;overflow:auto;">
+                    <ul id="enumTree" class="ztree"></ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-9">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>基础数据类型</h5>
+                </div>
+                <div class="ibox-content">
+                    <div class="row sdp-row">
+                        <div class="col-sm-2 sdp-col-title">类型名称</div>
+                        <div class="col-sm-4 sdp-col-content">业务合作方类型</div>
+                        <div class="col-sm-2 sdp-col-title">类型编码</div>
+                        <div class="col-sm-4 sdp-col-content">CPSP_TYPE</div>
+                    </div>
+                    <div class="row sdp-row">
+                        <div class="col-sm-2 sdp-col-title">创建时间</div>
+                        <div class="col-sm-4 sdp-col-content">2016-10-10 12:22:22</div>
+                        <div class="col-sm-2 sdp-col-title">修改时间</div>
+                        <div class="col-sm-4 sdp-col-content">2016-10-10 12:22:22</div>
+                    </div>
+                    <div class="row sdp-row">
+                        <div class="col-sm-2 sdp-col-title">备注</div>
+                        <div class="col-sm-10 sdp-col-content"></div>
+                    </div>
+                    <div class="sdp-tool" style="margin-top: 10px;">
+                        <div class="sdp-left">
+                            <a class="btn btn-xs btn-primary" type="button">编 辑</a>
+                            <a class="btn btn-xs btn-primary" type="button">新增条目</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>基础数据列表</h5>
+                </div>
+                <div class="ibox-content">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>条目名称</th>
+                            <th>条目代码</th>
+                            <th>值</th>
+                            <th>显示顺序</th>
+                            <th>状态</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>CP</td>
+                            <td>CP</td>
+                            <td>0</td>
+                            <td>1</td>
+                            <td>正常</td>
+                            <td>
+                                <a href="#" class="btn btn-xs btn-outline btn-default">编辑</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>CP</td>
+                            <td>CP</td>
+                            <td>0</td>
+                            <td>1</td>
+                            <td>正常</td>
+                            <td>
+                                <a href="#" class="btn btn-xs btn-outline btn-default">编辑</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="sdp-tool">
+                        <div class="sdp-left"></div>
+                        <div class="sdp-right">
+                            <div class="sdp-page-before">
+                                共<span class="page-val">3</span>页<span class="page-val">60</span>条数据
+                            </div>
+                            <ul class="pagination sdp-pagination">
+                                <li class="disabled"><a href="#">&laquo;</a></li>
+                                <li class="active"><a href="#">1</a></li>
+                                <li><a href="#">2</a></li>
+                                <li><a href="#">3</a></li>
+                                <li><a href="#">4</a></li>
+                                <li><a href="#">5</a></li>
+                                <li><a href="#">&raquo;</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="js/jquery.min.js?v=2.1.4"></script>
+<script src="js/bootstrap.min.js?v=3.3.5"></script>
+<script src="js/plugins/zTree/jquery.ztree.all.min.js"></script>
+<script language="JavaScript">
+    var zTreeObj;
+    // zTree 的参数配置，深入使用请参考 API 文档（setting 配置详解）
+    var setting = {
+        view:{
+            showIcon:false
+        }
+    };
+    // zTree 的数据属性，深入使用请参考 API 文档（zTreeNode 节点数据详解）
+    var zNodes = [
+        {
+            name:"业务合作方类型",
+            children:[
+                {name:"CP"}, {name:"SP"}
+            ]
+        },
+        {
+            name:"数据状态",
+            children:[
+                {name:"无效"}, {name:"有效"}
+            ]
+        },
+        {
+            name:"证件类型",
+            children:[
+                {name:"营业执照"}, {name:"组织结构代码证"}, {name:"税务登记证"}
+            ]
+        },
+        {
+            name:"结算类别",
+            children:[
+                {name:"包月"}, {name:"单点"}
+            ]
+        }
+    ];
+    $(document).ready(function(){
+        zTreeObj = $.fn.zTree.init($("#enumTree"), setting, zNodes);
+    });
+</script>
+</body>
+</html>

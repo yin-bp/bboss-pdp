@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>考核评级</title>
+
+    <link href="css/bootstrap.min.css?v=3.3.5" rel="stylesheet">
+    <link href="css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+    <link href="css/plugins/chosen/chosen.css" rel="stylesheet">
+    <link href="css/animate.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+
+<body class="gray-bg">
+<div class="row wrapper border-bottom white-bg sdp-head">
+    <div class="col-sm-12">
+        <ol class="breadcrumb">
+            <li>位置: 合作伙伴</li>
+            <li>考核评级</li>
+        </ol>
+    </div>
+</div>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>查询条件</h5>
+                </div>
+                <div class="ibox-content">
+                    <form method="post" class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-sm-1 control-label">厂商名称</label>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control input-sm">
+                            </div>
+                            <label class="col-sm-1 control-label">厂商编号</label>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control input-sm">
+                            </div>
+                            <label class="col-sm-1 control-label">状态</label>
+                            <div class="col-sm-3">
+                                <select data-placeholder="选择状态" class="chosen-select" tabindex="2">
+                                    <option value="">请选择状态</option>
+                                    <option value="110000" hassubinfo="true">正常</option>
+                                    <option value="120000" hassubinfo="true">待提交资料</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-1 col-sm-11">
+                                <a class="btn btn-xs btn-primary" type="button">查 询</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>查询结果</h5>
+                </div>
+                <div class="ibox-content">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>厂商编号</th>
+                            <th>厂商名称</th>
+                            <th>所属省份</th>
+                            <th>联系人</th>
+                            <th>联系电话</th>
+                            <th>状态</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>CQ00000111</td>
+                            <td>XXX厂商</td>
+                            <td>浙江</td>
+                            <td>张三</td>
+                            <td>12399983399</td>
+                            <td><label class="label label-success">正常</label></td>
+                            <td>
+                                <a href="#" class="btn btn-xs btn-outline btn-default">考核评级</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>CQ00000111</td>
+                            <td>XXX厂商</td>
+                            <td>浙江</td>
+                            <td>张三</td>
+                            <td>12399983399</td>
+                            <td><label class="label label-success">正常</label></td>
+                            <td>
+                                <a href="#" class="btn btn-xs btn-outline btn-default">考核评级</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="sdp-tool">
+                        <div class="sdp-left"></div>
+                        <div class="sdp-right">
+                            <div class="sdp-page-before">
+                                共<span class="page-val">3</span>页<span class="page-val">60</span>条数据
+                            </div>
+                            <ul class="pagination sdp-pagination">
+                                <li class="disabled"><a href="#">&laquo;</a></li>
+                                <li class="active"><a href="#">1</a></li>
+                                <li><a href="#">2</a></li>
+                                <li><a href="#">3</a></li>
+                                <li><a href="#">4</a></li>
+                                <li><a href="#">5</a></li>
+                                <li><a href="#">&raquo;</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="js/jquery.min.js?v=2.1.4"></script>
+<script src="js/bootstrap.min.js?v=3.3.5"></script>
+<script src="js/plugins/chosen/chosen.jquery.js"></script>
+<script>
+    $(function(){
+        $(".chosen-select").chosen();
+    });
+</script>
+</body>
+</html>

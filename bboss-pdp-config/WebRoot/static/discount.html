@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>优惠策略</title>
+
+    <link href="css/bootstrap.min.css?v=3.3.5" rel="stylesheet">
+    <link href="css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+    <link href="css/plugins/chosen/chosen.css" rel="stylesheet">
+    <link href="css/animate.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+
+<body class="gray-bg">
+<div class="row wrapper border-bottom white-bg sdp-head">
+    <div class="col-sm-12">
+        <ol class="breadcrumb">
+            <li>位置: 优惠管理</li>
+            <li>优惠策略</li>
+        </ol>
+    </div>
+</div>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>查询条件</h5>
+                </div>
+                <div class="ibox-content">
+                    <form method="post" class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-sm-1 control-label">优惠名称</label>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control input-sm">
+                            </div>
+                            <label class="col-sm-1 control-label">优惠编号</label>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control input-sm">
+                            </div>
+                            <label class="col-sm-1 control-label">优惠类型</label>
+                            <div class="col-sm-3">
+                                <select data-placeholder="选择状态" class="chosen-select" tabindex="2">
+                                    <option value="">请选择状态</option>
+                                    <option value="110000" hassubinfo="true">折扣</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-1 col-sm-11">
+                                <a class="btn btn-xs btn-primary" type="button">查 询</a>
+                                <a class="btn btn-xs btn-white" type="button">新 增</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>查询结果</h5>
+                </div>
+                <div class="ibox-content">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>优惠编号</th>
+                            <th>优惠名称</th>
+                            <th>优惠类型</th>
+                            <th>优惠值</th>
+                            <th>优惠开展周期</th>
+                            <th>优惠有效周期</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>121212</td>
+                            <td>打折优惠</td>
+                            <td>折扣</td>
+                            <td>8折</td>
+                            <td>2017-12-12至2019-12-12</td>
+                            <td>2017-12-12至2019-12-12</td>
+                            <td>
+                                <a href="#" class="btn btn-xs btn-outline btn-default">详情</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="sdp-tool">
+                        <div class="sdp-left"></div>
+                        <div class="sdp-right">
+                            <div class="sdp-page-before">
+                                共<span class="page-val">3</span>页<span class="page-val">60</span>条数据
+                            </div>
+                            <ul class="pagination sdp-pagination">
+                                <li class="disabled"><a href="#">&laquo;</a></li>
+                                <li class="active"><a href="#">1</a></li>
+                                <li><a href="#">2</a></li>
+                                <li><a href="#">3</a></li>
+                                <li><a href="#">4</a></li>
+                                <li><a href="#">5</a></li>
+                                <li><a href="#">&raquo;</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="js/jquery.min.js?v=2.1.4"></script>
+<script src="js/bootstrap.min.js?v=3.3.5"></script>
+<script src="js/plugins/chosen/chosen.jquery.js"></script>
+<script>
+    $(function(){
+        $(".chosen-select").chosen();
+    });
+</script>
+</body>
+</html>
