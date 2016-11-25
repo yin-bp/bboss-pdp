@@ -46,6 +46,8 @@ public class Application implements java.io.Serializable {
 	 * 凭证有效期
 	 */
 	private long ticketlivetimes;
+	private String publicKey;
+	private String privateKey;
 	public Application() {
 	}
 	public void setAppId(String appId) {
@@ -94,6 +96,18 @@ public class Application implements java.io.Serializable {
 
 	public long getTicketlivetimes() {
 		return ticketlivetimes;
+	}
+	public String getPublicKey() {
+		return publicKey;
+	}
+	public void setPublicKey(String publicKey) {
+		this.publicKey = publicKey;
+	}
+	public String getPrivateKey() {
+		return privateKey;
+	}
+	public void setPrivateKey(String privateKey) {
+		this.privateKey = privateKey;
 	}
 
 }

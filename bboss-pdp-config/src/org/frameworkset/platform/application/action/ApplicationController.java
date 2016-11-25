@@ -16,9 +16,11 @@
 
 package org.frameworkset.platform.application.action;
 
+import java.io.InputStream;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.frameworkset.http.FileBlob;
 import org.frameworkset.platform.application.entity.Application;
 import org.frameworkset.platform.application.entity.ApplicationCondition;
 import org.frameworkset.platform.application.service.ApplicationException;
@@ -26,6 +28,7 @@ import org.frameworkset.platform.application.service.ApplicationService;
 import org.frameworkset.platform.entity.DataGrid;
 import org.frameworkset.platform.entity.PageBean;
 import org.frameworkset.util.annotations.ResponseBody;
+import org.frameworkset.web.auth.AuthorHelper;
 import org.frameworkset.web.servlet.ModelMap;
 
 import com.frameworkset.util.ListInfo;
@@ -102,6 +105,21 @@ public class ApplicationController {
 		}
 
 	}
+	public @ResponseBody FileBlob downcafile(String appCode)
+    {
+    	if(appCode == null || appCode.equals(""))
+    		throw new java.lang.NullPointerException("下载证书出错:必须指定应用编码");
+    	
+		try {
+			
+			InputStream input =  AuthorHelper.generateCAStream(appCode);
+	        FileBlob fb = new FileBlob ("token.certificate",input);//下载文件流
+	        return fb;
+		} catch (Exception e) {
+			throw new java.lang.RuntimeException(e);
+		}
+    	
+    }
 	public @ResponseBody DataGrid queryListInfoApplications(ApplicationCondition conditions,
 			int currentPage,
 			int pageSize, ModelMap model)

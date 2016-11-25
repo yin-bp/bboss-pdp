@@ -42,7 +42,7 @@
                         </div>
                         <div class="form-group">
                             <div class="col-sm-offset-1 col-sm-11">
-                                <a class="btn btn-xs btn-primary" type="button" href="javascript:searchAppSystem()">查 询</a>
+                                <a class="btn btn-xs btn-primary" type="button" href="javascript:Application.searchAppSystem(true)">查 询</a>
                                 <a class="btn btn-xs btn-white" type="button" href="${pageContext.request.contextPath}/application/toAddApplication.page">新 增</a>
                             </div>
                         </div>
@@ -79,107 +79,13 @@
 
 
 <%@ include file="/jsp/inc/js-link.inc"%>
+<script type="text/javascript" src="${pageContext.request.contextPath}/jsp/application/formvalidate.js"></script>
 <script type="text/javascript">
 	$(function(){
-		$("#appSystem_table").datagrid({
-			url: "${pageContext.request.contextPath}/application/queryListInfoApplications.page",
-            type: "post",
-            data: {},
-            table:{ //表格相关配置
-            	id: "appSystem_table",
-                head:[{
-                    item: "appCode",
-                    name: "应用编号"
-                },{
-                    item: "appName",
-                    name: "应用名称"
-                },{
-                    item: "appSecret",
-                    name: "口令明文"
-                },{
-                    item: "appSecretText",
-                    name: "口令密文"
-                },{
-                    item: "ticketlivetimes",
-                    name: "有效周期"
-                }
-                ],
-                showBtns: true,
-                btns:[{
-                    name: "查看",
-                    todo: function(row,index){
-                    	var appId=row.appId;
-            			window.location.href = "${pageContext.request.contextPath}/application/getApplication.page?appId="+appId;
-                    }
-                },{
-                    name: "编辑",
-                    todo: function(row,index){
-                    	var appId=row.appId;
-            			window.location.href = "${pageContext.request.contextPath}/application/toUpdateApplication.page?appId="+appId;
-                    }
-
-                }]
-            },
-            page:{ //分页工具
-                enable: true,
-                id: "pageBean",
-                pageSize: 10
-            }
-        });
+		Application.searchAppSystem(false);
 	});
-	function addApp()
-	{
-		window.location.href = "${pageContext.request.contextPath}/application/getApplication.page?appId="+appId;
-	}
-	function searchAppSystem(){
-		var appName = $("#appName").val();
-		var appCode = $("#appCode").val();
-		$("#appSystem_table").datagrid({
-			url: "${pageContext.request.contextPath}/application/queryListInfoApplications.page",
-            type: "post",
-            data: {"appName":appName,"appCode":appCode},
-            table:{ //表格相关配置
-            	id: "appSystem_table",
-                head:[{
-                    item: "appCode",
-                    name: "应用编号"
-                },{
-                    item: "appName",
-                    name: "应用名称"
-                },{
-                    item: "appSecret",
-                    name: "口令明文"
-                },{
-                    item: "appSecretText",
-                    name: "口令密文"
-                },{
-                    item: "ticketlivetimes",
-                    name: "有效周期"
-                }
-                ],
-                showBtns: true,
-                btns:[{
-                    name: "查看",
-                    todo: function(row,index){
-                    	var appId=row.appId;
-            			window.location.href = "${pageContext.request.contextPath}/application/getApplication.page?appId="+appId;
-                    }
-                },{
-                    name: "编辑",
-                    todo: function(row,index){
-                    	var appId=row.appId;
-            			window.location.href = "${pageContext.request.contextPath}/application/toUpdateApplication.page?appId="+appId;
-                    }
-
-                }]
-            },
-            page:{ //分页工具
-                enable: true,
-                id: "pageBean",
-                pageSize: 10
-            }
-		});
-	}
+	
+	
 </script>
 </body>
 </html>

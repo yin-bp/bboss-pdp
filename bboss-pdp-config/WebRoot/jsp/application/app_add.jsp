@@ -37,7 +37,7 @@
 								<label class="col-sm-2 control-label">输入口令:</label>
 								<div class="col-sm-4">
 									<input type="text" class="form-control input-sm" name="appSecret" id="appSecret"> 
-									<a class="btn btn-sm btn-primary" type="button" href="javascript:getSystemSecret()">生成口令</a>
+									<a class="btn btn-sm btn-primary" type="button" href="javascript:Application.getSystemSecret()">生成口令</a>
 								</div>
 							</div>
 							<div class="form-group">
@@ -50,15 +50,15 @@
 							<div class="form-group">
 								<label class="col-sm-2 control-label">有效时长:</label>
 								<div class="col-sm-4">
-									<input type="text" class="form-control input-sm" name = "tickettime" value="-2"> <span
-										class="help-block m-b-none">单位：毫秒，-2表示读取全局配置</span>
+									<input type="text" class="form-control input-sm" name = "ticketlivetimes" value="-2"> <span
+										class="help-block m-b-none">单位：毫秒，-2表示读取tokenconf.xml中的全局配置</span>
 								</div>
 							</div>
 							 
 							
 							<div class="form-group">
 								<div class="col-sm-offset-2 col-sm-10">
-									<a class="btn btn-sm btn-primary" type="button" href="javascript:addAppSystem()">保 存</a> 
+									<a class="btn btn-sm btn-primary" type="button" href="javascript:Application.saveAppSystem('#addAppSystem')">保 存</a> 
 									<a class="btn btn-sm btn-white" type="button" onclick="javascript:history.go(-1);">返 回</a>
 								</div>
 							</div>
@@ -73,35 +73,12 @@
 	
 	
 	<script type="text/javascript">
-	   function addAppSystem(){
-		  if($("#appSecret").val() != $("#appSecretAck").val()){
-				
-				$("#re_secret_font").append("两次口令不一致");
-				
-				return;
-			}else{
-				$("#re_secret_font").html("*");	
-			}
-
-		   $("#addAppSystem").submit();
-		   
-		   
-	   }
 	   
-	   function getSystemSecret(){
-		   $.ajax({
-				type : "POST",
-				url : "${pageContext.request.contextPath}/application/getSystemSecret.page",
-				async : false,
-				success : function(responseText) {
-					$("#appSecret").val(responseText);
-					$("#appSecretAck").val(responseText);
-				}
-			});
-	   }
+	   
+	  
 	   
 	   jQuery(document).ready(function() {
-		   Application.initform();
+		   Application.initform("#addAppSystem","add");
        	
        });
 	</script>

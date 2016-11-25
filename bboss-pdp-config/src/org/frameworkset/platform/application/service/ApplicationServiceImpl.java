@@ -23,6 +23,8 @@ import org.apache.log4j.Logger;
 import org.frameworkset.platform.application.entity.Application;
 import org.frameworkset.platform.application.entity.ApplicationCondition;
 import org.frameworkset.platform.security.authentication.EncrpyPwd;
+import org.frameworkset.security.ecc.SimpleKeyPair;
+import org.frameworkset.web.token.TokenHelper;
 
 import com.frameworkset.common.poolman.ConfigSQLExecutor;
 import com.frameworkset.orm.transaction.TransactionManager;
@@ -101,6 +103,12 @@ public class ApplicationServiceImpl implements ApplicationService {
 	public Application getApplication(String appId) throws ApplicationException {
 		try {
 			Application bean = executor.queryObject(Application.class, "selectById", appId);
+			SimpleKeyPair keypair = TokenHelper.getTokenService().getSimpleKeyPair(bean.getAppCode());
+    		if(keypair != null)
+    		{
+    			bean.setPrivateKey(keypair.getPrivateKey());
+    			bean.setPublicKey(keypair.getPublicKey());
+    		}
 			return bean;
 		} catch (Throwable e) {
 			throw new ApplicationException("get Application failed::appId=" + appId, e);
