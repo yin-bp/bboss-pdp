@@ -192,7 +192,9 @@ var Application = function(){
 					"hideDuration" : "1000",
 					"timeOut" : "20000000",
 					"extendedTimeOut" : "1000",
-				
+					"onclose":function () {
+	                    searchAppSystem(true);
+	                },
 					"onclick":function () {
 	                    searchAppSystem(true);
 	                }

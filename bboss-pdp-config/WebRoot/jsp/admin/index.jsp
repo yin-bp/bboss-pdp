@@ -33,135 +33,23 @@
                         <div class="sdp-logo-title">BBoss SSO</div>
                         <div class="sdp-logo-sub-title">配置管理中心</div>
                     </div>
-                    <div class="logo-element">SDP</div>
+                    <div class="logo-element">SSO</div>
                 </li>
                 <!-- 菜单栏开始 -->
                 <li>
-                    <a class="J_menuItem" href="${pageContext.request.contextPath}/jsp/admin/workbench.jsp">
+                    <a class="J_menuItem" href="${pageContext.request.contextPath}/application/index.page">
                         <i class="fa fa-dashboard"></i>
                         <span class="nav-label">工作台</span>
                     </a>
                 </li>
+               
                 <li>
-                    <a href="#">
-                        <i class="fa fa-cogs"></i>
-                        <span class="nav-label">系统管理</span>
-                        <span class="fa arrow"></span>
-                    </a>
-                    <ul class="nav nav-second-level">
-                        <li>
-                            <a class="J_menuItem" href="${pageContext.request.contextPath}/static/operator.html">操作员管理</a>
-                        </li>
-                        <li>
-                            <a class="J_menuItem" href="${pageContext.request.contextPath}/static/role.html">角色管理</a>
-                        </li>
-                        <li>
-                            <a class="J_menuItem" href="${pageContext.request.contextPath}/static/menu.html">菜单管理</a>
-                        </li>
-                        <li>
-                            <a class="J_menuItem" href="${pageContext.request.contextPath}/static/org.html">组织管理</a>
-                        </li>
-                        <li>
-                            <a class="J_menuItem" href="${pageContext.request.contextPath}/static/enum.html">基础数据管理</a>
-                        </li>
-                        <li>
-                            <a class="J_menuItem" href="${pageContext.request.contextPath}/application/index.page">应用配置</a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a class="J_menuItem" href="${pageContext.request.contextPath}/static/user.html">
+                    <a class="J_menuItem" href="${pageContext.request.contextPath}/application/index.page">
                         <i class="fa fa-users"></i>
-                        <span class="nav-label">用户管理</span>
+                        <span class="nav-label">应用配置</span>
                     </a>
                 </li>
-                <li>
-                    <a href="#">
-                        <i class="fa fa-sitemap"></i>
-                        <span class="nav-label">合作伙伴</span>
-                        <span class="fa arrow"></span>
-                    </a>
-                    <ul class="nav nav-second-level">
-                        <li>
-                            <a class="J_menuItem" href="${pageContext.request.contextPath}/static/partner_info.html">合作伙伴信息</a>
-                        </li>
-                        <li>
-                            <a class="J_menuItem" href="${pageContext.request.contextPath}/static/partner_operator.html">合作伙伴账号</a>
-                        </li>
-                        <li>
-                            <a class="J_menuItem" href="${pageContext.request.contextPath}/static/partner_verify.html">合作伙伴审核</a>
-                        </li>
-                        <li>
-                            <a class="J_menuItem" href="${pageContext.request.contextPath}/static/partner_platform.html">业务平台管理</a>
-                        </li>
-                        <li>
-                            <a class="J_menuItem" href="${pageContext.request.contextPath}/static/kpi_perform.html">考核评级</a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="fa fa-calculator"></i>
-                        <span class="nav-label">结算管理</span>
-                        <span class="fa arrow"></span>
-                    </a>
-                    <ul class="nav nav-second-level">
-                        <li>
-                            <a class="J_menuItem" href="${pageContext.request.contextPath}/static/share_ratio_rule.html">分摊比例管理</a>
-                        </li>
-                        <li>
-                            <a class="J_menuItem" href="${pageContext.request.contextPath}/static/settlement_rule.html">结算规则配置</a>
-                        </li>
-                        <li>
-                            <a class="J_menuItem" href="${pageContext.request.contextPath}/static/settlement_info.html">结算单管理</a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="fa fa-inbox"></i>
-                        <span class="nav-label">产品中心</span>
-                        <span class="fa arrow"></span>
-                    </a>
-                    <ul class="nav nav-second-level">
-                        <li>
-                            <a class="J_menuItem" href="${pageContext.request.contextPath}/static/product.html">产品管理</a>
-                        </li>
-                        <li>
-                            <a class="J_menuItem" href="${pageContext.request.contextPath}/static/service.html">服务管理</a>
-                        </li>
-                        <li>
-                            <a class="J_menuItem" href="${pageContext.request.contextPath}/static/check.html">审核管理</a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="fa fa-folder"></i>
-                        <span class="nav-label">业务受理</span>
-                        <span class="fa arrow"></span>
-                    </a>
-                    <ul class="nav nav-second-level">
-                        <li>
-                            <a class="J_menuItem" href="${pageContext.request.contextPath}/static/business_accept.html">业务受理纪录</a>
-                        </li>
-                        <li>
-                            <a class="J_menuItem" href="${pageContext.request.contextPath}/static/order.html">订单管理</a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="fa fa-tags"></i>
-                        <span class="nav-label">优惠管理</span>
-                        <span class="fa arrow"></span>
-                    </a>
-                    <ul class="nav nav-second-level">
-                        <li>
-                            <a class="J_menuItem" href="${pageContext.request.contextPath}/static/discount.html">优惠策略</a>
-                        </li>
-                    </ul>
-                </li>
+                
                 <!-- 菜单栏结束 -->
             </ul>
         </div>
@@ -196,7 +84,7 @@
             <button class="roll-nav roll-left J_tabLeft"><i class="fa fa-backward"></i></button>
             <nav class="page-tabs J_menuTabs">
                 <div class="page-tabs-content">
-                    <a href="javascript:void(0);" class="active J_menuTab" data-id="${pageContext.request.contextPath}/jsp/admin/workbench.jsp">工作台</a>
+                    <a href="javascript:void(0);" class="active J_menuTab" data-id="${pageContext.request.contextPath}/application/index.page">工作台</a>
                 </div>
             </nav>
             <button class="roll-nav roll-right J_tabRight"><i class="fa fa-forward"></i></button>
@@ -212,7 +100,7 @@
         <!-- tab页结束 -->
         <!-- 操作页内容开始 -->
         <div class="row J_mainContent" id="content-main">
-            <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="${pageContext.request.contextPath}/jsp/admin/workbench.jsp" frameborder="0" data-id="${pageContext.request.contextPath}/jsp/admin/workbench.jsp" seamless></iframe>
+            <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="${pageContext.request.contextPath}/application/index.page" frameborder="0" data-id="${pageContext.request.contextPath}/application/index.page" seamless></iframe>
         </div>
         <!-- 操作页内容结束 -->
         <!-- 页脚开始 -->

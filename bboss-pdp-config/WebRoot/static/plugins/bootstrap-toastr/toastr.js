@@ -270,6 +270,9 @@
                         } else if( event.cancelBubble !== undefined && event.cancelBubble !== true ) {
                             event.cancelBubble = true;
                         }
+                        if(options.onclose){
+                        	options.onclose();
+                        }
                         hideToast(true);
                     });
                 }
