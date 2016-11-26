@@ -233,7 +233,7 @@
 
 
  
-
+<!-- 
 	<servlet>
 		<servlet-name>HessionRemote</servlet-name>
 		<servlet-class>org.frameworkset.spi.remote.hession.HessionDispatchServlet</servlet-class>
@@ -241,20 +241,20 @@
 	<servlet-mapping>
 		<servlet-name>HessionRemote</servlet-name>
 		<url-pattern>/hessian</url-pattern>
-	</servlet-mapping>
+	</servlet-mapping> -->
 	
-<!-- 	<servlet> -->
-<!-- 		<servlet-name>HessionRemote</servlet-name> -->
-<!-- 		<servlet-class>org.frameworkset.spi.remote.hession.HessionDispatchServlet</servlet-class> -->
-<!-- 		<init-param> -->
-<!-- 			<param-name>restful</param-name> -->
-<!-- 			<param-value>true</param-value> -->
-<!-- 		</init-param> -->
-<!-- 	</servlet> -->
-<!-- 	<servlet-mapping> -->
-<!-- 		<servlet-name>HessionRemote</servlet-name> -->
-<!-- 		<url-pattern>/hessian/*</url-pattern> -->
-<!-- 	</servlet-mapping> -->
+	<servlet>
+		<servlet-name>HessionRemote</servlet-name>
+		<servlet-class>org.frameworkset.spi.remote.hession.HessionDispatchServlet</servlet-class>
+		<init-param>
+			<param-name>restful</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>HessionRemote</servlet-name>
+		<url-pattern>/hessian/*</url-pattern>
+	</servlet-mapping>
   <welcome-file-list>
     <welcome-file>/jsp/welcome.jsp</welcome-file>
   </welcome-file-list>

@@ -229,10 +229,10 @@ var Application = function(){
                     item: "appName",
                     name: "应用名称"
                 },{
-                    item: "appSecret",
+                    item: "appSecretText",
                     name: "口令明文"
                 },{
-                    item: "appSecretText",
+                    item: "appSecret",
                     name: "口令密文"
                 },{
                     item: "ticketlivetimes",

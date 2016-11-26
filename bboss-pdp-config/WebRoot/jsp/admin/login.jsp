@@ -10,7 +10,7 @@
     <meta name="author" content="">
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/static/assets/img/favicon.png">
 
-    <title>BBoss认证服务器-配置管理中心</title>
+    <title>BBoss认证服务器-配置管理中心-最好的单点登录解决方案</title>
 
     <!-- Bootstrap -->
     <link href="${pageContext.request.contextPath}/static/css/bootstrap.min.css" rel="stylesheet">
@@ -38,11 +38,11 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="http://www.bbossgroups.com" target="_blank">bbossgroups</a>
+          <a class="navbar-brand" href="http://www.bbossgroups.com" target="_blank">BBoss认证服务器</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="#">下载</a></li>
+            <li><a href="https://github.com/bbossgroups/bboss-pdp">下载</a></li>
 			<li><a href="#">联系我们</a></li>
           </ul>
         </div><!--/.nav-collapse -->
@@ -53,7 +53,7 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-6">
-					<h1>BBoss认证服务器-配置管理中心</h1>
+					<h1>配置管理中心</h1>
 					<h2 class="subtitle">最好的单点登录解决方案</h2>
 					<form class="form-inline signup" id="loginForm" method="post" action="${pageContext.request.contextPath}/login.page" role="form">
 					  <input id="flag" name = "flag" type="hidden" value="1">
@@ -63,7 +63,7 @@
 					   <div class="form-group">
 					    <input type="password" class="form-control" id="password" name="password" placeholder="输入口令">
 					  </div>
-					   <input type="button" class="btn btn-theme" value="提交" onclick="login()"/>  
+					   <input type="button" class="btn btn-theme" value="提交" onclick="Admin.login()"/>  
 					  
 					</form>					
 				</div>
@@ -104,20 +104,17 @@
 
     <script src="${pageContext.request.contextPath}/static/js/jquery.min.js"></script>
     <script src="${pageContext.request.contextPath}/static/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/static/plugins/jquery-validation/jquery.validate.js"></script>
+	<script src="${pageContext.request.contextPath}/static/plugins/jquery-validation/additional-methods.min.js" type="text/javascript"></script>
+	<script src="${pageContext.request.contextPath}/static/plugins/bootstrap-toastr/toastr.min.js" type="text/javascript"></script>
+	<script src="${pageContext.request.contextPath}/static/plugins/jquery.form.js" type="text/javascript"></script>
   </body>
-  <script type="text/javascript">
-	function login(){
-		var loginName = $("#userName").val();
-		var password = $("#password").val();
-		if(loginName == ""){
-			alert("用户名为空");
-			return false;
-		}
-		if(password == ""){
-			alert("密码为空");
-			return false;
-		}
-		$("#loginForm").submit();
-	}
-	</script>
+  <script type="text/javascript" src="${pageContext.request.contextPath}/jsp/admin/admin.js"></script>
+<script type="text/javascript">
+	$(function(){
+		Admin.initloginForm();
+	});
+	
+	
+</script>
 </html>

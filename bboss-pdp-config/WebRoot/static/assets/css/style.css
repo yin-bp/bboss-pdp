@@ -181,11 +181,16 @@ h2.subtitle {
 
 /* footer */
 #footer {
-	background: #333;
-	padding: 20px 0 5px;
+	background: #34495e;
+	padding: 10px 0 5px;
 }
 
 p.copyright {
 	color: #fff;
 	text-align: center;
 }	
+label.error {
+    color: #cc5965;
+    display: inline-block;
+    margin-left: 5px
+}

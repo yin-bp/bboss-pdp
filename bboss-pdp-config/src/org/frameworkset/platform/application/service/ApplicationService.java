@@ -31,7 +31,10 @@ public interface ApplicationService {
 	public void deleteBatchApplication(String... appIds) throws ApplicationException;
 	public void updateApplication(Application application) throws ApplicationException;
 	public Application getApplication(String appId) throws ApplicationException;
+	public Application getApplicationWithNoKey(String appId) throws ApplicationException ;
 	public ListInfo queryListInfoApplications(ApplicationCondition conditions, long offset, int pagesize)
 			throws ApplicationException;
 	public List<Application> queryListApplications(ApplicationCondition conditions) throws ApplicationException;
+	public Application getApplicationByAppcode(String appcode) throws ApplicationException ;
+	public Application getApplicationByAppcodeWithNoKey(String appcode) throws ApplicationException;
 }

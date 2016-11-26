@@ -27,7 +27,7 @@
  -->
 <properties>
 	
-		<property name="addApplication">
+	<property name="addApplication">
 		<![CDATA[
 			insert into auth_application (app_id,app_code,app_name,app_secret,app_secret_text,ticketlivetimes) values(#[appId],#[appCode],#[appName],#[appSecret],#[appSecretText],#[ticketlivetimes])
 		]]>
@@ -42,11 +42,17 @@
 			update auth_application set app_id=#[appId],app_code=#[appCode],app_name=#[appName],app_secret=#[appSecret],app_secret_text=#[appSecretText],ticketlivetimes=#[ticketlivetimes] where app_id=#[appId]
 		]]>
 	</property>
-		<property name="selectById">
+	<property name="selectById">
 		<![CDATA[
 			select * from auth_application where app_id=?
 		]]>
 	</property>
+	<property name="selectByAppcode">
+		<![CDATA[
+			select * from auth_application where app_code=?
+		]]>
+	</property>
+	
 		<property name="queryListApplication">
 		<![CDATA[
 			select * from auth_application where 1=1

@@ -101,17 +101,57 @@ public class ApplicationServiceImpl implements ApplicationService {
 
 	}
 	public Application getApplication(String appId) throws ApplicationException {
+		return _getApplication(appId,true);
+
+	}
+	
+	public Application getApplicationWithNoKey(String appId) throws ApplicationException {
+		return _getApplication(appId,false);
+
+	}
+	
+	private Application _getApplication(String appId,boolean loadKey) throws ApplicationException {
 		try {
 			Application bean = executor.queryObject(Application.class, "selectById", appId);
-			SimpleKeyPair keypair = TokenHelper.getTokenService().getSimpleKeyPair(bean.getAppCode());
-    		if(keypair != null)
-    		{
-    			bean.setPrivateKey(keypair.getPrivateKey());
-    			bean.setPublicKey(keypair.getPublicKey());
-    		}
+			if(loadKey)
+			{
+				SimpleKeyPair keypair = TokenHelper.getTokenService().getSimpleKeyPair(bean.getAppCode());
+	    		if(keypair != null)
+	    		{
+	    			bean.setPrivateKey(keypair.getPrivateKey());
+	    			bean.setPublicKey(keypair.getPublicKey());
+	    		}
+	    		
+			}
 			return bean;
 		} catch (Throwable e) {
 			throw new ApplicationException("get Application failed::appId=" + appId, e);
+		}
+
+	}
+	public Application getApplicationByAppcode(String appcode) throws ApplicationException {
+		return _getApplicationByAppcode(appcode,true);
+	}
+	
+	public Application getApplicationByAppcodeWithNoKey(String appcode) throws ApplicationException {
+		return _getApplicationByAppcode(appcode,false);
+	}
+	private Application _getApplicationByAppcode(String appcode,boolean loadKey) throws ApplicationException {
+		try {
+			Application bean = executor.queryObject(Application.class, "selectByAppcode", appcode);
+			if(loadKey)
+			{
+				SimpleKeyPair keypair = TokenHelper.getTokenService().getSimpleKeyPair(bean.getAppCode());
+	    		if(keypair != null)
+	    		{
+	    			bean.setPrivateKey(keypair.getPrivateKey());
+	    			bean.setPublicKey(keypair.getPublicKey());
+	    		}
+	    		
+			}
+			return bean;
+		} catch (Throwable e) {
+			throw new ApplicationException("get Application failed::appcode=" + appcode, e);
 		}
 
 	}
