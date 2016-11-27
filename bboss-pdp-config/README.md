@@ -1,3 +1,5 @@
+要运行配置中心，需要创建表：
+
 CREATE TABLE `auth_application` (
   `app_id` VARCHAR(50) NOT NULL,
   `app_code` VARCHAR(50) NOT NULL,

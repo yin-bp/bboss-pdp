@@ -211,7 +211,7 @@
 		</init-param>
 		<init-param>
 			<param-name>iocLifeCycleEventListeners</param-name>
-			<param-value>org.frameworkset.platform.security.SYSIocLifeCycleEventListener</param-value>
+			<param-value>org.frameworkset.platform.security.SYSIocLifeCycleEventListener,org.frameworkset.web.ticketserver.ConfigIOCListener</param-value>
 		</init-param>
 		<load-on-startup>0</load-on-startup>
     </servlet>

@@ -16,7 +16,11 @@ import org.frameworkset.spi.SPIException;
 public class AppAuthorizationTable extends BaseAuthorizationTable{
 	private static final Logger log = Logger
 			.getLogger(AppAuthorizationTable.class);
-
+	private String[][] roles = new String[][]{
+		{"1","administrator",AuthRole.TYPE_ROLE},
+		{"3","manager",AuthRole.TYPE_ROLE},
+		{"5","leader",AuthRole.TYPE_ROLE}
+	};
 
 	public AuthRole[] getAllRoleOfPrincipal(String userName)
 			throws SecurityException {
