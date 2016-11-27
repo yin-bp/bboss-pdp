@@ -99,14 +99,14 @@ License: You must have a valid license purchased only from themeforest(the above
                                            
                                           
                                       </select> </div>
-                 
+                 <pg:true actual="${enable_login_validatecode }">
                   <div class="form-group">
                     <label class="control-label visible-ie8 visible-ie9">验证码</label>
                     <input class="form-control form-control-solid placeholder-no-fix" type="text" autocomplete="off" placeholder="输入验证码" name="verifyCode" id="verifyCode"   required/>
                     <img id="verifyCodeImg" src="${pageContext.request.contextPath}/security/generateVerifyCode.freepage" />
                         <a href="javascript:void(0)" onclick="javascript:Login.changeVerifyCode('${pageContext.request.contextPath}/security/generateVerifyCode.freepage');">看不清楚，换一个</a>
                     </div>
-                    
+                 </pg:true>   
                 <div class="form-actions">
                     <button type="submit" class="btn green uppercase">登陆</button>
                     <label class="rememberme check mt-checkbox mt-checkbox-outline">

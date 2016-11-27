@@ -106,7 +106,7 @@ public class MenuTag extends BaseTag {
 		}
 		datas.append("<li ").append(selectedclass).append(">")
 			 .append("<a href=\"javascript:void(0);\" onclick=\"DesktopMenus.gotoworkspace('','").append(url)
-			 .append("','").append(item.getId()).append("')\" class=\"nav-link \">");
+			 .append("','").append(item.getId()).append("',false,this)\" class=\"nav-link \">");
 		if(icon != null && !icon.equals(""))
 		{
 			 datas.append("    <i class=\"").append(icon).append("\"></i>");
@@ -162,11 +162,11 @@ public class MenuTag extends BaseTag {
 		if(url != null && !item.isUsesubpermission())
 			datas.append("<li ").append(selectedclass).append(">")
 				 .append("<a href=\"javascript:void(0);\" onclick=\"DesktopMenus.gotoworkspace('','").append(url)
-				 .append("','").append(item.getId()).append("')\" class=\"nav-link \">");
+				 .append("','").append(item.getId()).append("',false,this)\" class=\"nav-link \">");
 		else
 		{
 			datas.append("<li ").append(selectedclass).append(">")
-			 .append("<a href=\"javascript:void(0);\"  class=\"nav-link \">");
+			 .append("<a href=\"javascript:void(0);\" hasurl=\"false\" class=\"nav-link \">");
 		}
 		if(icon != null && !icon.equals(""))
 		{
@@ -214,7 +214,7 @@ public class MenuTag extends BaseTag {
 		datas.append("<li ").append(selectedclass).append(">");
 		MenuQueue menus = item.getMenus();
 		if(item.getUrl() == null || item.getUrl().equals("") || item.isUsesubpermission())
-			datas.append("<a href=\"javascript:;\" class=\"nav-link nav-toggle\">");
+			datas.append("<a href=\"javascript:;\" hasurl=\"false\" class=\"nav-link nav-toggle\">");
 		else
 		{
 //			String url = MenuHelper.getModuleUrl(item, contextpath,  control);
@@ -231,12 +231,12 @@ public class MenuTag extends BaseTag {
 			}
 			if(theme == null || theme.equals("admin_3"))
 				datas.append("<a href=\"javascript:void(0);\" onclick=\"DesktopMenus.gotoworkspace('','").append(url)
-				 .append("','").append(item.getId()).append("')\" class=\"nav-link nav-toggle\">");
+				 .append("','").append(item.getId()).append("',false,this)\" class=\"nav-link nav-toggle\">");
 			else
 			{
 				//ondblclick
 				datas.append("<a href=\"javascript:void(0);\" onclick=\"DesktopMenus.gotoworkspace('','").append(url)
-				 .append("','").append(item.getId()).append("')\" class=\"nav-link nav-toggle\">");
+				 .append("','").append(item.getId()).append("',false,this)\" class=\"nav-link nav-toggle\">");
 				 
 			}
 		}

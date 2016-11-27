@@ -216,7 +216,7 @@ var Layout = function () {
                 $('.arrow', the).removeClass("open");
                 the.parent().removeClass("open");
                 sub.slideUp(slideSpeed, function () {
-                    if (autoScroll === true && $('body').hasClass('page-sidebar-closed') === false) {
+                    /**if (autoScroll === true && $('body').hasClass('page-sidebar-closed') === false) {
                         if ($('body').hasClass('page-sidebar-fixed')) {
                             menu.slimScroll({
                                 'scrollTo': (the.position()).top
@@ -224,14 +224,16 @@ var Layout = function () {
                         } else {
                             App.scrollTo(the, slideOffeset);
                         }
-                    }
+                    }*/
                     handleSidebarAndContentHeight();
                 });
+                
+                
             } else if (hasSubMenu) {
                 $('.arrow', the).addClass("open");
                 the.parent().addClass("open");
                 sub.slideDown(slideSpeed, function () {
-                    if (autoScroll === true && $('body').hasClass('page-sidebar-closed') === false) {
+                    /**if (autoScroll === true && $('body').hasClass('page-sidebar-closed') === false) {
                         if ($('body').hasClass('page-sidebar-fixed')) {
                             menu.slimScroll({
                                 'scrollTo': (the.position()).top
@@ -239,11 +241,19 @@ var Layout = function () {
                         } else {
                             App.scrollTo(the, slideOffeset);
                         }
-                    }
+                    }*/
                     handleSidebarAndContentHeight();
                 });
             }
-
+            if(hasSubMenu){
+            	 var hasurl = $(this).attr("hasurl");
+            	 if(hasurl == 'false'){
+            		 DesktopMenus.clicknourlmodule(this);
+            	 }
+            }
+            	
+           
+            
             e.preventDefault();
         });
 
