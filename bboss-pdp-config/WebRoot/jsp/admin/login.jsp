@@ -63,7 +63,7 @@
 					   <div class="form-group">
 					    <input type="password" class="form-control" id="password" name="password" placeholder="输入口令">
 					  </div>
-					   <input type="button" class="btn btn-theme" value="提交" onclick="Admin.login()"/>  
+					   <input type="button" class="btn btn-theme" value="登陆" onclick="Admin.login()"/>  
 					  
 					</form>					
 				</div>
