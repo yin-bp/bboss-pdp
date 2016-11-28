@@ -4,6 +4,8 @@
 <%@ taglib uri="/WEB-INF/tld/admin-taglib.tld" prefix="admin" %>
         <!-- BEGIN PAGE LEVEL PLUGINS -->
         <link href="${pageContext.request.contextPath}/assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css" rel="stylesheet" type="text/css" />
+        <link href="${pageContext.request.contextPath}/assets/global/plugins/jstree/dist/themes/default/style.min.css" rel="stylesheet" type="text/css" />
+        
         <!-- END PAGE LEVEL PLUGINS -->
         <!-- BEGIN PAGE LEVEL STYLES -->
         <link href="${pageContext.request.contextPath}/assets/pages/css/profile-2.min.css" rel="stylesheet" type="text/css" />
@@ -15,32 +17,7 @@
                         <!-- BEGIN PAGE BAR -->
                         <div class="page-bar">
                             <admin:menuposition/>
-                            <div class="page-toolbar">
-                                <div class="btn-group pull-right">
-                                    <button type="button" class="btn green btn-sm btn-outline dropdown-toggle" data-toggle="dropdown"> Actions
-                                        <i class="fa fa-angle-down"></i>
-                                    </button>
-                                    <ul class="dropdown-menu pull-right" role="menu">
-                                        <li>
-                                            <a href="#">
-                                                <i class="icon-bell"></i> Action</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <i class="icon-shield"></i> Another action</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <i class="icon-user"></i> Something else here</a>
-                                        </li>
-                                        <li class="divider"> </li>
-                                        <li>
-                                            <a href="#">
-                                                <i class="icon-bag"></i> Separated link</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
+                             
                         </div>
                         <!-- END PAGE BAR -->
                         <!-- BEGIN PAGE TITLE-->
@@ -51,39 +28,23 @@
                             <div class="tabbable-line tabbable-full-width">
                                 <ul class="nav nav-tabs">
                                     <li class="active">
-                                        <a href="#tab_1_1" data-toggle="tab"> Overview </a>
+                                        <a href="#tab_1_1" data-toggle="tab"> 组织用户管理 </a>
                                     </li>
                                     <li>
-                                        <a href="#tab_1_3" data-toggle="tab"> Account </a>
+                                        <a href="#tab_1_3" data-toggle="tab"> 角色管理 </a>
                                     </li>
                                     <li>
-                                        <a href="#tab_1_6" data-toggle="tab"> Help </a>
+                                        <a href="#tab_1_6" data-toggle="tab"> 用户组管理 </a>
+                                    </li>
+                                     <li>
+                                        <a href="#tab_1_7" data-toggle="tab"> 资源管理 </a>
                                     </li>
                                 </ul>
                                 <div class="tab-content">
                                     <div class="tab-pane active" id="tab_1_1">
                                         <div class="row">
                                             <div class="col-md-3">
-                                                <ul class="list-unstyled profile-nav">
-                                                    <li>
-                                                        <img src="${pageContext.request.contextPath}/assets/pages/media/profile/people19.png" class="img-responsive pic-bordered" alt="" />
-                                                        <a href="javascript:;" class="profile-edit"> edit </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="javascript:;"> Projects </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="javascript:;"> Messages
-                                                            <span> 3 </span>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="javascript:;"> Friends </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="javascript:;"> Settings </a>
-                                                    </li>
-                                                </ul>
+                                               <div id="org_tree" class="tree-demo"> </div>
                                             </div>
                                             <div class="col-md-9">
                                                 <div class="row">
@@ -1098,12 +1059,27 @@
                                         </div>
                                     </div>
                                     <!--end tab-pane-->
+                                    
+                                    <div class="tab-pane" id="tab_1_7">
+                                        <div class="row">
+                                            <div class="col-md-12">资源管理</div>
+                                        </div>
+                                    </div>        
                                 </div>
                             </div>
                         </div>
 
 <!-- BEGIN PAGE LEVEL PLUGINS -->
         <script src="${pageContext.request.contextPath}/assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js" type="text/javascript"></script>
+        
         <!-- END PAGE LEVEL PLUGINS -->
-       
+         <!-- BEGIN PAGE LEVEL PLUGINS -->
+        <script src="${pageContext.request.contextPath}/assets/global/plugins/jstree/dist/jstree.min.js" type="text/javascript"></script>
+        <!-- END PAGE LEVEL PLUGINS -->
+       <script src="${pageContext.request.contextPath}/jsp/sysmanager/sysmanager.js" type="text/javascript"></script>
+         <script   type="text/javascript"> 
+        jQuery(document).ready(function() {
+        	Sysmanager.initorg_tree(); //  initorg_tree core componets
+        	
+        });</script>
                 <!-- END CONTENT BODY -->

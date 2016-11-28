@@ -1,2 +1,2 @@
 rootProject.name = 'bboss-pdp'
-include "bboss-pdp-auth","bboss-pdp-web","bboss-pdp-config"
+include "bboss-pdp-auth","bboss-pdp-web","bboss-pdp-config","bboss-pdp-adminservice"

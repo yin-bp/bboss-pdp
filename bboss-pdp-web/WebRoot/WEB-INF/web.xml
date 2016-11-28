@@ -198,11 +198,7 @@
         <init-param>
             <param-name>contextConfigLocation</param-name>
             <param-value>
-            /WEB-INF/conf/commons/bboss-*.xml,           
-            
-            /WEB-INF/conf/bboss-*.xml,
-            /WEB-INF/conf/permission/bboss-*.xml,
-                /WEB-INF/conf/session/bboss-*.xml
+            /WEB-INF/conf/**/*.xml
             </param-value>
         </init-param>
         <init-param>

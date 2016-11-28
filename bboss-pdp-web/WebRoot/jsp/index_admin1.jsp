@@ -26,7 +26,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
     <head>
         <meta charset="utf-8" />
-        <title>电渠开发框架</title>
+        <title>BBOSS开发框架</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta content="width=device-width, initial-scale=1" name="viewport" />
         <meta content="Preview page of Metronic Admin Theme #1 for statistics, charts, recent events and reports" name="description" />
@@ -49,7 +49,7 @@ License: You must have a valid license purchased only from themeforest(the above
         <!-- BEGIN THEME LAYOUT STYLES -->
         <link href="${pageContext.request.contextPath}/assets/layouts/layout/css/layout.min.css" rel="stylesheet" type="text/css" />
        
-        <link href="${pageContext.request.contextPath}/assets/layouts/layout/css/themes/${theme_style }.min.css" rel="stylesheet" type="text/css" id="style_color" />
+        <link href="${pageContext.request.contextPath}/assets/layouts/layout/css/themes/${theme_style }.css" rel="stylesheet" type="text/css" id="style_color" />
         
         <link href="${pageContext.request.contextPath}/assets/layouts/layout/css/custom.min.css" rel="stylesheet" type="text/css" />
         <!-- END THEME LAYOUT STYLES -->
@@ -74,7 +74,7 @@ License: You must have a valid license purchased only from themeforest(the above
                      <!-- BEGIN MEGA MENU -->
                     <!-- DOC: Remove "hor-menu-light" class to have a horizontal menu with theme background instead of white background -->
                     <!-- DOC: This is desktop version of the horizontal menu. The mobile version is defined(duplicated) in the responsive menu below along with sidebar menu. So the horizontal menu has 2 seperate versions -->
-                    <div class="hor-menu   hidden-sm hidden-xs">
+                    <div class="hor-menu hor-menu-light  hidden-sm hidden-xs">
                         <ul class="nav navbar-nav">
                             <!-- DOC: Remove data-hover="megamenu-dropdown" and data-close-others="true" attributes below to disable the horizontal opening on mouse hover -->
                             <li class="classic-menu-dropdown active" aria-haspopup="true">

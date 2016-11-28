@@ -49,6 +49,13 @@
                         <span class="nav-label">应用配置</span>
                     </a>
                 </li>
+                 <li>
+                    <a class="J_menuItem" href="${pageContext.request.contextPath}/jsp/admin/user/form_template.jsp">
+                        <i class="fa fa-users"></i>
+                        <span class="nav-label">用户管理</span>
+                    </a>
+                </li>
+                
                 
                 <!-- 菜单栏结束 -->
             </ul>
