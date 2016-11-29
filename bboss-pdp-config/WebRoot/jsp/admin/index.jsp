@@ -50,7 +50,7 @@
                     </a>
                 </li>
                  <li>
-                    <a class="J_menuItem" href="${pageContext.request.contextPath}/jsp/admin/user/form_template.jsp">
+                    <a class="J_menuItem" href="${pageContext.request.contextPath}/jsp/admin/user/form_template2.jsp">
                         <i class="fa fa-users"></i>
                         <span class="nav-label">用户管理</span>
                     </a>
