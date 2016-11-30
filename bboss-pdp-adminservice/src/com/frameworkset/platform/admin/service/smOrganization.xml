@@ -34,7 +34,7 @@
 	
 	<property name="selectChildren">
 		<![CDATA[
-			select * from td_sm_organization where parent_id=? and remark3='1'
+			select * from td_sm_organization where parent_id=? and remark3='1'  order by org_sn
 		]]>
 	</property>
 	<property name="queryListSmOrganization">
@@ -48,6 +48,8 @@
 			#end
 			#if($sortKey && !$sortKey.equals(""))
 				order by $sortKey #if($sortDesc)desc#else asc#end
+			#else
+				order by org_sn
 			#end
 
 		]]>

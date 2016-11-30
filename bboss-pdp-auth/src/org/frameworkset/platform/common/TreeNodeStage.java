@@ -4,6 +4,7 @@
 package org.frameworkset.platform.common;
 
 /**
+ * 树节点状态
  * @author yinbp
  *
  * @Date:2016-11-28 20:21:23

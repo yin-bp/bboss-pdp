@@ -1,0 +1,32 @@
+<properties>
+
+	<!-- 
+		描述:初始化用户管理管理控制器SmUserController，并将所有关联的用户管理管理service注入到此控制器中。并以别名的形式定义好跳转页面。
+	    author:yinbp
+		CopyRight:bboss
+		版本:v1.0 
+	    Date: 2016-11-29 20:49:38
+	-->
+
+	<property name="/sysmanager/user/*.page"
+		path:index="/jsp/sysmanager/user/main.jsp"
+		path:queryListInfoSmUsers="/jsp/sysmanager/user/smUserListInfo.jsp"
+		path:queryListSmUsers="/jsp/sysmanager/user/smUserList.jsp"
+		path:updateSmUser="/jsp/sysmanager/user/smUserEdit.jsp"
+		path:addSmUser="/jsp/sysmanager/user/smUserAdd.jsp"
+		path:getSmUser="/jsp/sysmanager/user/smUserView.jsp"
+		f:smUserService="attr:user.smUserService"
+		class="com.frameworkset.platform.admin.action.SmUserController" >
+	</property>
+		<property name="user.smUserService"
+		f:executor="attr:user.configsqlexecutor"
+		class="com.frameworkset.platform.admin.service.SmUserServiceImpl"
+		/>
+	<property name="user.configsqlexecutor"		
+		class="com.frameworkset.common.poolman.ConfigSQLExecutor" >
+		<construction>
+			<property value="com/frameworkset/platform/admin/service/smUser.xml"/>
+		</construction>
+	</property>
+	
+</properties>

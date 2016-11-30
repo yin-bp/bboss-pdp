@@ -88,7 +88,7 @@ configure(subprojects) { subproject ->
 }
 		 
 
-configure([project(":bboss-pdp-auth")]) { subproject ->
+configure([project(":bboss-pdp-auth"),project(":bboss-pdp-adminservice")]) { subproject ->
 	ext.uploadtocenter=uploadArchivesToMavenCenter.equals("true")	
 	if(uploadtocenter)
 	{
