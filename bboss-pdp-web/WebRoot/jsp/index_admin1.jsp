@@ -1485,6 +1485,8 @@ License: You must have a valid license purchased only from themeforest(the above
         	DesktopMenus.gotoworkspace('','${workspaceurl}','${menupath_menuid}',true); // init metronic core componets
         	
         });</script>
+        <!-- 临时区域分割点，菜单切换时，需要将其后去的节点都删除 -->
+        <div id="temparea___"></div>
     </body>
 
 </html>

@@ -98,6 +98,125 @@ public class SmUserServiceImpl implements SmUserService {
 		return datas;
 
 	}
+	/**
+	 * <option value="2">开通</option>
+                                                                <option value="1">申请</option>
+                                                                <option value="3">停用</option>
+                                                                <option value="0">删除</option>
+                                                                
+                                                                 array("success" => "Pending"),
+    array("info" => "Closed"),
+    array("danger" => "On Hold"),
+    array("warning" => "Fraud")
+	 * @param state
+	 * @return
+	 */
+	private void getState(int state,StringBuilder idcheckbox)
+	{
+		if(state == 2)
+			idcheckbox.append("<span class=\"label label-sm label-").append("success").append("\">").append("开通").append("</span>");
+		else if(state == 3)
+			idcheckbox.append("<span class=\"label label-sm label-").append("warning").append("\">").append("停用").append("</span>");
+		else if(state == 0)
+			idcheckbox.append("<span class=\"label label-sm label-").append("danger").append("\">").append("删除").append("</span>");
+		else if(state == 1)
+			idcheckbox.append("<span class=\"label label-sm label-").append("info").append("\">").append("申请").append("</span>");	
+		else
+			idcheckbox.append("<span class=\"label label-sm label-").append("warning").append("\">").append("未知").append("</span>");	 
+		
+	}
+	
+	private void getOps(String userId,StringBuilder idcheckbox)
+	{
+		 /**
+			idcheckbox.append("<a href=\"javascript:Sysmanager.viewUser('").append(userId).append("');\" class=\"btn btn-sm btn-outline grey-salsa\"><i class=\"fa fa-search\"></i> 查看</a>");	 
+			idcheckbox.append("<a href=\"javascript:Sysmanager.modifyUser('").append(userId).append("');\" class=\"btn btn-sm btn-outline grey-salsa\"><i class=\"fa fa-search\"></i> 修改</a>");
+			idcheckbox.append("<a href=\"javascript:Sysmanager.delUser('").append(userId).append("');\" class=\"btn btn-sm btn-outline grey-salsa\"><i class=\"fa fa-search\"></i> 删除</a>");	
+			idcheckbox.append("<a href=\"javascript:Sysmanager.stopUser('").append(userId).append("');\" class=\"btn btn-sm btn-outline grey-salsa\"><i class=\"fa fa-search\"></i> 停用</a>");
+			*/
+//		idcheckbox.append("<div class=\"btn-group\">")
+//		.append("<a class=\"btn red btn-outline btn-circle\" href=\"javascript:;\" data-toggle=\"dropdown\">")
+//		.append("    <i class=\"fa fa-share\"></i>")
+//		.append("   <span class=\"hidden-xs\"> 操作 </span>")
+//		.append("    <i class=\"fa fa-angle-down\"></i>")
+//		.append("</a>")
+//		.append("<ul class=\"dropdown-menu pull-right\">")
+//		.append("    <li>")
+//		.append("        <a href=\"javascript:Sysmanager.viewUser('").append(userId).append("');\"> 查看 </a>")
+//		.append("   </li>")
+//		.append("    <li>")
+//		.append("        <a href=\"javascript:Sysmanager.modifyUser('").append(userId).append("');\"> 修改 </a>")
+//		.append("    </li>")
+//		.append("    <li>")
+//		.append("        <a href=\"javascript:Sysmanager.delUser('").append(userId).append("');\"> 删除 </a>")
+//		.append("   </li>")
+//		.append("    <li class=\"divider\"> </li>")
+//		.append("   <li>")
+//		.append("       <a href=\"javascript:Sysmanager.stopUser('").append(userId).append("');\"> 停用 </a>")
+//		.append("    </li>")
+//		.append("</ul>")
+//		.append("</div>");
+		
+		
+		idcheckbox.append("<div class=\"btn-group\">")
+		.append("<a class=\"btn btn-xs purple\" href=\"javascript:;\" data-toggle=\"dropdown\">")
+		.append("    <i class=\"fa fa-user\"></i> 操作")
+		.append("    <i class=\"fa fa-angle-down\"></i>")
+		.append("</a>")
+		.append("<ul class=\"dropdown-menu\">")
+		.append("    <li>")
+		.append("        <a href=\"javascript:Sysmanager.viewUser('").append(userId).append("');\">")
+		.append("            <i class=\"fa fa-bullhorn\"></i> 查看 </a>")
+		.append("    </li>")
+		.append("    <li>")
+		.append("       <a href=\"javascript:Sysmanager.modifyUser('").append(userId).append("');\">")
+		.append("           <i class=\"fa fa-pencil\"></i> 修改 </a>")
+		.append("    </li>")
+		.append("    <li>")
+		.append("        <a href=\"javascript:Sysmanager.delUser('").append(userId).append("');\">")
+		.append("            <i class=\"fa fa-trash-o\"></i> 删除 </a>")
+		.append("    </li>")
+		.append("    <li class=\"divider\"> </li>")
+		.append("    <li>")
+		.append("        <a href=\"javascript:Sysmanager.stopUser('").append(userId).append("');\">")
+		.append("            <i class=\"fa fa-ban\"></i> 停用 </a>")
+		.append("    </li>")
+		.append("</ul>")
+		.append("</div>");
+	}
+	
+	private String getSexName(String sexCode)
+	{
+		 
+			if(sexCode == null || sexCode.equals("-1"))
+				return "未知";
+			else if( sexCode.equals("F"))
+				return "女";
+			else if(  sexCode.equals("M"))
+				return "男";
+			else 
+				return "未知";
+	}
+	/**
+	 *  <option value="0">系统用户</option>
+                                                                <option value="1">域用户</option>
+                                                                <option value="2">第三方用户</option>
+	 * @param type
+	 * @return
+	 */
+	private String getTypeName(String type)
+	{
+		 
+			if(type == null || type.equals("0"))
+				return "系统用户";
+			else if(  type.equals("1"))
+				return "域用户";
+			else if( type.equals("2"))
+				return "第三方用户";
+			else 
+				return "第三方用户";
+	}
+	
 	
 	public ListInfo getDepartUsers(SmUserCondition conditions, long offset, int pagesize) throws SmUserException {
 		 
@@ -109,6 +228,18 @@ public class SmUserServiceImpl implements SmUserService {
 				public void handleRow( ResultSet record) throws Exception {
 					UIUser rowValue = (UIUser) buildValueObject(record, UIUser.class);
 					users.add(rowValue);
+					StringBuilder idcheckbox = new StringBuilder();
+					idcheckbox.append("<label class=\"mt-checkbox mt-checkbox-single mt-checkbox-outline\"><input name=\"userId\" type=\"checkbox\" class=\"checkboxes\" value=\"")
+					.append(rowValue.getUserId()).append("\"").append("/><span></span></label>");
+					rowValue.setCheckbox(idcheckbox.toString());
+					idcheckbox.setLength(0);
+					getState(rowValue.getUserIsvalid(),  idcheckbox);
+					rowValue.setUserIsvalidName(idcheckbox.toString());
+					idcheckbox.setLength(0);
+					getOps(rowValue.getUserId(),idcheckbox);
+					rowValue.setOps(idcheckbox.toString());
+					rowValue.setSexName(getSexName(rowValue.getUserSex()));
+					rowValue.setUserTypeName(getTypeName(rowValue.getUserType()));
 				}
 				
 			},"getDepartUsers", offset, pagesize, conditions);

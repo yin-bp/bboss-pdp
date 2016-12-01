@@ -5,6 +5,7 @@ var DesktopMenus = function() {
     	//if(!reg.test(divid)) divid = '#'+divid;
     	//App.startPageLoading({message: '努力加载中...'});
     	App.blockUI({message: '努力加载中...'});
+    	 
         $(".page-content").load(url,function(responseTxt,statusTxt,xhr){
         	//App.stopPageLoading();
         	//App.unblockUI();
@@ -38,6 +39,7 @@ var DesktopMenus = function() {
 	    		  }
             	  
               }
+              $("#temparea___").nextAll().remove();
               Layout.fixContentHeight(); // fix content height
               App.initAjax(); // initialize core stuff
               if(!firsted){

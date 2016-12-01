@@ -70,7 +70,7 @@ var Datatable = function() {
                         'targets': [0]
                     }],
 
-                    "pagingType": "bootstrap_full_number", // pagination type(bootstrap, bootstrap_full_number or bootstrap_extended)
+                    "pagingType": "bootstrap_extended", // pagination type(bootstrap, bootstrap_full_number or bootstrap_extended)
                     "autoWidth": false, // disable fixed width and enable fluid table
                     "processing": false, // enable/disable display message box on record load
                     "serverSide": true, // enable/disable server side ajax loading

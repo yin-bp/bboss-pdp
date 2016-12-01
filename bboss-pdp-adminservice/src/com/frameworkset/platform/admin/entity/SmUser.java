@@ -38,7 +38,7 @@ public class SmUser implements java.io.Serializable {
 	 * 注册时间
 	 */
 	private String dredgeTime;
-	private long istaxmanager;
+	private int istaxmanager;
 	/**
 	 * 最后登录时间
 	 */
@@ -50,7 +50,7 @@ public class SmUser implements java.io.Serializable {
 	/**
 	 * 密码有效期
 	 */
-	private long passwordDualtime;
+	private int passwordDualtime;
 	/**
 	 * 口令明文
 	 */
@@ -118,11 +118,11 @@ public class SmUser implements java.io.Serializable {
 	/**
 	 * 是否有效
 	 */
-	private long userIsvalid;
+	private int userIsvalid;
 	/**
 	 * 登录次数
 	 */
-	private long userLogincount;
+	private int userLogincount;
 	/**
 	 * 手机1
 	 */
@@ -166,7 +166,7 @@ public class SmUser implements java.io.Serializable {
 	/**
 	 * 排序号
 	 */
-	private long userSn;
+	private int userSn;
 	/**
 	 * 用户类型
 	 */
@@ -221,11 +221,11 @@ public class SmUser implements java.io.Serializable {
 		return dredgeTime;
 	}
 
-	public void setIstaxmanager(long istaxmanager) {
+	public void setIstaxmanager(int istaxmanager) {
 		this.istaxmanager = istaxmanager;
 	}
 
-	public long getIstaxmanager() {
+	public int getIstaxmanager() {
 		return istaxmanager;
 	}
 
@@ -245,11 +245,11 @@ public class SmUser implements java.io.Serializable {
 		return logonIp;
 	}
 
-	public void setPasswordDualtime(long passwordDualtime) {
+	public void setPasswordDualtime(int passwordDualtime) {
 		this.passwordDualtime = passwordDualtime;
 	}
 
-	public long getPasswordDualtime() {
+	public int getPasswordDualtime() {
 		return passwordDualtime;
 	}
 
@@ -381,19 +381,19 @@ public class SmUser implements java.io.Serializable {
 		return userIdcard;
 	}
 
-	public void setUserIsvalid(long userIsvalid) {
+	public void setUserIsvalid(int userIsvalid) {
 		this.userIsvalid = userIsvalid;
 	}
 
-	public long getUserIsvalid() {
+	public int getUserIsvalid() {
 		return userIsvalid;
 	}
 
-	public void setUserLogincount(long userLogincount) {
+	public void setUserLogincount(int userLogincount) {
 		this.userLogincount = userLogincount;
 	}
 
-	public long getUserLogincount() {
+	public int getUserLogincount() {
 		return userLogincount;
 	}
 
@@ -477,11 +477,11 @@ public class SmUser implements java.io.Serializable {
 		return userSex;
 	}
 
-	public void setUserSn(long userSn) {
+	public void setUserSn(int userSn) {
 		this.userSn = userSn;
 	}
 
-	public long getUserSn() {
+	public int getUserSn() {
 		return userSn;
 	}
 

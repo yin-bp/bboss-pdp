@@ -122,7 +122,7 @@
                                                         <th width="15%"> 组织</th>
                                                       
                                                        
-                                                        <th width="10%"> 邮箱 </th>
+                                                        <th width="15%"> 操作 </th>
                                                     </tr>
                                                     <tr role="row" class="filter">
                                                         <td> </td>
@@ -140,7 +140,7 @@
                                                                 <option value=""></option>
                                                                 <option value="M">男</option>
                                                                 <option value="F">女</option>
-                                                                <option value="UN">未知</option>
+                                                                <option value="-1">未知</option>
                                                             </select> </td>
                                                           <td>
                                                             <select name="userType" class="form-control form-filter input-sm">
@@ -156,8 +156,8 @@
                                                                 <option value=""></option>
                                                                 <option value="2">开通</option>
                                                                 <option value="1">申请</option>
-                                                                <option value="0">停用</option>
-                                                                <option value="-1">删除</option>
+                                                                <option value="3">停用</option>
+                                                                <option value="0">删除</option>
                                                             </select> 
                                                          </td>
                                                         <td>
@@ -173,10 +173,10 @@
                                                      
                                                         <td>
                                                             <div class="margin-bottom-5">
-                                                                <button class="btn btn-sm green btn-outline filter-submit margin-bottom">
+                                                                <button class="btn btn-xs green btn-outline filter-submit margin-bottom">
                                                                     <i class="fa fa-search"></i> 查询</button>
                                                             </div>
-                                                            <button class="btn btn-sm red btn-outline filter-cancel">
+                                                            <button class="btn btn-xs red btn-outline filter-cancel">
                                                                 <i class="fa fa-times"></i> 重置</button>
                                                         </td>
                                                     </tr>

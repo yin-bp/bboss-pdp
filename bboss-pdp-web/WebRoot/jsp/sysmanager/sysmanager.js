@@ -77,7 +77,7 @@ var Sysmanager = new function(){
                      header: true,
                      headerOffset: fixedHeaderOffset
                  },
-            	 //"pagingType": "full_numbers", 
+                 "pagingType": "bootstrap_extended",
             	 "ordering": false,  "searching": false,
             	 "language": { // language settings
                      // metronic spesific
@@ -144,18 +144,18 @@ var Sysmanager = new function(){
                     }
                 },
                 "columns": [
-                            { "data": "userId" },
+                            { "data": "checkbox" },
                             { "data": "userName" },
                             { "data": "userRealname" },
                             { "data": "userWorknumber" },
                              { "data": "userMobiletel1" },
                             
-                            { "data": "userSex" },
-                            { "data": "userType" },
+                            { "data": "sexName" },
+                            { "data": "userTypeName" },
                           
-                            { "data": "userIsvalid" },
+                            { "data": "userIsvalidName" },
                             { "data": "departId" },
-                            { "data": "userEmail" }
+                            { "data": "ops" }
                         ],
                 "order": [
                     [1, "asc"]
