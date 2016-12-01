@@ -971,7 +971,7 @@ Extended pagination
   .dataTables_extended_wrapper .seperator {
     padding: 0 2px; }
   .dataTables_extended_wrapper .table.dataTable {
-    margin: 20px 0 !important; }
+    margin: 1px 0 !important; }
   .dataTables_extended_wrapper div.dataTables_paginate,
   .dataTables_extended_wrapper div.dataTables_length,
   .dataTables_extended_wrapper div.dataTables_info {
