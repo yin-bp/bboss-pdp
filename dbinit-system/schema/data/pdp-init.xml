@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<manager-config>
+	<description>
+<![CDATA[
+	smc mysql初始化语句
+ ]]>
+	</description>
+	<!--
+		<properties name="insert"> <property name="insert-mysql">
+
+		<![CDATA[insert into mq_users (broker_id, user_id, user_name,
+		user_password) values (?, ?, 'system', 'manager')]]> </property>
+		<property name="insert-oracle"> <![CDATA[insert into mq_users
+		(broker_id, user_id, user_name, user_password) values (?, ?, 'system',
+		'manager')]]> </property> </properties>
+	-->
+
+
+
+
+		<property name="all_datas">
+			<list>
+			
+				 
+
+				<property  name="addtd_sm_job">
+					<map>
+						<property name="default">
+
+							<list>
+								<property index="0"><![CDATA[insert into td_sm_job
+  				(JOB_ID, JOB_NAME, JOB_DESC, JOB_FUNCTION,JOB_AMOUNT,JOB_NUMBER,JOB_CONDITION,JOB_RANK,OWNER_ID)
+				values
+  				('1','在职','不能删除',' ',' ',' ',' ',' ',1)]]></property>
+
+
+							</list>
+
+						</property>
+					</map>
+				</property>
+
+				<property  name="addtd_sm_role_list">
+					<map>
+						<property name="default">
+							<list>
+								<property index="0"><![CDATA[insert into td_sm_role
+									  (ROLE_ID,
+									   ROLE_NAME,
+									   ROLE_TYPE,
+									   ROLE_DESC,
+									   ROLE_USAGE,
+									   REMARK1,
+									   REMARK2,
+									   REMARK3,
+									   OWNER_ID)
+									values
+									  ('1',
+									   'administrator',
+									   '1',
+									   '超级管理员角色，此角色不要修改，超级管理员admin自动拥有本角色，只有admin可以将本角色授予其他用户，本角色也不需要授予权限，默认拥有系统中的所有权限',
+									   ' ',
+									   ' ',
+									   ' ',
+									   ' ',
+									   1)]]></property>
+								<property index="1"><![CDATA[insert into td_sm_role
+									  (ROLE_ID,
+									   ROLE_NAME,
+									   ROLE_TYPE,
+									   ROLE_DESC,
+									   ROLE_USAGE,
+									   REMARK1,
+									   REMARK2,
+									   REMARK3,
+									   OWNER_ID)
+									values
+									  ('2',
+									   'roleofeveryone',
+									   '1',
+									   '每个用户都缺省拥有的角色，此角色不能被修改，也不能被删除',
+									   ' ',
+									   ' ',
+									   ' ',
+									   ' ',
+									   1)]]></property>
+								<property index="2"><![CDATA[insert into td_sm_role
+									  (ROLE_ID,
+									   ROLE_NAME,
+									   ROLE_TYPE,
+									   ROLE_DESC,
+									   ROLE_USAGE,
+									   REMARK1,
+									   REMARK2,
+									   REMARK3,
+									   OWNER_ID)
+									values
+									  ('3',
+									   'orgmanager',
+									   '1',
+									   '部门管理员角色,此角色不能被修改，也不能被删除，所有部门管理员自动拥有本角色',
+									   ' ',
+									   ' ',
+									   ' ',
+									   ' ',
+									   1)]]></property>
+								<property index="3"><![CDATA[insert into td_sm_role
+									  (ROLE_ID,
+									   ROLE_NAME,
+									   ROLE_TYPE,
+									   ROLE_DESC,
+									   ROLE_USAGE,
+									   REMARK1,
+									   REMARK2,
+									   REMARK3,
+									   OWNER_ID)
+									values
+									  ('4',
+									   'orgmanagerroletemplate',
+									   '1',
+									   '部门管理员角色模板,本角色不能被删除和修改，不能授予普通用户，只能够授权，新增部门管理员时自动拥有本角色，只有超级管理员才能给部门管理员角色模板授权',
+									   ' ',
+									   ' ',
+									   ' ',
+									   ' ',
+									   1)]]></property>
+									   
+									   
+									  <property index="7"><![CDATA[insert into td_sm_role
+									  (ROLE_ID,
+									   ROLE_NAME,
+									   ROLE_TYPE,
+									   ROLE_DESC,
+									   ROLE_USAGE,
+									   REMARK1,
+									   REMARK2,
+									   REMARK3,
+									   OWNER_ID)
+									values
+									  ('99',
+									   'guest',
+									   '1',
+									   '匿名用户角色，没有登录系统时访客拥有的角色',
+									   ' ',
+									   ' ',
+									   ' ',
+									   ' ',
+									   1)]]></property> 
+
+
+							</list>
+						</property>
+					</map>
+				</property>
+
+				<property name="addtd_sm_roleresop_list">
+					<map>
+						<property name="default">
+							<list>
+								<property index="0"><![CDATA[insert into td_sm_roleresop
+									  (OP_ID,
+									   RES_ID,
+									   ROLE_ID,
+									   RESTYPE_ID,
+									   AUTO,
+									   RES_NAME,
+									   TYPES,
+									   AUTHORIZATION_TYPE,
+									   USE_COUNT,
+									   AUTHORIZATION_STIME,
+									   AUTHORIZATION_ETIME,
+									   USE_COUNTED)
+									values
+									  ('rolemanager',
+									   'globalrole',
+									   '3',
+									   'role',
+									   '0',
+									   '角色资源',
+									   'role',
+									   0,
+									   null,
+									   null,
+									   null,
+									   null)]]></property>
+					
+								<property index="10"><![CDATA[insert into td_sm_roleresop
+									  (OP_ID,
+									   RES_ID,
+									   ROLE_ID,
+									   RESTYPE_ID,
+									   AUTO,
+									   RES_NAME,
+									   TYPES,
+									   AUTHORIZATION_TYPE,
+									   USE_COUNT,
+									   AUTHORIZATION_STIME,
+									   AUTHORIZATION_ETIME,
+									   USE_COUNTED)
+									values
+									  ('visible',
+									   'sysuserpassword',
+									   '3',
+									   'column',
+									   '0',
+									   '系统账户修改',
+									   'role',
+									   0,
+									   null,
+									   null,
+									   null,
+									   null)]]></property>
+								<property index="11"><![CDATA[insert into td_sm_roleresop
+									  (OP_ID,
+									   RES_ID,
+									   ROLE_ID,
+									   RESTYPE_ID,
+									   AUTO,
+									   RES_NAME,
+									   TYPES,
+									   AUTHORIZATION_TYPE,
+									   USE_COUNT,
+									   AUTHORIZATION_STIME,
+									   AUTHORIZATION_ETIME,
+									   USE_COUNTED)
+									values
+									  ('visible',
+									   'purviewmanager',
+									   '3',
+									   'column',
+									   '0',
+									   '权限管理',
+									   'role',
+									   0,
+									   null,
+									   null,
+									   null,
+									   null)]]></property>
+									   
+									    
+									   <property index="22"><![CDATA[insert into td_sm_roleresop
+									  (OP_ID,
+									   RES_ID,
+									   ROLE_ID,
+									   RESTYPE_ID,
+									   AUTO,
+									   RES_NAME,
+									   TYPES,
+									   AUTHORIZATION_TYPE,
+									   USE_COUNT,
+									   AUTHORIZATION_STIME,
+									   AUTHORIZATION_ETIME,
+									   USE_COUNTED)
+									values
+									  ('connection_poolInfo',
+									   'POOLMANManager',
+									   '5',
+									   'POOLMANresource',
+									   '0',
+									   '对POOLMAN监控的相关操作进行权限控制',
+									   'role',
+									   0,
+									   null,
+									   null,
+									   null,
+									   null)]]></property>
+									   
+									     
+									   
+									   
+							</list>
+						</property>
+					</map>
+				</property>
+
+				<property name="addtd_sm_roletype">
+					<map>
+						<property name="default">
+
+							<list>
+								<property index="0"><![CDATA[insert into td_sm_roletype
+  				(TYPE_NAME, TYPE_DESC, TYPE_ID, CREATOR_USER_ID,CREATOR_ORG_ID)
+				values
+  				('通用角色类型','通用角色类型',1,'1','1')]]></property>
+  				
+  				               <property index="1"><![CDATA[insert into td_sm_roletype
+  				(TYPE_NAME, TYPE_DESC, TYPE_ID, CREATOR_USER_ID,CREATOR_ORG_ID)
+				values
+  				('监控系统角色','监控系统角色',2,'2','2')]]></property>
+
+							</list>
+						</property>
+					</map>
+				</property>
+
+				<property name="addtd_sm_user">
+					<map>
+						<property name="default">
+
+
+							<list>
+								<property index="0"><![CDATA[insert into td_sm_user
+  				(USER_ID, USER_SN, USER_NAME, USER_PASSWORD,USER_REALNAME,USER_PINYIN,USER_SEX,USER_HOMETEL,
+  				USER_WORKTEL,USER_WORKNUMBER,USER_MOBILETEL1,USER_MOBILETEL2,USER_FAX,USER_OICQ,USER_BIRTHDAY,
+  				USER_EMAIL,USER_ADDRESS,USER_POSTALCODE,USER_IDCARD,USER_ISVALID,USER_REGDATE,USER_LOGINCOUNT,
+  				USER_TYPE,REMARK1,REMARK2,REMARK3,REMARK4,REMARK5,PAST_TIME,DREDGE_TIME,LASTLOGIN_DATE,
+  				WORKLENGTH,POLITICS,ISTAXMANAGER,LOGON_IP,CERT_SN)
+				values
+  				('1',1,'admin','E10ADC3949BA59ABBE56E057F20F883E','系统管理员',' ','M',' ',
+  				' ','0',' ',' ',' ',' ',null,
+  				' ',' ',' ',' ',2,null,null,
+  				'0',' ',' ',' ',' ',' ',null,' ',null,
+  				' ',' ',null,' ',' ')]]></property>
+
+							</list>
+						</property>
+					</map>
+
+				</property>
+
+
+				<property name="addtd_sm_userrole">
+					<map>
+						<property name="default">
+
+							<list>
+								<property index="0"><![CDATA[insert into td_sm_userrole
+  				(USER_ID, ROLE_ID, RESOP_ORIGIN_USERID)
+				values
+  				('1','1',' ')]]></property>
+
+							</list>
+						</property>
+					</map>
+
+				</property>
+				 
+			
+				 
+			
+			
+
+			</list>
+		</property>
+	
+
+
+</manager-config>

@@ -57,7 +57,7 @@
 			#if($userIdcard && !$userIdcard.equals(""))
 				and USER_IDCARD =#[userIdcard]		
 			#end
-			#if($userIsvalid && $userIsvalid > 0)
+			#if($userIsvalid )
 					and USER_ISVALID=#[userIsvalid]
 				#end
 			#if($userMobiletel1 && !$userMobiletel1.equals(""))

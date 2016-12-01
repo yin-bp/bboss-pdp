@@ -163,34 +163,7 @@ var Sysmanager = new function(){
             }
         });
 
-        // handle group actionsubmit button click
-        grid.getTableWrapper().on('click', '.table-group-action-submit', function (e) {
-            e.preventDefault();
-            var action = $(".table-group-action-input", grid.getTableWrapper());
-            if (action.val() != "" && grid.getSelectedRowsCount() > 0) {
-                grid.setAjaxParam("customActionType", "group_action");
-                grid.setAjaxParam("customActionName", action.val());
-                grid.setAjaxParam("id", grid.getSelectedRows());
-                grid.getDataTable().ajax.reload();
-                grid.clearAjaxParams();
-            } else if (action.val() == "") {
-                App.alert({
-                    type: 'danger',
-                    icon: 'warning',
-                    message: 'Please select an action',
-                    container: grid.getTableWrapper(),
-                    place: 'prepend'
-                });
-            } else if (grid.getSelectedRowsCount() === 0) {
-                App.alert({
-                    type: 'danger',
-                    icon: 'warning',
-                    message: 'No record selected',
-                    container: grid.getTableWrapper(),
-                    place: 'prepend'
-                });
-            }
-        });
+      
         
       
        

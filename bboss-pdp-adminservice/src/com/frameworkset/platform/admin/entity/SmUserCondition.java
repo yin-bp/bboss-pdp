@@ -29,7 +29,7 @@ public class SmUserCondition implements java.io.Serializable {
 	/**
 	 * 是否有效
 	 */
-	private long userIsvalid;
+	private Integer userIsvalid;
 	/**
 	 * 手机1
 	 */
@@ -74,11 +74,11 @@ public class SmUserCondition implements java.io.Serializable {
 		return userIdcard;
 	}
 
-	public void setUserIsvalid(long userIsvalid) {
+	public void setUserIsvalid(Integer userIsvalid) {
 		this.userIsvalid = userIsvalid;
 	}
 
-	public long getUserIsvalid() {
+	public Integer getUserIsvalid() {
 		return userIsvalid;
 	}
 

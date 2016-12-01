@@ -50,7 +50,7 @@ public class AdminController {
 				else
 				{
 					
-					url =  MenuHelper.getRealUrl(request.getContextPath(), "theme/admin/iframe.page",MenuHelper.selecturl,StringUtil.urlencode(url,"UTF-8"));
+					url =  MenuHelper.getRealUrl(request.getContextPath(), "admin/iframe.page",MenuHelper.selecturl,StringUtil.urlencode(url,"UTF-8"));
 				}
 				model.addAttribute("workspaceurl", url);
 			}
@@ -66,7 +66,7 @@ public class AdminController {
 				else
 				{
 					
-					url =  MenuHelper.getRealUrl(request.getContextPath(), "theme/admin/iframe.page",MenuHelper.selecturl,StringUtil.urlencode(url,"UTF-8"));
+					url =  MenuHelper.getRealUrl(request.getContextPath(), "admin/iframe.page",MenuHelper.selecturl,StringUtil.urlencode(url,"UTF-8"));
 				}
 				model.addAttribute("workspaceurl", url);
 			}

@@ -3,18 +3,14 @@
 
 <%@ taglib uri="/WEB-INF/tld/admin-taglib.tld" prefix="admin"%>
 <!-- BEGIN PAGE LEVEL PLUGINS -->
-<link
-	href="${pageContext.request.contextPath}/assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css"
-	rel="stylesheet" type="text/css" />
+
 <link
 	href="${pageContext.request.contextPath}/assets/global/plugins/jstree/dist/themes/default/style.min.css"
 	rel="stylesheet" type="text/css" />
 
 <!-- END PAGE LEVEL PLUGINS -->
-<!-- BEGIN PAGE LEVEL STYLES -->
-<link
-	href="${pageContext.request.contextPath}/assets/pages/css/profile-2.min.css"
-	rel="stylesheet" type="text/css" />
+
+	
  <link href="${pageContext.request.contextPath}/assets/global/plugins/datatables/datatables.min.css" rel="stylesheet" type="text/css" />
  <link href="${pageContext.request.contextPath}/assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css" rel="stylesheet" type="text/css" />
  <link href="${pageContext.request.contextPath}/assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css" />
@@ -70,34 +66,30 @@
                                             <span class="caption-subject font-dark sbold uppercase">用户列表</span>
                                         </div>
                                         <div class="actions">
-                                            <div class="btn-group btn-group-devided" data-toggle="buttons">
-                                                <label class="btn btn-transparent grey-salsa btn-outline btn-circle btn-sm active">
-                                                    <input type="radio" name="options" class="toggle" id="option1">新增</label>
-                                                <label class="btn btn-transparent grey-salsa btn-outline btn-circle btn-sm">
-                                                    <input type="radio" name="options" class="toggle" id="option2">删除</label>
-                                            </div>
-                                            <div class="btn-group">
-                                                <a class="btn red btn-outline btn-circle" href="javascript:;" data-toggle="dropdown">
-                                                    <i class="fa fa-share"></i>
-                                                    <span class="hidden-xs"> 工具 </span>
-                                                    <i class="fa fa-angle-down"></i>
-                                                </a>
-                                                <ul class="dropdown-menu pull-right">
-                                                    <li>
-                                                        <a href="javascript:;"> 导出Excel </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="javascript:;"> 导出CSV </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="javascript:;"> 导出XML </a>
-                                                    </li>
-                                                    <li class="divider"> </li>
-                                                    <li>
-                                                        <a href="javascript:;"> 打印票据 </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
+                                        	<div class="clearfix">
+                                                                       
+                                             
+                                               <a href="javascript:;" class="btn btn-sm red"> 新增
+                                                   <i class="fa fa-edit"></i>
+                                               </a>
+                                               <a href="javascript:;" class="btn btn-sm blue">
+                                                   <i class="fa fa-file-o"></i> 删除 </a>
+                                               <a href="javascript:;" class="btn btn-sm green"> 批量授权
+                                                   <i class="fa fa-font"></i>
+                                               </a>
+                                               <a href="javascript:;" class="btn btn-sm yellow"> 批量角色设置
+                                                   <i class="fa fa-search"></i>
+                                               </a>
+                                               <a href="javascript:;" class="btn btn-sm purple">
+                                                   <i class="fa fa-times"></i> 用户排序 </a>
+                                               <a href="javascript:;" class="btn btn-sm green"> 用户调出
+                                                   <i class="fa fa-plus"></i>
+                                               </a>
+                                               <a href="javascript:;" class="btn btn-sm grey-cascade"> 用户调入
+                                                   <i class="fa fa-link"></i>
+                                               </a>
+                                           </div>
+                                             
                                         </div>
                                     </div>
                                     <div class="portlet-body">
@@ -237,7 +229,7 @@
 	type="text/javascript"></script>
 <!-- END PAGE LEVEL PLUGINS -->
 <script
-	src="${pageContext.request.contextPath}/jsp/sysmanager/sysmanager.js"
+	src="${pageContext.request.contextPath}/assets/sysmanager/sysmanager.js"
 	type="text/javascript"></script>
 <script type="text/javascript">
 	jQuery(document).ready(function() {

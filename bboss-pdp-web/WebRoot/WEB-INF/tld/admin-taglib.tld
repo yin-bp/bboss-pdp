@@ -23,6 +23,13 @@
         <bodycontent>empty</bodycontent>
  		 
     </tag> 
+    <tag>
+        <name>globalpagemenu</name>
+        <tagclass>org.frameworkset.platform.desktop.tag.GlobalpageMenuTag</tagclass>
+        <bodycontent>empty</bodycontent>
+ 		 
+    </tag> 
+    
     
     <tag>
         <name>menuposition</name>
