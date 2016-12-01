@@ -1376,9 +1376,9 @@ License: You must have a valid license purchased only from themeforest(the above
             <!-- END CONTAINER -->
             <!-- BEGIN FOOTER -->
             <div class="page-footer">
-                <div class="page-footer-inner"> 2016 &copy; Metronic Theme By
-                    <a target="_blank" href="http://keenthemes.com">Keenthemes</a> &nbsp;|&nbsp;
-                    <a href="http://themeforest.net/item/metronic-responsive-admin-dashboard-template/4021469?ref=keenthemes" title="Purchase Metronic just for 27$ and get lifetime updates for free" target="_blank">Purchase Metronic!</a>
+                <div class="page-footer-inner"> 2016 &copy; BBoss PDP By
+                    <a target="_blank" href="http://www.bbossgroups.com">bbossgroup</a> &nbsp;|&nbsp;
+                    <a href="https://item.taobao.com/item.htm?spm=a230r.1.14.20.QQxzsy&id=542522182088&ns=1&abbucket=18#detail" title="Purchase BBossPDP just for 500RMB and get lifetime updates for free" target="_blank">Purchase BBoss PDP!</a>
                 </div>
                 <div class="scroll-to-top">
                     <i class="icon-arrow-up"></i>

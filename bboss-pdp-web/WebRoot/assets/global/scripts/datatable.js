@@ -162,8 +162,8 @@ var Datatable = function() {
             var tmp = $.fn.dataTableExt.oStdClasses;
 
             $.fn.dataTableExt.oStdClasses.sWrapper = $.fn.dataTableExt.oStdClasses.sWrapper + " dataTables_extended_wrapper";
-            $.fn.dataTableExt.oStdClasses.sFilterInput = "form-control input-xs input-sm input-inline";
-            $.fn.dataTableExt.oStdClasses.sLengthSelect = "form-control input-xs input-sm input-inline";
+            $.fn.dataTableExt.oStdClasses.sFilterInput = "form-control input-xs input-xs input-inline";
+            $.fn.dataTableExt.oStdClasses.sLengthSelect = "form-control input-xs input-xs input-inline";
 
             // initialize a datatable
             dataTable = table.DataTable(options.dataTable);

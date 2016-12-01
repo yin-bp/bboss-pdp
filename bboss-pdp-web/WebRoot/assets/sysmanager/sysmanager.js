@@ -82,7 +82,7 @@ var Sysmanager = new function(){
             	 "language": { // language settings
                      // metronic spesific
                      "metronicGroupActions": "_TOTAL_ 条记录被选中:  ",
-                     "metronicAjaxRequestGeneralError": "Could not complete request. Please check your internet connection",
+                     "metronicAjaxRequestGeneralError": "请求提交失败. 请检查服务是否启动或者网络是否断连！",
 
                      // data tables spesific
                      "lengthMenu": "每页 _MENU_ 条记录",

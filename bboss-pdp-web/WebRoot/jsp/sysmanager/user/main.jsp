@@ -114,28 +114,29 @@
                                                         <th width="15%"> 组织</th>
                                                       
                                                        
-                                                        <th width="15%"> 操作 </th>
+                                                        <th width="10%"> 操作 </th>
                                                     </tr>
                                                     <tr role="row" class="filter">
-                                                        <td> </td>
+                                                        <td> <button class="btn btn-xs red btn-outline filter-cancel">
+                                                                <i class="fa fa-times"></i> 重置</button> </td>
                                                         <td>
-                                                            <input type="text" class="form-control form-filter input-sm" name="userName"> </td>
+                                                            <input type="text" class="form-control form-filter input-xs" name="userName"> </td>
                                                         
                                                         <td>
-                                                            <input type="text" class="form-control form-filter input-sm" name="userRealname"> </td>
+                                                            <input type="text" class="form-control form-filter input-xs" name="userRealname"> </td>
                                                         <td>
-                                                            <input type="text" class="form-control form-filter input-sm" name="userWorknumber"> </td>
+                                                            <input type="text" class="form-control form-filter input-xs" name="userWorknumber"> </td>
                                                           <td>
-                                                            <input type="text" class="form-control form-filter input-sm" name="userMobiletel1"> </td>
+                                                            <input type="text" class="form-control form-filter input-xs" name="userMobiletel1"> </td>
                                                          <td>
-                                                             <select name="userSex" class="form-control form-filter input-sm">
+                                                             <select name="userSex" class="form-control form-filter input-xs">
                                                                 <option value=""></option>
                                                                 <option value="M">男</option>
                                                                 <option value="F">女</option>
                                                                 <option value="-1">未知</option>
                                                             </select> </td>
                                                           <td>
-                                                            <select name="userType" class="form-control form-filter input-sm">
+                                                            <select name="userType" class="form-control form-filter input-xs">
                                                                 <option value=""></option>
                                                                 <option value="0">系统用户</option>
                                                                 <option value="1">域用户</option>
@@ -144,7 +145,7 @@
                                                             </select> </td>
                                                                  
                                                         <td>
-                                                              <select name="userIsvalid" class="form-control form-filter input-sm">
+                                                              <select name="userIsvalid" class="form-control form-filter input-xs">
                                                                 <option value=""></option>
                                                                 <option value="2">开通</option>
                                                                 <option value="1">申请</option>
@@ -153,7 +154,7 @@
                                                             </select> 
                                                          </td>
                                                         <td>
-                                                        <select name="recursive" class="form-control form-filter input-sm">
+                                                        <select name="recursive" class="form-control form-filter input-xs">
                                                                 <option value="">查询方式...</option>
                                                                 <option value="0">本机构</option>
                                                                 <option value="1">含子机构</option>
@@ -164,12 +165,11 @@
                                                           
                                                      
                                                         <td>
-                                                            <div class="margin-bottom-5">
+                                                             
                                                                 <button class="btn btn-xs green btn-outline filter-submit margin-bottom">
                                                                     <i class="fa fa-search"></i> 查询</button>
-                                                            </div>
-                                                            <button class="btn btn-xs red btn-outline filter-cancel">
-                                                                <i class="fa fa-times"></i> 重置</button>
+                                                             
+                                                           
                                                         </td>
                                                     </tr>
                                                 </thead>
