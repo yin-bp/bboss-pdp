@@ -28,6 +28,21 @@ var Sysmanager = new function(){
 	            
 	            "plugins" : [   "types" ]
 	        });
+		 
+		 $('#org_tree').bind("activate_node.jstree", function (obj, e) {
+			    // 处理代码
+			    // 获取当前节点
+			    var currentNode = e.node;
+			    //console.table(currentNode);
+			    //console.table(obj)
+			    console.dir(currentNode);
+			    var departid = currentNode.id;
+			    if(currentNode.parent == "#")
+			    	departid = '0';
+			    //console.dir(obj);
+			    Sysmanager.showOrgUsers(departid);
+			    //alert('处理代码');
+			});
 	}
 	//初始化日期控件
 	var initPickers = function () {
@@ -175,6 +190,9 @@ var Sysmanager = new function(){
 	
 	 var showOrgUsers = function(departId){
    	  var table = $( "#datatable_userlist" ).DataTable()
+   	   $("#datatable_userlist tr.filter .form-control").each(function() {
+             $(this).val('');
+      });
    	   table.ajax.url( "../sysmanager/user/getDepartUsers.page?departId="+departId ).load();
       }
 	

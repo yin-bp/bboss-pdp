@@ -109,7 +109,7 @@
 			<description>系统管理</description>		<item name="权限管理" id="usermanager"  i18n:en_US="usermanager Manage" >
 				
 				<workspace>
-					<content>/jsp/sysmanager/user/main.jsp</content>
+					<content>/sysmanager/index.page</content>
 				</workspace>
 				<authoration>				 
 				 	<url>/purviewmanager/userorgmanager/org/*.jsp</url>	

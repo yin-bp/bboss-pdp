@@ -82,7 +82,8 @@ public class SmOrganizationController {
 	{
 		JSTreeNode JSTreeNode = new JSTreeNode();
 		JSTreeNode.setId(org.getOrgId());
-		JSTreeNode.setText(new StringBuilder().append("<a href=\"#\" onclick=\"javascript:Sysmanager.showOrgUsers('").append(org.getOrgId()).append("');\">").append(org.getOrgName()).append("</a>").toString());
+//		JSTreeNode.setText(new StringBuilder().append("<a href=\"#\" onclick=\"javascript:Sysmanager.showOrgUsers('").append(org.getOrgId()).append("');\">").append(org.getOrgName()).append("</a>").toString());
+		JSTreeNode.setText(org.getOrgName());
 		JSTreeNode.setIcon(null);
 		TreeNodeStage state = new TreeNodeStage();
 		state.setDisabled(false);

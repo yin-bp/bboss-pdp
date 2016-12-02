@@ -9,7 +9,7 @@
 	-->
 
 	<property name="/sysmanager/user/*.page"
-		path:index="/jsp/sysmanager/user/main.jsp"
+		path:index="/jsp/sysmanager/user/userlist.jsp"
 		path:queryListInfoSmUsers="/jsp/sysmanager/user/smUserListInfo.jsp"
 		path:queryListSmUsers="/jsp/sysmanager/user/smUserList.jsp"
 		path:updateSmUser="/jsp/sysmanager/user/smUserEdit.jsp"
