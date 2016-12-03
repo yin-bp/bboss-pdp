@@ -7,7 +7,7 @@
 </div>
 <div class="modal-body">
 	<!-- BEGIN FORM-->
-	<form action="#" class="form-horizontal" id="form_sample_1">
+	<form action="#" class="form-horizontal" id="form_sys_adduser">
 		<div class="form-body">
 		<div class="row">
 			<div class="col-md-12" >
@@ -93,7 +93,7 @@
 						<span class="required">*</span>
 					</label>
 					<div class="col-md-9">
-						<input type="text" class="form-control" placeholder="" name="passwordDualtime">
+						<input type="text" class="form-control" placeholder="" name="passwordDualtime" value="-1">
 						<div class="form-control-focus"></div>
 					</div>
 				</div>
@@ -239,7 +239,7 @@
 		<div class="form-actions">
 			<div class="row">
 				<div class="col-md-offset-3 col-md-9">
-					<button type="submit" class="btn green">创建</button>
+					<button type="button" id="sys_addUser" class="btn green">创建</button>
 					<button type="reset" class="btn default">重置</button>
 					<button type="reset" class="btn default" data-dismiss="modal">取消</button>
 				</div>
@@ -247,5 +247,10 @@
 		</div>
 	</form>
 </div>
-
+<script type="text/javascript">
+	jQuery(document).ready(function() {
+		SysUser.initAddUser();
+		
+	});
+</script>
 

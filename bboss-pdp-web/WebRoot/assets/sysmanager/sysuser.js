@@ -1,5 +1,6 @@
 var SysUser = function(){
 	//main function to initiate the module
+	/**
     var initModal = function () {
     
         // general settings
@@ -44,58 +45,151 @@ var SysUser = function(){
                 '</div>');
            
         });
+    }*/
+	var usercontextpath;
+	var initModal = function(){
+		var $modal = $('#ajax-user-add');
+	   	 $modal.on('click', '.update', function(){
+	            //$modal.modal('加载中.....');
+	              $modal
+	                
+	                .find('.modal-body')
+	                  .prepend('<div class="alert alert-info fade in">' +
+	                    'Updated!<button type="button" class="close" data-dismiss="alert">&times;</button>' +
+	                  '</div>');
+	             
+	          });
+	   	 
+	   	 $modal.draggable({
+	            handle: ".modal-header"
+	        });
+   	 
+	}
+	var initAddusersButtonAction = function(){
+   	 $("#sys_addUser").on('click',function(){
+   		 saveAppSystem();
+   	 })
     }
-   
-     var init = function(){
-    	 var $modal = $('#ajax-user-add');
-    	 $modal.on('click', '.update', function(){
-             //$modal.modal('加载中.....');
-               $modal
-                 
-                 .find('.modal-body')
-                   .prepend('<div class="alert alert-info fade in">' +
-                     'Updated!<button type="button" class="close" data-dismiss="alert">&times;</button>' +
-                   '</div>');
-              
-           });
-    	 
-    	 $modal.draggable({
-             handle: ".modal-header"
-         });
-    	 
-    	 
-     }
-     
-     var initAdduserAction = function(){
-    	 
-     }
-     
-     var saveAppSystem = function (formid){
-		  if($("#userPassword").val() != $("#userPasswordSecond").val()){
-				
-				$(".passwordhelp").append("两次口令不一致");
-				
+    
+    var saveAppSystem = function (){
+		  if($("#userPassword").val() != $("#userPasswordSecond").val()){				
+				$(".passwordhelp").append("两次口令不一致");				
 				return;
 			}else{
 				$(".passwordhelp").html("");	
 			}
 
-		   $(formid).submit();
+		   $("#form_sys_adduser").submit();
 		   
 		   
 	   }
-	
-	var adduser = function(form)
+    var initAdduserValidateform = function()
 	{
-		$(form)
+		var form2 = $("#form_sys_adduser");		
+		form2.validate({
+					focusInvalid : false, // do not focus the last invalid
+											// input
+					ignore : "", // validate all fields including form hidden
+									// input
+					messages : {
+						
+						userName : {
+								minlength : jQuery.validator.format("应用口令不能小于{0}个字符"),
+								required : "请输入账号"
+							},
+
+							userRealname : {
+								minlength : jQuery.validator.format("应用编码不能小于{0}个字符"),
+								required : "请输入中文名称"
+							},
+
+							userPassword : {
+								minlength : jQuery.validator.format("应用名称不能小于{0}个字符"),
+								required : "请输入6位以上口令"
+							},
+
+							userPasswordSecond : {
+								minlength : jQuery.validator.format("二次输入口令不能小于{0}个字符"),
+								required : "请二次输入口令"
+							} ,
+							userIdcard : {
+								minlength : jQuery.validator.format("应用口令不能小于{0}个字符"),
+								required : "请输入身份证"
+							},
+
+							userWorknumber : {
+								minlength : jQuery.validator.format("应用编码不能小于{0}个字符"),
+								required : "请输入工号"
+							}
+					},
+					rules : {
+						userName : {
+							minlength : 2,
+							required : true
+						},
+
+						userRealname : {
+							minlength : 1,
+							required : true
+						},
+
+						userPassword : {
+							minlength : 1,
+							required : true
+						},
+
+						userPasswordSecond : {
+							minlength : 1,
+							required : true
+						},
+
+						userIdcard : {
+							minlength : 1,
+							required : true
+						},
+
+						userWorknumber : {
+							minlength : 1,
+							required : true
+						}  
+					},
+
+					
+
+					submitHandler : function(form) {
+						// success1.show();
+						adduser()
+						
+					}
+				});
+	}
+     var init = function(relativepath){
+    	 usercontextpath = relativepath;
+    	 initModal();
+    	
+    	 
+     }
+     
+     var initAddUser = function(){
+    	 initAddusersButtonAction();
+    	 initAdduserValidateform();
+     }
+     
+     
+	
+	var adduser = function()
+	{
+		$("#form_sys_adduser")
 		.ajaxSubmit(
 				{
 					type : 'POST',
-					url : '../application/addApplication.page',
+					url : usercontextpath+'/sysmanager/user/addSmUser.page',
 					forceSync : false,
 					dataType : 'json',
 					beforeSubmit : function() {
-						 
+						 App.startPageLoading({message: '保存中...'});
+
+				           
 					},
 					error : function(xhr, ajaxOptions,
 							thrownError) {
@@ -105,45 +199,31 @@ var SysUser = function(){
 					success : function(responseText,
 							statusText, xhr, $form) {
 						 
-						
+						 window.setTimeout(function() {
+				                App.stopPageLoading();
+				            }, 2000);
 						var msg = responseText;
-						var title = '添加应用';
+						var title = '添加用户';
 						var tiptype = "success";
 						if (msg == 'success') {
-							msg = "添加应用完毕"
+							msg = "添加用户完毕"
 						} else {
 							 
 							
 						}
-
-						toastr.options = {
-							"closeButton" : true,
-							"debug" : false,
-							"positionClass" : "toast-top-center",
-							"onclick" : null,
-							"showDuration" : "0",
-							"hideDuration" : "0",
-							"timeOut" : "20000",
-							"extendedTimeOut" : "0",
-							"showEasing" : "swing",
-							"hideEasing" : "linear",
-							"showMethod" : "fadeIn",
-							"hideMethod" : "fadeOut"
-						};
-
-						toastr[tiptype](msg, title); // Wire
-														// up
-														// an
-														// event
-														// handler
-														// to a
-														// button
-														// in
-														// the
-														// toast,
-														// if
-														// it
-														// exists
+						swal({
+							  title: title,
+							  text: msg,
+							  type:tiptype,
+							  
+							},
+							function(){
+							  swal("Deleted!", "Your imaginary file has been deleted.", "success");
+							});
+						/**
+						 bootbox.alert(msg, function() {
+			                    alert("Hello world callback");
+			                }); */
 
 					}
 
@@ -153,9 +233,13 @@ var SysUser = function(){
      
     
     return {
-    	init:function(){
-    		init();
+    	init:function(usercontextpath){
+    		init(usercontextpath);
+    	},
+    	initAddUser:function(usercontextpath){
+    		initAddUser(usercontextpath);
     	}
+    	
     	
     }
 
