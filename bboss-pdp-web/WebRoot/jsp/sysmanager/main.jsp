@@ -109,7 +109,7 @@
 	jQuery(document).ready(function() {
 		Sysmanager.initorg_tree(); //  initorg_tree core componets
 		Sysmanager.initPickers();
-		Sysmanager.getUserList('1');
+		Sysmanager.getUserList('0');
 		
 	});
 </script>

@@ -143,7 +143,7 @@ public class SmUserController {
 	}
 	
 	public @ResponseBody DatagridBean getDepartUsers(SmUserCondition conditions,
-			int draw,int start,int length,Map<String,String> datas)
+			int draw,int start,int length,Map<String,String> datas,ModelMap model)
 					throws SmUserException {
 		// Constant.component_type_actionimpl
 		try {
@@ -179,6 +179,10 @@ public class SmUserController {
 					data.setData(new ArrayList());
 				data.setRecordsFiltered((int)smUsers.getTotalSize());
 				data.setRecordsTotal((int)smUsers.getTotalSize());
+			}
+			if(StringUtil.isNotEmpty(conditions.getDepartId()))
+			{
+				model.addAttribute("departId", conditions.getDepartId());
 			}
 			
 			return data;
@@ -230,7 +234,8 @@ public class SmUserController {
 		}
 
 	}
-	public String toAddSmUser() {
+	public String toAddSmUser(String departId,ModelMap model) {
+		model.addAttribute("departId",departId);
 		return "path:addSmUser";
 	}
 	public String index() {

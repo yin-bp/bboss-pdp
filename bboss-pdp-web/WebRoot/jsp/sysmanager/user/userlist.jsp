@@ -10,12 +10,18 @@
 
 			
 
-			<a
-				href="${pageContext.request.contextPath}/jsp/sysmanager/user/adduser.jsp"
+			<!-- <a
+				href="${pageContext.request.contextPath}/sysmanager/user/toAddSmUser.page"
 				class="btn btn-sm red" data-target="#ajax-user-add"
-				data-toggle="modal"> 新增 <i class="fa fa-edit"></i>
+				data-toggle="modal" data-backdrop="static" id="button_sys_add_user"> 新增 <i class="fa fa-edit"></i>
 
-			</a> <a class="btn btn-sm blue" data-toggle="modal" href="#draggable">
+			</a> -->
+			<a
+				class="btn btn-sm red"  
+				data-toggle="modal" data-backdrop="static" id="button_sys_add_user"> 新增 <i class="fa fa-edit"></i>
+
+			</a>
+			 <a class="btn btn-sm blue" data-toggle="modal" href="#draggable">
 				<i class="fa fa-file-o"></i> 删除
 			</a> <a href="javascript:;" class="btn btn-sm green"> 批量授权 <i
 				class="fa fa-font"></i>
@@ -33,7 +39,8 @@
 	</div>
 
     <div class="portlet-body">
-		 <div class="modal fade draggable-modal  modal-scroll" id="ajax-user-add" role="basic" aria-hidden="true">
+    <!-- bootstrap native modal
+		 <div class="modal fade draggable-modal  modal-scroll " id="ajax-user-add" role="basic" aria-hidden="true">
 		       <div class="modal-dialog  modal-lg" >
 		           <div class="modal-content">
 		               <div class="modal-body">
@@ -42,7 +49,9 @@
 		               </div>
 		           </div>
 		       </div>
-		</div>
+		</div> -->
+		 <!-- bootstrap extend modal -->
+		<div id="ajax-user-action-extend" class="modal container  fade draggable-modal  modal-scroll " tabindex="-1"> </div>
         <div class="table-container">
             
             <table class="table table-striped table-bordered table-hover table-checkable  table-header-fixed" id="datatable_userlist">

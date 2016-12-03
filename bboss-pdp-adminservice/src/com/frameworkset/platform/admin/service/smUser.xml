@@ -47,7 +47,11 @@
 			select * from td_sm_user where USER_ID=?
 		]]>
 	</property>
-	
+	<property name="selectMaxSNofdepart">
+		<![CDATA[
+			select max(USER_SN)+1 from td_sm_user where DEPART_ID=?
+		]]>
+	</property>
 	<property name="getDepartUsers">
 		<![CDATA[
 			select * from td_sm_user where 1=1 

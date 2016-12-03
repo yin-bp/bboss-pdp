@@ -12,9 +12,9 @@
 		path:index="/jsp/sysmanager/user/userlist.jsp"
 		path:queryListInfoSmUsers="/jsp/sysmanager/user/smUserListInfo.jsp"
 		path:queryListSmUsers="/jsp/sysmanager/user/smUserList.jsp"
-		path:updateSmUser="/jsp/sysmanager/user/smUserEdit.jsp"
-		path:addSmUser="/jsp/sysmanager/user/smUserAdd.jsp"
-		path:getSmUser="/jsp/sysmanager/user/smUserView.jsp"
+		path:updateSmUser="/jsp/sysmanager/user/edituser.jsp"
+		path:addSmUser="/jsp/sysmanager/user/adduser.jsp"
+		path:getSmUser="/jsp/sysmanager/user/viewuser.jsp"
 		f:smUserService="attr:user.smUserService"
 		class="com.frameworkset.platform.admin.action.SmUserController" >
 	</property>

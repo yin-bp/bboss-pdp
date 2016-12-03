@@ -1,4 +1,11 @@
 var Sysmanager = new function(){
+	var departid;
+	var setDepartid = function (orgid){
+		departid = orgid;
+	}
+	var getDepartId = function(){
+		return departid;
+	}
 	//初始化组织机构树
 	var initorg_tree = function(){
 		 $("#org_tree").jstree({
@@ -54,6 +61,7 @@ var Sysmanager = new function(){
     }
 	//初始化用户列表
 	var getUserList = function (departId) {
+		setDepartid(departId);
 		 var fixedHeaderOffset = 0;
 	        if (App.getViewPort().width < App.getResponsiveBreakpoint('md')) {
 	            if ($('.page-header').hasClass('page-header-fixed-mobile')) {
@@ -189,6 +197,7 @@ var Sysmanager = new function(){
     }
 	
 	 var showOrgUsers = function(departId){
+		 setDepartid(departId);
    	  var table = $( "#datatable_userlist" ).DataTable()
    	   $("#datatable_userlist tr.filter .form-control").each(function() {
              $(this).val('');
@@ -208,6 +217,9 @@ var Sysmanager = new function(){
 		},
 		showOrgUsers:function(departId){
 			showOrgUsers(departId);
+		},
+		getDepartId:function(){
+			return getDepartId();
 		}
 		
 		

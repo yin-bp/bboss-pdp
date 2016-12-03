@@ -20,7 +20,9 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.frameworkset.platform.security.authentication.EncrpyPwd;
 
 import com.frameworkset.common.poolman.ConfigSQLExecutor;
 import com.frameworkset.common.poolman.handle.ResultSetNullRowHandler;
@@ -43,6 +45,19 @@ public class SmUserServiceImpl implements SmUserService {
 	public void addSmUser(SmUser smUser) throws SmUserException {
 		// 业务组件
 		try {
+			int user_sn = executor.queryObject(int.class, "selectMaxSNofdepart", smUser.getDepartId());
+			smUser.setUserSn(user_sn);
+			//对口令进行加密处理
+			if(StringUtils.isNotEmpty(smUser.getUserPassword())){
+    			
+				smUser.setPasswordText(smUser.getUserPassword());
+				
+				smUser.setUserPassword(EncrpyPwd.encodePassword(smUser.getUserPassword()));
+			}else if(StringUtils.isNotEmpty(smUser.getPasswordText())){
+				
+				smUser.setUserPassword(EncrpyPwd.encodePassword(smUser.getPasswordText()));
+				
+			}
 			executor.insertBean("addSmUser", smUser);
 		} catch (Throwable e) {
 			throw new SmUserException("add SmUser failed:", e);
@@ -73,6 +88,16 @@ public class SmUserServiceImpl implements SmUserService {
 	}
 	public void updateSmUser(SmUser smUser) throws SmUserException {
 		try {
+			if(StringUtils.isNotEmpty(smUser.getUserPassword())){
+    			
+				smUser.setPasswordText(smUser.getUserPassword());
+				
+				smUser.setUserPassword(EncrpyPwd.encodePassword(smUser.getUserPassword()));
+			}else if(StringUtils.isNotEmpty(smUser.getPasswordText())){
+				
+				smUser.setUserPassword(EncrpyPwd.encodePassword(smUser.getPasswordText()));
+				
+			}
 			executor.updateBean("updateSmUser", smUser);
 		} catch (Throwable e) {
 			throw new SmUserException("update SmUser failed::", e);
@@ -165,24 +190,28 @@ public class SmUserServiceImpl implements SmUserService {
 		.append("</a>")
 		.append("<ul class=\"dropdown-menu\">")
 		.append("    <li>")
-		.append("        <a href=\"javascript:Sysmanager.viewUser('").append(userId).append("');\">")
+		.append("        <a href=\"javascript:;\" onclick=\"javascript:SysUser.viewUser('").append(userId).append("');\">")
 		.append("            <i class=\"fa fa-bullhorn\"></i> 查看 </a>")
 		.append("    </li>")
 		.append("    <li>")
-		.append("       <a href=\"javascript:Sysmanager.modifyUser('").append(userId).append("');\">")
+		.append("       <a href=\"javascript:;\" onclick=\"javascript:SysUser.tomodifyUser('").append(userId).append("');\">")
 		.append("           <i class=\"fa fa-pencil\"></i> 修改 </a>")
 		.append("    </li>")
 		.append("    <li>")
-		.append("       <a href=\"javascript:Sysmanager.modifyUser('").append(userId).append("');\">")
+		.append("       <a href=\"javascript:;\" onclick=\"javascript:SysUser.resetPassword('").append(userId).append("');\">")
+		.append("           <i class=\"fa fa-pencil\"></i> 重置口令 </a>")
+		.append("    </li>")
+		.append("    <li>")
+		.append("       <a href=\"javascript:;\" onclick=\"javascript:SysUser.modifyUser('").append(userId).append("');\">")
 		.append("           <i class=\"fa fa-pencil\"></i> 授权 </a>")
 		.append("    </li>")
 		.append("    <li>")
-		.append("        <a href=\"javascript:Sysmanager.delUser('").append(userId).append("');\">")
+		.append("        <a href=\"javascript:;\" onclick=\"javascript:SysUser.delUser('").append(userId).append("');\">")
 		.append("            <i class=\"fa fa-trash-o\"></i> 删除 </a>")
 		.append("    </li>")
 		.append("    <li class=\"divider\"> </li>")
 		.append("    <li>")
-		.append("        <a href=\"javascript:Sysmanager.stopUser('").append(userId).append("');\">")
+		.append("        <a href=\"javascript:;\" onclick=\"javascript:SysUser.stopUser('").append(userId).append("');\">")
 		.append("            <i class=\"fa fa-ban\"></i> 停用 </a>")
 		.append("    </li>")
 		.append("</ul>")
