@@ -22,6 +22,7 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.frameworkset.platform.security.AccessControl;
 import org.frameworkset.platform.security.authentication.EncrpyPwd;
 
 import com.frameworkset.common.poolman.ConfigSQLExecutor;
@@ -192,28 +193,30 @@ public class SmUserServiceImpl implements SmUserService {
 		.append("    <li>")
 		.append("        <a href=\"javascript:;\" onclick=\"javascript:SysUser.viewUser('").append(userId).append("');\">")
 		.append("            <i class=\"fa fa-bullhorn\"></i> 查看 </a>")
-		.append("    </li>")
-		.append("    <li>")
-		.append("       <a href=\"javascript:;\" onclick=\"javascript:SysUser.tomodifyUser('").append(userId).append("');\">")
-		.append("           <i class=\"fa fa-pencil\"></i> 修改 </a>")
-		.append("    </li>")
-		.append("    <li>")
+		.append("    </li>");
+		if(!AccessControl.isDefaultAdmin(userId))
+			idcheckbox.append("    <li>")
+				.append("       <a href=\"javascript:;\" onclick=\"javascript:SysUser.tomodifyUser('").append(userId).append("');\">")
+				.append("           <i class=\"fa fa-pencil\"></i> 修改 </a>")
+				.append("    </li>")
+				.append("    <li>")
+				.append("       <a href=\"javascript:;\" onclick=\"javascript:SysUser.modifyUser('").append(userId).append("');\">")
+				.append("           <i class=\"fa fa-pencil\"></i> 授权 </a>")
+				.append("    </li>")
+				.append("    <li>")
+				.append("        <a href=\"javascript:;\" onclick=\"javascript:SysUser.delUser('").append(userId).append("');\">")
+				.append("            <i class=\"fa fa-trash-o\"></i> 删除 </a>")
+				.append("    </li>")
+				.append("    <li class=\"divider\"> </li>")
+				.append("    <li>")
+				.append("        <a href=\"javascript:;\" onclick=\"javascript:SysUser.stopUser('").append(userId).append("');\">")
+				.append("            <i class=\"fa fa-ban\"></i> 停用 </a>")
+				.append("    </li>");
+		idcheckbox.append("    <li>")
 		.append("       <a href=\"javascript:;\" onclick=\"javascript:SysUser.resetPassword('").append(userId).append("');\">")
 		.append("           <i class=\"fa fa-pencil\"></i> 重置口令 </a>")
 		.append("    </li>")
-		.append("    <li>")
-		.append("       <a href=\"javascript:;\" onclick=\"javascript:SysUser.modifyUser('").append(userId).append("');\">")
-		.append("           <i class=\"fa fa-pencil\"></i> 授权 </a>")
-		.append("    </li>")
-		.append("    <li>")
-		.append("        <a href=\"javascript:;\" onclick=\"javascript:SysUser.delUser('").append(userId).append("');\">")
-		.append("            <i class=\"fa fa-trash-o\"></i> 删除 </a>")
-		.append("    </li>")
-		.append("    <li class=\"divider\"> </li>")
-		.append("    <li>")
-		.append("        <a href=\"javascript:;\" onclick=\"javascript:SysUser.stopUser('").append(userId).append("');\">")
-		.append("            <i class=\"fa fa-ban\"></i> 停用 </a>")
-		.append("    </li>")
+
 		.append("</ul>")
 		.append("</div>");
 	}
@@ -251,6 +254,7 @@ public class SmUserServiceImpl implements SmUserService {
 	}
 	
 	
+	
 	public ListInfo getDepartUsers(SmUserCondition conditions, long offset, int pagesize) throws SmUserException {
 		 
 		try {
@@ -262,10 +266,13 @@ public class SmUserServiceImpl implements SmUserService {
 					UIUser rowValue = (UIUser) buildValueObject(record, UIUser.class);
 					users.add(rowValue);
 					StringBuilder idcheckbox = new StringBuilder();
-					idcheckbox.append("<label class=\"mt-checkbox mt-checkbox-single mt-checkbox-outline\"><input name=\"userId\" type=\"checkbox\" class=\"checkboxes\" value=\"")
-					.append(rowValue.getUserId()).append("\"").append("/><span></span></label>");
-					rowValue.setCheckbox(idcheckbox.toString());
-					idcheckbox.setLength(0);
+					if(!AccessControl.isDefaultAdmin(rowValue.getUserId()))
+					{
+						idcheckbox.append("<label class=\"mt-checkbox mt-checkbox-single mt-checkbox-outline\"><input name=\"userId\" type=\"checkbox\" class=\"checkboxes\" value=\"")
+						.append(rowValue.getUserId()).append("\"").append("/><span></span></label>");
+						rowValue.setCheckbox(idcheckbox.toString());
+						idcheckbox.setLength(0);
+					}
 					getState(rowValue.getUserIsvalid(),  idcheckbox);
 					rowValue.setUserIsvalidName(idcheckbox.toString());
 					idcheckbox.setLength(0);

@@ -21,7 +21,7 @@
 				data-toggle="modal" data-backdrop="static" id="button_sys_add_user"> 新增 <i class="fa fa-edit"></i>
 
 			</a>
-			 <a class="btn btn-sm blue" data-toggle="modal" href="#draggable">
+			 <a class="btn btn-sm blue" id="button_sys_delete_user">
 				<i class="fa fa-file-o"></i> 删除
 			</a> <a href="javascript:;" class="btn btn-sm green"> 批量授权 <i
 				class="fa fa-font"></i>

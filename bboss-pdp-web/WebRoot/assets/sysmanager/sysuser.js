@@ -4,14 +4,8 @@ var SysUser = function(){
 		 var dptid = Sysmanager.getDepartId();
 		  if(!dptid || dptid == '' || dptid == '0')
 		  {
-			  swal({
-				  title: "请选择一个机构再操作!",
-				  text: "",
-				  type:"warning",
-				  confirmButtonClass: "btn-danger",
-				  confirmButtonText: "确定",
-				});
-			return false;
+			  PlatformCommonUtils.warn("请选择一个机构再操作!");
+			  return false;
 		  }
 		 
 		   return true;
@@ -259,7 +253,7 @@ var SysUser = function(){
     	 usercontextpath = relativepath;
     	 //initAddUserModal();
     	 initAddUserModalExtend();
-    	 
+    	 initDelUsers();
      }
      
      var initAddUser = function(){
@@ -411,6 +405,62 @@ var SysUser = function(){
     	initModifyUserButtonAction();
    	    iniModifyUserValidateform();
     }
+    var initDelUsers = function(){
+    	$("#button_sys_delete_user").bind("click",function(){
+    		 var vr = validateDepart();
+             if(!vr)
+            {
+           	  return;
+            }
+             var chk_value =[]; 
+             $('input[name="userId"]:checked').each(function(){ 
+            	 chk_value.push($(this).val()); 
+             }); 
+             if(chk_value.length == 0)
+             {
+            	 PlatformCommonUtils.warn("请选择要删除的用户!");
+            	 return;
+             }
+             PlatformCommonUtils.confirm("确定要删除选中的用户吗?",function(isConfirm){
+            	 	if(isConfirm)
+			        	delusers(chk_value);
+				});
+    		
+    	});
+    }
+    var delusers = function(users)
+    {
+    	var userIds;
+    	for(var i = 0; i < users.length;i ++)
+    		{
+    			if(i > 0)
+    				userIds += ","+users[i];
+    			else
+    				userIds = users[i];
+    		
+    		}
+    	$.ajax({
+ 		   type: "POST",
+ 			url : usercontextpath+"/sysmanager/user/deleteBatchSmUser.page",
+ 			data :{"userIds":userIds},
+ 			dataType : 'json',
+ 			async:false,
+ 			beforeSend: function(XMLHttpRequest){ 					
+ 				 	
+ 				},
+ 			success : function(responseText){
+ 				
+ 				if(responseText=="success"){
+ 					
+ 					PlatformCommonUtils.success("用户删除成功!");
+ 					afterSaveUser();
+ 				}else{
+ 					PlatformCommonUtils.warn("用户删除失败:"+responseText);
+ 				}
+ 			}
+ 		  });
+    }
+    
     return {
     	init:function(usercontextpath){
     		init(usercontextpath);
@@ -429,6 +479,9 @@ var SysUser = function(){
     	},
     	initModifyUser:function(){
     		initModifyUser();
+    	},
+    	initDelUsers:function(){
+    		initDelUsers();
     	}
     	
     	

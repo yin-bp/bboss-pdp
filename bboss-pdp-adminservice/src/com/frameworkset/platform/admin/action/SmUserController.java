@@ -70,9 +70,13 @@ public class SmUserController {
 		}
 
 	}
-	public @ResponseBody String deleteBatchSmUser(String... userIds) {
+	public @ResponseBody String deleteBatchSmUser(String userIds) {
 		try {
-			smUserService.deleteBatchSmUser(userIds);
+			if(StringUtil.isNotEmpty(userIds))
+			{
+				String[] uids = userIds.split(",");
+				smUserService.deleteBatchSmUser(uids);
+			}
 			return "success";
 		} catch (Throwable e) {
 			log.error("delete Batch userIds failed:", e);

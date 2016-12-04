@@ -3380,6 +3380,15 @@ public class AccessControl implements AccessControlInf{
 		AuthPrincipal principal = new AuthPrincipal(userAccount, null, null);
 		return AppSecurityCollaborator.getInstance().isAdmin(principal);
 	}
+	
+	public static boolean isDefaultAdmin(String userId)
+	{
+		if(userId == null)
+			return false;
+		if(userId.equals("1") || userId.equals("admin"))
+			return true;
+		return false;
+	}
 
 	
 
