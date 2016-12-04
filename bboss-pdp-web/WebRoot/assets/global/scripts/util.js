@@ -1,5 +1,5 @@
 var PlatformCommonUtils = function(){
-	var warn = function(msg){
+	var warn = function(msg,warnfun){
 		swal({
 			  title: msg,
 			  text: "",
@@ -7,22 +7,38 @@ var PlatformCommonUtils = function(){
 			  type:"warning",
 			  confirmButtonClass: "btn-danger",
 			  confirmButtonText: "确定",
-			});
+			},warnfun);
 	}
-	var success = function(msg){
+	var success = function(msg,successfun){		
+		if(!successfun)
+			swal({
+				  title: msg,
+				  allowOutsideClick: false,
+				  text: "",
+				  type:"success",
+				  confirmButtonClass: "btn-success",
+				  confirmButtonText: "确定",
+				});
+		else
+		{
+			swal({
+				  title: msg,
+				  allowOutsideClick: false,
+				  text: "",
+				  type:"success",
+				  confirmButtonClass: "btn-success",
+				  confirmButtonText: "确定",
+				},
+				successfun
+				);
+		}
+	}
+	var confirm = function(msg,confirmfun,extendtext,html){
+		if(!html) html = false;
+		if(!extendtext) extendtext = "";
 		swal({
 			  title: msg,
-			  allowOutsideClick: false,
-			  text: "",
-			  type:"success",
-			  confirmButtonClass: "btn-success",
-			  confirmButtonText: "确定",
-			});
-	}
-	var confirm = function(msg,confirmfun){
-		swal({
-			  title: msg,
-			  text: "",
+			  text: extendtext,
 			  type: "info",
 			  allowOutsideClick: false,
 			  showConfirmButton: true,
@@ -33,22 +49,21 @@ var PlatformCommonUtils = function(){
 			  closeOnCancel: true,
 			  confirmButtonText: "确定",
 			  cancelButtonText: "取消",
+			  "html":html
 			},
-			function(isConfirm){	
-				confirmfun(isConfirm);
-		         
-			});
+			confirmfun
+			);
 	}
 	return {
-		warn:function(msg){
-			warn(msg);
+		warn:function(msg,warnfun){
+			warn(msg,warnfun);
 		},
-		confirm:function(msg,confirmfun)
+		confirm:function(msg,confirmfun,extendtext,html)
 		{
-			confirm(msg,confirmfun);
+			confirm(msg,confirmfun,extendtext,html);
 		},
-		success:function(msg){
-			success(msg);
+		success:function(msg,successfun){
+			success(msg,successfun);
 		}
 	}
 }();

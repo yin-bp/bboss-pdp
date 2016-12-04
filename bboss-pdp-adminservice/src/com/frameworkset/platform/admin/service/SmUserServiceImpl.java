@@ -73,11 +73,18 @@ public class SmUserServiceImpl implements SmUserService {
 		}
 
 	}
-	public void deleteBatchSmUser(String... userIds) throws SmUserException {
+	public void deleteBatchSmUser(String[] userIds,String user_deltype) throws SmUserException {
 		TransactionManager tm = new TransactionManager();
 		try {
 			tm.begin();
-			executor.deleteByKeys("deleteByKey", userIds);
+			if(user_deltype == null || user_deltype.equals("0"))//逻辑删除
+			{
+				executor.updateByKeys("logicDeleteUsers", userIds);
+			}
+			else
+			{
+				executor.deleteByKeys("deleteByKey", userIds);//物理删除
+			}
 			tm.commit();
 		} catch (Throwable e) {
 

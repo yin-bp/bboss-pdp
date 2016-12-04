@@ -79,14 +79,8 @@ var SysUser = function(){
     var saveUser = function (formid){
     	
 		  if($("#userPassword").val() != $("#userPasswordSecond").val()){				
-				 
-				swal({
-					  title: "两次口令不一致",
-					  text: "",
-					  type:"warning",
-					  confirmButtonClass: "btn-danger",
-					  confirmButtonText: "确定",
-					});
+			  PlatformCommonUtils.warn("两次口令不一致") ;
+			
 				return false;
 			}
 		  var vr = validateDepart();
@@ -297,7 +291,10 @@ var SysUser = function(){
 							 
 							
 						}
-						swal({
+						PlatformCommonUtils.success(msg,function(){
+							closeUserActionModel();
+						}) ;
+						/**swal({
 							  title: title,
 							  text: msg,
 							  type:tiptype,
@@ -306,7 +303,7 @@ var SysUser = function(){
 							},
 							function(){
 								closeUserActionModel();
-							});
+							});*/
 						/**
 						 bootbox.alert(msg, function() {
 			                    alert("Hello world callback");
@@ -350,7 +347,10 @@ var SysUser = function(){
 							 
 							
 						}
-						swal({
+						PlatformCommonUtils.success(msg,function(){
+							closeUserActionModel();
+						}) ;
+						/**swal({
 							  title: title,
 							  text: msg,
 							  type:tiptype,
@@ -359,7 +359,7 @@ var SysUser = function(){
 							},
 							function(){
 								closeUserActionModel();
-							});
+							});*/
 						/**
 						 bootbox.alert(msg, function() {
 			                    alert("Hello world callback");
@@ -421,14 +421,26 @@ var SysUser = function(){
             	 PlatformCommonUtils.warn("请选择要删除的用户!");
             	 return;
              }
+             var extendtext = "<input type=\"radio\"  name=\"user_deltype\" value=\"0\" checked>逻辑删除";
+             extendtext += "<input type=\"radio\"  name=\"user_deltype\" value=\"1\">物理删除";
              PlatformCommonUtils.confirm("确定要删除选中的用户吗?",function(isConfirm){
             	 	if(isConfirm)
-			        	delusers(chk_value);
-				});
+            	 	{
+            	 		var user_deltype = '0';
+            	 		$('input[name="user_deltype"]:checked').each(function(){ 
+            	 			user_deltype = $(this).val(); 
+                        }); 
+            	 		delusers(chk_value,user_deltype);
+            	 	}
+			        	
+				},extendtext,true);
     		
     	});
     }
-    var delusers = function(users)
+    /**
+     * user_deltype：0 逻辑删除 1 物理删除
+     */
+    var delusers = function(users,user_deltype)
     {
     	var userIds;
     	for(var i = 0; i < users.length;i ++)
@@ -442,7 +454,7 @@ var SysUser = function(){
     	$.ajax({
  		   type: "POST",
  			url : usercontextpath+"/sysmanager/user/deleteBatchSmUser.page",
- 			data :{"userIds":userIds},
+ 			data :{"userIds":userIds,"user_deltype":user_deltype},
  			dataType : 'json',
  			async:false,
  			beforeSend: function(XMLHttpRequest){ 					

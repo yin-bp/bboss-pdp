@@ -28,7 +28,7 @@ import java.util.List;
 public interface SmUserService {
 	public void addSmUser(SmUser smUser) throws SmUserException;
 	public void deleteSmUser(String userId) throws SmUserException;
-	public void deleteBatchSmUser(String... userIds) throws SmUserException;
+	public void deleteBatchSmUser(String[] userIds,String user_deltype) throws SmUserException;
 	public void updateSmUser(SmUser smUser) throws SmUserException;
 	public SmUser getSmUser(String userId) throws SmUserException;
 	public ListInfo queryListInfoSmUsers(SmUserCondition conditions, long offset, int pagesize) throws SmUserException;

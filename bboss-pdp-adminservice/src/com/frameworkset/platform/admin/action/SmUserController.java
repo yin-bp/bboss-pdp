@@ -70,12 +70,12 @@ public class SmUserController {
 		}
 
 	}
-	public @ResponseBody String deleteBatchSmUser(String userIds) {
+	public @ResponseBody String deleteBatchSmUser(String userIds,String user_deltype) {
 		try {
 			if(StringUtil.isNotEmpty(userIds))
 			{
 				String[] uids = userIds.split(",");
-				smUserService.deleteBatchSmUser(uids);
+				smUserService.deleteBatchSmUser(uids,user_deltype);
 			}
 			return "success";
 		} catch (Throwable e) {

@@ -37,6 +37,12 @@
 			delete from td_sm_user where USER_ID=?
 		]]>
 	</property>
+	
+	<property name="logicDeleteUsers">
+		<![CDATA[
+			update td_sm_user set USER_ISVALID=0  where USER_ID=?
+		]]>
+	</property>
 		<property name="updateSmUser">
 		<![CDATA[
 			update td_sm_user set USER_ID=#[userId],CERT_SN=#[certSn],DEPART_ID=#[departId],DREDGE_TIME=#[dredgeTime],ISTAXMANAGER=#[istaxmanager],LASTLOGIN_DATE=#[lastloginDate],LOGON_IP=#[logonIp],Password_DualTime=#[passwordDualtime],PASSWORD_TEXT=#[passwordText],PASSWORD_UPDATETIME=#[passwordUpdatetime],PAST_TIME=#[pastTime],POLITICS=#[politics],REMARK1=#[remark1],REMARK2=#[remark2],REMARK3=#[remark3],REMARK4=#[remark4],REMARK5=#[remark5],update_time=#[updateTime],USER_ADDRESS=#[userAddress],USER_BIRTHDAY=#[userBirthday],USER_EMAIL=#[userEmail],USER_FAX=#[userFax],USER_HOMETEL=#[userHometel],USER_IDCARD=#[userIdcard],USER_ISVALID=#[userIsvalid],USER_LOGINCOUNT=#[userLogincount],USER_MOBILETEL1=#[userMobiletel1],USER_MOBILETEL2=#[userMobiletel2],USER_NAME=#[userName],USER_OICQ=#[userOicq],USER_PASSWORD=#[userPassword],USER_PINYIN=#[userPinyin],USER_POSTALCODE=#[userPostalcode],USER_REALNAME=#[userRealname],USER_REGDATE=#[userRegdate],USER_SEX=#[userSex],USER_SN=#[userSn],USER_TYPE=#[userType],USER_WORKNUMBER=#[userWorknumber],USER_WORKTEL=#[userWorktel],WORKLENGTH=#[worklength] where USER_ID=#[userId]
