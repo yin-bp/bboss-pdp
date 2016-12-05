@@ -536,16 +536,32 @@ var Sysmanager = new function(){
 	
 	 var showOrgUsers = function(departId){
 		 setDepartid(departId);
-	   	  var table = $( "#datatable_userlist" ).DataTable()
-	   	   $("#datatable_userlist tr.filter .form-control").each(function() {
-	             $(this).val('');
-	      });
-	   	   table.ajax.url( "../sysmanager/user/getDepartUsers.page?departId="+departId ).load();
+		 showUsers();
+		 showOrgs();
+      }
+	 
+	 var showOrgs = function(departId){
+		 if(departId)
+			 setDepartid(departId);
+		 else
+			 departId = getDepartId();
 	   	   table = $( "#datatable_orglist" ).DataTable()
 	   	   $("#datatable_orglist tr.filter .form-control").each(function() {
 	             $(this).val('');
 	      });
 	   	   table.ajax.url( "../sysmanager/org/getDeparts.page?departId="+departId ).load();
+      }
+	 
+	 var showUsers = function(departId){
+		 if(departId)
+			 setDepartid(departId);
+		 else
+			 departId = getDepartId();
+		 var table = $( "#datatable_userlist" ).DataTable()
+	   	   $("#datatable_userlist tr.filter .form-control").each(function() {
+	             $(this).val('');
+	      });
+	   	   table.ajax.url( "../sysmanager/user/getDepartUsers.page?departId="+departId ).load();
       }
 	var validateDepart = function(){
 		 var dptid = Sysmanager.getDepartId();
@@ -579,7 +595,14 @@ var Sysmanager = new function(){
 		},
 		getOrgList:function(departId){
 			getOrgList(departId);
-		}
+		},
+		showOrgs: function(departId){
+			showOrgs(departId)
+	      },
+		 
+		 showUsers:function(departId){
+			 showUsers(departId);
+		 }
 		
 		
 	}

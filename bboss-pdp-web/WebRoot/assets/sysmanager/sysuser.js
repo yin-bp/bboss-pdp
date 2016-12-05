@@ -5,7 +5,7 @@ var SysUser = function(){
 	}
 	var afterSaveUser = function()
 	{
-		Sysmanager.showOrgUsers(Sysmanager.getDepartId());
+		Sysmanager.showUsers(Sysmanager.getDepartId());
 	}
 	
 	 var $modal;
