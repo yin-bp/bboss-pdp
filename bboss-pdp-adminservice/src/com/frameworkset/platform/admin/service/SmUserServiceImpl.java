@@ -158,7 +158,7 @@ public class SmUserServiceImpl implements SmUserService {
 			idcheckbox.append("<span class=\"label label-sm label-").append("warning").append("\">").append("未知").append("</span>");	 
 		
 	}
-	
+//	<button class="btn btn-outline green-sharp  uppercase" data-toggle="confirmation" data-placement="left">Confirmation on left</button>
 	private void getOps(String userId,StringBuilder idcheckbox)
 	{
 		 /**
@@ -188,44 +188,29 @@ public class SmUserServiceImpl implements SmUserService {
 //		.append("       <a href=\"javascript:Sysmanager.stopUser('").append(userId).append("');\"> 停用 </a>")
 //		.append("    </li>")
 //		.append("</ul>")
-//		.append("</div>");
+//		.append("</div>");		
+//		idcheckbox.append("<button userId=\"").append(userId).append("\" class=\"btn btn-outline btn-xs green-sharp  uppercase\" data-toggle=\"confirmation\" data-singleton=\"true\" data-placement=\"left\" buttons=\"");
+		idcheckbox.append("<button userId=\"").append(userId).append("\" class=\"btn btn-outline btn-xs green-sharp  uppercase\" data-toggle=\"user_ops_confirmation\"  data-singleton=\"true\" data-placement=\"left\" " );
+//		_getOps(  userId,  idcheckbox);
+		idcheckbox.append(">操作</button>");
 		
-		
-		idcheckbox.append("<div class=\"btn-group\">")
-		.append("<a class=\"btn btn-xs purple\" href=\"javascript:;\" data-toggle=\"dropdown\">")
-		.append("    <i class=\"fa fa-user\"></i> 操作")
-		.append("    <i class=\"fa fa-angle-down\"></i>")
-		.append("</a>")
-		.append("<ul class=\"dropdown-menu\">")
-		.append("    <li>")
-		.append("        <a href=\"javascript:;\" onclick=\"javascript:SysUser.viewUser('").append(userId).append("');\">")
-		.append("            <i class=\"fa fa-bullhorn\"></i> 查看 </a>")
-		.append("    </li>");
-		if(!AccessControl.isDefaultAdmin(userId))
-			idcheckbox.append("    <li>")
-				.append("       <a href=\"javascript:;\" onclick=\"javascript:SysUser.tomodifyUser('").append(userId).append("');\">")
-				.append("           <i class=\"fa fa-pencil\"></i> 修改 </a>")
-				.append("    </li>")
-				.append("    <li>")
-				.append("       <a href=\"javascript:;\" onclick=\"javascript:SysUser.modifyUser('").append(userId).append("');\">")
-				.append("           <i class=\"fa fa-pencil\"></i> 授权 </a>")
-				.append("    </li>")
-				.append("    <li>")
-				.append("        <a href=\"javascript:;\" onclick=\"javascript:SysUser.delUser('").append(userId).append("');\">")
-				.append("            <i class=\"fa fa-trash-o\"></i> 删除 </a>")
-				.append("    </li>")
-				.append("    <li class=\"divider\"> </li>")
-				.append("    <li>")
-				.append("        <a href=\"javascript:;\" onclick=\"javascript:SysUser.stopUser('").append(userId).append("');\">")
-				.append("            <i class=\"fa fa-ban\"></i> 停用 </a>")
-				.append("    </li>");
-		idcheckbox.append("    <li>")
-		.append("       <a href=\"javascript:;\" onclick=\"javascript:SysUser.resetPassword('").append(userId).append("');\">")
-		.append("           <i class=\"fa fa-pencil\"></i> 重置口令 </a>")
-		.append("    </li>")
+	}
+	private void _getOps(String userId,StringBuilder ops)
+	{
 
-		.append("</ul>")
-		.append("</div>");
+		ops.append(" 查看 :SysUser.viewUser:fa-pencil");
+		
+		if(!AccessControl.isDefaultAdmin(userId)){
+			ops.append(", 修改 :SysUser.tomodifyUser:fa-pencil");
+			ops.append(", 授权 :SysUser.authUser:fa-pencil");
+			ops.append(", 删除 :SysUser.delUser:fa-trash-o");
+			ops.append(", 停用 :SysUser.stopUser:fa-ban");
+		}
+		 
+		ops.append(", 重置口令 :SysUser.resetPassword:fa-pencil");
+		 
+			
+		 
 	}
 	
 	private String getSexName(String sexCode)

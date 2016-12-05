@@ -42,7 +42,7 @@ var Sysmanager = new function(){
 			    var currentNode = e.node;
 			    //console.table(currentNode);
 			    //console.table(obj)
-			    console.dir(currentNode);
+			   // console.dir(currentNode);
 			    var departid = currentNode.id;
 			    if(currentNode.parent == "#")
 			    	departid = '0';
@@ -59,6 +59,96 @@ var Sysmanager = new function(){
             autoclose: true
         });
     }
+	var ContentMethod = function(content)
+	{
+		 var content_ =  
+		          '<div class="btn-group">'+
+		            '<a class="btn btn-xs btn-default" ><i class=\"fa fa-pencil\"></i>查看</a>'+		              
+		          '</div>';
+		return content_;
+	}
+	/**
+	 * ops.append(" 查看 :SysUser.viewUser:fa-pencil");
+		
+		if(!AccessControl.isDefaultAdmin(userId)){
+			ops.append(", 修改 :SysUser.tomodifyUser:fa-pencil");
+			ops.append(", 授权 :SysUser.authUser:fa-pencil");
+			ops.append(", 删除 :SysUser.delUser:fa-trash-o");
+			ops.append(", 停用 :SysUser.stopUser:fa-ban");
+		}
+		 
+		ops.append(", 重置口令 :SysUser.resetPassword:fa-pencil");
+	 */
+	var userButtonMethods = function()
+	{
+		
+		 var content_ = [
+		                 {
+		                     class: 'btn btn-xs btn-default',
+		                     icon: 'fa fa-pencil',
+		                     label:'查看',
+		                     onClick: function() {
+		                    	
+		                    	 var userId = $(this).attr("userId");
+		                    	 SysUser.viewUser(userId)
+		                     }
+		                   },
+		                   {
+		                     class: 'btn  btn-xs btn-default',
+		                     icon: 'fa fa-pencil',
+		                     label:'修改',
+		                     onClick: function() {
+
+		                    	 var userId = $(this).attr("userId");
+		                    	 SysUser.tomodifyUser(userId)
+		                     }
+		                   },
+		                   {
+		                     class: 'btn  btn-xs btn-default',
+		                     icon: 'fa fa-pencil',
+		                     label:'授权',
+		                     onClick: function() {
+		                    	 var userId = $(this).attr("userId");
+		                    	 SysUser.toauthUser(userId)
+		                     }
+		                   },
+		                   {
+		                     class: 'btn  btn-xs btn-danger',
+		                     icon: 'fa fa-trash-o',
+		                     label:'删除' ,
+		                     onClick: function() {
+		                    	 var userId = $(this).attr("userId");
+		                    	 SysUser.delUser(userId)
+			                  }
+		                   }
+		                   ,
+		                   {
+		                     class: 'btn  btn-xs btn-danger',
+		                     icon: 'fa fa-ban',
+		                     label:'停用' ,
+		                     onClick: function() {
+		                    	 var userId = $(this).attr("userId");
+		                    	 SysUser.stopUser(userId)
+			                 }
+		                   },
+		                   {
+		                     class: 'btn  btn-xs btn-default',
+		                     icon: 'fa fa-pencil',
+		                     label:'重置口令',
+		                     onClick: function() {
+		                    	 var userId = $(this).attr("userId");
+		                    	 SysUser.tomodifyUser(userId)
+			                 }
+		                     
+		                   },
+		                   {
+		                	   class: 'btn  btn-xs btn-default',
+		                	      icon: 'glyphicon glyphicon-remove',
+		                	      cancel: true
+			                   }
+		                 ];
+		return content_;
+	}
 	//初始化用户列表
 	var getUserList = function (departId) {
 		setDepartid(departId);
@@ -73,7 +163,7 @@ var Sysmanager = new function(){
 	            fixedHeaderOffset = 64; // admin 5 fixed height
 	        }
         var grid = new Datatable();
-
+       
         grid.init({
             src: $("#datatable_userlist"),
             onSuccess: function (grid, response) {
@@ -99,6 +189,47 @@ var Sysmanager = new function(){
                  fixedHeader: {
                      header: true,
                      headerOffset: fixedHeaderOffset
+                 },
+                 "drawCallback": function( settings ) {
+                	 $('[data-toggle=user_ops_confirmation]').confirmation({
+                		  rootSelector: '[data-toggle=user_ops_confirmation]',
+                		  singleton:true,
+                		  copyAttributes:"userId ops",
+                		  template:'<div class="popover confirmation">' +
+                	      '<div class="arrow"></div>' +
+                	      
+                	      '<div class="popover-content">' +
+                	        '<p class="confirmation-content"></p>' +
+                	        '<div class="confirmation-buttons">' +
+                	          '<div class="btn-group">' +
+                	            '<a href="#" class="btn" data-apply="confirmation"></a>' +
+                	            '<a href="#" class="btn" data-dismiss="confirmation"></a>' +
+                	          '</div>' +
+                	        '</div>' +
+                	      '</div>' +
+                	    '</div>',
+      				      buttons:userButtonMethods()
+                		});
+                	 /**
+                	 $('[data-toggle=popover]').popover({
+                		// selector: '',
+                		 trigger: 'click',
+    					placement: 'left', //top, bottom, left or right
+    					title: "选择要执行的操作:",
+    					html: 'true',
+    					content: ContentMethod(''),
+    					template:'<div class="popover confirmation">' +
+    			        '<div class="arrow"></div>' +           		       
+    				        '<div class="popover-content text-center">'+
+    				         
+    				        '</div>'+
+    				      '</div>'
+    				});*/
+                	 
+                     //var api = this.api();
+              
+                     // Output the data for the visible rows to the browser's console
+                     //console.log( api.rows( {page:'current'} ).data() );
                  },
                  "pagingType": "bootstrap_extended",
             	 "ordering": false,  "searching": false,
