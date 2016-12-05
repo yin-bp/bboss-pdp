@@ -23,6 +23,8 @@ import java.sql.Timestamp;
  * v1.0
  */
 public class SmOrganization implements java.io.Serializable {
+	private String checkbox;
+	private String ops;
 	/**
 	 * 流水号
 	 */
@@ -88,6 +90,8 @@ public class SmOrganization implements java.io.Serializable {
 	 * 部门领导
 	 */
 	private String orgleader;
+	private String orgleaderName;
+	private String orgleaderRealName;
 	/**
 	 * 机构编号
 	 */
@@ -365,6 +369,30 @@ public class SmOrganization implements java.io.Serializable {
 
 	public String getSatrapjobid() {
 		return satrapjobid;
+	}
+	public String getCheckbox() {
+		return checkbox;
+	}
+	public void setCheckbox(String checkbox) {
+		this.checkbox = checkbox;
+	}
+	public String getOps() {
+		return ops;
+	}
+	public void setOps(String ops) {
+		this.ops = ops;
+	}
+	public String getOrgleaderName() {
+		return orgleaderName;
+	}
+	public void setOrgleaderName(String orgleaderName) {
+		this.orgleaderName = orgleaderName;
+	}
+	public String getOrgleaderRealName() {
+		return orgleaderRealName;
+	}
+	public void setOrgleaderRealName(String orgleaderRealName) {
+		this.orgleaderRealName = orgleaderRealName;
 	}
 
 }

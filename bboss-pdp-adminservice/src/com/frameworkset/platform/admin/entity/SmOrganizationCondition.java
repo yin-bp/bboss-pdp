@@ -22,6 +22,7 @@ package com.frameworkset.platform.admin.entity;
  * yinbp @version v1.0
  */
 public class SmOrganizationCondition implements java.io.Serializable {
+	
 	/**
 	 * 机构编码
 	 */
@@ -30,8 +31,11 @@ public class SmOrganizationCondition implements java.io.Serializable {
 	 * 机构名称
 	 */
 	private String orgName;
+	private String remark3;
+	
 	private String sortKey;
 	private boolean sortDesc;
+	private String departId;
 	public SmOrganizationCondition() {
 	}
 	public void setCode(String code) {
@@ -64,6 +68,18 @@ public class SmOrganizationCondition implements java.io.Serializable {
 
 	public boolean getSortDesc() {
 		return sortDesc;
+	}
+	public String getRemark3() {
+		return remark3;
+	}
+	public void setRemark3(String remark3) {
+		this.remark3 = remark3;
+	}
+	public String getDepartId() {
+		return departId;
+	}
+	public void setDepartId(String departId) {
+		this.departId = departId;
 	}
 
 }

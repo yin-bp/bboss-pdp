@@ -184,10 +184,7 @@ public class SmUserController {
 				data.setRecordsFiltered((int)smUsers.getTotalSize());
 				data.setRecordsTotal((int)smUsers.getTotalSize());
 			}
-			if(StringUtil.isNotEmpty(conditions.getDepartId()))
-			{
-				model.addAttribute("departId", conditions.getDepartId());
-			}
+			 
 			
 			return data;
 		} catch (SmUserException e) {

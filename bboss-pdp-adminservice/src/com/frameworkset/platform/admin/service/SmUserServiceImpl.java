@@ -190,28 +190,26 @@ public class SmUserServiceImpl implements SmUserService {
 //		.append("</ul>")
 //		.append("</div>");		
 //		idcheckbox.append("<button userId=\"").append(userId).append("\" class=\"btn btn-outline btn-xs green-sharp  uppercase\" data-toggle=\"confirmation\" data-singleton=\"true\" data-placement=\"left\" buttons=\"");
-		idcheckbox.append("<button userId=\"").append(userId).append("\" class=\"btn btn-outline btn-xs green-sharp  uppercase\" data-toggle=\"user_ops_confirmation\"  data-singleton=\"true\" data-placement=\"left\" " );
-//		_getOps(  userId,  idcheckbox);
-		idcheckbox.append(">操作</button>");
+		idcheckbox.append("<button userId=\"").append(userId).append("\" class=\"btn btn-outline btn-xs green-sharp  uppercase\" data-toggle=\"user_ops_confirmation\"  data-singleton=\"true\" data-placement=\"left\">操作</button>");
 		
 	}
-	private void _getOps(String userId,StringBuilder ops)
-	{
-
-		ops.append(" 查看 :SysUser.viewUser:fa-pencil");
-		
-		if(!AccessControl.isDefaultAdmin(userId)){
-			ops.append(", 修改 :SysUser.tomodifyUser:fa-pencil");
-			ops.append(", 授权 :SysUser.authUser:fa-pencil");
-			ops.append(", 删除 :SysUser.delUser:fa-trash-o");
-			ops.append(", 停用 :SysUser.stopUser:fa-ban");
-		}
-		 
-		ops.append(", 重置口令 :SysUser.resetPassword:fa-pencil");
-		 
-			
-		 
-	}
+//	private void _getOps(String userId,StringBuilder ops)
+//	{
+//
+//		ops.append(" 查看 :SysUser.viewUser:fa-pencil");
+//		
+//		if(!AccessControl.isDefaultAdmin(userId)){
+//			ops.append(", 修改 :SysUser.tomodifyUser:fa-pencil");
+//			ops.append(", 授权 :SysUser.authUser:fa-pencil");
+//			ops.append(", 删除 :SysUser.delUser:fa-trash-o");
+//			ops.append(", 停用 :SysUser.stopUser:fa-ban");
+//		}
+//		 
+//		ops.append(", 重置口令 :SysUser.resetPassword:fa-pencil");
+//		 
+//			
+//		 
+//	}
 	
 	private String getSexName(String sexCode)
 	{

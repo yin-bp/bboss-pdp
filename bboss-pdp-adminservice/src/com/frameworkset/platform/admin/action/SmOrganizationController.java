@@ -18,8 +18,10 @@ package com.frameworkset.platform.admin.action;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.frameworkset.platform.common.DatagridBean;
 import org.frameworkset.platform.common.JSTreeNode;
 import org.frameworkset.platform.common.TreeNodeStage;
 import org.frameworkset.util.annotations.PagerParam;
@@ -43,6 +45,7 @@ public class SmOrganizationController {
 	private static Logger log = Logger.getLogger(SmOrganizationController.class);
 
 	private SmOrganizationService smOrganizationService;
+	
 	public @ResponseBody List<JSTreeNode> getChildrens(String parent)
 	{
 		if(StringUtil.isEmpty(parent))
@@ -152,26 +155,31 @@ public class SmOrganizationController {
 		}
 
 	}
-	public String queryListInfoSmOrganizations(SmOrganizationCondition conditions,
-			@PagerParam(name = PagerParam.SORT, defaultvalue = "ORG_TREE_LEVEL") String sortKey,
-			@PagerParam(name = PagerParam.DESC, defaultvalue = "false") boolean desc,
-			@PagerParam(name = PagerParam.OFFSET) long offset,
-			@PagerParam(name = PagerParam.PAGE_SIZE, defaultvalue = "10") int pagesize, ModelMap model)
+	public @ResponseBody DatagridBean getDeparts(SmOrganizationCondition conditions,int draw,int start,int length,Map<String,String> datas) 
 					throws SmOrganizationException {
 		// Constant.component_type_actionimpl
 		try {
-			if (sortKey != null && !sortKey.equals("")) {
-				conditions.setSortKey(sortKey);
-				conditions.setSortDesc(desc);
-			}
+			 
 			String orgName = conditions.getOrgName();
 			if (orgName != null && !orgName.equals("")) {
 				conditions.setOrgName("%" + orgName + "%");
 			}
 
-			ListInfo smOrganizations = smOrganizationService.queryListInfoSmOrganizations(conditions, offset, pagesize);
-			model.addAttribute("smOrganizations", smOrganizations);
-			return "path:queryListInfoSmOrganizations";
+			ListInfo smOrganizations = smOrganizationService.queryListInfoSmOrganizations(conditions, start, length);
+			DatagridBean data = new DatagridBean();
+			data.setDraw(draw);
+			if(smOrganizations != null)
+			{
+				if(smOrganizations.getDatas() != null)
+					data.setData(smOrganizations.getDatas());
+				else
+					data.setData(new ArrayList(0));
+				data.setRecordsFiltered((int)smOrganizations.getTotalSize());
+				data.setRecordsTotal((int)smOrganizations.getTotalSize());
+			}
+			 
+			
+			return data;
 		} catch (SmOrganizationException e) {
 			throw e;
 		} catch (Exception e) {

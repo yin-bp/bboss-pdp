@@ -31,25 +31,34 @@
 			select * from td_sm_organization where ORG_ID=?
 		]]>
 	</property>
-	
+	<!-- 查询启用状态的直接下级部门 -->
 	<property name="selectChildren">
 		<![CDATA[
 			select * from td_sm_organization where parent_id=? and remark3='1'  order by org_sn
 		]]>
 	</property>
+	<!-- 查询所有状态的直接下级部门 -->
+	<property name="selectAllChildren">
+		<![CDATA[
+			select * from td_sm_organization where parent_id=?  order by org_sn
+		]]>
+	</property>
 	<property name="queryListSmOrganization">
 		<![CDATA[
-			select * from td_sm_organization where 1=1
-						#if($code && !$code.equals(""))
-				and CODE =#[code]		
+			select o.*,u.USER_NAME as orgleaderName,u.USER_REALNAME as orgleaderRealName from td_sm_organization o left join td_sm_user u on u.user_id = o.orgleader where o.parent_id=#[departId] 
+			#if($code && !$code.equals(""))
+				and o.CODE =#[code]		
 			#end
-								#if($orgName && !$orgName.equals(""))
-				and ORG_NAME like #[orgName]		
+			#if($orgName && !$orgName.equals(""))
+				and o.ORG_NAME like #[orgName]		
+			#end
+			#if($remark3 && !$remark3.equals(""))
+				and o.remark3 = #[remark3]		
 			#end
 			#if($sortKey && !$sortKey.equals(""))
-				order by $sortKey #if($sortDesc)desc#else asc#end
+				order by o.$sortKey #if($sortDesc)desc#else asc#end
 			#else
-				order by org_sn
+				order by o.org_sn
 			#end
 
 		]]>

@@ -59,16 +59,20 @@
 								<div class="row">
 									 <div class="col-md-12">
                                 
-                                <!-- Begin: UserList Datatable 1 -->
+                                <!-- Begin: UserList Datatable  -->
                                 	<%@ include file="/jsp/sysmanager/user/userlist.jsp"%>
-                                <!-- End: UserList Datatable 1 -->
+                                <!-- End: UserList Datatable  -->
                                 
-                            	</div>
+                            		</div>
 								</div>
 							</div>
 							<!--tab_1_2-->
 							<div class="tab-pane" id="tab_1_1_2">
-								<div class="row  "><div class="col-md-12">ddd</div></div>
+								<div class="row  "><div class="col-md-12">
+   								<!-- Begin: UserList Datatable  -->
+                                	<%@ include file="/jsp/sysmanager/org/orglist.jsp"%>
+                                <!-- End: UserList Datatable  -->
+								</div></div>
 							</div>
 							 
 						</div>
@@ -110,6 +114,7 @@
 		Sysmanager.initorg_tree(); //  initorg_tree core componets
 		Sysmanager.initPickers();
 		Sysmanager.getUserList('0');
+		Sysmanager.getOrgList('0');
 		
 	});
 </script>

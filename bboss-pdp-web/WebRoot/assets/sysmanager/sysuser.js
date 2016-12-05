@@ -1,14 +1,7 @@
 var SysUser = function(){
 	var usercontextpath;
 	var validateDepart = function(){
-		 var dptid = Sysmanager.getDepartId();
-		  if(!dptid || dptid == '' || dptid == '0')
-		  {
-			  PlatformCommonUtils.warn("请选择一个机构再操作!");
-			  return false;
-		  }
-		 
-		   return true;
+		return Sysmanager.validateDepart();
 	}
 	var afterSaveUser = function()
 	{
@@ -32,6 +25,7 @@ var SysUser = function(){
            
             var el = $(this);
             var vr = validateDepart();
+           
              if(!vr)
             {
            	  return;

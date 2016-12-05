@@ -115,7 +115,7 @@ public class SmOrganizationServiceImpl implements SmOrganizationService {
 			parent = "0";
 		}
 		try {
-			List<SmOrganization> beans = executor.queryList(SmOrganization.class, "selectChildren",
+			List<SmOrganization> beans = executor.queryList(SmOrganization.class, "selectAllChildren",
 					parent);
 			return beans;
 		} catch (Exception e) {
