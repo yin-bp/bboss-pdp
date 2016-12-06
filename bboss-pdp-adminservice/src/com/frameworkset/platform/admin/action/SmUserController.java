@@ -243,4 +243,14 @@ public class SmUserController {
 		return "path:index";
 
 	}
+	public @ResponseBody String updateUserStatus(String userId,String user_updatetype){
+		try {
+			smUserService.updateUserStatus(userId,user_updatetype);
+			return "success";
+		} catch (Throwable e) {
+			log.error("updateUserStatus failed:", e);
+			return StringUtil.formatBRException(e);
+		}
+		
+	}
 }

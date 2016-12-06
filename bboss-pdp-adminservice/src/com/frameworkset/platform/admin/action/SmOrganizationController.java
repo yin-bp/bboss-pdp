@@ -46,7 +46,7 @@ public class SmOrganizationController {
 
 	private SmOrganizationService smOrganizationService;
 	
-	public @ResponseBody List<JSTreeNode> getChildrens(String parent)
+	public @ResponseBody List<JSTreeNode> getChildrens(String parent,boolean isuser)
 	{
 		if(StringUtil.isEmpty(parent))
 			return null;
@@ -72,6 +72,22 @@ public class SmOrganizationController {
 			root.setState(state);
 			treeNodes = new ArrayList<JSTreeNode>();
 			treeNodes.add(root);
+			if(isuser)
+			{
+				JSTreeNode lisan = new JSTreeNode();
+				lisan.setText("待岗用户");
+				lisan.setId("lisan");
+				lisan.setType("lisan");
+				
+				//root.setId("#");
+				 state = new TreeNodeStage();
+				state.setDisabled(false);
+				state.setOpened(true);
+				state.setSelected(false);
+				lisan.setState(state);
+				
+				treeNodes.add(lisan);
+			}
 			
 			return treeNodes;
 		}

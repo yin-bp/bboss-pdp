@@ -12,7 +12,7 @@
 	<form action="#" class="form-horizontal" id="form_sys_modifyuser">
 		<div class="form-body">
 		<input type="hidden" class="form-control" name="departId"  id="departId" value="<pg:cell colName="departId"/>">
-		
+		<input type="hidden" class="form-control" name="userSn"   value="<pg:cell colName="userSn"/>">
 		<div class="row">
 			<div class="col-md-6" >
 				<div class="form-group  form-md-line-input">
@@ -20,7 +20,7 @@
 					</label>
 					 
 					<div class="col-md-9">
-						<input type="hidden"  name="userName" value="<pg:cell colName="userRealname"/>" >
+						<input type="hidden"  name="userName" value="<pg:cell colName="userName"/>" >
 						<input type="hidden"  name="userId" value="<pg:cell colName="userId"/>" >
 						<p class="form-control-static"> <pg:cell colName="userName"/> </p>
 					</div>

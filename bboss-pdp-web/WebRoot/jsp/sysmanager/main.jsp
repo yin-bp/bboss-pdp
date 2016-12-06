@@ -49,9 +49,9 @@
 				<div class="col-md-10">
 					<div class="tabbable-line tabbable-full-width">
 						<ul class="nav nav-tabs">
-							<li class="active"><a href="#tab_1_1_1" data-toggle="tab">
+							<li class="active"><a href="#tab_1_1_1" data-toggle="tab" onclick="javascript:Sysmanager.showUsers(Sysmanager.getDepartId());">
 									 用户 </a></li>
-							 <li><a href="#tab_1_1_2" data-toggle="tab"> 子机构 </a></li>
+							 <li><a href="#tab_1_1_2" data-toggle="tab"  onclick="javascript:Sysmanager.showOrgs(Sysmanager.getDepartId());"> 子机构 </a></li>
 							 
 						</ul>
 						<div class="tab-content">
@@ -106,9 +106,7 @@
 	src="${pageContext.request.contextPath}/assets/global/plugins/jstree/dist/jstree.min.js"
 	type="text/javascript"></script>
 <!-- END PAGE LEVEL PLUGINS -->
-<script
-	src="${pageContext.request.contextPath}/assets/sysmanager/sysmanager.js"
-	type="text/javascript"></script>
+
 <script type="text/javascript">
 	jQuery(document).ready(function() {
 		Sysmanager.initorg_tree(); //  initorg_tree core componets

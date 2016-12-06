@@ -34,6 +34,11 @@ public class SmUser implements java.io.Serializable {
 	 * 部门ID
 	 */
 	private String departId;
+	private String departName;
+	
+	private String leaderid;
+	private String leaderaccount;
+	private String leadername;
 	/**
 	 * 注册时间
 	 */
@@ -184,11 +189,24 @@ public class SmUser implements java.io.Serializable {
 	 */
 	private String worklength;
 	private String departjobs;
-	private String sexName;
-	private String userTypeName;
-	private String userIsvalidName;
+	
 	public SmUser() {
 	}
+	 private boolean defaultAdmin;
+		
+		
+	 
+
+
+		public boolean isDefaultAdmin() {
+			return defaultAdmin;
+		}
+
+
+		public void setDefaultAdmin(boolean defaultAdmin) {
+			this.defaultAdmin = defaultAdmin;
+		}
+
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
@@ -522,23 +540,30 @@ public class SmUser implements java.io.Serializable {
 	public void setDepartjobs(String departjobs) {
 		this.departjobs = departjobs;
 	}
-	public String getSexName() {
-		return sexName;
+	
+	public String getDepartName() {
+		return departName;
 	}
-	public void setSexName(String sexName) {
-		this.sexName = sexName;
+	public void setDepartName(String departName) {
+		this.departName = departName;
 	}
-	public String getUserTypeName() {
-		return userTypeName;
+	public String getLeaderid() {
+		return leaderid;
 	}
-	public void setUserTypeName(String userTypeName) {
-		this.userTypeName = userTypeName;
+	public void setLeaderid(String leaderid) {
+		this.leaderid = leaderid;
 	}
-	public String getUserIsvalidName() {
-		return userIsvalidName;
+	public String getLeaderaccount() {
+		return leaderaccount;
 	}
-	public void setUserIsvalidName(String userIsvalidName) {
-		this.userIsvalidName = userIsvalidName;
+	public void setLeaderaccount(String leaderaccount) {
+		this.leaderaccount = leaderaccount;
+	}
+	public String getLeadername() {
+		return leadername;
+	}
+	public void setLeadername(String leadername) {
+		this.leadername = leadername;
 	}
 
 }

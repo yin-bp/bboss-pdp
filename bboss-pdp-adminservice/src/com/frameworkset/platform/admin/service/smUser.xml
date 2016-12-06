@@ -43,6 +43,11 @@
 			update td_sm_user set USER_ISVALID=0  where USER_ID=?
 		]]>
 	</property>
+	<property name="updateUserStatus">
+		<![CDATA[
+			update td_sm_user set USER_ISVALID=?  where USER_ID=?
+		]]>
+	</property>
 		<property name="updateSmUser">
 		<![CDATA[
 			update td_sm_user set USER_ID=#[userId],CERT_SN=#[certSn],DEPART_ID=#[departId],DREDGE_TIME=#[dredgeTime],ISTAXMANAGER=#[istaxmanager],LASTLOGIN_DATE=#[lastloginDate],LOGON_IP=#[logonIp],Password_DualTime=#[passwordDualtime],PASSWORD_TEXT=#[passwordText],PASSWORD_UPDATETIME=#[passwordUpdatetime],PAST_TIME=#[pastTime],POLITICS=#[politics],REMARK1=#[remark1],REMARK2=#[remark2],REMARK3=#[remark3],REMARK4=#[remark4],REMARK5=#[remark5],update_time=#[updateTime],USER_ADDRESS=#[userAddress],USER_BIRTHDAY=#[userBirthday],USER_EMAIL=#[userEmail],USER_FAX=#[userFax],USER_HOMETEL=#[userHometel],USER_IDCARD=#[userIdcard],USER_ISVALID=#[userIsvalid],USER_LOGINCOUNT=#[userLogincount],USER_MOBILETEL1=#[userMobiletel1],USER_MOBILETEL2=#[userMobiletel2],USER_NAME=#[userName],USER_OICQ=#[userOicq],USER_PASSWORD=#[userPassword],USER_PINYIN=#[userPinyin],USER_POSTALCODE=#[userPostalcode],USER_REALNAME=#[userRealname],USER_REGDATE=#[userRegdate],USER_SEX=#[userSex],USER_SN=#[userSn],USER_TYPE=#[userType],USER_WORKNUMBER=#[userWorknumber],USER_WORKTEL=#[userWorktel],WORKLENGTH=#[worklength] where USER_ID=#[userId]
@@ -53,6 +58,15 @@
 			select * from td_sm_user where USER_ID=?
 		]]>
 	</property>
+	
+	<property name="getSmUserByNAMECNName">
+		<![CDATA[
+			select u.*,o.org_name as departName,bu.user_id as leaderid,bu.user_name as leaderaccount,bu.user_realname as leadername from td_sm_user u 
+			 left join td_sm_organization o on u.depart_Id = o.org_id 
+			 left join td_sm_user bu on bu.user_id = o.orgleader
+			  where u.USER_NAME =? or u.USER_WORKNUMBER = ? or u.user_email = ? or u.USER_MOBILETEL1 = ?
+		]]>
+	</property>
 	<property name="selectMaxSNofdepart">
 		<![CDATA[
 			select max(USER_SN)+1 from td_sm_user where DEPART_ID=?
@@ -60,7 +74,7 @@
 	</property>
 	<property name="getDepartUsers">
 		<![CDATA[
-			select * from td_sm_user where 1=1 
+			select u.*,o.org_name as departName from td_sm_user u left join td_sm_organization o on u.depart_id = o.org_id where 1=1 
 			#if( !$recursive  || $recursive.equals("0") || $recursive.equals("") )
 				and depart_id=#[departId]
 			#end

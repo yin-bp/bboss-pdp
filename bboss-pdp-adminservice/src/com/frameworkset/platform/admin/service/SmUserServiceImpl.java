@@ -22,6 +22,7 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.frameworkset.platform.common.Constants;
 import org.frameworkset.platform.security.AccessControl;
 import org.frameworkset.platform.security.authentication.EncrpyPwd;
 
@@ -30,7 +31,6 @@ import com.frameworkset.common.poolman.handle.ResultSetNullRowHandler;
 import com.frameworkset.orm.transaction.TransactionManager;
 import com.frameworkset.platform.admin.entity.SmUser;
 import com.frameworkset.platform.admin.entity.SmUserCondition;
-import com.frameworkset.platform.admin.entity.UIUser;
 import com.frameworkset.util.ListInfo;
 
 /**
@@ -94,6 +94,38 @@ public class SmUserServiceImpl implements SmUserService {
 		}
 
 	}
+	 /**
+     * user_updatetype:3 -停用 0 - 逻辑删除 1 - 物理删除  2- 启用用户
+     */
+	public void updateUserStatus(String userId,String user_updatetype) throws SmUserException {
+		 
+		try {
+			 
+			if( user_updatetype.equals("0"))//逻辑删除
+			{
+				executor.update("updateUserStatus", Constants.USER_STATUS_DELETE,userId);
+			}
+			else if( user_updatetype.equals("1"))
+			{
+				executor.deleteByKeys("deleteByKey", userId);//物理删除
+			}
+			else if( user_updatetype.equals("2"))
+			{
+				executor.update("updateUserStatus", Constants.USER_STATUS_NORMAL,userId);//物理删除
+			}
+			else if( user_updatetype.equals("3"))
+			{
+				executor.update("updateUserStatus",   Constants.USER_STATUS_STOP,userId);//物理删除
+			}
+			 
+		} catch (Throwable e) {
+
+			throw new SmUserException("修改用户状态失败::userId=" + userId, e);
+		} finally {
+			 
+		}
+
+	}
 	public void updateSmUser(SmUser smUser) throws SmUserException {
 		try {
 			if(StringUtils.isNotEmpty(smUser.getUserPassword())){
@@ -105,6 +137,11 @@ public class SmUserServiceImpl implements SmUserService {
 				
 				smUser.setUserPassword(EncrpyPwd.encodePassword(smUser.getPasswordText()));
 				
+			}
+			if(AccessControl.isDefaultAdmin(smUser.getUserId()))
+			{
+				smUser.setUserIsvalid(Constants.USER_STATUS_NORMAL);
+				smUser.setPasswordDualtime(-1);
 			}
 			executor.updateBean("updateSmUser", smUser);
 		} catch (Throwable e) {
@@ -121,155 +158,46 @@ public class SmUserServiceImpl implements SmUserService {
 		}
 
 	}
+	
+	public SmUser getSmUserByIDNAMECNName(String userId) throws SmUserException {
+		try {
+			SmUser bean = executor.queryObject(SmUser.class, "getSmUserByNAMECNName", userId,userId, userId,userId);
+			return bean;
+		} catch (Throwable e) {
+			throw new SmUserException("get SmUser failed::userId=" + userId, e);
+		}
+
+	}
+	
 	public ListInfo queryListInfoSmUsers(SmUserCondition conditions, long offset, int pagesize) throws SmUserException {
 		ListInfo datas = null;
 		try {
-			datas = executor.queryListInfoBean(UIUser.class, "queryListSmUser", offset, pagesize, conditions);
+			datas = executor.queryListInfoBean(SmUser.class, "queryListSmUser", offset, pagesize, conditions);
 		} catch (Exception e) {
 			throw new SmUserException("pagine query SmUser failed:", e);
 		}
 		return datas;
 
 	}
-	/**
-	 * <option value="2">开通</option>
-                                                                <option value="1">申请</option>
-                                                                <option value="3">停用</option>
-                                                                <option value="0">删除</option>
-                                                                
-                                                                 array("success" => "Pending"),
-    array("info" => "Closed"),
-    array("danger" => "On Hold"),
-    array("warning" => "Fraud")
-	 * @param state
-	 * @return
-	 */
-	private void getState(int state,StringBuilder idcheckbox)
-	{
-		if(state == 2)
-			idcheckbox.append("<span class=\"label label-sm label-").append("success").append("\">").append("开通").append("</span>");
-		else if(state == 3)
-			idcheckbox.append("<span class=\"label label-sm label-").append("warning").append("\">").append("停用").append("</span>");
-		else if(state == 0)
-			idcheckbox.append("<span class=\"label label-sm label-").append("danger").append("\">").append("删除").append("</span>");
-		else if(state == 1)
-			idcheckbox.append("<span class=\"label label-sm label-").append("info").append("\">").append("申请").append("</span>");	
-		else
-			idcheckbox.append("<span class=\"label label-sm label-").append("warning").append("\">").append("未知").append("</span>");	 
-		
-	}
-//	<button class="btn btn-outline green-sharp  uppercase" data-toggle="confirmation" data-placement="left">Confirmation on left</button>
-	private void getOps(String userId,StringBuilder idcheckbox)
-	{
-		 /**
-			idcheckbox.append("<a href=\"javascript:Sysmanager.viewUser('").append(userId).append("');\" class=\"btn btn-sm btn-outline grey-salsa\"><i class=\"fa fa-search\"></i> 查看</a>");	 
-			idcheckbox.append("<a href=\"javascript:Sysmanager.modifyUser('").append(userId).append("');\" class=\"btn btn-sm btn-outline grey-salsa\"><i class=\"fa fa-search\"></i> 修改</a>");
-			idcheckbox.append("<a href=\"javascript:Sysmanager.delUser('").append(userId).append("');\" class=\"btn btn-sm btn-outline grey-salsa\"><i class=\"fa fa-search\"></i> 删除</a>");	
-			idcheckbox.append("<a href=\"javascript:Sysmanager.stopUser('").append(userId).append("');\" class=\"btn btn-sm btn-outline grey-salsa\"><i class=\"fa fa-search\"></i> 停用</a>");
-			*/
-//		idcheckbox.append("<div class=\"btn-group\">")
-//		.append("<a class=\"btn red btn-outline btn-circle\" href=\"javascript:;\" data-toggle=\"dropdown\">")
-//		.append("    <i class=\"fa fa-share\"></i>")
-//		.append("   <span class=\"hidden-xs\"> 操作 </span>")
-//		.append("    <i class=\"fa fa-angle-down\"></i>")
-//		.append("</a>")
-//		.append("<ul class=\"dropdown-menu pull-right\">")
-//		.append("    <li>")
-//		.append("        <a href=\"javascript:Sysmanager.viewUser('").append(userId).append("');\"> 查看 </a>")
-//		.append("   </li>")
-//		.append("    <li>")
-//		.append("        <a href=\"javascript:Sysmanager.modifyUser('").append(userId).append("');\"> 修改 </a>")
-//		.append("    </li>")
-//		.append("    <li>")
-//		.append("        <a href=\"javascript:Sysmanager.delUser('").append(userId).append("');\"> 删除 </a>")
-//		.append("   </li>")
-//		.append("    <li class=\"divider\"> </li>")
-//		.append("   <li>")
-//		.append("       <a href=\"javascript:Sysmanager.stopUser('").append(userId).append("');\"> 停用 </a>")
-//		.append("    </li>")
-//		.append("</ul>")
-//		.append("</div>");		
-//		idcheckbox.append("<button userId=\"").append(userId).append("\" class=\"btn btn-outline btn-xs green-sharp  uppercase\" data-toggle=\"confirmation\" data-singleton=\"true\" data-placement=\"left\" buttons=\"");
-		idcheckbox.append("<button userId=\"").append(userId).append("\" class=\"btn btn-outline btn-xs green-sharp  uppercase\" data-toggle=\"user_ops_confirmation\"  data-singleton=\"true\" data-placement=\"left\">操作</button>");
-		
-	}
-//	private void _getOps(String userId,StringBuilder ops)
-//	{
-//
-//		ops.append(" 查看 :SysUser.viewUser:fa-pencil");
-//		
-//		if(!AccessControl.isDefaultAdmin(userId)){
-//			ops.append(", 修改 :SysUser.tomodifyUser:fa-pencil");
-//			ops.append(", 授权 :SysUser.authUser:fa-pencil");
-//			ops.append(", 删除 :SysUser.delUser:fa-trash-o");
-//			ops.append(", 停用 :SysUser.stopUser:fa-ban");
-//		}
-//		 
-//		ops.append(", 重置口令 :SysUser.resetPassword:fa-pencil");
-//		 
-//			
-//		 
-//	}
-	
-	private String getSexName(String sexCode)
-	{
-		 
-			if(sexCode == null || sexCode.equals("-1"))
-				return "未知";
-			else if( sexCode.equals("F"))
-				return "女";
-			else if(  sexCode.equals("M"))
-				return "男";
-			else 
-				return "未知";
-	}
-	/**
-	 *  <option value="0">系统用户</option>
-                                                                <option value="1">域用户</option>
-                                                                <option value="2">第三方用户</option>
-	 * @param type
-	 * @return
-	 */
-	private String getTypeName(String type)
-	{
-		 
-			if(type == null || type.equals("0"))
-				return "系统用户";
-			else if(  type.equals("1"))
-				return "域用户";
-			else if( type.equals("2"))
-				return "第三方用户";
-			else 
-				return "第三方用户";
-	}
-	
+
+
 	
 	
 	public ListInfo getDepartUsers(SmUserCondition conditions, long offset, int pagesize) throws SmUserException {
 		 
 		try {
-			final List<UIUser> users = new ArrayList<UIUser>();
+			final List<SmUser> users = new ArrayList<SmUser>();
 			ListInfo datas = executor.queryListInfoBeanByNullRowHandler(new ResultSetNullRowHandler(){
 
 				@Override
 				public void handleRow( ResultSet record) throws Exception {
-					UIUser rowValue = (UIUser) buildValueObject(record, UIUser.class);
+					SmUser rowValue = (SmUser) buildValueObject(record, SmUser.class);
 					users.add(rowValue);
-					StringBuilder idcheckbox = new StringBuilder();
-					if(!AccessControl.isDefaultAdmin(rowValue.getUserId()))
-					{
-						idcheckbox.append("<label class=\"mt-checkbox mt-checkbox-single mt-checkbox-outline\"><input name=\"userId\" type=\"checkbox\" class=\"checkboxes\" value=\"")
-						.append(rowValue.getUserId()).append("\"").append("/><span></span></label>");
-						rowValue.setCheckbox(idcheckbox.toString());
-						idcheckbox.setLength(0);
-					}
-					getState(rowValue.getUserIsvalid(),  idcheckbox);
-					rowValue.setUserIsvalidName(idcheckbox.toString());
-					idcheckbox.setLength(0);
-					getOps(rowValue.getUserId(),idcheckbox);
-					rowValue.setOps(idcheckbox.toString());
-					rowValue.setSexName(getSexName(rowValue.getUserSex()));
-					rowValue.setUserTypeName(getTypeName(rowValue.getUserType()));
+					rowValue.setDefaultAdmin(AccessControl.isDefaultAdmin(rowValue.getUserId()));
+					 
+					
+					
+					
 				}
 				
 			},"getDepartUsers", offset, pagesize, conditions);

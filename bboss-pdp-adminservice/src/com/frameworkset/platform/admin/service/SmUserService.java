@@ -31,7 +31,12 @@ public interface SmUserService {
 	public void deleteBatchSmUser(String[] userIds,String user_deltype) throws SmUserException;
 	public void updateSmUser(SmUser smUser) throws SmUserException;
 	public SmUser getSmUser(String userId) throws SmUserException;
+	public SmUser getSmUserByIDNAMECNName(String userId) throws SmUserException;
 	public ListInfo queryListInfoSmUsers(SmUserCondition conditions, long offset, int pagesize) throws SmUserException;
 	public List<SmUser> queryListSmUsers(SmUserCondition conditions) throws SmUserException;
 	public ListInfo getDepartUsers(SmUserCondition conditions, long offset, int pagesize) throws SmUserException ;
+	 /**
+     * user_updatetype:3 -停用 0 - 逻辑删除 1 - 物理删除  2- 启用用户
+     */
+	public void updateUserStatus(String userId,String user_updatetype) throws SmUserException;
 }

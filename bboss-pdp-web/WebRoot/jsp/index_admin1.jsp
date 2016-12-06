@@ -1464,13 +1464,14 @@ License: You must have a valid license purchased only from themeforest(the above
         <!-- BEGIN PAGE LEVEL SCRIPTS -->
         <script src="${pageContext.request.contextPath}/assets/pages/scripts/desktop-menus.js" type="text/javascript"></script>
         <script src="${pageContext.request.contextPath}/assets/global/scripts/util.js" type="text/javascript"></script>
-        
+       
          <!-- END PAGE LEVEL SCRIPTS -->
         <!-- BEGIN THEME LAYOUT SCRIPTS -->
         <script src="${pageContext.request.contextPath}/assets/layouts/layout/scripts/layout.min.js" type="text/javascript"></script>
         <script src="${pageContext.request.contextPath}/assets/layouts/layout/scripts/demo.min.js" type="text/javascript"></script>
         <script src="${pageContext.request.contextPath}/assets/layouts/global/scripts/quick-sidebar.min.js" type="text/javascript"></script>
         <script src="${pageContext.request.contextPath}/assets/layouts/global/scripts/quick-nav.min.js" type="text/javascript"></script>
+        
         <!-- END THEME LAYOUT SCRIPTS -->
         <script   type="text/javascript"> 
         jQuery(document).ready(function() {

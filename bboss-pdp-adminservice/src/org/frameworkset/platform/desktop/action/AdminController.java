@@ -86,6 +86,7 @@ public class AdminController {
 			model.addAttribute("menupath_menuid", "");
 		model.addAttribute("theme", theme);
 		model.addAttribute("theme_style", theme_style);
+		model.addAttribute("princpal",AccessControl.getAccessControl().getUserAttribute("title"));
 
 		return "path:index_admin_1";
 	}

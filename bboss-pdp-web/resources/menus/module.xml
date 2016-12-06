@@ -106,10 +106,11 @@
 		
 		<module name="系统管理" id="sysmanager" used="true" showleftmenu="false"  i18n:en_US="System Manage">
 		
-			<description>系统管理</description>		<item name="权限管理" id="usermanager"  i18n:en_US="usermanager Manage" >
+			<description>系统管理</description>		
+			<item name="用户管理" id="usermanager"  i18n:en_US="usermanager Manage" >
 				
 				<workspace>
-					<content>/sysmanager/index.page</content>
+					<content>/sysmanager/user/index.page</content>
 				</workspace>
 				<authoration>				 
 				 	<url>/purviewmanager/userorgmanager/org/*.jsp</url>	
@@ -120,7 +121,50 @@
 				 	<url>/purviewmanager/resmanager/*.jsp</url>					 			 
 				</authoration>
 			</item>
-
+			
+			<item name="部门管理" id="orgmanager"  i18n:en_US="orgmanager Manage" >
+				
+				<workspace>
+					<content>/sysmanager/org/index.page</content>
+				</workspace>
+				<authoration>				 
+				 	<url>/purviewmanager/userorgmanager/org/*.jsp</url>	
+				 	<url>/purviewmanager/userorgmanager/user/*.jsp</url>
+				 	<url>/purviewmanager/rolemanager/*.jsp</url>
+				 	<url>/purviewmanager/jobmanager/*.jsp</url>
+				 	<url>/purviewmanager/groupmanager/*.jsp</url>
+				 	<url>/purviewmanager/resmanager/*.jsp</url>					 			 
+				</authoration>
+			</item>
+			
+			<item name="角色管理" id="rolemanager"  i18n:en_US="rolemanager Manage" >
+				
+				<workspace>
+					<content>/sysmanager/role/index.page</content>
+				</workspace>
+				<authoration>				 
+				 	<url>/purviewmanager/userorgmanager/org/*.jsp</url>	
+				 	<url>/purviewmanager/userorgmanager/user/*.jsp</url>
+				 	<url>/purviewmanager/rolemanager/*.jsp</url>
+				 	<url>/purviewmanager/jobmanager/*.jsp</url>
+				 	<url>/purviewmanager/groupmanager/*.jsp</url>
+				 	<url>/purviewmanager/resmanager/*.jsp</url>					 			 
+				</authoration>
+			</item>
+			<item name="用户组管理" id="groupmanager"  i18n:en_US="groupmanager Manage" >
+				
+				<workspace>
+					<content>/sysmanager/group/index.page</content>
+				</workspace>
+				<authoration>				 
+				 	<url>/purviewmanager/userorgmanager/org/*.jsp</url>	
+				 	<url>/purviewmanager/userorgmanager/user/*.jsp</url>
+				 	<url>/purviewmanager/rolemanager/*.jsp</url>
+				 	<url>/purviewmanager/jobmanager/*.jsp</url>
+				 	<url>/purviewmanager/groupmanager/*.jsp</url>
+				 	<url>/purviewmanager/resmanager/*.jsp</url>					 			 
+				</authoration>
+			</item>
 			<item name="菜单管理" id="menumanage" area="main" i18n:en_US="Menu Manage" >
 					<mouseclickimg>html/images/jixiao.jpg</mouseclickimg>
 				<top>header.page</top>
