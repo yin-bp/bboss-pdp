@@ -17,6 +17,8 @@
 package com.frameworkset.platform.admin.entity;
 
 import java.sql.Timestamp;
+
+import com.frameworkset.orm.annotation.PrimaryKey;
 /**
  * <p>Title: SmOrganization</p> <p>Description: 机构管理管理服务实体类 </p> <p>bboss</p>
  * <p>Copyright (c) 2007</p> @Date 2016-11-28 16:33:16 @author yinbp @version
@@ -28,6 +30,7 @@ public class SmOrganization implements java.io.Serializable {
 	/**
 	 * 流水号
 	 */
+	@PrimaryKey
 	private String orgId;
 	/**
 	 * 主管部门
@@ -49,11 +52,11 @@ public class SmOrganization implements java.io.Serializable {
 	 * 创建人
 	 */
 	private String creator;
-	private long isdirectguanhu;
-	private long isdirectlyparty;
-	private long isforeignparty;
-	private long isjichaparty;
-	private long ispartybussiness;
+	private int isdirectguanhu;
+	private int isdirectlyparty;
+	private int isforeignparty;
+	private int isjichaparty;
+	private int ispartybussiness;
 	/**
 	 * 简拼
 	 */
@@ -73,7 +76,7 @@ public class SmOrganization implements java.io.Serializable {
 	/**
 	 * 机制排序号
 	 */
-	private long orgSn;
+	private int orgSn;
 	/**
 	 * 机构树层次码
 	 */
@@ -179,43 +182,43 @@ public class SmOrganization implements java.io.Serializable {
 		return creator;
 	}
 
-	public void setIsdirectguanhu(long isdirectguanhu) {
+	public void setIsdirectguanhu(int isdirectguanhu) {
 		this.isdirectguanhu = isdirectguanhu;
 	}
 
-	public long getIsdirectguanhu() {
+	public int getIsdirectguanhu() {
 		return isdirectguanhu;
 	}
 
-	public void setIsdirectlyparty(long isdirectlyparty) {
+	public void setIsdirectlyparty(int isdirectlyparty) {
 		this.isdirectlyparty = isdirectlyparty;
 	}
 
-	public long getIsdirectlyparty() {
+	public int getIsdirectlyparty() {
 		return isdirectlyparty;
 	}
 
-	public void setIsforeignparty(long isforeignparty) {
+	public void setIsforeignparty(int isforeignparty) {
 		this.isforeignparty = isforeignparty;
 	}
 
-	public long getIsforeignparty() {
+	public int getIsforeignparty() {
 		return isforeignparty;
 	}
 
-	public void setIsjichaparty(long isjichaparty) {
+	public void setIsjichaparty(int isjichaparty) {
 		this.isjichaparty = isjichaparty;
 	}
 
-	public long getIsjichaparty() {
+	public int getIsjichaparty() {
 		return isjichaparty;
 	}
 
-	public void setIspartybussiness(long ispartybussiness) {
+	public void setIspartybussiness(int ispartybussiness) {
 		this.ispartybussiness = ispartybussiness;
 	}
 
-	public long getIspartybussiness() {
+	public int getIspartybussiness() {
 		return ispartybussiness;
 	}
 
@@ -251,11 +254,11 @@ public class SmOrganization implements java.io.Serializable {
 		return orgName;
 	}
 
-	public void setOrgSn(long orgSn) {
+	public void setOrgSn(int orgSn) {
 		this.orgSn = orgSn;
 	}
 
-	public long getOrgSn() {
+	public int getOrgSn() {
 		return orgSn;
 	}
 

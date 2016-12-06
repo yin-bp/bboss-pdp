@@ -3,7 +3,307 @@ var SysOrg = function(){
 	var validateDepart = function(){
 		return Sysmanager.validateDepart();
 	}
+	var $modal;
+	 var initModal = function(){
+		 if($modal == null){
+			 $modal = $('#ajax-org-action-extend');
+			 $modal.draggable({
+		            handle: ".modal-header"
+		        });
+		 }
+	 }
+	var initAddOrgModalExtend = function(){
+		 
+		initModal();
+		 $('#button_sys_add_org').on('click', function(){
+           // create the backdrop and wait for next modal to be triggered
+          
+           var el = $(this);
+           var vr = validateDepart();
+          
+            if(!vr)
+           {
+          	  return;
+           }	  
+           // https://github.com/jschr/bootstrap-modal
+           $modal.load(usercontextpath+"/sysmanager/org/toAddSmOrganization.page", {
+          	 "departId":Sysmanager.getDepartId()
+           }, function(){
+          	 $modal.on('hidden.bs.modal', function () {
+          		 afterSaveOrg();
+     			 });
+               $modal.modal({
+              	 backdrop:"static",
+              	 width :"900px"
+               });
+              
+             });
+           
+         });
+		
+	   	
+ 	 
+	}
+	
+	
+	
+	var closeOrgActionModel = function(){
+		//var $modal = $('#ajax-user-add').modal('hide');
+		
+		 $('#ajax-org-action-extend').modal('hide');
+		
+	}
+	var initAddOrgButtonAction = function(){
+  	 $("#sys_addOrg_button").bind('click',function(){
+  		saveOrg("#form_sys_addorg");
+  	 });
+   }
+	
+	var initModifyOrgButtonAction = function(){
+	   	 $("#sys_modifyOrg_button").bind('click',function(){
+	   		saveOrg("#form_sys_modifyorg");
+	   	 });
+	    }
+   
+   var saveOrg = function (formid){
+   	
+		  
+		
+		   $(formid).submit();
+		   
+		   return false;
+	   }
+   
+   var iniModifyOrgValidateform = function()
+	{
+		var form2 = $("#form_sys_modifyorg");		
+		form2.validate({
+					focusInvalid : false, // do not focus the last invalid
+											// input
+					ignore : "", // validate all fields including form hidden
+									// input
+					messages : {
+						
+						code : {
+								minlength : jQuery.validator.format("部门编码不能小于{0}个字符"),
+								required : "请输入部门编码"
+							},
 
+							orgName : {
+								minlength : jQuery.validator.format("部门名称不能小于{0}个字符"),
+								required : "请输入部门名称"
+							}
+					},
+					rules : {
+						code : {
+							minlength : 2,
+							required : true
+						},
+
+						orgName : {
+							minlength : 1,
+							required : true
+						}
+
+						
+					},
+
+					
+
+					submitHandler : function(form) {
+						// success1.show();
+						modifyorg()
+						
+					}
+				});
+	}
+   var initAddOrgValidateform = function()
+	{
+		var form2 = $("#form_sys_addorg");		
+		form2.validate({
+					focusInvalid : false, // do not focus the last invalid
+											// input
+					ignore : "", // validate all fields including form hidden
+									// input
+					messages : {
+						
+						code : {
+								minlength : jQuery.validator.format("部门编码不能小于{0}个字符"),
+								required : "请输入部门编码"
+							},
+
+							orgName : {
+								minlength : jQuery.validator.format("部门名称不能小于{0}个字符"),
+								required : "请输入部门名称"
+							}
+					},
+					rules : {
+						code : {
+							minlength : 2,
+							required : true
+						},
+
+						orgName : {
+							minlength : 1,
+							required : true
+						}
+
+						
+					},
+
+					
+
+					submitHandler : function(form) {
+						// success1.show();
+						addorg()
+						
+					}
+				});
+	}
+   var addorg = function()
+	{
+		$("#form_sys_addorg")
+		.ajaxSubmit(
+				{
+					type : 'POST',
+					url : usercontextpath+'/sysmanager/org/addSmOrganization.page',
+					forceSync : false,
+					dataType : 'json',
+					beforeSubmit : function() {
+						 App.startPageLoading({message: '保存中...'});
+
+				           
+					},
+					error : function(xhr, ajaxOptions,
+							thrownError) {
+						 
+					},
+
+					success : function(responseText,
+							statusText, xhr, $form) {
+						 
+						 window.setTimeout(function() {
+				                App.stopPageLoading();
+				            }, 2000);
+						var msg = responseText;
+						var title = '创建部门';
+						var tiptype = "success";
+						if (msg == 'success') {
+							msg = "创建部门成功!"
+						} else {
+							 
+							
+						}
+						PlatformCommonUtils.success(msg,function(){
+							closeOrgActionModel();
+						}) ;
+						/**swal({
+							  title: title,
+							  text: msg,
+							  type:tiptype,
+							  confirmButtonClass: "btn-success",
+							  confirmButtonText: "确定",
+							},
+							function(){
+								closeOrgActionModel();
+							});*/
+						/**
+						 bootbox.alert(msg, function() {
+			                    alert("Hello world callback");
+			                }); */
+
+					}
+
+				});
+	}
+	var modifyorg = function()
+	{
+		$("#form_sys_modifyorg")
+		.ajaxSubmit(
+				{
+					type : 'POST',
+					url : usercontextpath+'/sysmanager/org/updateSmOrganization.page',
+					forceSync : false,
+					dataType : 'json',
+					beforeSubmit : function() {
+						 App.startPageLoading({message: '保存中...'});
+
+				           
+					},
+					error : function(xhr, ajaxOptions,
+							thrownError) {
+						 
+					},
+
+					success : function(responseText,
+							statusText, xhr, $form) {
+						 
+						 window.setTimeout(function() {
+				                App.stopPageLoading();
+				            }, 2000);
+						var msg = responseText;
+						var title = '修改部门';
+						var tiptype = "success";
+						if (msg == 'success') {
+							msg = "部门修改成功！"
+						} else {
+							 
+							
+						}
+						PlatformCommonUtils.success(msg,function(){
+							closeOrgActionModel();
+						}) ;
+						/**swal({
+							  title: title,
+							  text: msg,
+							  type:tiptype,
+							  confirmButtonClass: "btn-success",
+							  confirmButtonText: "确定",
+							},
+							function(){
+								closeOrgActionModel();
+							});*/
+						/**
+						 bootbox.alert(msg, function() {
+			                    alert("Hello world callback");
+			                }); */
+
+					}
+
+				});
+	}
+    
+    
+   var viewOrg = function(orgId){
+   	initModal();
+   	 // https://github.com/jschr/bootstrap-modal
+       $modal.load(usercontextpath+"/sysmanager/user/getSmOrganization.page", {
+      	 "orgId":orgId
+       }, function(){
+      	 
+           $modal.modal({
+          	 backdrop:"static",
+          	 width :"900px"
+           });
+          
+         });
+   }
+   var tomodifyOrg = function(orgId){
+   	initModal();
+  	 // https://github.com/jschr/bootstrap-modal
+      $modal.load(usercontextpath+"/sysmanager/org/toUpdateSmOrganization.page", {
+     	 "orgId":orgId
+      }, function(){
+   	   $modal.on('hidden.bs.modal', function () {
+        		 afterSaveOrg();
+   			 });
+          $modal.modal({
+         	 backdrop:"static",
+         	 width :"900px"
+          });
+         
+        });
+   }
 	/**
 	设置部门操作按钮
 	 */
@@ -272,9 +572,9 @@ var SysOrg = function(){
 		 }
 	 }
 	 var afterSaveOrg = function()
-		{
-			showOrgs(Sysmanager.getDepartId());
-		}
+	{
+		showOrgs(Sysmanager.getDepartId());
+	}
 	var initAddOrgModalExtend = function(){
 		 
 		initModal();
@@ -317,10 +617,36 @@ var SysOrg = function(){
    	 //initAddUserModalExtend();
    	 //initDelUsers();
     }
+	var initAddOrg = function(){
+   	 initAddOrgButtonAction();
+   	 initAddOrgValidateform();
+    }
+	var initModifyOrg = function(){
+    	initModifyOrgButtonAction();
+   	    iniModifyOrgValidateform();
+    }
 	return {
 		init:function(relativepath){
 			init(relativepath);
 		},
+		initAddOrg:function(){
+			initAddOrg();
+    	},
+    	saveOrg:function(){
+    		saveOrg();
+    	},
+    	viewOrg:function(userId){
+    		viewOrg(userId);
+    	},
+    	tomodifyOrg:function(userId){
+    		tomodifyOrg(userId);
+    	},
+    	initModifyOrg:function(){
+    		initModifyOrg();
+    	},
+    	initDelOrgs:function(){
+    		initDelOrgs();
+    	},
 		getOrgList:function(departId){
 			getOrgList(departId);
 		},

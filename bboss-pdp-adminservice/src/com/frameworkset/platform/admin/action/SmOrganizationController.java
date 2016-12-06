@@ -119,10 +119,10 @@ public class SmOrganizationController {
 			return "success";
 		} catch (SmOrganizationException e) {
 			log.error("add SmOrganization failed:", e);
-			return StringUtil.formatBRException(e);
+			return "部门创建失败:"+ e.getMessage();
 		} catch (Throwable e) {
 			log.error("add SmOrganization failed:", e);
-			return StringUtil.formatBRException(e);
+			return "部门创建失败:"+ e.getMessage();
 		}
 
 	}
@@ -232,7 +232,10 @@ public class SmOrganizationController {
 		}
 
 	}
-	public String toAddSmOrganization() {
+	public String toAddSmOrganization(String departId,ModelMap model) {
+		if(departId == null || departId.equals(""))
+			departId = "0";
+		model.addAttribute("departId", departId);
 		return "path:addSmOrganization";
 	}
 	public String index() {
