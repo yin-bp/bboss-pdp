@@ -16,12 +16,15 @@
 
 package com.frameworkset.platform.admin.service;
 
-import com.frameworkset.platform.admin.entity.*;
-import com.frameworkset.util.ListInfo;
-import com.frameworkset.common.poolman.ConfigSQLExecutor;
-import org.apache.log4j.Logger;
 import java.util.List;
+
+import org.apache.log4j.Logger;
+
+import com.frameworkset.common.poolman.ConfigSQLExecutor;
 import com.frameworkset.orm.transaction.TransactionManager;
+import com.frameworkset.platform.admin.entity.SmOrganization;
+import com.frameworkset.platform.admin.entity.SmOrganizationCondition;
+import com.frameworkset.util.ListInfo;
 
 /**
  * <p>Title: SmOrganizationServiceImpl</p> <p>Description: 机构管理管理业务处理类 </p>
@@ -36,11 +39,29 @@ public class SmOrganizationServiceImpl implements SmOrganizationService {
 	private ConfigSQLExecutor executor;
 	public void addSmOrganization(SmOrganization smOrganization) throws SmOrganizationException {
 		// 业务组件
+		TransactionManager tm = new TransactionManager();
 		try {
+			tm.begin();
+			int org_sn = executor.queryObject(int.class, "selectMaxSNofdepart", smOrganization.getParentId());
+			smOrganization.setOrgSn(org_sn);
 			executor.insertBean("addSmOrganization", smOrganization);
+			String orgtreelevel = null;
+			if(smOrganization.getParentId() == null || smOrganization.getParentId().equals("0"))
+				orgtreelevel = OrgTreeLevel.TREE_BASE + OrgTreeLevel.CUT_UP + smOrganization.getOrgId();
+			else
+			{
+				orgtreelevel = executor.queryObject(String.class, "getorgtreelevel", smOrganization.getParentId());
+				orgtreelevel = orgtreelevel+OrgTreeLevel.CUT_UP + smOrganization.getOrgId();
+				
+			}
+			executor.update("updateorgtreelevel", orgtreelevel,smOrganization.getOrgId());
+			tm.commit();
 		} catch (Throwable e) {
 			throw new SmOrganizationException("add SmOrganization failed:", e);
+		} finally {
+			tm.release();
 		}
+
 
 	}
 	public void deleteSmOrganization(String orgId) throws SmOrganizationException {
@@ -122,4 +143,23 @@ public class SmOrganizationServiceImpl implements SmOrganizationService {
 			throw new SmOrganizationException("query Children SmOrganization failed:", e);
 		}
 	}
+	/** (non-Javadoc)
+	 * @see com.frameworkset.platform.admin.service.SmOrganizationService#getAllOrgs()
+	 */
+	@Override
+	public List<SmOrganization> getAllOrgs() throws SmOrganizationException {
+		List<SmOrganization> beans = null;
+		try {
+			beans = executor.queryList(SmOrganization.class, "getAllOrgs");
+		} catch (Exception e) {
+			throw new SmOrganizationException("getAllOrgs failed:", e);
+		}
+		return beans;
+	}
+	
+	public void buildTreeLevel() throws SmOrganizationException{
+		OrgTreeLevel.run(this);
+	}
+	
+	
 }

@@ -40,4 +40,9 @@ public interface SmOrganizationService {
 	 * @return
 	 */
 	public List<SmOrganization> getChildren(String parent)throws SmOrganizationException;
+	/**
+	 * @return
+	 */
+	public List<SmOrganization> getAllOrgs() throws SmOrganizationException;
+	public void buildTreeLevel() throws SmOrganizationException;
 }

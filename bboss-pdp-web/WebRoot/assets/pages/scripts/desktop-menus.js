@@ -129,6 +129,12 @@ var DesktopMenus = function() {
 	    gotomenu:function(menuid,thiselement,e)
 	    {
 	    	gotomenu(menuid,thiselement,e);
+	    },
+	    changeModelFrameHeight(iframeid,modelwindow){
+	    	
+	    	$("#"+iframeid).height($(modelwindow).height());
+	    	// $("#"+id).height(height);
+	    	 $("#"+iframeid).width($(modelwindow).width()+15);
 	    }
 	    
 

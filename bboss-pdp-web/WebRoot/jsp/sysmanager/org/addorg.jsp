@@ -71,10 +71,24 @@
 						
 					</label>
 					<div class="col-md-9">
-						<input type="text" class="form-control" 
-							name="orgleader"  autocomplete="off" >
-						<div class="form-control-focus"></div>
-						<span class="help-block">请设置部门主管</span>	
+						<div class="input-group">
+							<div class="input-group-control">
+								<input type="text" class="form-control" 
+									name="orgleaderName"  autocomplete="off" readonly="readonly">
+								<input type="hidden" class="form-control" 
+									name="orgleader"  autocomplete="off" >
+								<div class="form-control-focus"></div>
+								<span class="help-block">请设置部门主管</span>	
+							</div>
+							<span class="input-group-btn btn-right">
+								<button type="button" id="sys_addOrg_setleader_button" data-toggle="modal" class="btn btn-xs green-haze  "  
+									  aria-expanded="false">
+									选择
+								</button>
+								 
+							</span>
+						</div>
+							
 					</div>
 				</div>
 			</div>

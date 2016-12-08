@@ -13267,7 +13267,7 @@ Tiles(new in v1.1.1)
       right: -3px; }
     .tiles .tile.selected .check:after {
       content: "";
-      font-family: FontAwesome;
+      font-family: "Microsoft Yahei" !important;
       font-size: 13px;
       content: "\f00c";
       display: inline-block;

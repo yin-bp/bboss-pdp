@@ -63,4 +63,27 @@
 
 		]]>
 	</property>
+	<property name="selectMaxSNofdepart">
+		<![CDATA[
+			select max(org_SN)+1 from td_sm_organization where parent_ID=?
+		]]>
+	</property>
+	
+	<property name="getAllOrgs">
+		<![CDATA[
+			select * from td_sm_organization 
+		]]>
+	</property>
+	<property name="getorgtreelevel">
+		<![CDATA[
+			select ORG_TREE_LEVEL from td_sm_organization where org_id = ?
+		]]>
+	</property>
+	<property name="updateorgtreelevel">
+		<![CDATA[
+			update td_sm_organization set  ORG_TREE_LEVEL =? where org_id = ?
+		]]>
+	</property>
+	
+	
 </properties>

@@ -22,10 +22,13 @@
 
 			</a>
 			 <a class="btn btn-sm blue" id="button_sys_delete_org">
-				<i class="fa fa-file-o"></i> 删除
+				<i class="fa fa-times"></i> 删除
 			</a>
 			<a href="javascript:;" class="btn btn-sm purple"> <i
-				class="fa fa-times"></i> 机构排序
+				class="fa fa-file-o"></i> 机构排序
+			</a>
+			<a href="javascript:;" onclick="javascript:SysOrg.buildTreeLevel();" class="btn btn-sm purple"> <i
+				class="fa fa-file-o"></i> 更新机构层级关系
 			</a>
 		</div>
 
@@ -95,9 +98,7 @@
         </div>
     </div>
 </div>
-<script
-	src="${pageContext.request.contextPath}/assets/sysmanager/sysorg.js" type="text/javascript"></script>
-	
+<script	src="${pageContext.request.contextPath}/assets/sysmanager/sysorg.js" type="text/javascript"></script>	
 <script type="text/javascript">
 	jQuery(document).ready(function() {
 		SysOrg.init('${pageContext.request.contextPath}');

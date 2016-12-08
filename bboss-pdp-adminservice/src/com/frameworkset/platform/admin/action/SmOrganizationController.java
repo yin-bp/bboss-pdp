@@ -242,4 +242,8 @@ public class SmOrganizationController {
 		return "path:index";
 
 	}
+	public @ResponseBody String buildTreeLevel() throws SmOrganizationException{
+		this.smOrganizationService.buildTreeLevel();
+		return "success";
+	}
 }

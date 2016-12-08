@@ -12,6 +12,29 @@ var SysOrg = function(){
 		        });
 		 }
 	 }
+	 var buildTreeLevel = function()
+	 {
+		 $.ajax({
+	 		   type: "POST",
+	 			url : usercontextpath+"/sysmanager/org/buildTreeLevel.page",
+	 			data :{},
+	 			dataType : 'json',
+	 			async:false,
+	 			beforeSend: function(XMLHttpRequest){ 					
+	 				 	
+	 				},
+	 			success : function(responseText){
+	 				
+	 				if(responseText=="success"){
+	 					
+	 					PlatformCommonUtils.success("更新部门层级关系成功!");
+	 					
+	 				}else{
+	 					PlatformCommonUtils.warn("更新部门层级关系失败:"+responseText);
+	 				}
+	 			}
+	 		  });
+	 }
 	var initAddOrgModalExtend = function(){
 		 
 		initModal();
@@ -57,6 +80,37 @@ var SysOrg = function(){
   	 $("#sys_addOrg_button").bind('click',function(){
   		saveOrg("#form_sys_addorg");
   	 });
+  	 $("#sys_addOrg_setleader_button").bind('click',function(){
+  		ModelDialog.dialog({
+  							title:"选择部门主管",
+  							url:usercontextpath+"/jsp/sysmanager/common/main.jsp",
+  							width:"1260px",
+  							height:"500px",
+  							closeCallBask:function(modal){
+  								var $iframe = ModelDialog.getIframe();
+  								var selectUsers = $iframe[0].contentWindow.SysChooseUser.getSelectUser();
+  								if(selectUsers == null)
+  								{
+  									PlatformCommonUtils.warn("没有选择部门主管！");
+  	  								return false;
+  								}
+  								else
+  								{
+  									//PlatformCommonUtils.success("部门主管:"+selectUsers);
+  									//userId+":"+userRealname+":"+userName+":"+userWorknumber+":"+userMobiletel1
+  									var user = selectUsers.split(":");
+  									$('input[name="orgleaderName"]',$modal).val(user[1]);
+  									$('input[name="orgleader"]',$modal).val(user[0]);
+  									
+  									return true;
+  								}
+  								
+  							}
+  			
+  			});
+   	 });
+  	 
+  	
    }
 	
 	var initModifyOrgButtonAction = function(){
@@ -80,6 +134,8 @@ var SysOrg = function(){
 		form2.validate({
 					focusInvalid : false, // do not focus the last invalid
 											// input
+					errorElement: 'span', //default input error message container
+		            errorClass: 'help-block help-block-error', // default input error message class
 					ignore : "", // validate all fields including form hidden
 									// input
 					messages : {
@@ -107,7 +163,30 @@ var SysOrg = function(){
 
 						
 					},
+					errorPlacement: function(error, element) {
+		                if (element.is(':checkbox')) {
+		                    error.insertAfter(element.closest(".md-checkbox-list, .md-checkbox-inline, .checkbox-list, .checkbox-inline"));
+		                } else if (element.is(':radio')) {
+		                    error.insertAfter(element.closest(".md-radio-list, .md-radio-inline, .radio-list,.radio-inline"));
+		                } else {
+		                    error.insertAfter(element); // for other inputs, just perform default behavior
+		                }
+		            },
 
+		            highlight: function(element) { // hightlight error inputs
+		                $(element)
+		                    .closest('.form-group').addClass('has-error'); // set error class to the control group
+		            },
+
+		            unhighlight: function(element) { // revert the change done by hightlight
+		                $(element)
+		                    .closest('.form-group').removeClass('has-error'); // set error class to the control group
+		            },
+
+		            success: function(label) {
+		                label
+		                    .closest('.form-group').removeClass('has-error'); // set success class to the control group
+		            },
 					
 
 					submitHandler : function(form) {
@@ -123,6 +202,8 @@ var SysOrg = function(){
 		form2.validate({
 					focusInvalid : false, // do not focus the last invalid
 											// input
+					errorElement: 'span', //default input error message container
+		            errorClass: 'help-block help-block-error', // default input error message class
 					ignore : "", // validate all fields including form hidden
 									// input
 					messages : {
@@ -151,7 +232,30 @@ var SysOrg = function(){
 						
 					},
 
-					
+					errorPlacement: function(error, element) {
+		                if (element.is(':checkbox')) {
+		                    error.insertAfter(element.closest(".md-checkbox-list, .md-checkbox-inline, .checkbox-list, .checkbox-inline"));
+		                } else if (element.is(':radio')) {
+		                    error.insertAfter(element.closest(".md-radio-list, .md-radio-inline, .radio-list,.radio-inline"));
+		                } else {
+		                    error.insertAfter(element); // for other inputs, just perform default behavior
+		                }
+		            },
+
+		            highlight: function(element) { // hightlight error inputs
+		                $(element)
+		                    .closest('.form-group').addClass('has-error'); // set error class to the control group
+		            },
+
+		            unhighlight: function(element) { // revert the change done by hightlight
+		                $(element)
+		                    .closest('.form-group').removeClass('has-error'); // set error class to the control group
+		            },
+
+		            success: function(label) {
+		                label
+		                    .closest('.form-group').removeClass('has-error'); // set success class to the control group
+		            },
 
 					submitHandler : function(form) {
 						// success1.show();
@@ -652,6 +756,9 @@ var SysOrg = function(){
 		},
 		showOrgs: function(departId){
 			showOrgs(departId)
+	      },
+	      buildTreeLevel:function(){
+	    	  buildTreeLevel();
 	      }
 	}
 }();
