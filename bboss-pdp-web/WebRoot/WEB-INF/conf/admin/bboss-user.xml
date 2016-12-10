@@ -20,6 +20,7 @@
 	</property>
 		<property name="user.smUserService"
 		f:executor="attr:user.configsqlexecutor"
+		f:smOrganizationService="attr:org.smOrganizationService"
 		class="com.frameworkset.platform.admin.service.SmUserServiceImpl"
 		/>
 	<property name="user.configsqlexecutor"		

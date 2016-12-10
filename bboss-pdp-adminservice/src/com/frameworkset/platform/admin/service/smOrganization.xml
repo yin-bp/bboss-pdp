@@ -28,7 +28,7 @@
 	</property>
 	<property name="selectById">
 		<![CDATA[
-			select * from td_sm_organization where ORG_ID=?
+			select o.*,u.USER_NAME as orgleaderName,u.USER_REALNAME as orgleaderRealName  from td_sm_organization  o left join td_sm_user u on u.user_id = o.orgleader where o.ORG_ID=?
 		]]>
 	</property>
 	<!-- 查询启用状态的直接下级部门 -->
@@ -43,6 +43,13 @@
 			select * from td_sm_organization where parent_id=?  order by org_sn
 		]]>
 	</property>
+	
+	<property name="getOrgTreeLevel">
+		<![CDATA[
+			select ORG_TREE_LEVEL from td_sm_organization where org_id=? 
+		]]>
+	</property>
+	
 	<property name="queryListSmOrganization">
 		<![CDATA[
 			select o.*,u.USER_NAME as orgleaderName,u.USER_REALNAME as orgleaderRealName from td_sm_organization o left join td_sm_user u on u.user_id = o.orgleader where o.parent_id=#[departId] 

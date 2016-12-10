@@ -46,11 +46,12 @@ public class SmOrganizationController {
 
 	private SmOrganizationService smOrganizationService;
 	
-	public @ResponseBody List<JSTreeNode> getChildrens(String parent,boolean isuser)
+	public @ResponseBody List<JSTreeNode> getChildrens(String parent,boolean isuser,boolean chooseuser)
 	{
 		if(StringUtil.isEmpty(parent))
 			return null;
-		List<SmOrganization> orgs = smOrganizationService.getChildren(parent);
+		boolean choosenormalorg = isuser || chooseuser;
+		List<SmOrganization> orgs = smOrganizationService.getChildren(parent,  choosenormalorg);
 		
 		if(orgs == null || orgs.size() == 0)
 			return null;

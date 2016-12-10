@@ -14,7 +14,7 @@
 		path:queryListSmOrganizations="/jsp/sysmanager/org/smOrganizationList.jsp"
 		path:updateSmOrganization="/jsp/sysmanager/org/editorg.jsp"
 		path:addSmOrganization="/jsp/sysmanager/org/addorg.jsp"
-		path:getSmOrganization="/jsp/sysmanager/org/smOrganizationView.jsp"
+		path:getSmOrganization="/jsp/sysmanager/org/vieworg.jsp"
 		f:smOrganizationService="attr:org.smOrganizationService"
 		class="com.frameworkset.platform.admin.action.SmOrganizationController" >
 	</property>

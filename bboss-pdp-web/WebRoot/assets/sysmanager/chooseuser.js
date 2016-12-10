@@ -19,7 +19,7 @@ var SysChooseUser = function(){
 	                      return contextpath+'/sysmanager/org/getChildrens.page';
 	                    },
 	                    'data' : function (node) {
-	                      return { 'parent' : node.id,'isuser':isuser };
+	                      return { 'parent' : node.id,'chooseuser':true ,"isuser":true};
 	                    }
 	                }
 	            },
@@ -65,7 +65,7 @@ var SysChooseUser = function(){
 	   	   $("#datatable_userlist tr.filter .form-control").each(function() {
 	             $(this).val('');
 	      });
-	   	   table.ajax.url( contextpath+"/sysmanager/user/getDepartUsers.page?departId="+departId ).load();
+	   	   table.ajax.url( contextpath+"/sysmanager/user/getDepartUsers.page?departId="+departId+"&chooseuser=true" ).load();
      }
 	 
 	//初始化用户列表
@@ -155,7 +155,7 @@ var SysChooseUser = function(){
 	                    "type": "POST",
 	                    "data":function ( d ) {
 	                        d.departId = departId;
-	                        d.ischooseUsers = true;
+	                        d.chooseuser = "true";
 	                        $("#datatable_userlist tr.filter .form-control").each(function() {
 	                        	var v = $(this).val();
 	                        	var n = $(this).attr('name');

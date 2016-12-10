@@ -1,11 +1,6 @@
 <%@ page session="false" language="java"
 	contentType="text/html; charset=utf-8"%>
-<div class="modal-header">
-	<button type="button" class="close" data-dismiss="modal"
-		aria-hidden="true"></button>
-	<h4 class="modal-title">添加机构</h4>
-</div>
-<div class="modal-body">
+
 	<!-- BEGIN FORM-->
 	<form action="#" class="form-horizontal" id="form_sys_addorg">
 		<div class="form-body">
@@ -105,7 +100,7 @@
 			</div>
 		</div>
 	</form>
-</div>
+
 <script type="text/javascript">
 	jQuery(document).ready(function() {
 		SysOrg.initAddOrg();

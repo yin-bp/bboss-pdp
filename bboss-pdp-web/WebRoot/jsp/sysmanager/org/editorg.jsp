@@ -2,17 +2,13 @@
 	contentType="text/html; charset=utf-8"%>
 <%@ taglib uri="/WEB-INF/tld/pager-taglib.tld" prefix="pg" %>
 <pg:beaninfo actual="${smOrganization }">		
-<div class="modal-header">
-	<button type="button" class="close" data-dismiss="modal"
-		aria-hidden="true"></button>
-	<h4 class="modal-title">部门修改<span class="label label-sm label-success"><pg:cell colName="orgName"/></span></h4>
-</div>
-<div class="modal-body">
+
 	<!-- BEGIN FORM-->
 	<form action="#" class="form-horizontal" id="form_sys_modifyorg">
 		<div class="form-body">
 		<input type="hidden" class="form-control" name="parentId"  value="<pg:cell colName="parentId"/>">
 		<input type="hidden" class="form-control" name="orgSn"   value="<pg:cell colName="orgSn"/>">
+		<input type="hidden" class="form-control" name="orgTreeLevel"   value="<pg:cell colName="orgTreeLevel"/>">
 		<div class="row">
 			
 				<div class="col-md-6" >
@@ -49,11 +45,10 @@
 					<label class="col-md-3 control-label" for="form_control_1">部门状态</label>
 					<div class="col-md-9">
 						<select class="form-control" name="remark3">
-							<option value="1">启用</option>
-                            <option value="0">禁用</option>
-                                <pg:case colName="remark3"> 									
-									<option value="1" <pg:equal value="1">selected</pg:equal>>启用</option>
-	                                <option value="0" <pg:equal value="0">selected</pg:equal>>禁用</option>
+							
+                            <pg:case colName="remark3"> 									
+								<option value="1" <pg:equal value="1">selected</pg:equal>>启用</option>
+                               <option value="0" <pg:equal value="0">selected</pg:equal>>禁用</option>
 							</pg:case>
 						</select>
 						<div class="form-control-focus"></div>
@@ -67,10 +62,23 @@
 						
 					</label>
 					<div class="col-md-9">
-						<input type="text" class="form-control" placeholder="" name="orgleader" value="<pg:cell colName="orgleader"/>" autocomplete="off">
-						
-						<div class="form-control-focus"></div>
-						<span class="help-block">请设置部门主管</span>	
+						<div class="input-group">
+							<div class="input-group-control">
+								<input type="text" class="form-control" 
+									name="orgleaderName"  autocomplete="off" readonly="readonly" value="<pg:cell colName="orgleaderRealName"/>">
+								<input type="hidden" class="form-control" 
+									name="orgleader"  value="<pg:cell colName="orgleader"/>" autocomplete="off" >
+								<div class="form-control-focus"></div>
+								<span class="help-block">请设置部门主管</span>	
+							</div>
+							<span class="input-group-btn btn-right">
+								<button type="button" id="sys_modifyOrg_setleader_button" data-toggle="modal" class="btn btn-xs green-haze  "  
+									  aria-expanded="false">
+									选择
+								</button>
+								 
+							</span>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -87,7 +95,7 @@
 			</div>
 		</div>
 	</form>
-</div>
+
 <script type="text/javascript">
 	jQuery(document).ready(function() {
 		SysOrg.initModifyOrg();

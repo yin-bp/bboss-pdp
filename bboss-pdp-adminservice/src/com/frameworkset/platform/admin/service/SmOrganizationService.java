@@ -39,10 +39,11 @@ public interface SmOrganizationService {
 	 * @param parent
 	 * @return
 	 */
-	public List<SmOrganization> getChildren(String parent)throws SmOrganizationException;
+	public List<SmOrganization> getChildren(String parent,boolean choosenormalorg)throws SmOrganizationException;
 	/**
 	 * @return
 	 */
 	public List<SmOrganization> getAllOrgs() throws SmOrganizationException;
 	public void buildTreeLevel() throws SmOrganizationException;
+	public String getOrgTreeLevel(String orgid) throws SmOrganizationException;
 }

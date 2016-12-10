@@ -17,11 +17,11 @@
 
 			</a> -->
 			<a
-				class="btn btn-sm red"  
+				class="btn btn-sm blue"  
 				data-toggle="modal" data-backdrop="static" id="button_sys_add_org"> 新增 <i class="fa fa-edit"></i>
 
 			</a>
-			 <a class="btn btn-sm blue" id="button_sys_delete_org">
+			 <a class="btn btn-sm red" id="button_sys_delete_org">
 				<i class="fa fa-times"></i> 删除
 			</a>
 			<a href="javascript:;" class="btn btn-sm purple"> <i
@@ -47,8 +47,7 @@
 		       </div>
 		</div> -->
 		 <!-- bootstrap extend modal -->
-		<div id="ajax-org-action-extend" class="modal container  fade draggable-modal  modal-scroll " tabindex="-1"> </div>
-        <div class="table-container">
+		 <div class="table-container">
             
             <table class="table table-striped table-bordered table-hover table-checkable  table-header-fixed" id="datatable_orglist">
                 <thead>

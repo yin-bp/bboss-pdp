@@ -57,6 +57,9 @@ public class SmUserCondition implements java.io.Serializable {
 	private String sortKey;
 	private boolean sortDesc;
 	private String departId;
+	private boolean chooseuser;
+	private String orgtreelevel;
+	private String orgtreelevelLike;
 	/**
 	 * <option value="0">本机构</option>
 	 *   <option value="1">含子机构</option>
@@ -156,6 +159,22 @@ public class SmUserCondition implements java.io.Serializable {
 	}
 	public void setRecursive(String recursive) {
 		this.recursive = recursive;
+	}
+	public boolean isChooseuser() {
+		return chooseuser;
+	}
+	public void setChooseuser(boolean chooseuser) {
+		this.chooseuser = chooseuser;
+	}
+	public String getOrgtreelevel() {
+		return orgtreelevel;
+	}
+	public void setOrgtreelevel(String orgtreelevel) {
+		this.orgtreelevel = orgtreelevel;
+		this.orgtreelevelLike = this.orgtreelevel + "|%";
+	}
+	public String getOrgtreelevelLike() {
+		return orgtreelevelLike;
 	}
 
 }

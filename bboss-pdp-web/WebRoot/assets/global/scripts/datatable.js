@@ -44,25 +44,25 @@ var Datatable = function() {
                     "dom": "<'row'<'col-md-8 col-sm-12'pl><'col-md-4 col-sm-12'<'table-group-actions pull-right'>>r><'table-responsive't><'row'<'col-md-8 col-sm-12'pli><'col-md-4 col-sm-12'>>", // datatable layout
                     "pageLength": 10, // default records per page
                     "language": { // language settings
-                        // metronic spesific
-                        "metronicGroupActions": "_TOTAL_ 条记录被选中:  ",
-                        "metronicAjaxRequestGeneralError": "Could not complete request. Please check your internet connection",
-
-                        // data tables spesific
-                        "lengthMenu": "<span class='seperator'>|</span>View _MENU_ records",
-                        "info": "<span class='seperator'>|</span>共 _TOTAL_ 条记录",
-                        "infoEmpty": "没有找到记录",
-                        "emptyTable": "没有找到记录",
-                        "zeroRecords": "没有匹配的记录",
-                        "paginate": {
-                            "previous": "上一页",
-                            "next": "下一页",
-                            "last": "尾页",
-                            "first": "首页",
-                            "page": "页码",
-                            "pageOf": "从"
-                        }
-                    },
+  	                  // metronic spesific
+  	                  "metronicGroupActions": "_TOTAL_ 条记录被选中:  ",
+  	                  "metronicAjaxRequestGeneralError": "请求提交失败. 请检查服务是否启动或者网络是否断连！",
+  	
+  	                  // data tables spesific
+  	                  "lengthMenu": "每页 _MENU_ 条记录",
+  	                  "info": "共 _TOTAL_ 条记录",
+  	                  "infoEmpty": "没有找到记录",
+  	                  "emptyTable": "没有找到记录",
+  	                  "zeroRecords": "没有匹配的记录",
+  	                  "paginate": {
+  	                      "previous": "上一页",
+  	                      "next": "下一页",
+  	                      "last": "尾页",
+  	                      "first": "首页",
+  	                      "page": "第",
+  	                      "pageOf": "页/"
+  	                  }
+  	              },
 
                     "orderCellsTop": true,
                     "columnDefs": [{ // define columns sorting options(by default all columns are sortable extept the first checkbox column)
@@ -72,9 +72,10 @@ var Datatable = function() {
 
                     "pagingType": "bootstrap_extended", // pagination type(bootstrap, bootstrap_full_number or bootstrap_extended)
                     "autoWidth": false, // disable fixed width and enable fluid table
-                    "processing": false, // enable/disable display message box on record load
-                    "serverSide": true, // enable/disable server side ajax loading
-
+                    
+                    "bStateSave": false, 
+	   	             "processing": false,
+	   	             "serverSide": true,
                     "ajax": { // define ajax settings
                         "url": "", // ajax URL
                         "type": "POST", // request type

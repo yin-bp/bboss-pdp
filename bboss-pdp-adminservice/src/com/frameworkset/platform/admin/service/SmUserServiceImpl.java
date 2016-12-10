@@ -41,7 +41,7 @@ import com.frameworkset.util.ListInfo;
 public class SmUserServiceImpl implements SmUserService {
 
 	private static Logger log = Logger.getLogger(com.frameworkset.platform.admin.service.SmUserServiceImpl.class);
-
+	private SmOrganizationService smOrganizationService;
 	private ConfigSQLExecutor executor;
 	public void addSmUser(SmUser smUser) throws SmUserException {
 		// 业务组件
@@ -187,6 +187,14 @@ public class SmUserServiceImpl implements SmUserService {
 		 
 		try {
 			final List<SmUser> users = new ArrayList<SmUser>();
+			if(conditions.getRecursive() != null)
+			{
+				if(conditions.getRecursive().equals("1")){//含子机构查询
+					String orgtreelevel = smOrganizationService.getOrgTreeLevel(conditions.getDepartId());
+					conditions.setOrgtreelevel(orgtreelevel);
+				}
+					
+			}
 			ListInfo datas = executor.queryListInfoBeanByNullRowHandler(new ResultSetNullRowHandler(){
 
 				@Override
@@ -194,9 +202,6 @@ public class SmUserServiceImpl implements SmUserService {
 					SmUser rowValue = (SmUser) buildValueObject(record, SmUser.class);
 					users.add(rowValue);
 					rowValue.setDefaultAdmin(AccessControl.isDefaultAdmin(rowValue.getUserId()));
-					 
-					
-					
 					
 				}
 				

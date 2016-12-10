@@ -77,13 +77,18 @@
 			select u.*,o.org_name as departName from td_sm_user u left join td_sm_organization o on u.depart_id = o.org_id where 1=1 
 			#if( !$recursive  || $recursive.equals("0") || $recursive.equals("") )
 				and depart_id=#[departId]
+			#elseif($recursive.equals("1"))
+				and (o.ORG_TREE_LEVEL like #[orgtreelevelLike] or o.ORG_TREE_LEVEL=#[orgtreelevel])
 			#end
+			
 			#if($userIdcard && !$userIdcard.equals(""))
 				and USER_IDCARD =#[userIdcard]		
 			#end
-			#if($userIsvalid )
+			#if($chooseuser)
+				and USER_ISVALID = 2
+			#elseif($userIsvalid )
 					and USER_ISVALID=#[userIsvalid]
-				#end
+			#end
 			#if($userMobiletel1 && !$userMobiletel1.equals(""))
 				and USER_MOBILETEL1 like #[userMobiletel1]		
 			#end

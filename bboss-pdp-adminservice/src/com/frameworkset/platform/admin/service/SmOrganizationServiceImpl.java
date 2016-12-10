@@ -130,13 +130,13 @@ public class SmOrganizationServiceImpl implements SmOrganizationService {
 	 * @see com.frameworkset.platform.admin.service.SmOrganizationService#getChildres(java.lang.String)
 	 */
 	@Override
-	public List<SmOrganization> getChildren(String parent) {
+	public List<SmOrganization> getChildren(String parent,boolean choosenormalorg) {
 		if(parent.equals("#"))
 		{
 			parent = "0";
 		}
 		try {
-			List<SmOrganization> beans = executor.queryList(SmOrganization.class, "selectAllChildren",
+			List<SmOrganization> beans = executor.queryList(SmOrganization.class, choosenormalorg?"selectChildren": "selectAllChildren",
 					parent);
 			return beans;
 		} catch (Exception e) {
@@ -159,6 +159,16 @@ public class SmOrganizationServiceImpl implements SmOrganizationService {
 	
 	public void buildTreeLevel() throws SmOrganizationException{
 		OrgTreeLevel.run(this);
+	}
+	
+	public String getOrgTreeLevel(String orgid) throws SmOrganizationException
+	{
+		try {
+			return executor.queryObject(String.class, "getOrgTreeLevel",orgid);
+		} catch (Exception e) {
+			throw new SmOrganizationException("getAllOrgs failed:", e);
+		}
+		
 	}
 	
 	

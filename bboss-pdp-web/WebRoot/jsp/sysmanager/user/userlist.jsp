@@ -17,18 +17,18 @@
 
 			</a> -->
 			<a
-				class="btn btn-sm red"  
+				class="btn btn-sm blue"  
 				data-toggle="modal" data-backdrop="static" id="button_sys_add_user"> 新增 <i class="fa fa-edit"></i>
 
 			</a>
-			 <a class="btn btn-sm blue" id="button_sys_delete_user">
-				<i class="fa fa-file-o"></i> 删除
+			 <a class="btn btn-sm red" id="button_sys_delete_user">
+				<i class="fa fa-times"></i> 删除
 			</a> <a href="javascript:;" class="btn btn-sm green"> 批量授权 <i
 				class="fa fa-font"></i>
 			</a> <a href="javascript:;" class="btn btn-sm yellow"> 批量角色设置 <i
 				class="fa fa-search"></i>
 			</a> <a href="javascript:;" class="btn btn-sm purple"> <i
-				class="fa fa-times"></i> 用户排序
+				class="fa fa-file-o"></i> 用户排序
 			</a> <a href="javascript:;" class="btn btn-sm green"> 用户调出 <i
 				class="fa fa-plus"></i>
 			</a> <a href="javascript:;" class="btn btn-sm grey-cascade"> 用户调入 <i

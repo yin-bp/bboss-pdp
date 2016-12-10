@@ -3,7 +3,8 @@ var SysOrg = function(){
 	var validateDepart = function(){
 		return Sysmanager.validateDepart();
 	}
-	var $modal;
+	var $currentmodal = null;
+	var $modal = null;
 	 var initModal = function(){
 		 if($modal == null){
 			 $modal = $('#ajax-org-action-extend');
@@ -35,47 +36,10 @@ var SysOrg = function(){
 	 			}
 	 		  });
 	 }
-	var initAddOrgModalExtend = function(){
-		 
-		initModal();
-		 $('#button_sys_add_org').on('click', function(){
-           // create the backdrop and wait for next modal to be triggered
-          
-           var el = $(this);
-           var vr = validateDepart();
-          
-            if(!vr)
-           {
-          	  return;
-           }	  
-           // https://github.com/jschr/bootstrap-modal
-           $modal.load(usercontextpath+"/sysmanager/org/toAddSmOrganization.page", {
-          	 "departId":Sysmanager.getDepartId()
-           }, function(){
-          	 $modal.on('hidden.bs.modal', function () {
-          		 afterSaveOrg();
-     			 });
-               $modal.modal({
-              	 backdrop:"static",
-              	 width :"900px"
-               });
-              
-             });
-           
-         });
-		
-	   	
- 	 
-	}
 	
 	
 	
-	var closeOrgActionModel = function(){
-		//var $modal = $('#ajax-user-add').modal('hide');
-		
-		 $('#ajax-org-action-extend').modal('hide');
-		
-	}
+	
 	var initAddOrgButtonAction = function(){
   	 $("#sys_addOrg_button").bind('click',function(){
   		saveOrg("#form_sys_addorg");
@@ -83,12 +47,13 @@ var SysOrg = function(){
   	 $("#sys_addOrg_setleader_button").bind('click',function(){
   		ModelDialog.dialog({
   							title:"选择部门主管",
+  							iframe:true,
   							url:usercontextpath+"/jsp/sysmanager/common/main.jsp",
   							width:"1260px",
   							height:"500px",
-  							closeCallBask:function(modal){
+  							okCallBack:function(modal){
   								var $iframe = ModelDialog.getIframe();
-  								var selectUsers = $iframe[0].contentWindow.SysChooseUser.getSelectUser();
+  								var selectUsers = $iframe.contentWindow.SysChooseUser.getSelectUser();
   								if(selectUsers == null)
   								{
   									PlatformCommonUtils.warn("没有选择部门主管！");
@@ -99,13 +64,15 @@ var SysOrg = function(){
   									//PlatformCommonUtils.success("部门主管:"+selectUsers);
   									//userId+":"+userRealname+":"+userName+":"+userWorknumber+":"+userMobiletel1
   									var user = selectUsers.split(":");
-  									$('input[name="orgleaderName"]',$modal).val(user[1]);
-  									$('input[name="orgleader"]',$modal).val(user[0]);
+  									$('input[name="orgleaderName"]',$currentmodal).val(user[1]);
+  									$('input[name="orgleader"]',$currentmodal).val(user[0]);
   									
   									return true;
   								}
   								
-  							}
+  							},
+  							closeCallBack:undefined,
+  							urlLoadCallBack:undefined
   			
   			});
    	 });
@@ -117,7 +84,39 @@ var SysOrg = function(){
 	   	 $("#sys_modifyOrg_button").bind('click',function(){
 	   		saveOrg("#form_sys_modifyorg");
 	   	 });
-	    }
+	   	 
+	   	$("#sys_modifyOrg_setleader_button").bind('click',function(){
+	  		ModelDialog.dialog({
+	  							title:"选择部门主管",
+	  							iframe:true,
+	  							url:usercontextpath+"/jsp/sysmanager/common/main.jsp",
+	  							width:"1260px",
+	  							height:"500px",
+	  							okCallBack:function(modal){
+	  								var $iframe = ModelDialog.getIframe();
+	  								var selectUsers = $iframe.contentWindow.SysChooseUser.getSelectUser();
+	  								if(selectUsers == null)
+	  								{
+	  									PlatformCommonUtils.warn("没有选择部门主管！");
+	  	  								return false;
+	  								}
+	  								else
+	  								{
+	  									//PlatformCommonUtils.success("部门主管:"+selectUsers);
+	  									//userId+":"+userRealname+":"+userName+":"+userWorknumber+":"+userMobiletel1
+	  									var user = selectUsers.split(":");
+	  									
+	  									$('input[name="orgleaderName"]',$currentmodal ).val(user[1]);
+	  									$('input[name="orgleader"]',$currentmodal ).val(user[0]);
+	  									
+	  									return true;
+	  								}
+	  								
+	  							}
+	  			
+	  			});
+	   	 });
+	}
    
    var saveOrg = function (formid){
    	
@@ -378,8 +377,8 @@ var SysOrg = function(){
 	}
     
     
-   var viewOrg = function(orgId){
-   	initModal();
+   var viewOrg = function(orgId,orgName){
+   	/**initModal();
    	 // https://github.com/jschr/bootstrap-modal
        $modal.load(usercontextpath+"/sysmanager/user/getSmOrganization.page", {
       	 "orgId":orgId
@@ -390,9 +389,35 @@ var SysOrg = function(){
           	 width :"900px"
            });
           
-         });
+         });*/
+	   $currentmodal = ModelDialog.dialog({
+			title:"查看机构-<span class=\"label label-sm label-success\">"+orgName+"</span>",
+			
+						
+			disablecancelbutton:true,
+			okbuttonText:"关闭",
+			url:usercontextpath+"/sysmanager/org/getSmOrganization.page",
+			params:{
+		     	 "orgId":orgId
+		      },
+			width:"900px"
+
+       });	
+       
    }
-   var tomodifyOrg = function(orgId){
+   var tomodifyOrg = function(orgId,orgName){
+	   $currentmodal = ModelDialog.dialog({
+				title:"修改机构-<span class=\"label label-sm label-success\">"+orgName+"</span>",
+				showfooter:false,
+				url:usercontextpath+"/sysmanager/org/toUpdateSmOrganization.page",
+				params:{
+			     	 "orgId":orgId
+			      },
+				width:"900px"
+
+	   });
+	  
+	   /**
    	initModal();
   	 // https://github.com/jschr/bootstrap-modal
       $modal.load(usercontextpath+"/sysmanager/org/toUpdateSmOrganization.page", {
@@ -406,7 +431,7 @@ var SysOrg = function(){
          	 width :"900px"
           });
          
-        });
+        });*/
    }
 	/**
 	设置部门操作按钮
@@ -421,7 +446,8 @@ var SysOrg = function(){
 		                     label:'查看',
 		                     onClick: function() {		                    	
 		                    	 var orgId = $(this).attr("orgId");
-		                    	 SysOrg.viewOrg(orgId)
+		                    	 var orgName = $(this).attr("orgName");
+		                    	 SysOrg.viewOrg(orgId,orgName)
 		                     }
 		                   },
 		                   {
@@ -431,7 +457,8 @@ var SysOrg = function(){
 		                     onClick: function() {
 
 		                    	 var orgId = $(this).attr("orgId");
-		                    	 SysOrg.tomodifyOrg(orgId)
+		                    	 var orgName = $(this).attr("orgName");
+		                    	 SysOrg.tomodifyOrg(orgId,orgName)
 		                     }
 		                   },
 		                   {
@@ -442,15 +469,6 @@ var SysOrg = function(){
 		                    	 var orgId = $(this).attr("orgId");
 		                    	 SysOrg.toauthOrg(orgId)
 		                     }
-		                   },
-		                   {
-		                     class: 'btn  btn-xs btn-default',
-		                     icon: 'fa fa-pencil',
-		                     label:'主管设置' ,
-		                     onClick: function() {
-		                    	 var orgId = $(this).attr("orgId");
-		                    	 SysOrg.setOrgleader(orgId)
-			                  }
 		                   }
 		                   ,
 		                   {
@@ -559,30 +577,9 @@ var SysOrg = function(){
 	              },
 	              "pagingType": "bootstrap_extended",
 	         	 "ordering": false,  "searching": false,
-	         	 "language": { // language settings
-	                  // metronic spesific
-	                  "metronicGroupActions": "_TOTAL_ 条记录被选中:  ",
-	                  "metronicAjaxRequestGeneralError": "请求提交失败. 请检查服务是否启动或者网络是否断连！",
-	
-	                  // data tables spesific
-	                  "lengthMenu": "每页 _MENU_ 条记录",
-	                  "info": "共 _TOTAL_ 条记录",
-	                  "infoEmpty": "没有找到记录",
-	                  "emptyTable": "没有找到记录",
-	                  "zeroRecords": "没有匹配的记录",
-	                  "paginate": {
-	                      "previous": "上一页",
-	                      "next": "下一页",
-	                      "last": "尾页",
-	                      "first": "首页",
-	                      "page": "第",
-	                      "pageOf": "页/"
-	                  }
-	              },
+	         	 
 	               // save datatable state(pagination, sort, etc) in cookie.
-	             "bStateSave": false, 
-	             "processing": false,
-	             "serverSide": true,
+	             
 	              // save custom filters to the state
 	             "fnStateSaveParams":    function ( oSettings, sValue ) {
 	                 $("#datatable_orglist tr.filter .form-control").each(function() {
@@ -639,7 +636,7 @@ var SysOrg = function(){
 	                         { "data": "orgleaderRealName" },	 
 	                         
 	                         { "data": "orgId","render": function ( data, type, full, meta ) {
-	                        	 var ops = "<button orgId=\""+data+"\" class=\"btn btn-outline btn-xs green-sharp  uppercase\" data-toggle=\"org_ops_confirmation\"  data-singleton=\"true\" data-placement=\"left\">操作</button>";
+	                        	 var ops = "<button orgName=\""+full.orgName+"\" orgId=\""+data+"\" class=\"btn btn-outline btn-xs green-sharp  uppercase\" data-toggle=\"org_ops_confirmation\"  data-singleton=\"true\" data-placement=\"left\">操作</button>";
 	                             return ops;
 	                           	} 
 	                         }
@@ -666,27 +663,25 @@ var SysOrg = function(){
       }
 	 
 	 
-	 var $modal;
-	 var initModal = function(){
-		 if($modal == null){
-			 $modal = $('#ajax-org-action-extend');
-			 $modal.draggable({
-		            handle: ".modal-header"
-		        });
-		 }
-	 }
-	 var afterSaveOrg = function()
-	{
-		showOrgs(Sysmanager.getDepartId());
-	}
+	
+	
 	var initAddOrgModalExtend = function(){
 		 
-		initModal();
+		//initModal();
 		 $('#button_sys_add_org').on('click', function(){
             // create the backdrop and wait for next modal to be triggered
            
-           
-            	  
+			 $currentmodal = ModelDialog.dialog({
+					title:"新增机构",
+					showfooter:false,
+					url:usercontextpath+"/sysmanager/org/toAddSmOrganization.page",
+					params:{
+						"departId":Sysmanager.getDepartId()
+				      },
+					width:"900px"
+
+			 });
+           /** 	  
             // https://github.com/jschr/bootstrap-modal
             $modal.load(usercontextpath+"/sysmanager/org/toAddSmOrganization.page", {
            	 "departId":Sysmanager.getDepartId()
@@ -699,7 +694,7 @@ var SysOrg = function(){
                	 width :"900px"
                 });
                
-              });
+              });*/
             
           });
 		
@@ -711,9 +706,9 @@ var SysOrg = function(){
 	
 	var closeOrgActionModel = function(){
 		//var $modal = $('#ajax-user-add').modal('hide');
-		
-		 $('#ajax-org-action-extend').modal('hide');
-		
+		$currentmodal.modal('hide');
+		 //$('#ajax-org-action-extend').modal('hide');
+		showOrgs();
 	}
 	var init = function(relativepath){
    	 usercontextpath = relativepath;
@@ -739,11 +734,11 @@ var SysOrg = function(){
     	saveOrg:function(){
     		saveOrg();
     	},
-    	viewOrg:function(userId){
-    		viewOrg(userId);
+    	viewOrg:function(departId,orgName){
+    		viewOrg(departId,orgName);
     	},
-    	tomodifyOrg:function(userId){
-    		tomodifyOrg(userId);
+    	tomodifyOrg:function(departId,orgName){
+    		tomodifyOrg(departId,orgName);
     	},
     	initModifyOrg:function(){
     		initModifyOrg();
