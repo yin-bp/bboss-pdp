@@ -120,8 +120,12 @@ var ModelDialog_Modal = function(options){
 	}
 }
 var ModelDialog = function(){
-	var $modals = new Array();
 	
+	if(!window.top.$modals)
+	{
+		window.top.$modals = new Array();
+	}
+	var $modals = window.top.$modals;
 	 
 	
 	 var getIframe = function(){

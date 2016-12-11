@@ -27,7 +27,7 @@
 				class="fa fa-font"></i>
 			</a> <a href="javascript:;" class="btn btn-sm yellow"> 批量角色设置 <i
 				class="fa fa-search"></i>
-			</a> <a href="javascript:;" class="btn btn-sm purple"> <i
+			</a> <a href="javascript:;" class="btn btn-sm purple" id="button_sys_order_user"> <i
 				class="fa fa-file-o"></i> 用户排序
 			</a> <a href="javascript:;" class="btn btn-sm green"> 用户调出 <i
 				class="fa fa-plus"></i>
@@ -39,19 +39,7 @@
 	</div>
 
     <div class="portlet-body">
-    <!-- bootstrap native modal
-		 <div class="modal fade draggable-modal  modal-scroll " id="ajax-user-add" role="basic" aria-hidden="true">
-		       <div class="modal-dialog  modal-lg" >
-		           <div class="modal-content">
-		               <div class="modal-body">
-		                   <img src="${pageContext.request.contextPath}/assets/global/img/loading-spinner-grey.gif" alt="" class="loading">
-		                   <span> &nbsp;&nbsp;加载中... </span>
-		               </div>
-		           </div>
-		       </div>
-		</div> -->
-		 <!-- bootstrap extend modal -->
-		<div id="ajax-user-action-extend" class="modal container  fade draggable-modal  modal-scroll " tabindex="-1"> </div>
+
         <div class="table-container">
             
             <table class="table table-striped table-bordered table-hover table-checkable  table-header-fixed" id="datatable_userlist">

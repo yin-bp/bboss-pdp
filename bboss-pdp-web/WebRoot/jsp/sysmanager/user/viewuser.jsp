@@ -2,12 +2,7 @@
 	contentType="text/html; charset=utf-8"%>
 <%@ taglib uri="/WEB-INF/tld/pager-taglib.tld" prefix="pg" %>
 <pg:beaninfo actual="${smUser }">	
-<div class="modal-header">
-	<button type="button" class="close" data-dismiss="modal"
-		aria-hidden="true"></button>
-	<h4 class="modal-title">查看用户<span class="label label-sm label-success"><pg:cell colName="userName"/></span>信息</h4>
-</div>
-<div class="modal-body">
+
 	<!-- BEGIN FORM-->
 	<form action="#" class="form-horizontal" >
 		<div class="form-body">
@@ -154,6 +149,6 @@
 		</div>
 		
 	</form>
-</div>
+
 </pg:beaninfo> 
 

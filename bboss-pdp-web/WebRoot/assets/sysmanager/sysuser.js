@@ -18,9 +18,10 @@ var SysUser = function(){
 		                     icon: 'fa fa-pencil',
 		                     label:'查看',
 		                     onClick: function() {
-		                    	
+		                    	 var userName = $(this).attr("userName");
+		                    	 var userAccount = $(this).attr("userAccount");
 		                    	 var userId = $(this).attr("userId");
-		                    	 SysUser.viewUser(userId)
+		                    	 SysUser.viewUser(userId,userName+"("+userAccount+")")
 		                     }
 		                   },
 		                   {
@@ -28,9 +29,10 @@ var SysUser = function(){
 		                     icon: 'fa fa-pencil',
 		                     label:'修改',
 		                     onClick: function() {
-		                    	 
+		                    	 var userName = $(this).attr("userName");
+		                    	 var userAccount = $(this).attr("userAccount");
 		                    	 var userId = $(this).attr("userId");
-		                    	 SysUser.tomodifyUser(userId)
+		                    	 SysUser.tomodifyUser(userId,userName+"("+userAccount+")");
 		                     }
 		                   },
 		                  
@@ -439,7 +441,7 @@ var SysUser = function(){
 	{
 		showUsers(Sysmanager.getDepartId());
 	}
-	
+	/**
 	 var $modal;
 	 var initModal = function(){
 		 if($modal == null){
@@ -448,10 +450,10 @@ var SysUser = function(){
 		            handle: ".modal-header"
 		        });
 		 }
-	 }
+	 }*/
 	var initAddUserModalExtend = function(){
 		 
-		initModal();
+		//initModal();
 		 $('#button_sys_add_user').on('click', function(){
             // create the backdrop and wait for next modal to be triggered
            
@@ -461,20 +463,56 @@ var SysUser = function(){
              if(!vr)
             {
            	  return;
-            }	  
+            }	
+             
+             $currentmodal = ModelDialog.dialog({
+ 				title:"新增用户",
+ 				showfooter:false,
+ 				url:usercontextpath+"/sysmanager/user/toAddSmUser.page",
+ 				params:{
+ 					"departId":Sysmanager.getDepartId()
+ 			      },
+ 				width:"900px",
+ 				height:"600px"
+
+             });
             // https://github.com/jschr/bootstrap-modal
-            $modal.load(usercontextpath+"/sysmanager/user/toAddSmUser.page", {
-           	 "departId":Sysmanager.getDepartId()
-            }, function(){
-           	 $modal.on('hidden.bs.modal', function () {
-           		 afterSaveUser();
-      			 });
-                $modal.modal({
-               	 backdrop:"static",
-               	 width :"900px"
-                });
-               
-              });
+          
+            
+          });
+		
+	   	
+  	 
+	}
+	//绑定用户排序按钮打开排序页面功能
+	var initUserOrderModalExtend = function(){
+		 
+		//initModal();
+		 $('#button_sys_order_user').on('click', function(){
+            // create the backdrop and wait for next modal to be triggered
+           
+            var el = $(this);
+            var vr = validateDepart();
+           
+             if(!vr)
+            {
+           	  return;
+            }	
+             
+             $currentmodal = ModelDialog.dialog({
+ 				title:"用户排序-通过鼠标拖拽表格记录行来实现排序-点击保存排序即可保存最新的顺序",
+ 				showfooter:false,
+ 				iframe:false,
+ 				url:usercontextpath+"/sysmanager/user/toOrderSmUser.page?departId="+Sysmanager.getDepartId(),
+ 				params:{
+ 					"departId":Sysmanager.getDepartId()
+ 			      },
+ 				width:"900px",
+ 				height:"600px"
+
+             });
+            // https://github.com/jschr/bootstrap-modal
+          
             
           });
 		
@@ -482,12 +520,98 @@ var SysUser = function(){
   	 
 	}
 	
-	
+	var initUserOrderTable = function (hasrecords) {
+        $('table',ModelDialog.getCurrentModal()).DataTable( {
+        	paging: false,
+    		rowReorder: { selector: 'tr'},
+    		/**columnDefs: [
+    		             { targets: 0, visible: false }
+    		         ],*/
+	         "ordering": true,  "searching": false,
+	          
+	               "columns": [{
+	                   "orderable": false,
+	                   "visible": true 
+	               }, {
+	                   "orderable": false
+	               }, {
+	                   "orderable": false
+	               }, {
+	                   "orderable": false
+	               }, {
+	                   "orderable": false
+	               }, {
+	                   "orderable": false
+	               }, {
+	                   "orderable": false
+	               }, {
+	                   "orderable": false
+	               }, {
+	                   "orderable": false
+	               }],
+	         "lengthMenu": [
+	                        [10, 20, 50, 100, 150, -1],
+	                        [10, 20, 50, 100, 150, "All"] // change per page values here
+	                    ],
+	                    "pageLength": 20 // default record count per page
+        	          
+    	} );
+        $('.sys_modifyUser_button',ModelDialog.getCurrentModal()).bind('click',function(){
+        	if(!hasrecords){
+        		PlatformCommonUtils.warn("没有需要排序的记录") ;
+        	}
+        	else
+    		{
+        		$('form',ModelDialog.getCurrentModal())
+        		.ajaxSubmit(
+        				{
+        					type : 'POST',
+        					url : usercontextpath+'/sysmanager/user/saveSmUsersOrder.page',
+        					forceSync : false,
+        					dataType : 'json',
+        					beforeSubmit : function() {
+        						 App.startPageLoading({message: '保存中...'});
+
+        				           
+        					},
+        					error : function(xhr, ajaxOptions,
+        							thrownError) {
+        						PlatformCommonUtils.warn(thrownError) ;
+        					},
+
+        					success : function(responseText,
+        							statusText, xhr, $form) {
+        						 
+        						 window.setTimeout(function() {
+        				                App.stopPageLoading();
+        				            }, 2000);
+        						var msg = responseText;
+        						var title = '用户排序';
+        						var tiptype = "success";
+        						if (msg == 'success') {
+        							msg = "用户排序完毕"
+        							PlatformCommonUtils.success(msg,function(){
+        								closeUserActionModel();
+        								afterSaveUser();
+        							}) ;
+        						} else {
+        							 
+        							PlatformCommonUtils.warn(msg) ;
+        						}
+        						
+        						
+
+        					}
+
+        				});
+    		}
+        });
+    }
 	
 	var closeUserActionModel = function(){
 		//var $modal = $('#ajax-user-add').modal('hide');
-		
-		 $('#ajax-user-action-extend').modal('hide');
+		ModelDialog.getCurrentModal().modal('hide');
+		 //$('#ajax-user-action-extend').modal('hide');
 		
 	}
 	var initAddusersButtonAction = function(){
@@ -729,6 +853,7 @@ var SysUser = function(){
     	 usercontextpath = relativepath;
     	 //initAddUserModal();
     	 initAddUserModalExtend();
+    	 initUserOrderModalExtend();
     	 initDelUsers();
      }
      
@@ -755,7 +880,7 @@ var SysUser = function(){
 					},
 					error : function(xhr, ajaxOptions,
 							thrownError) {
-						 
+						PlatformCommonUtils.warn(thrownError) ;
 					},
 
 					success : function(responseText,
@@ -769,13 +894,15 @@ var SysUser = function(){
 						var tiptype = "success";
 						if (msg == 'success') {
 							msg = "添加用户完毕"
+							PlatformCommonUtils.success(msg,function(){
+								closeUserActionModel();
+								afterSaveUser();
+							}) ;
 						} else {
 							 
-							
+							PlatformCommonUtils.warn(msg) ;
 						}
-						PlatformCommonUtils.success(msg,function(){
-							closeUserActionModel();
-						}) ;
+						
 						/**swal({
 							  title: title,
 							  text: msg,
@@ -811,7 +938,7 @@ var SysUser = function(){
 					},
 					error : function(xhr, ajaxOptions,
 							thrownError) {
-						 
+						PlatformCommonUtils.warn(thrownError) ;
 					},
 
 					success : function(responseText,
@@ -825,13 +952,15 @@ var SysUser = function(){
 						var tiptype = "success";
 						if (msg == 'success') {
 							msg = "修改用户完毕"
+							PlatformCommonUtils.success(msg,function(){
+								closeUserActionModel();
+								afterSaveUser();
+							}) ;
 						} else {
-							 
+							PlatformCommonUtils.warn(msg) ;
 							
 						}
-						PlatformCommonUtils.success(msg,function(){
-							closeUserActionModel();
-						}) ;
+						
 						/**swal({
 							  title: title,
 							  text: msg,
@@ -853,10 +982,10 @@ var SysUser = function(){
 	}
      
      
-    var viewUser = function(userId){
-    	initModal();
+    var viewUser = function(userId,userAccount){
+    	//initModal();
     	 // https://github.com/jschr/bootstrap-modal
-        $modal.load(usercontextpath+"/sysmanager/user/getSmUser.page", {
+       /** $modal.load(usercontextpath+"/sysmanager/user/getSmUser.page", {
        	 "userId":userId
         }, function(){
        	 
@@ -865,12 +994,24 @@ var SysUser = function(){
            	 width :"900px"
             });
            
-          });
+          });*/
+        
+        $currentmodal = ModelDialog.dialog({
+				title:"查看用户<span class=\"label label-sm label-success\">"+userAccount+"</span>",
+				showfooter:false,
+				url:usercontextpath+"/sysmanager/user/getSmUser.page",
+				params:{
+					"userId":userId
+			      },
+				width:"900px",
+				height:"400px"
+
+         });
     }
-    var tomodifyUser = function(userId){
-    	initModal();
+    var tomodifyUser = function(userId,userAccount){
+    	//initModal();
    	 // https://github.com/jschr/bootstrap-modal
-       $modal.load(usercontextpath+"/sysmanager/user/toUpdateSmUser.page", {
+      /** $modal.load(usercontextpath+"/sysmanager/user/toUpdateSmUser.page", {
       	 "userId":userId
        }, function(){
     	   $modal.on('hidden.bs.modal', function () {
@@ -881,7 +1022,18 @@ var SysUser = function(){
           	 width :"900px"
            });
           
-         });
+         });*/
+       
+       $currentmodal = ModelDialog.dialog({
+			title:"修改用户<span class=\"label label-sm label-success\">"+userAccount+"</span>",
+			showfooter:false,
+			url:usercontextpath+"/sysmanager/user/toUpdateSmUser.page",
+			params:{
+				"userId":userId
+		      },
+			width:"900px",
+			height:"500px"
+       });
     }
     var initModifyUser = function(){
     	initModifyUserButtonAction();
@@ -1025,11 +1177,11 @@ var SysUser = function(){
     	saveUser:function(){
     		saveUser();
     	},
-    	viewUser:function(userId){
-    		viewUser(userId);
+    	viewUser:function(userId,userName){
+    		viewUser(userId,userName);
     	},
-    	tomodifyUser:function(userId){
-    		tomodifyUser(userId);
+    	tomodifyUser:function(userId,userAccount){
+    		tomodifyUser(userId,userAccount);
     	},
     	initModifyUser:function(){
     		initModifyUser();
@@ -1051,6 +1203,12 @@ var SysUser = function(){
 		 },
 		 initModifyUserPasswordAction:function(userId,userName){
 			 initModifyUserPasswordAction(userId,userName);
+		 },
+		 initUserOrderModalExtend:function(){
+			 initUserOrderModalExtend();
+		 },
+		 initUserOrderTable:function(hasrecords){
+			 initUserOrderTable(hasrecords);
 		 }
     	
     	

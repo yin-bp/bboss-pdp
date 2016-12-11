@@ -119,6 +119,17 @@
 
 		]]>
 	</property>
+	
+	<property name="getAllDepartUsers">
+		<![CDATA[
+			select u.*,o.org_name as departName from td_sm_user u  join td_sm_organization o on u.depart_id = o.org_id where   u.depart_id=? order by user_sn
+		]]>
+	</property>
+	<property name="getAllLisanUsers">
+		<![CDATA[
+			select u.*,'待岗' as departName from td_sm_user u where  depart_id is null or depart_id ='' order by user_sn
+		]]>
+	</property>
 		<property name="queryListSmUser">
 		<![CDATA[
 			select * from td_sm_user where 1=1
@@ -163,5 +174,11 @@
 			select count(user_id) as ucount from td_sm_user where  user_id=? and user_password=? 
 		]]>
 	</property>
+	<property name="saveSmUsersOrder">
+		<![CDATA[
+			update td_sm_user set user_sn=#[userSn] where  user_id=#[userId]
+		]]>
+	</property>
+	
 	
 </properties>

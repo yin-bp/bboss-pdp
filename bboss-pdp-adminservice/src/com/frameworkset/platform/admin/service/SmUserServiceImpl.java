@@ -17,9 +17,10 @@
 package com.frameworkset.platform.admin.service;
 
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -270,6 +271,58 @@ public class SmUserServiceImpl implements SmUserService {
 			return "success";
 		} catch (Exception e) {
 			throw new SmUserException("reset password failed:", e);
+		}
+	}
+	/** (non-Javadoc)
+	 * @see com.frameworkset.platform.admin.service.SmUserService#getDepartUsers(java.lang.String)
+	 */
+	@Override
+	public List<SmUser> getDepartUsers(String departid) throws SmUserException {
+		try {
+			 if(departid == null || departid.equals(""))
+				 throw new SmUserException("没有选择部门");
+				
+			 List<SmUser> users = null;
+			if(departid != null && departid.equals(Constants.LISAN_ID)){
+				users = executor.queryList(SmUser.class,"getAllLisanUsers");
+				
+			}
+			else
+			{
+				users = executor.queryList(SmUser.class,"getAllDepartUsers", departid);
+			}
+			
+			return users;
+		} 
+		catch(SmUserException e)
+		{
+			throw e;
+		}
+		catch (Exception e) {
+			throw new SmUserException("pagine query SmUser failed:", e);
+		}
+	}
+	public void saveSmUsersOrder(String[] userIds) throws SmUserException{
+		if(userIds != null && userIds.length > 0)
+		{
+			List<Map> datas = new ArrayList<Map>();
+			for(int i = 0; i < userIds.length; i ++){
+				Map record = new HashMap();
+				record.put("userId", userIds[i]);
+				record.put("userSn", i);
+				datas.add(record);
+			}
+			
+			try {
+				this.executor.updateBeans("saveSmUsersOrder", datas);
+			} 
+			catch(SmUserException e)
+			{
+				throw e;
+			}
+			catch (Exception e) {
+				throw new SmUserException("pagine query SmUser failed:", e);
+			}
 		}
 	}
 }

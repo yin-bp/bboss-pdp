@@ -16,6 +16,7 @@
 		path:addSmUser="/jsp/sysmanager/user/adduser.jsp"
 		path:getSmUser="/jsp/sysmanager/user/viewuser.jsp"
 		path:modifypassword="/jsp/sysmanager/user/modifypassword.jsp"
+		path:toOrderSmUser="/jsp/sysmanager/user/userorder.jsp"
 		f:smUserService="attr:user.smUserService"
 		class="com.frameworkset.platform.admin.action.SmUserController" >
 	</property>

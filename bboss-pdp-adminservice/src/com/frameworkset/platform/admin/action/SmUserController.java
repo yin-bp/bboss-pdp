@@ -289,4 +289,15 @@ public class SmUserController {
 			return "无权修改用户口令!";
 		}
 	}
+	
+	public String toOrderSmUser(String departId, ModelMap model){
+		model.addAttribute("departid", departId);
+		List<SmUser> users = smUserService.getDepartUsers( departId);
+		model.addAttribute("users", users);
+		return "path:toOrderSmUser";
+	}
+	public @ResponseBody String saveSmUsersOrder(String[] userId){
+		smUserService.saveSmUsersOrder(userId);
+		return "success";
+	}
 }

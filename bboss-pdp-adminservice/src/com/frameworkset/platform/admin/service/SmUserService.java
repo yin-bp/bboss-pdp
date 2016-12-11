@@ -46,4 +46,13 @@ public interface SmUserService {
 	 */
 	public void resetpassword(String userId) throws SmUserException;
 	public  String modifypassword(String userId,String newPassword,String newPasswordSecond,String oldPassword) throws SmUserException;
+	/**
+	 * @param departid
+	 * @return
+	 */
+	public List<SmUser> getDepartUsers(String departid) throws SmUserException;
+	/**
+	 * @param userIds
+	 */
+	public void saveSmUsersOrder(String[] userIds) throws SmUserException;
 }

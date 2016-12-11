@@ -2,12 +2,7 @@
 	contentType="text/html; charset=utf-8"%>
 <%@ taglib uri="/WEB-INF/tld/pager-taglib.tld" prefix="pg" %>
 <pg:beaninfo actual="${smUser }">		
-<div class="modal-header">
-	<button type="button" class="close" data-dismiss="modal"
-		aria-hidden="true"></button>
-	<h4 class="modal-title">修改用户<span class="label label-sm label-success"><pg:cell colName="userName"/></span></h4>
-</div>
-<div class="modal-body">
+
 	<!-- BEGIN FORM-->
 	<form action="#" class="form-horizontal" id="form_sys_modifyuser">
 		<div class="form-body">
@@ -216,7 +211,7 @@
 			</div>
 		</div>
 	</form>
-</div>
+
 <script type="text/javascript">
 	jQuery(document).ready(function() {
 		SysUser.initModifyUser();
