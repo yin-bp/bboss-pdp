@@ -17,7 +17,7 @@ public class Constants {
 	public static final int USER_STATUS_DELETE = 0;
 	/**申请*/
 	public static final int USER_STATUS_APPLY = 1;
-	
+	public static final String LISAN_ID = "lisan";
 	/**
 	 * 
 	 */

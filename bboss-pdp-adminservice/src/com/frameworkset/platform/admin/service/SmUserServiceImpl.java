@@ -17,6 +17,7 @@
 package com.frameworkset.platform.admin.service;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +33,7 @@ import com.frameworkset.orm.transaction.TransactionManager;
 import com.frameworkset.platform.admin.entity.SmUser;
 import com.frameworkset.platform.admin.entity.SmUserCondition;
 import com.frameworkset.util.ListInfo;
+import com.frameworkset.util.StringUtil;
 
 /**
  * <p>Title: SmUserServiceImpl</p> <p>Description: 用户管理管理业务处理类 </p> <p>bboss</p>
@@ -43,9 +45,14 @@ public class SmUserServiceImpl implements SmUserService {
 	private static Logger log = Logger.getLogger(com.frameworkset.platform.admin.service.SmUserServiceImpl.class);
 	private SmOrganizationService smOrganizationService;
 	private ConfigSQLExecutor executor;
+	private void handlLisan(SmUser smUser){
+		if(StringUtil.isEmpty(smUser.getDepartId()) ||smUser.getDepartId().equals(Constants.LISAN_ID))
+			smUser.setDepartId(null);
+	}
 	public void addSmUser(SmUser smUser) throws SmUserException {
 		// 业务组件
 		try {
+			handlLisan(  smUser);
 			int user_sn = executor.queryObject(int.class, "selectMaxSNofdepart", smUser.getDepartId());
 			smUser.setUserSn(user_sn);
 			//对口令进行加密处理
@@ -128,6 +135,7 @@ public class SmUserServiceImpl implements SmUserService {
 	}
 	public void updateSmUser(SmUser smUser) throws SmUserException {
 		try {
+			handlLisan(  smUser);
 			if(StringUtils.isNotEmpty(smUser.getUserPassword())){
     			
 				smUser.setPasswordText(smUser.getUserPassword());
@@ -186,8 +194,14 @@ public class SmUserServiceImpl implements SmUserService {
 	public ListInfo getDepartUsers(SmUserCondition conditions, long offset, int pagesize) throws SmUserException {
 		 
 		try {
+			String departid = conditions.getDepartId();
+			
+				
 			final List<SmUser> users = new ArrayList<SmUser>();
-			if(conditions.getRecursive() != null)
+			if(departid != null && departid.equals(Constants.LISAN_ID)){
+				
+			}
+			else if(conditions.getRecursive() != null)
 			{
 				if(conditions.getRecursive().equals("1")){//含子机构查询
 					String orgtreelevel = smOrganizationService.getOrgTreeLevel(conditions.getDepartId());
@@ -195,6 +209,7 @@ public class SmUserServiceImpl implements SmUserService {
 				}
 					
 			}
+			
 			ListInfo datas = executor.queryListInfoBeanByNullRowHandler(new ResultSetNullRowHandler(){
 
 				@Override
@@ -222,5 +237,39 @@ public class SmUserServiceImpl implements SmUserService {
 			throw new SmUserException("query SmUser failed:", e);
 		}
 
+	}
+	/** (non-Javadoc)
+	 * @see com.frameworkset.platform.admin.service.SmUserService#resetpassword(java.lang.String)
+	 */
+	@Override
+	public void resetpassword(String userId) throws SmUserException {
+		String newPassword = EncrpyPwd.encodePassword("123456");
+		try {
+			executor.update("resetpassword", newPassword,userId);
+		} catch (Exception e) {
+			throw new SmUserException("reset password failed:", e);
+		}
+		
+	}
+	public  String modifypassword(String userId,String newPassword,String newPasswordSecond,String oldPassword) throws SmUserException{
+		
+		
+		try {
+			if(!newPassword.equals(newPasswordSecond)){
+				return "两次输入口令不一致!";
+			}
+				
+			String encrptoldPassword = EncrpyPwd.encodePassword(oldPassword);
+			int exist = executor.queryObject(int.class, "oldPasswordright", userId,encrptoldPassword);
+			if(exist ==0){
+				return "旧口令不正确!";
+			}
+				
+			String encrptnewPassword = EncrpyPwd.encodePassword(newPassword);
+			executor.update("resetpassword", encrptnewPassword,userId);
+			return "success";
+		} catch (Exception e) {
+			throw new SmUserException("reset password failed:", e);
+		}
 	}
 }

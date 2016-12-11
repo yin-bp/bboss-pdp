@@ -1,5 +1,6 @@
 var SysUser = function(){
 	var usercontextpath;
+	var $currentmodal;
 	var validateDepart = function(){
 		return Sysmanager.validateDepart();
 	}
@@ -32,6 +33,19 @@ var SysUser = function(){
 		                    	 SysUser.tomodifyUser(userId)
 		                     }
 		                   },
+		                  
+		                   {
+		                     class: 'btn  btn-xs btn-default',
+		                     icon: 'fa fa-pencil',
+		                     label:'修改密码',
+		                     onClick: function() {
+		                    	 
+		                    	 var userId = $(this).attr("userId");
+		                    	 var userName = $(this).attr("userName");
+		                    	 var userAccount = $(this).attr("userAccount");
+		                    	 SysUser.tomodifyPassword(userId,userName,userAccount)
+		                     }
+		                   },
 		                   {
 		                     class: 'btn  btn-xs btn-default',
 		                     icon: 'fa fa-pencil',
@@ -58,6 +72,181 @@ var SysUser = function(){
 			                   }
 		                 ];
 		return content_;
+	}
+	var tomodifyPassword = function(userId,userName,userAccount){
+		 $currentmodal = ModelDialog.dialog({
+				title:"修改用户口令-<span class=\"label label-sm label-success\">"+userName+"("+userAccount+")</span>",
+				showfooter:false,
+				url:usercontextpath+"/sysmanager/user/tomodifyPassword.page",
+				params:{
+					"userId":userId
+			      },
+				width:"400px",
+				height:"300px"
+
+		 });
+	}
+	var iniModifyPasswordValidateform = function()
+	{
+		var form2 = $("form",$currentmodal);		
+		form2.validate({
+					focusInvalid : false, // do not focus the last invalid
+											// input
+					ignore : "", // validate all fields including form hidden
+									// input
+					errorElement: 'span', //default input error message container
+		            errorClass: 'help-block help-block-error', // default input error message class
+					messages : {
+						
+					 
+							oldPassword : {								
+								required : "请输入旧口令"
+							},
+
+							newPassword : {
+								minlength : jQuery.validator.format("应用名称不能小于{0}个字符"),
+								required : "请输入6位以上口令"
+							},
+
+							newPasswordSecond : {
+								minlength : jQuery.validator.format("二次输入口令不能小于{0}个字符"),
+								required : "请二次输入口令"
+							} ,
+							
+					},
+					rules : {
+					 
+						oldPassword : {
+							minlength : 1,
+							required : true
+						},
+
+						newPassword : {
+							minlength : 6,
+							required : true
+						},
+
+						newPasswordSecond : {
+							minlength : 6,
+							required : true
+						},
+
+						
+					},
+
+					errorPlacement: function(error, element) {
+		                if (element.is(':checkbox')) {
+		                    error.insertAfter(element.closest(".md-checkbox-list, .md-checkbox-inline, .checkbox-list, .checkbox-inline"));
+		                } else if (element.is(':radio')) {
+		                    error.insertAfter(element.closest(".md-radio-list, .md-radio-inline, .radio-list,.radio-inline"));
+		                } else {
+		                    error.insertAfter(element); // for other inputs, just perform default behavior
+		                }
+		            },
+
+		            highlight: function(element) { // hightlight error inputs
+		                $(element)
+		                    .closest('.form-group').addClass('has-error'); // set error class to the control group
+		            },
+
+		            unhighlight: function(element) { // revert the change done by hightlight
+		                $(element)
+		                    .closest('.form-group').removeClass('has-error'); // set error class to the control group
+		            },
+
+		            success: function(label) {
+		                label
+		                    .closest('.form-group').removeClass('has-error'); // set success class to the control group
+		            },
+					
+
+					submitHandler : function(form) {
+						// success1.show();
+						modifypassword()
+						
+					}
+				});
+	}
+	var modifypassword = function(){
+		$("form",$currentmodal)
+		.ajaxSubmit(
+				{
+					type : 'POST',
+					url : usercontextpath+'/sysmanager/user/modifypassword.page',
+					forceSync : false,
+					dataType : 'json',
+					beforeSubmit : function() {
+						 App.startPageLoading({message: '保存中...'});
+
+				           
+					},
+					error : function(xhr, ajaxOptions,
+							thrownError) {
+						PlatformCommonUtils.warn(thrownError) ;
+					},
+
+					success : function(responseText,
+							statusText, xhr, $form) {
+						 
+						 window.setTimeout(function() {
+				                App.stopPageLoading();
+				            }, 2000);
+						var msg = responseText;
+						var title = '修改口令';
+						var tiptype = "success";
+						if (msg == 'success') {
+							msg = "修改口令成功";
+							PlatformCommonUtils.success(msg,function(){
+								$currentmodal.modal('hide');
+							}) ;
+						} else {
+							 
+							PlatformCommonUtils.warn(msg) ;
+						}
+						
+						
+
+					}
+
+				});
+		
+	}
+	var initModifyUserPasswordAction = function(userId,userName){
+		iniModifyPasswordValidateform();
+		$(".passwordsave",$currentmodal).bind('click',function(){
+			 if($("#newPassword",$currentmodal).val() != $("#newPasswordSecond",$currentmodal).val()){				
+	   			PlatformCommonUtils.warn("两次口令不一致,请重新输入!") ;
+	   			return false;
+	   		}			  
+			$("form",$currentmodal).submit();
+			return false;
+		});
+		$(".passwordreset",$currentmodal).bind('click',function(){
+			PlatformCommonUtils.confirm('确定要重置为默认口令123456吗？重置后请修改默认口令!',function(){
+				$.ajax({
+			 		   type: "POST",
+			 			url : usercontextpath+"/sysmanager/user/resetpassword.page",
+			 			data :{"userId":userId},
+			 			dataType : 'json',
+			 			async:false,
+			 			beforeSend: function(XMLHttpRequest){ 					
+			 				 	
+			 				},
+			 			success : function(responseText){
+			 				
+			 				if(responseText=="success"){
+			 					
+			 					PlatformCommonUtils.success("重置用户"+userName+"口令成功!");
+			 					afterSaveUser();
+			 				}else{
+			 					PlatformCommonUtils.warn("重置用户"+userName+"口令失败:"+responseText);
+			 				}
+			 				$currentmodal.modal('hide');
+			 			}
+			 			
+			 		  });
+			});
+		});
 	}
 	//初始化用户列表
 	var getUserList = function (departId) {
@@ -125,30 +314,7 @@ var SysUser = function(){
                  },
                  "pagingType": "bootstrap_extended",
             	 "ordering": false,  "searching": false,
-            	 "language": { // language settings
-                     // metronic spesific
-                     "metronicGroupActions": "_TOTAL_ 条记录被选中:  ",
-                     "metronicAjaxRequestGeneralError": "请求提交失败. 请检查服务是否启动或者网络是否断连！",
-
-                     // data tables spesific
-                     "lengthMenu": "每页 _MENU_ 条记录",
-                     "info": "共 _TOTAL_ 条记录",
-                     "infoEmpty": "",
-                     "emptyTable": "没有找到记录",
-                     "zeroRecords": "没有匹配的记录",
-                     "paginate": {
-                         "previous": "上一页",
-                         "next": "下一页",
-                         "last": "尾页",
-                         "first": "首页",
-                         "page": "第",
-                         "pageOf": "页/"
-                     }
-                 },
-                  // save datatable state(pagination, sort, etc) in cookie.
-                "bStateSave": false, 
-                "processing": false,
-                "serverSide": true,
+            	 
                  // save custom filters to the state
                 "fnStateSaveParams":    function ( oSettings, sValue ) {
                     $("#datatable_userlist tr.filter .form-control").each(function() {
@@ -247,9 +413,17 @@ var SysUser = function(){
 		                         return chbx;
 		                        }
                             },
-                            { "data": "departName" },
+                            { "data": "departName","render": function ( departName, type, full, meta ) {
+                            	
+                            	if(departName == null || departName == '')
+                            		return "待岗"
+                            	else
+                            		return departName;
+	                        	 
+		                        }
+                            },
                             { "data": "userId","render": function ( data, type, full, meta ) {
-	                        	 var ops = "<button defaultAdmin=\""+full.defaultAdmin+"\" userId=\""+data+"\" class=\"btn btn-outline btn-xs green-sharp  uppercase\" data-toggle=\"user_ops_confirmation\"  data-singleton=\"true\" data-placement=\"left\">操作</button>";
+	                        	 var ops = "<button userName=\""+full.userRealname+"\" userAccount=\""+full.userName+"\" defaultAdmin=\""+full.defaultAdmin+"\" userId=\""+data+"\" class=\"btn btn-outline btn-xs green-sharp  uppercase\" data-toggle=\"user_ops_confirmation\"  data-singleton=\"true\" data-placement=\"left\">操作</button>";
 	                             return ops;
 	                           	} 
                             }
@@ -318,23 +492,27 @@ var SysUser = function(){
 	}
 	var initAddusersButtonAction = function(){
    	 $("#sys_addUser_button").bind('click',function(){
-   		 saveUser("#form_sys_adduser");
+   		 saveUser("#form_sys_adduser",false);
    	 });
     }
 	
 	var initModifyUserButtonAction = function(){
 	   	 $("#sys_modifyUser_button").bind('click',function(){
-	   		saveUser("#form_sys_modifyuser");
+	   		saveUser("#form_sys_modifyuser",true);
 	   	 });
 	    }
     
-    var saveUser = function (formid){
+    var saveUser = function (formid,update){
     	
-		  if($("#userPassword").val() != $("#userPasswordSecond").val()){				
-			  PlatformCommonUtils.warn("两次口令不一致") ;
-			
-				return false;
-			}
+    	if(!update)
+    	{
+    		 if($("#userPassword").val() != $("#userPasswordSecond").val()){				
+   			  PlatformCommonUtils.warn("两次口令不一致") ;
+   			
+   				return false;
+   			}
+    	}
+		 
 		  var vr = validateDepart();
           if(!vr)
         	  return;
@@ -867,6 +1045,12 @@ var SysUser = function(){
 		},		 
 		 showUsers:function(departId){
 			 showUsers(departId);
+		 },
+		 tomodifyPassword:function(userId,userName,userAccount){
+			 tomodifyPassword(userId,userName,userAccount);
+		 },
+		 initModifyUserPasswordAction:function(userId,userName){
+			 initModifyUserPasswordAction(userId,userName);
 		 }
     	
     	

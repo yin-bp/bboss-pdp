@@ -29,7 +29,7 @@
 	
 		<property name="addSmUser">
 		<![CDATA[
-			insert into td_sm_user (USER_ID,CERT_SN,DEPART_ID,DREDGE_TIME,ISTAXMANAGER,LASTLOGIN_DATE,LOGON_IP,Password_DualTime,PASSWORD_TEXT,PASSWORD_UPDATETIME,PAST_TIME,POLITICS,REMARK1,REMARK2,REMARK3,REMARK4,REMARK5,update_time,USER_ADDRESS,USER_BIRTHDAY,USER_EMAIL,USER_FAX,USER_HOMETEL,USER_IDCARD,USER_ISVALID,USER_LOGINCOUNT,USER_MOBILETEL1,USER_MOBILETEL2,USER_NAME,USER_OICQ,USER_PASSWORD,USER_PINYIN,USER_POSTALCODE,USER_REALNAME,USER_REGDATE,USER_SEX,USER_SN,USER_TYPE,USER_WORKNUMBER,USER_WORKTEL,WORKLENGTH) values(#[userId],#[certSn],#[departId],#[dredgeTime],#[istaxmanager],#[lastloginDate],#[logonIp],#[passwordDualtime],#[passwordText],#[passwordUpdatetime],#[pastTime],#[politics],#[remark1],#[remark2],#[remark3],#[remark4],#[remark5],#[updateTime],#[userAddress],#[userBirthday],#[userEmail],#[userFax],#[userHometel],#[userIdcard],#[userIsvalid],#[userLogincount],#[userMobiletel1],#[userMobiletel2],#[userName],#[userOicq],#[userPassword],#[userPinyin],#[userPostalcode],#[userRealname],#[userRegdate],#[userSex],#[userSn],#[userType],#[userWorknumber],#[userWorktel],#[worklength])
+			insert into td_sm_user (USER_ID,CERT_SN,DEPART_ID,DREDGE_TIME,ISTAXMANAGER,LASTLOGIN_DATE,LOGON_IP,Password_DualTime,PASSWORD_UPDATETIME,PAST_TIME,POLITICS,REMARK1,REMARK2,REMARK3,REMARK4,REMARK5,update_time,USER_ADDRESS,USER_BIRTHDAY,USER_EMAIL,USER_FAX,USER_HOMETEL,USER_IDCARD,USER_ISVALID,USER_LOGINCOUNT,USER_MOBILETEL1,USER_MOBILETEL2,USER_NAME,USER_OICQ,USER_PASSWORD,USER_PINYIN,USER_POSTALCODE,USER_REALNAME,USER_REGDATE,USER_SEX,USER_SN,USER_TYPE,USER_WORKNUMBER,USER_WORKTEL,WORKLENGTH) values(#[userId],#[certSn],#[departId],#[dredgeTime],#[istaxmanager],#[lastloginDate],#[logonIp],#[passwordDualtime],#[passwordUpdatetime],#[pastTime],#[politics],#[remark1],#[remark2],#[remark3],#[remark4],#[remark5],#[updateTime],#[userAddress],#[userBirthday],#[userEmail],#[userFax],#[userHometel],#[userIdcard],#[userIsvalid],#[userLogincount],#[userMobiletel1],#[userMobiletel2],#[userName],#[userOicq],#[userPassword],#[userPinyin],#[userPostalcode],#[userRealname],#[userRegdate],#[userSex],#[userSn],#[userType],#[userWorknumber],#[userWorktel],#[worklength])
 		]]>
 	</property>
 		<property name="deleteByKey">
@@ -50,7 +50,7 @@
 	</property>
 		<property name="updateSmUser">
 		<![CDATA[
-			update td_sm_user set USER_ID=#[userId],CERT_SN=#[certSn],DEPART_ID=#[departId],DREDGE_TIME=#[dredgeTime],ISTAXMANAGER=#[istaxmanager],LASTLOGIN_DATE=#[lastloginDate],LOGON_IP=#[logonIp],Password_DualTime=#[passwordDualtime],PASSWORD_TEXT=#[passwordText],PASSWORD_UPDATETIME=#[passwordUpdatetime],PAST_TIME=#[pastTime],POLITICS=#[politics],REMARK1=#[remark1],REMARK2=#[remark2],REMARK3=#[remark3],REMARK4=#[remark4],REMARK5=#[remark5],update_time=#[updateTime],USER_ADDRESS=#[userAddress],USER_BIRTHDAY=#[userBirthday],USER_EMAIL=#[userEmail],USER_FAX=#[userFax],USER_HOMETEL=#[userHometel],USER_IDCARD=#[userIdcard],USER_ISVALID=#[userIsvalid],USER_LOGINCOUNT=#[userLogincount],USER_MOBILETEL1=#[userMobiletel1],USER_MOBILETEL2=#[userMobiletel2],USER_NAME=#[userName],USER_OICQ=#[userOicq],USER_PASSWORD=#[userPassword],USER_PINYIN=#[userPinyin],USER_POSTALCODE=#[userPostalcode],USER_REALNAME=#[userRealname],USER_REGDATE=#[userRegdate],USER_SEX=#[userSex],USER_SN=#[userSn],USER_TYPE=#[userType],USER_WORKNUMBER=#[userWorknumber],USER_WORKTEL=#[userWorktel],WORKLENGTH=#[worklength] where USER_ID=#[userId]
+			update td_sm_user set USER_ID=#[userId],CERT_SN=#[certSn],DEPART_ID=#[departId],DREDGE_TIME=#[dredgeTime],ISTAXMANAGER=#[istaxmanager],LASTLOGIN_DATE=#[lastloginDate],LOGON_IP=#[logonIp],Password_DualTime=#[passwordDualtime],PASSWORD_UPDATETIME=#[passwordUpdatetime],PAST_TIME=#[pastTime],POLITICS=#[politics],REMARK1=#[remark1],REMARK2=#[remark2],REMARK3=#[remark3],REMARK4=#[remark4],REMARK5=#[remark5],update_time=#[updateTime],USER_ADDRESS=#[userAddress],USER_BIRTHDAY=#[userBirthday],USER_EMAIL=#[userEmail],USER_FAX=#[userFax],USER_HOMETEL=#[userHometel],USER_IDCARD=#[userIdcard],USER_ISVALID=#[userIsvalid],USER_LOGINCOUNT=#[userLogincount],USER_MOBILETEL1=#[userMobiletel1],USER_MOBILETEL2=#[userMobiletel2],USER_NAME=#[userName],USER_OICQ=#[userOicq],USER_PINYIN=#[userPinyin],USER_POSTALCODE=#[userPostalcode],USER_REALNAME=#[userRealname],USER_REGDATE=#[userRegdate],USER_SEX=#[userSex],USER_SN=#[userSn],USER_TYPE=#[userType],USER_WORKNUMBER=#[userWorknumber],USER_WORKTEL=#[userWorktel],WORKLENGTH=#[worklength] where USER_ID=#[userId]
 		]]>
 	</property>
 		<property name="selectById">
@@ -75,11 +75,15 @@
 	<property name="getDepartUsers">
 		<![CDATA[
 			select u.*,o.org_name as departName from td_sm_user u left join td_sm_organization o on u.depart_id = o.org_id where 1=1 
-			#if( !$recursive  || $recursive.equals("0") || $recursive.equals("") )
-				and depart_id=#[departId]
-			#elseif($recursive.equals("1"))
-				and (o.ORG_TREE_LEVEL like #[orgtreelevelLike] or o.ORG_TREE_LEVEL=#[orgtreelevel])
-			#end
+			#if(!$departId.equals("lisan"))
+				#if( !$recursive  || $recursive.equals("0") || $recursive.equals("") )
+					and depart_id=#[departId]
+				#elseif($recursive.equals("1"))
+					and (o.ORG_TREE_LEVEL like #[orgtreelevelLike] or o.ORG_TREE_LEVEL=#[orgtreelevel])
+				#end
+			#else
+				and (depart_id is null or depart_id ='')
+			#end	
 			
 			#if($userIdcard && !$userIdcard.equals(""))
 				and USER_IDCARD =#[userIdcard]		
@@ -148,4 +152,16 @@
 
 		]]>
 	</property>
-	</properties>
+	
+	<property name="resetpassword">
+		<![CDATA[
+			update td_sm_user set user_password=? where user_id=?
+		]]>
+	</property>
+	<property name="oldPasswordright">
+		<![CDATA[
+			select count(user_id) as ucount from td_sm_user where  user_id=? and user_password=? 
+		]]>
+	</property>
+	
+</properties>

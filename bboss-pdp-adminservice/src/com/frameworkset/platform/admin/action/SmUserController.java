@@ -22,6 +22,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.frameworkset.platform.common.DatagridBean;
+import org.frameworkset.platform.security.AccessControl;
 import org.frameworkset.util.annotations.PagerParam;
 import org.frameworkset.util.annotations.ResponseBody;
 import org.frameworkset.web.servlet.ModelMap;
@@ -252,5 +253,40 @@ public class SmUserController {
 			return StringUtil.formatBRException(e);
 		}
 		
+	}
+	public String tomodifyPassword(String userId, ModelMap model){
+		try {
+			SmUser smUser = smUserService.getSmUser(userId);
+			model.addAttribute("smUser", smUser);
+			return "path:modifypassword";
+		} catch (SmUserException e) {
+			throw e;
+		} catch (Throwable e) {
+			throw new SmUserException("get SmUser failed::userId=" + userId, e);
+		}
+	}
+	public @ResponseBody String resetpassword(String userId){
+		String currentUserId = AccessControl.getAccessControl().getUserID();
+		if(currentUserId.equals(userId) || AccessControl.getAccessControl().checkPermission("user", "modifypassword","admin"))//判断用户是否有重置密码的权限
+		{
+			smUserService.resetpassword(userId);
+			return "success";
+		}
+		else
+		{
+			return "无权修改用户口令!";
+		}
+	}
+	public @ResponseBody String modifypassword(String userId,String newPassword,String newPasswordSecond,String oldPassword){
+		String currentUserId = AccessControl.getAccessControl().getUserID();
+		if(currentUserId.equals(userId) || AccessControl.getAccessControl().checkPermission("user", "modifypassword","admin"))//判断用户是否有重置密码的权限
+		{
+			
+			return smUserService.modifypassword(  userId,  newPassword,  newPasswordSecond,  oldPassword);
+		}
+		else
+		{
+			return "无权修改用户口令!";
+		}
 	}
 }

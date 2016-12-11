@@ -16,9 +16,11 @@
 
 package com.frameworkset.platform.admin.service;
 
-import com.frameworkset.platform.admin.entity.*;
-import com.frameworkset.util.ListInfo;
 import java.util.List;
+
+import com.frameworkset.platform.admin.entity.SmUser;
+import com.frameworkset.platform.admin.entity.SmUserCondition;
+import com.frameworkset.util.ListInfo;
 
 /**
  * <p>Title: SmUserService</p> <p>Description: 用户管理管理服务接口 </p> <p>bboss</p>
@@ -39,4 +41,9 @@ public interface SmUserService {
      * user_updatetype:3 -停用 0 - 逻辑删除 1 - 物理删除  2- 启用用户
      */
 	public void updateUserStatus(String userId,String user_updatetype) throws SmUserException;
+	/**
+	 * @param userId
+	 */
+	public void resetpassword(String userId) throws SmUserException;
+	public  String modifypassword(String userId,String newPassword,String newPasswordSecond,String oldPassword) throws SmUserException;
 }

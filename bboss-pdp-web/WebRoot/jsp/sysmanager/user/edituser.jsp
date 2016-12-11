@@ -38,32 +38,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="row">
-			<div class="col-md-6" >
-				<div class="form-group form-md-line-input">
-					<label class="col-md-3 control-label" for="form_control_1">口令
-						<span class="required">*</span>
-					</label>
-					<div class="col-md-9">
-						<input type="password" class="form-control" placeholder="123456" name="userPassword" id="userPassword" autocomplete="off" value="<pg:cell colName="passwordText" defaultValue="123456"/>">
-						<div class="form-control-focus"></div>
-						<span class="help-block passwordhelp" ></span>	
-					</div>
-				</div>
-			</div>
-			<div class="col-md-6" >
-				<div class="form-group form-md-line-input">
-					<label class="col-md-3 control-label" for="form_control_1">确认口令
-						<span class="required">*</span>
-					</label>
-					<div class="col-md-9">
-						<input type="password" class="form-control" placeholder="123456"
-							name="userPasswordSecond" id="userPasswordSecond" autocomplete="off"  value="<pg:cell colName="passwordText" defaultValue="123456"/>">
-						<div class="form-control-focus"></div>
-					</div>
-				</div>
-			</div>
-		</div>
+		
 		<div class="row">
 			<div class="col-md-6" >
 				<div class="form-group form-md-line-input">
