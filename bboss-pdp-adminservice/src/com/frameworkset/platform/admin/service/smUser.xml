@@ -179,6 +179,16 @@
 			update td_sm_user set user_sn=#[userSn] where  user_id=#[userId]
 		]]>
 	</property>
+	<property name="saveMoveusers">
+		<![CDATA[
+			update td_sm_user set depart_id=#[todepartId] where  user_id=#[userId]
+		]]>
+	</property>
+	<property name="moveuserstolisan">
+		<![CDATA[
+			update td_sm_user set depart_id=null where  user_id=?
+		]]>
+	</property>
 	
 	
 </properties>

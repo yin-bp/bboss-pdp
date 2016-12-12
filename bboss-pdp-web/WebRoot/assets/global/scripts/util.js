@@ -337,6 +337,16 @@ var ModelDialog = function(){
 		},
 		closeCurrentDialog:function(){
 			closeCurrentDialog();
+		},
+		warn:function(msg,warnfun){
+			PlatformCommonUtils.warn(msg,warnfun);
+		},
+		confirm:function(msg,confirmfun,extendtext,html)
+		{
+			PlatformCommonUtils.confirm(msg,confirmfun,extendtext,html);
+		},
+		success:function(msg,successfun){
+			PlatformCommonUtils.success(msg,successfun);
 		}
 	}
 }();

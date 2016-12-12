@@ -55,4 +55,10 @@ public interface SmUserService {
 	 * @param userIds
 	 */
 	public void saveSmUsersOrder(String[] userIds) throws SmUserException;
+	/**
+	 * @param userIds
+	 * @param fromdepartId
+	 * @param todepartId
+	 */
+	public void saveMoveusers(String userIds, String fromdepartId, String todepartId) throws SmUserException;
 }

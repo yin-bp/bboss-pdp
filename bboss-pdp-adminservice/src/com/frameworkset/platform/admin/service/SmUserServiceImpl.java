@@ -325,4 +325,35 @@ public class SmUserServiceImpl implements SmUserService {
 			}
 		}
 	}
+	public void saveMoveusers(String userIds_, String fromdepartId, String todepartId) throws SmUserException{
+		String[] userIds = userIds_.split(",");
+		if(userIds != null && userIds.length > 0)
+		{
+			
+			
+			try {
+				if(!todepartId.equals(Constants.LISAN_ID)){
+					List<Map> datas = new ArrayList<Map>();
+					for(int i = 0; i < userIds.length; i ++){
+						Map record = new HashMap();
+						record.put("userId", userIds[i]);
+						record.put("todepartId", todepartId);
+						datas.add(record);
+					}
+					this.executor.updateBeans("saveMoveusers", datas);
+				}
+				else
+				{
+					this.executor.updateByKeys("moveuserstolisan", userIds);
+				}
+			} 
+			catch(SmUserException e)
+			{
+				throw e;
+			}
+			catch (Exception e) {
+				throw new SmUserException("pagine query SmUser failed:", e);
+			}
+		}
+	}
 }

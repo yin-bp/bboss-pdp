@@ -441,16 +441,7 @@ var SysUser = function(){
 	{
 		showUsers(Sysmanager.getDepartId());
 	}
-	/**
-	 var $modal;
-	 var initModal = function(){
-		 if($modal == null){
-			 $modal = $('#ajax-user-action-extend');
-			 $modal.draggable({
-		            handle: ".modal-header"
-		        });
-		 }
-	 }*/
+	
 	var initAddUserModalExtend = function(){
 		 
 		//initModal();
@@ -480,6 +471,168 @@ var SysUser = function(){
           
             
           });
+		
+	   	
+  	 
+	}
+	var initMoveUserAction = function() {	 
+			$(".tree-org-moveuserout",ModelDialog.getCurrentModal()).jstree({
+	            "core" : {
+	                "themes" : {
+	                    "responsive": true
+	                }, 
+	                // so that create works
+	                "check_callback" : true,
+	                'data' : {
+	                    'url' : function (node) {
+	                      return usercontextpath+'/sysmanager/org/getChildrens.page';
+	                    },
+	                    'data' : function (node) {
+	                      return { 'parent' : node.id,'isuser':true };
+	                    }
+	                }
+	            },
+	            "types" : {
+	                "default" : {
+	                    "icon" : "fa fa-folder icon-state-warning icon-lg"
+	                },
+	                "lisan":{
+	                	"icon" : "fa fa-list icon-state-warning icon-lg"
+	                }
+	                
+	            },
+	            
+	            "plugins" : [   "types" ]
+	        });
+		 
+		 $(".tree-org-moveuserout",ModelDialog.getCurrentModal()).bind("activate_node.jstree", function (obj, e) {
+			    // 处理代码
+			    // 获取当前节点
+			    var currentNode = e.node;
+			    //console.table(currentNode);
+			    //console.table(obj)
+			   // console.dir(currentNode);
+			    var departid = currentNode.id;
+			    
+			    if(currentNode.parent == "#" && departid != 'lisan'){			    	
+			    	departid = '0';
+			    }
+			    	
+			    $("input[name='selectdepart']",ModelDialog.getCurrentModal()).val(departid);
+			    
+			});
+		 
+		 $(".moveok",ModelDialog.getCurrentModal()).bind('click',function(){
+			 var todepartId = $("input[name='selectdepart']",ModelDialog.getCurrentModal()).val();
+			 var fromdepartId = Sysmanager.getDepartId();
+			 if(todepartId == null || todepartId == '' || todepartId == '0'){
+				 ModelDialog.warn('请选择要调入的部门');
+				 return;
+			 }
+			 if(fromdepartId == todepartId){
+				 ModelDialog.warn('调入的部门和原部门不能是一个部门!');
+				 return;
+			 }
+			 var userIds;
+	         $('input[name="userId"]:checked',$("#datatable_userlist")).each(function(){ 
+	        	 if(userIds != null)
+	    				userIds += ","+$(this).val();
+	    			else
+	    				userIds = $(this).val();
+	        	 
+	         }); 
+			 
+			 $.ajax({
+		 		   type: "POST",
+		 			url : usercontextpath+'/sysmanager/user/saveMoveusers.page',
+		 			data :{"userIds":userIds,"fromdepartId":Sysmanager.getDepartId(),"todepartId":todepartId},
+		 			dataType : 'json',
+		 			async:false,
+		 			beforeSend: function(XMLHttpRequest){ 					
+		 				 	
+		 				},
+		 			success : function(responseText){
+		 				
+		 				if(responseText=="success"){
+		 					
+		 					PlatformCommonUtils.success("调出用户成功!");
+		 					ModelDialog.getCurrentModal().modal('hide');
+		 					afterSaveUser();
+		 				}else{
+		 					PlatformCommonUtils.warn("调出用户失败:"+responseText);
+		 				}
+		 			}
+		 		  });
+			 
+		 });
+	
+			
+	}
+	
+	var initMoveUserModalExtend = function(){
+		 
+		//initModal();
+		 $('#button_sys_moveout_user').on('click', function(){
+            // create the backdrop and wait for next modal to be triggered
+           
+          
+            var vr = validateDepart();           
+             if(!vr)
+            {
+           	  return;
+            }	
+             var chk_value =[]; 
+             $('input[name="userId"]:checked').each(function(){ 
+            	 chk_value.push($(this).val()); 
+             }); 
+             if(chk_value.length == 0)
+             {
+            	 PlatformCommonUtils.warn("请选择要调出的用户!");
+            	 return;
+             }
+             //调出用户
+             $currentmodal = ModelDialog.dialog({
+ 				title:"选择调出部门&nbsp;&nbsp;<a class=\"btn btn-sm blue moveok\"> 确定 <i class=\"fa fa-edit\"></i></a>",
+ 				showfooter:false,
+ 				url:usercontextpath+"/sysmanager/user/toMoveOutSmUser.page",
+ 				params:{
+ 					"fromdepartId":Sysmanager.getDepartId()
+ 			      },
+ 				width:"500px",
+ 				height:"400px"
+
+             });
+            // https://github.com/jschr/bootstrap-modal
+          
+            
+          });
+		 //调入用户
+		 $('#button_sys_movein_user').on('click', function(){
+	            // create the backdrop and wait for next modal to be triggered
+	           
+	          
+	            var vr = validateDepart();
+	           
+	             if(!vr)
+	            {
+	           	  return;
+	            }	
+	             
+	             $currentmodal = ModelDialog.dialog({
+	 				title:"用户调入",
+	 				showfooter:false,
+	 				url:usercontextpath+"/sysmanager/user/toMoveInSmUser.page",
+	 				params:{
+	 					"toDepartId":Sysmanager.getDepartId()
+	 			      },
+	 				width:"900px",
+	 				height:"400px"
+
+	             });
+	            // https://github.com/jschr/bootstrap-modal
+	          
+	            
+	          });
 		
 	   	
   	 
@@ -854,6 +1007,7 @@ var SysUser = function(){
     	 //initAddUserModal();
     	 initAddUserModalExtend();
     	 initUserOrderModalExtend();
+    	 initMoveUserModalExtend();
     	 initDelUsers();
      }
      
@@ -1209,6 +1363,9 @@ var SysUser = function(){
 		 },
 		 initUserOrderTable:function(hasrecords){
 			 initUserOrderTable(hasrecords);
+		 },
+		 initMoveUserAction:function(){
+			 initMoveUserAction();
 		 }
     	
     	

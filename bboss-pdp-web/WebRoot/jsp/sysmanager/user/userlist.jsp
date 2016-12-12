@@ -29,9 +29,9 @@
 				class="fa fa-search"></i>
 			</a> <a href="javascript:;" class="btn btn-sm purple" id="button_sys_order_user"> <i
 				class="fa fa-file-o"></i> 用户排序
-			</a> <a href="javascript:;" class="btn btn-sm green"> 用户调出 <i
+			</a> <a href="javascript:;" class="btn btn-sm green" id="button_sys_moveout_user"> 用户调出 <i
 				class="fa fa-plus"></i>
-			</a> <a href="javascript:;" class="btn btn-sm grey-cascade"> 用户调入 <i
+			</a> <a href="javascript:;" class="btn btn-sm grey-cascade" id="button_sys_movein_user"> 用户调入 <i
 				class="fa fa-link"></i>
 			</a>
 		</div>

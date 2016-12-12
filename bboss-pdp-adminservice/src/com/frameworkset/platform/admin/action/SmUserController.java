@@ -44,6 +44,23 @@ public class SmUserController {
 	private static Logger log = Logger.getLogger(SmUserController.class);
 
 	private SmUserService smUserService;
+	public @ResponseBody String saveMoveusers(String userIds,String fromdepartId,String todepartId){
+		if(StringUtil.isEmpty(fromdepartId) || StringUtil.isEmpty(todepartId) || StringUtil.isEmpty(userIds)){
+			return "请确保调出用户、调出部门、被调出部门都已经选中!";
+		}
+		if(fromdepartId.equals(todepartId)){
+			return "调出部门、被调出部门不能是同一个部门!";
+		}
+		this.smUserService.saveMoveusers( userIds, fromdepartId, todepartId);
+		return "success";
+		
+	}
+	public String toMoveOutSmUser(String fromdepartId,ModelMap model){
+		if(StringUtil.isEmpty(fromdepartId))
+			model.addAttribute("errormsg","没有选择调入部门");
+		model.addAttribute("fromdepartId",fromdepartId);
+		return "path:toMoveOutSmUser";
+	}
 	public @ResponseBody String addSmUser(SmUser smUser) {
 		// 控制器
 		try {
