@@ -66,11 +66,16 @@ var PlatformCommonUtils = function(){
 			);
 	}
 	
-	var initSlimScroll = function(el) {
+	var initSlimScroll = function(el,container) {
         if (!$().slimScroll) {
             return;
         }
-        $(el).each(function() {
+        var _el = el;
+        if(container){
+        	_el = $(el,container);
+        }
+        
+        $(_el).each(function() {
             if ($(this).attr("data-initialized")) {
                 return; // exit
             }
@@ -116,8 +121,8 @@ var PlatformCommonUtils = function(){
 		initPickers:function(){
 			initPickers();
 		},
-		initSlimScroll:function(el){
-			initSlimScroll(el);
+		initSlimScroll:function(el,container){
+			initSlimScroll(el,container);
 		}
 	}
 }();
