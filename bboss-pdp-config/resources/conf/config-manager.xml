@@ -94,7 +94,7 @@
  		<!-- <loginModule name="console" controlFlag="required" debug="true" registTable="DB" class="com.sany.application.util.WebSealLDAPLoginModule" />  -->
 <!-- 		<loginModule name="console" controlFlag="required" debug="true" registTable="DB" class="com.sany.application.util.TicketUserPasswordLoginModule" /> -->
 <!-- 		<loginModule name="console" controlFlag="required" debug="true" registTable="DB" class="com.sany.application.util.TicketLDAPLoginModule" /> -->
-				<loginModule name="console" controlFlag="required" debug="true" class="org.frameworkset.platform.security.authenticate.UserPasswordLoginModule" />
+				<loginModule name="console" controlFlag="required" debug="true" class="org.frameworkset.platform.security.authenticate.ConfigUserPasswordLoginModule" />
 		</authenticate>
 	
 		

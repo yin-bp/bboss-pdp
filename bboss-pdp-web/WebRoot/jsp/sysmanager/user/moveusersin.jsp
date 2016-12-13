@@ -1,18 +1,17 @@
 <%@ page session="false" language="java"
 	contentType="text/html; charset=utf-8"%>
-<div class="portlet light portlet-fit portlet-datatable bordered">
-	
 
-    <div class="portlet-body">
 			<div class="row">
-				<div class="col-md-offset-2 col-md-10" style="overflow-x:auto;overflow-y:hidden;">
-					<div class="tree-org-moveuserout"></div>
+				<div class="col-md-2" style="overflow-x:auto;overflow-y:hidden;">
+					<div class="tree-org-moveuserin"></div>
 					<input type="hidden" name="selectdepart" />
+				</div>
+				<div class=" col-md-10">
+					
 				</div>
 				
 			</div>
-    </div>
-</div>
+
 
 	
 <script type="text/javascript">

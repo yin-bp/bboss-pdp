@@ -190,20 +190,24 @@
 					</div>
 				</div>
 			</div>
+			
 			<div class="col-md-6" >	
 				<div class="form-group form-md-line-input">
-					<label class="col-md-3 control-label" for="form_control_1">出生日期
-						<span class="required">*</span>
-					</label>
+					<label class="col-md-3 control-label" for="form_control_1">出生日期</label>
 					<div class="col-md-9">
-						<input type="text" class="form-control date-picker"  name="userBirthday" value="<pg:cell colName="userBirthday" dateformat="yyyy-MM-dd"/>">
-						<div class="form-control-focus"></div>
-						<span class="help-block">请输入出生日期</span>	
+						<div class="input-group">
+							<input type="text" class="form-control date-picker" name="userBirthday" value="<pg:cell colName="userBirthday" dateformat="yyyy-MM-dd"/>"
+								placeholder="请输入出生日期"> <span class="input-group-addon">
+								<i class="fa fa-calendar"></i>
+							</span>
+							<div class="form-control-focus"></div>
+							 
+						</div>
 					</div>
 				</div>
-				
-				
 			</div>
+				
+			
 		</div>
 		<div class="row">
 			
