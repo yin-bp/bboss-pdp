@@ -16,8 +16,11 @@
 
 package com.frameworkset.platform.admin.entity;
 
-import com.frameworkset.orm.annotation.PrimaryKey;
 import java.sql.Timestamp;
+
+import org.frameworkset.util.annotations.RequestParam;
+
+import com.frameworkset.orm.annotation.PrimaryKey;
 /**
  * <p>Title: SmUser</p> <p>Description: 用户管理管理服务实体类 </p> <p>bboss</p>
  * <p>Copyright (c) 2007</p> @Date 2016-11-29 21:14:30 @author yinbp @version
@@ -103,6 +106,7 @@ public class SmUser implements java.io.Serializable {
 	/**
 	 * 出生日期
 	 */
+	@RequestParam(dateformat="yyyy-MM-dd")
 	private Timestamp userBirthday;
 	/**
 	 * 邮箱地址

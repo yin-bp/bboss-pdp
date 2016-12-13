@@ -129,17 +129,30 @@
 				</div>				
 				
 			</div>
+			
 			<div class="col-md-6" >			
 				<div class="form-group">
-					<label class="col-md-3 control-label" >备注:</label>
-					<div class="col-md-9"><p class="form-control-static"> <pg:cell colName="remark1"/> </p>						
+					<label class="col-md-3 control-label" >出生日期:</label>
+					<div class="col-md-9"><p class="form-control-static"> <pg:cell colName="userBirthday" dateformat="yyyy-MM-dd"/> </p>						
+					</div>
+				</div>				
+				
+			</div>
+		
+			
+		</div>
+		<div class="row">
+			
+			<div class="col-md-12" >			
+				<div class="form-group">
+					<label class="col-md-2 control-label" >备注:</label>
+					<div class="col-md-10"><p class="form-control-static"> <pg:cell colName="remark1" htmlEncode="true"/> </p>						
 					</div>
 				</div>				
 				
 			</div>
 			
 		</div>
-		
 		<div class="form-actions">
 			<div class="row">
 				<div class="col-md-offset-3 col-md-9">					

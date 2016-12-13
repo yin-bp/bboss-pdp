@@ -86,7 +86,7 @@ var Sysmanager = new function(){
 			initorg_tree(isuser);
 		},
 		initPickers:function(){
-			//initPickers();
+			initPickers();
 		},
 		
 		 

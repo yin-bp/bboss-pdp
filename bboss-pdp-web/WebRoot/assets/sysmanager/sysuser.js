@@ -771,6 +771,10 @@ var SysUser = function(){
    	 $("#sys_addUser_button").bind('click',function(){
    		 saveUser("#form_sys_adduser",false);
    	 });
+   	/**$("input[name='userBirthday']",$("#form_sys_adduser")).bind('click',function(){
+   		WdatePicker();
+  	 });*/
+   	
     }
 	
 	var initModifyUserButtonAction = function(){

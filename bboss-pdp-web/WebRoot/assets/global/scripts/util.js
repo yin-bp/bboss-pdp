@@ -1,4 +1,14 @@
 var PlatformCommonUtils = function(){
+	//初始化日期控件
+	var initPickers = function() {
+        //init date pickers
+        $('.date-picker',ModelDialog.getCurrentModal()).datepicker({
+            rtl: App.isRTL(),
+            autoclose: true,
+            language:'zh-CN',
+            format:'yyyy-mm-dd'
+        });
+    }
 	var warn = function(msg,warnfun){
 		swal({
 			  title: msg,
@@ -64,6 +74,10 @@ var PlatformCommonUtils = function(){
 		},
 		success:function(msg,successfun){
 			success(msg,successfun);
+		}
+		,
+		initPickers:function(){
+			initPickers();
 		}
 	}
 }();
@@ -347,6 +361,9 @@ var ModelDialog = function(){
 		},
 		success:function(msg,successfun){
 			PlatformCommonUtils.success(msg,successfun);
+		},
+		initPickers:function(){
+			PlatformCommonUtils.initPickers();
 		}
 	}
 }();

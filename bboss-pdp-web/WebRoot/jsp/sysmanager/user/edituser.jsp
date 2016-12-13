@@ -190,11 +190,28 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-md-6" >		
+			<div class="col-md-6" >	
 				<div class="form-group form-md-line-input">
-					<label class="col-md-3 control-label" for="form_control_1">备注</label>
+					<label class="col-md-3 control-label" for="form_control_1">出生日期
+						<span class="required">*</span>
+					</label>
 					<div class="col-md-9">
-						<textarea class="form-control" name="remark1" rows="3"><pg:cell colName="userWorknumber" htmlEncode="true"/></textarea>
+						<input type="text" class="form-control date-picker"  name="userBirthday" value="<pg:cell colName="userBirthday" dateformat="yyyy-MM-dd"/>">
+						<div class="form-control-focus"></div>
+						<span class="help-block">请输入出生日期</span>	
+					</div>
+				</div>
+				
+				
+			</div>
+		</div>
+		<div class="row">
+			
+			<div class="col-md-12" >		
+				<div class="form-group form-md-line-input">
+					<label class="col-md-2 control-label" for="form_control_1">备注</label>
+					<div class="col-md-10">
+						<textarea class="form-control" name="remark1" rows="3"><pg:cell colName="remark1" htmlEncode="true"/></textarea>
 						<div class="form-control-focus"></div>
 					</div>
 				</div>
@@ -215,6 +232,7 @@
 <script type="text/javascript">
 	jQuery(document).ready(function() {
 		SysUser.initModifyUser();
+		PlatformCommonUtils.initPickers();
 		
 	});
 </script>

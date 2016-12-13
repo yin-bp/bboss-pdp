@@ -61,6 +61,12 @@ public class SmUserController {
 		model.addAttribute("fromdepartId",fromdepartId);
 		return "path:toMoveOutSmUser";
 	}
+	public String toMoveInSmUser(String todepartId,ModelMap model){
+		if(StringUtil.isEmpty(todepartId))
+			model.addAttribute("errormsg","没有选择调出部门");
+		model.addAttribute("todepartId",todepartId);
+		return "path:toMoveInSmUser";
+	}
 	public @ResponseBody String addSmUser(SmUser smUser) {
 		// 控制器
 		try {
