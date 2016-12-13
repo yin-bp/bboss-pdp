@@ -32,10 +32,27 @@
 
 <div class="tabbable-line tabbable-full-width">	
 			<div class="row">
-				<div class="col-md-2" style="overflow-x:auto;overflow-y:hidden;">
-					<div id="org_tree" class="tree-demo"></div>
+				<div class="col-md-3" >
+					<div class="portlet light bordered">
+                             <div class="portlet-title tabbable-line">
+                                 <div class="caption">
+                                     <i class="icon-pin font-yellow-crusta"></i>
+                                     <span class="caption-subject bold font-yellow-crusta uppercase"> 组织架构 </span>
+                                    
+                                 </div>
+                                 
+                             </div>      
+                            <div class="portlet-body">
+                            	 <div  class="scroller" style="height:450px">
+                                	<div id="org_tree"  ></div>
+                                	<p></p>
+                                </div>	
+                                
+                            </div>
+                        </div>
+					
 				</div>
-				<div class="col-md-10">
+				<div class="col-md-9">
 					<div class="row">
 						 <div class="col-md-12">
                              
@@ -66,7 +83,7 @@
 		Sysmanager.initorg_tree(false); //  initorg_tree core componets
 		
 		SysOrg.getOrgList('0');
-		
+		PlatformCommonUtils.initSlimScroll('.scroller');
 		
 	});
 </script>

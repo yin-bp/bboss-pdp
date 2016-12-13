@@ -475,6 +475,59 @@ var SysUser = function(){
 	   	
   	 
 	}
+	var initMoveUserInAction = function() {
+		$(".tree-org-moveuserin",ModelDialog.getCurrentModal()).jstree({
+            "core" : {
+                "themes" : {
+                    "responsive": true
+                }, 
+                // so that create works
+                "check_callback" : true,
+                'data' : {
+                    'url' : function (node) {
+                      return usercontextpath+'/sysmanager/org/getChildrens.page';
+                    },
+                    'data' : function (node) {
+                      return { 'parent' : node.id,'isuser':true };
+                    }
+                }
+            },
+            "types" : {
+                "default" : {
+                    "icon" : "fa fa-folder icon-state-warning icon-lg"
+                },
+                "lisan":{
+                	"icon" : "fa fa-list icon-state-warning icon-lg"
+                }
+                
+            },
+            
+            "plugins" : [   "types" ]
+        });
+	 
+	 $(".tree-org-moveuserin",ModelDialog.getCurrentModal()).bind("activate_node.jstree", function (obj, e) {
+		    // 处理代码
+		    // 获取当前节点
+		    var currentNode = e.node;
+		    //console.table(currentNode);
+		    //console.table(obj)
+		   // console.dir(currentNode);
+		    var departid = currentNode.id;
+		    
+		    if(currentNode.parent == "#" && departid != 'lisan'){			    	
+		    	departid = '0';
+		    }
+		    	
+		    handleMultiSelect();
+		   // SysUser.showMoveInUsers(departid);
+		    
+		    
+		});
+	}
+	var handleMultiSelect = function () {
+        $('#my_multi_select1').multiSelect();
+       
+    }
 	var initMoveUserAction = function() {	 
 			$(".tree-org-moveuserout",ModelDialog.getCurrentModal()).jstree({
 	            "core" : {
@@ -625,8 +678,8 @@ var SysUser = function(){
 	 				params:{
 	 					"toDepartId":Sysmanager.getDepartId()
 	 			      },
-	 				width:"900px",
-	 				height:"400px"
+	 				width:"1024px",
+	 				height:"600px"
 
 	             });
 	            // https://github.com/jschr/bootstrap-modal
@@ -1370,6 +1423,9 @@ var SysUser = function(){
 		 },
 		 initMoveUserAction:function(){
 			 initMoveUserAction();
+		 },
+		 initMoveUserInAction:function(){
+			 initMoveUserInAction();
 		 }
     	
     	

@@ -56,6 +56,11 @@ License: You must have a valid license purchased only from themeforest(the above
         <link href="${pageContext.request.contextPath}/assets/global/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" />
         <link href="${pageContext.request.contextPath}/assets/global/plugins/clockface/css/clockface.css" rel="stylesheet" type="text/css" />
         <!-- END PAGE LEVEL PLUGINS -->
+        
+         <!-- BEGIN PAGE LEVEL PLUGINS -->
+        <link href="../assets/global/plugins/jquery-multi-select/css/multi-select.css" rel="stylesheet" type="text/css" />
+        <!-- END PAGE LEVEL PLUGINS -->
+        
         <!-- BEGIN THEME GLOBAL STYLES -->
         <link href="${pageContext.request.contextPath}/assets/global/css/components-md.min.css" rel="stylesheet" id="style_components" type="text/css" />
         <link href="${pageContext.request.contextPath}/assets/global/css/plugins-md.min.css" rel="stylesheet" type="text/css" />
@@ -1451,6 +1456,10 @@ License: You must have a valid license purchased only from themeforest(the above
          <script src="${pageContext.request.contextPath}/assets/global/plugins/bootstrap-datepicker/locales/bootstrap-datepicker.zh-CN.min.js" type="text/javascript"></script>
       
         
+        <!-- END PAGE LEVEL PLUGINS -->
+        
+         <!-- BEGIN PAGE LEVEL PLUGINS -->
+         <script src="${pageContext.request.contextPath}/assets/global/plugins/jquery-multi-select/js/jquery.multi-select.js" type="text/javascript"></script>
         <!-- END PAGE LEVEL PLUGINS -->
 
 

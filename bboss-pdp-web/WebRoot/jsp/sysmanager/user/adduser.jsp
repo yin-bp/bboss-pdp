@@ -237,8 +237,8 @@
 			
 			<div class="col-md-12" >		
 				<div class="form-group form-md-line-input">
-					<label class="col-md-2 control-label" for="form_control_1">备注</label>
-					<div class="col-md-10">
+					<label class="col-md-3 control-label" for="form_control_1">备注</label>
+					<div class="col-md-9">
 						<textarea class="form-control" name="remark1" rows="3"></textarea>
 						<div class="form-control-focus"></div>
 					</div>

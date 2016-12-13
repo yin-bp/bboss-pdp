@@ -153,17 +153,19 @@
                 var wrapper = $(divS)
                     .addClass(o.wrapperClass)
                     .css({
-                        position: 'relative',
-                        overflow: 'hidden',
-                        width: o.width,
-                        height: o.height
+                        "position": 'relative',
+                        "overflow-y": 'hidden',
+                        "overflow-x":'auto',
+                        "width": o.width,
+                        "height": o.height
                     });
 
-                // update style for the div
+                // update style for the div overflow-x:auto;overflow-y:hidden;
                 me.css({
-                    overflow: 'hidden',
-                    width: o.width,
-                    height: o.height
+                    "overflow-y": 'hidden',
+                    "overflow-x":'auto',
+                    "width": o.width,
+                    "height": o.height
                 });
 
                 // create scrollbar rail
