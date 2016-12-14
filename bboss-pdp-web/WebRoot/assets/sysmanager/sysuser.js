@@ -478,8 +478,8 @@ var SysUser = function(){
 	var loadMoveUsers = function(departId){
 		$(".reset",ModelDialog.getCurrentModal()).trigger("click");
 		$(".select_users_movein",ModelDialog.getCurrentModal()).load(usercontextpath+'/sysmanager/user/moveinuserlist.page',
-				{'departId':departId,'recursive':'0','records':10},function(){
-			
+				{'fromDepartId':departId,'recursive':'0','records':10},function(){
+					
 		});
 	}
 	var initMoveUserInAction = function() {
@@ -524,7 +524,15 @@ var SysUser = function(){
 			    if(currentNode.parent == "#" && departid != 'lisan'){			    	
 			    	departid = '0';
 			    }
-			    	
+			    else
+			    {
+			    	var toDepartId = $("input[name='toDepartId']",ModelDialog.getCurrentModal()).val();
+					 if(departid == toDepartId){
+						 ModelDialog.warn('原部门和目的部门不能是同一个单位!');
+						 return;
+					 }
+			    }	
+			    $("input[name='fromDepartId']",ModelDialog.getCurrentModal()).val(departid)	;
 			    loadMoveUsers(departid);
 			   // SysUser.showMoveInUsers(departid);
 			    
@@ -545,6 +553,24 @@ var SysUser = function(){
 				 	tr.remove();
 			 	});
 	         }); 
+		 $(".btn-query",ModelDialog.getCurrentModal()).bind("click",function(){
+			 var recursive = $("select[name='recursive']",ModelDialog.getCurrentModal()).val();
+			 
+			 if(recursive == '0' || recursive == '1')
+			 {
+				 var fromDepartId = $("input[name='fromDepartId']",ModelDialog.getCurrentModal()).val();
+				 console.log(fromDepartId);
+				 if(fromDepartId == null || fromDepartId == ''){
+					 ModelDialog.warn('请选择要查询的部门!');
+					 return;
+				 }
+					 
+			 }	 
+			 $(".select_users_movein",ModelDialog.getCurrentModal()).load(usercontextpath+'/sysmanager/user/moveinuserlist.page',
+						$('.form-querymoveusers',ModelDialog.getCurrentModal()).serialize(),function(){
+							
+				});
+	      }); 
 		 $(".clearselecteduser_btn",ModelDialog.getCurrentModal()).bind("click",function(){
 			 $('input[name="userId"]:checked',$(".table-selected-users")).each(function(){ 
 				 	var tr = $(this).closest('tr');
@@ -559,8 +585,52 @@ var SysUser = function(){
 				 	//$(".selected_users_movein").append(tr);
 				 	tr.remove();
 			 	});
-	         }); 
-		 
+	     }); 
+		 $(".btn-submitmoveinusers",ModelDialog.getCurrentModal()).bind("click",function(){
+			 var fromDepartId = $("input[name='fromDepartId']",ModelDialog.getCurrentModal()).val();
+			 var toDepartId = $("input[name='toDepartId']",ModelDialog.getCurrentModal()).val();
+			 if(fromDepartId == toDepartId){
+				 ModelDialog.warn('原部门和目的部门不能是同一个单位!');
+				 return;
+			 }
+			 var userIds = "";
+			 $('input[name="userId"]:checked',$(".table-selected-users")).each(function(){ 
+				  	if(userIds == "")
+				  		userIds += $(this).val();
+				  	else
+				  		userIds += ","+$(this).val();
+				 	
+				 	
+			 	});
+			 if(userIds == "")
+			{
+				 ModelDialog.warn('请选择要调入的用户!');
+				 return;
+			}	 
+			
+			 $.ajax({
+		 		   type: "POST",
+		 			url : usercontextpath+'/sysmanager/user/saveMoveusers.page',
+		 			data :{"userIds":userIds,"fromDepartId":fromDepartId,"toDepartId":toDepartId},
+		 			dataType : 'json',
+		 			async:false,
+		 			beforeSend: function(XMLHttpRequest){ 					
+		 				 	
+		 			},
+		 			success : function(responseText){
+		 				
+		 				if(responseText=="success"){
+		 					
+		 					PlatformCommonUtils.success("调入用户成功!");
+		 					ModelDialog.getCurrentModal().modal('hide');
+		 					afterSaveUser();
+		 				}else{
+		 					PlatformCommonUtils.warn("调入用户失败:"+responseText);
+		 				}
+		 			}
+		 		  });	 
+			
+	      }); 
 	
 	}
 	 
@@ -615,11 +685,11 @@ var SysUser = function(){
 			 var todepartId = $("input[name='selectdepart']",ModelDialog.getCurrentModal()).val();
 			 var fromdepartId = Sysmanager.getDepartId();
 			 if(todepartId == null || todepartId == '' || todepartId == '0'){
-				 ModelDialog.warn('请选择要调入的部门');
+				 ModelDialog.warn('请选择要调出到的部门');
 				 return;
 			 }
 			 if(fromdepartId == todepartId){
-				 ModelDialog.warn('调入的部门和原部门不能是一个部门!');
+				 ModelDialog.warn('调出到的部门和原部门不能是一个部门!');
 				 return;
 			 }
 			 var userIds;
@@ -634,7 +704,7 @@ var SysUser = function(){
 			 $.ajax({
 		 		   type: "POST",
 		 			url : usercontextpath+'/sysmanager/user/saveMoveusers.page',
-		 			data :{"userIds":userIds,"fromdepartId":Sysmanager.getDepartId(),"todepartId":todepartId},
+		 			data :{"userIds":userIds,"fromDepartId":Sysmanager.getDepartId(),"fromDepartId":todepartId},
 		 			dataType : 'json',
 		 			async:false,
 		 			beforeSend: function(XMLHttpRequest){ 					

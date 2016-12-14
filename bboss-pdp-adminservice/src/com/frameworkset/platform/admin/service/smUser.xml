@@ -195,7 +195,7 @@
 			select u.*,o.org_name as departName from td_sm_user u left join td_sm_organization o on u.depart_id = o.org_id where 1=1 
 			#if(!$departId.equals("lisan"))
 				#if( !$recursive  || $recursive.equals("0") || $recursive.equals("") )
-					and depart_id=#[departId]
+					and depart_id=#[fromDepartId]
 				#elseif($recursive.equals("1"))
 					and (o.ORG_TREE_LEVEL like #[orgtreelevelLike] or o.ORG_TREE_LEVEL=#[orgtreelevel])
 				#end
@@ -206,7 +206,7 @@
 					and USER_ISVALID=#[userIsvalid]
 			#end
 			#if($userAttr && !$userAttr.equals(""))
-				and (USER_NAME like #[userAttr]	or USER_REALNAME like #[userAttr] or USER_MOBILETEL1 like #[userAttr]	or USER_WORKNUMBER like #[userAttr]		
+				and (USER_NAME like #[userAttr]	or USER_REALNAME like #[userAttr] or USER_MOBILETEL1 like #[userAttr]	or USER_WORKNUMBER like #[userAttr]	)	
 			#end
 			order by USER_NAME,user_sn 
 			

@@ -1,9 +1,9 @@
 <%@ page session="false" language="java"
 	contentType="text/html; charset=utf-8"%>
 <%@ taglib uri="/WEB-INF/tld/pager-taglib.tld" prefix="pg" %>
-<table
-	class="table table-bordered table-striped table-condensed flip-content table-moveinuserlist">
-	<thead class="flip-content">
+
+<table	class="table table-bordered table-striped table-condensed table-moveinuserlist scroller" style="height:50px;">
+	<thead >
 		<tr>
 			<th width="2%">
 					<input type="checkbox" class="group-checkable"

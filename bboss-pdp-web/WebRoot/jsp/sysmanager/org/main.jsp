@@ -83,7 +83,7 @@
 		Sysmanager.initorg_tree(false); //  initorg_tree core componets
 		
 		SysOrg.getOrgList('0');
-		PlatformCommonUtils.initSlimScroll('.scroller');
+		PlatformCommonUtils.initSlimScroll('.scroller',null,true);
 		
 	});
 </script>

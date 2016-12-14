@@ -37,7 +37,9 @@
 		                                 
 		                             </div>                            
 		                            <div class="portlet-body form">
-                                        <form role="form" class="form-horizontal querymoveusers">
+                                        <form role="form" class="form-horizontal form-querymoveusers">
+                                        	<input type="hidden" name="toDepartId" value="${toDepartId }">
+                                        	<input type="hidden" name="fromDepartId" >
                                             <div class="form-body">
                                             	<div class="row">
 													<div class="col-md-6" >		
@@ -115,7 +117,7 @@
 																	</div>
 																	<span class="input-group-btn btn-right">
 																		
-																		<button type="button" class="btn btn-xs green-haze  "
+																		<button type="button" class="btn btn-xs green-haze btn-query "
 																			  aria-expanded="false">
 																			查询
 																		</button>
@@ -153,11 +155,11 @@
                                         <div class="actions">
                                             
                                             <a href="javascript:;" class="btn btn-circle blue btn-xs dotempadd_btn">
-                                                <i class="fa fa-plus"></i> 添加 </a>
+                                                <i class="fa fa-plus"></i> 添加选中用户到调入清单 </a>
                                             
                                         </div>
                                     </div>                           
-		                            <div class="portlet-body flip-scroll select_users_movein">
+		                            <div class="portlet-body select_users_movein">
                                     </div>
 		                        </div>
 		                   </div>
@@ -172,17 +174,17 @@
                                            
                                         </div>
                                          <div class="actions">
-                                            <a href="javascript:;" class="btn btn-circle blue btn-xs">
-                                                <i class="fa fa-plus"></i> 提交调入记录 </a>
+                                            <a href="javascript:;" class="btn btn-circle blue btn-xs btn-submitmoveinusers">
+                                                <i class="fa fa-plus"></i> 提交入库 </a>
                                             <a href="javascript:;" class="btn btn-circle default btn-xs clearselecteduser_btn" >
-                                                <i class="fa fa-plus"></i> 清空重置 </a>
+                                                <i class="fa fa-plus"></i> 移除 </a>
                                             
                                         </div>
                                     </div>                                   
-		                            <div class="portlet-body flip-scroll">										
-            								<table	class="table table-bordered table-striped table-condensed flip-content table-selected-users">
+		                            <div class="portlet-body ">										
+            								<table	class="table table-bordered table-striped table-condensed  table-selected-users">
 										            
-								                <thead class="flip-content">
+								                <thead >
 													<tr>
 														<th width="2%">
 																<input type="checkbox" class="group-checkable"
@@ -221,6 +223,6 @@
 
 	jQuery(document).ready(function() {	
 		SysUser.initMoveUserInAction();
-		PlatformCommonUtils.initSlimScroll('.scroller',ModelDialog.getCurrentModal());
+		PlatformCommonUtils.initSlimScroll('.scroller',ModelDialog.getCurrentModal(),true);
 	});
 </script>

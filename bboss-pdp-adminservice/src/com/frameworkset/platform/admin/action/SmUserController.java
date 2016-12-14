@@ -45,27 +45,30 @@ public class SmUserController {
 	private static Logger log = Logger.getLogger(SmUserController.class);
 
 	private SmUserService smUserService;
-	public @ResponseBody String saveMoveusers(String userIds,String fromdepartId,String todepartId){
-		if(StringUtil.isEmpty(fromdepartId) || StringUtil.isEmpty(todepartId) || StringUtil.isEmpty(userIds)){
+	public @ResponseBody String saveMoveusers(String userIds,String fromDepartId,String toDepartId){
+		if(StringUtil.isEmpty(fromDepartId) || StringUtil.isEmpty(toDepartId) || StringUtil.isEmpty(userIds)){
 			return "请确保调出用户、调出部门、被调出部门都已经选中!";
 		}
-		if(fromdepartId.equals(todepartId)){
+		if(fromDepartId.equals(toDepartId)){
 			return "调出部门、被调出部门不能是同一个部门!";
 		}
-		this.smUserService.saveMoveusers( userIds, fromdepartId, todepartId);
+		this.smUserService.saveMoveusers( userIds, fromDepartId, toDepartId);
 		return "success";
 		
 	}
+	
+	
+	
 	public String toMoveOutSmUser(String fromdepartId,ModelMap model){
 		if(StringUtil.isEmpty(fromdepartId))
 			model.addAttribute("errormsg","没有选择调入部门");
 		model.addAttribute("fromdepartId",fromdepartId);
 		return "path:toMoveOutSmUser";
 	}
-	public String toMoveInSmUser(String todepartId,ModelMap model){
-		if(StringUtil.isEmpty(todepartId))
+	public String toMoveInSmUser(String toDepartId,ModelMap model){
+		if(StringUtil.isEmpty(toDepartId))
 			model.addAttribute("errormsg","没有选择调出部门");
-		model.addAttribute("todepartId",todepartId);
+		model.addAttribute("toDepartId",toDepartId);
 		return "path:toMoveInSmUser";
 	}
 	public @ResponseBody String addSmUser(SmUser smUser) {
@@ -325,6 +328,9 @@ public class SmUserController {
 		return "success";
 	}
 	public String moveinuserlist(MoveinUserCondition condition,ModelMap model){
+		if(condition.getUserAttr() != null && !condition.getUserAttr().equals("")){
+			condition.setUserAttr("%"+condition.getUserAttr()  + "%");
+		}
 		List<SmUser> users = smUserService.getMoveinUsers(  condition);
 		model.addAttribute("users", users);
 		return "path:moveinuserlist";

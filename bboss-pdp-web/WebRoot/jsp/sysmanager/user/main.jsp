@@ -85,7 +85,7 @@
 		
 		SysUser.getUserList('0');
 		
-		PlatformCommonUtils.initSlimScroll('.scroller');
+		PlatformCommonUtils.initSlimScroll('.scroller',null,true);
 		
 	});
 </script>

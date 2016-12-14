@@ -66,16 +66,21 @@ var PlatformCommonUtils = function(){
 			);
 	}
 	
-	var initSlimScroll = function(el,container) {
+	var initSlimScroll = function(el,container,overflow_x) {
         if (!$().slimScroll) {
             return;
         }
-        var _el = el;
+        var _el = null;
         if(container){
         	_el = $(el,container);
         }
-        
-        $(_el).each(function() {
+        else
+    	{
+        	_el = $(el);
+    	}
+        if(overflow_x == undefined)
+        	overflow_x = false;
+        _el.each(function() {
             if ($(this).attr("data-initialized")) {
                 return; // exit
             }
@@ -99,7 +104,8 @@ var PlatformCommonUtils = function(){
                 alwaysVisible: ($(this).attr("data-always-visible") == "1" ? true : false),
                 railVisible: ($(this).attr("data-rail-visible") == "1" ? true : false),
                 disableFadeOut: true,
-                distance :'1px'
+                distance :'1px',
+                "overflow_x":overflow_x
             });
 
             $(this).attr("data-initialized", "1");
@@ -121,8 +127,8 @@ var PlatformCommonUtils = function(){
 		initPickers:function(){
 			initPickers();
 		},
-		initSlimScroll:function(el,container){
-			initSlimScroll(el,container);
+		initSlimScroll:function(el,container,overflow_x){
+			initSlimScroll(el,container,overflow_x);
 		}
 	}
 }();
