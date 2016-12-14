@@ -77,14 +77,14 @@
                             <input type="text" class="form-control form-filter input-xs" name="userMobiletel1"> </td>
                          <td>
                              <select name="userSex" class="form-control form-filter input-xs">
-                                <option value=""></option>
+                                <option value="">全部</option>
                                 <option value="M">男</option>
                                 <option value="F">女</option>
                                 <option value="-1">未知</option>
                             </select> </td>
                           <td>
                             <select name="userType" class="form-control form-filter input-xs">
-                                <option value=""></option>
+                                <option value="">全部</option>
                                 <option value="0">系统用户</option>
                                 <option value="1">域用户</option>
                                 <option value="2">第三方用户</option>
@@ -93,7 +93,7 @@
                                  
                         <td>
                               <select name="userIsvalid" class="form-control form-filter input-xs">
-                                <option value=""></option>
+                                <option value="">全部</option>
                                 <option value="2">开通</option>
                                 <option value="1">申请</option>
                                 <option value="3">停用</option>
@@ -102,11 +102,11 @@
                          </td>
                         <td>
                         <select name="recursive" class="form-control form-filter input-xs">
-                                <option value="">查询方式...</option>
+                              
                                 <option value="0">本机构</option>
                                 <option value="1">含子机构</option>
                                 <option value="2">所有机构</option>
-                                
+                                <option value="3">所有用户</option>
                             </select> 
                              </td>
                           
