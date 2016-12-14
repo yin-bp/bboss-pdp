@@ -31,6 +31,7 @@ import org.frameworkset.platform.security.authentication.EncrpyPwd;
 import com.frameworkset.common.poolman.ConfigSQLExecutor;
 import com.frameworkset.common.poolman.handle.ResultSetNullRowHandler;
 import com.frameworkset.orm.transaction.TransactionManager;
+import com.frameworkset.platform.admin.entity.MoveinUserCondition;
 import com.frameworkset.platform.admin.entity.SmUser;
 import com.frameworkset.platform.admin.entity.SmUserCondition;
 import com.frameworkset.util.ListInfo;
@@ -284,8 +285,7 @@ public class SmUserServiceImpl implements SmUserService {
 				
 			 List<SmUser> users = null;
 			if(departid != null && departid.equals(Constants.LISAN_ID)){
-				users = executor.queryList(SmUser.class,"getAllLisanUsers");
-				
+				users = executor.queryList(SmUser.class,"getAllLisanUsers");				
 			}
 			else
 			{
@@ -301,6 +301,44 @@ public class SmUserServiceImpl implements SmUserService {
 		catch (Exception e) {
 			throw new SmUserException("pagine query SmUser failed:", e);
 		}
+	}
+	public List<SmUser> getMoveinUsers(MoveinUserCondition condition) throws SmUserException{
+		if(condition.getRecursive() == null || condition.getRecursive().equals("0")){
+			if(condition.getDepartId() == null || condition.getDepartId().equals(""))
+				 throw new SmUserException("没有选择部门");
+		}
+			
+		
+		try {
+			if(condition.getRecursive() != null)
+			{
+				if(condition.getRecursive().equals("1")){//含子机构查询
+					String orgtreelevel = smOrganizationService.getOrgTreeLevel(condition.getDepartId());
+					condition.setOrgtreelevel(orgtreelevel);
+				}
+					
+			}
+			List<SmUser> users = null;
+			if(condition.getRecords() == null || condition.getRecords() <= 0){
+				users = this.executor.queryListBean(SmUser.class, "getMoveinUsers", condition);
+			}
+			else
+			{
+				ListInfo _users = this.executor.moreListInfoBean(SmUser.class, "getMoveinUsers", 0, condition.getRecords(), condition);
+				users = _users.getDatas();
+			}
+				
+			return users;
+		} 
+		catch(SmUserException e)
+		{
+			throw e;
+		}
+		catch (Exception e) {
+			throw new SmUserException("pagine query SmUser failed:", e);
+		}	
+		 
+		
 	}
 	public void saveSmUsersOrder(String[] userIds) throws SmUserException{
 		if(userIds != null && userIds.length > 0)

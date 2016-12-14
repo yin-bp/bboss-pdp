@@ -27,6 +27,7 @@ import org.frameworkset.util.annotations.PagerParam;
 import org.frameworkset.util.annotations.ResponseBody;
 import org.frameworkset.web.servlet.ModelMap;
 
+import com.frameworkset.platform.admin.entity.MoveinUserCondition;
 import com.frameworkset.platform.admin.entity.SmUser;
 import com.frameworkset.platform.admin.entity.SmUserCondition;
 import com.frameworkset.platform.admin.service.SmUserException;
@@ -322,5 +323,10 @@ public class SmUserController {
 	public @ResponseBody String saveSmUsersOrder(String[] userId){
 		smUserService.saveSmUsersOrder(userId);
 		return "success";
+	}
+	public String moveinuserlist(MoveinUserCondition condition,ModelMap model){
+		List<SmUser> users = smUserService.getMoveinUsers(  condition);
+		model.addAttribute("users", users);
+		return "path:moveinuserlist";
 	}
 }

@@ -19,6 +19,7 @@
 		path:toOrderSmUser="/jsp/sysmanager/user/userorder.jsp"
 		path:toMoveOutSmUser="/jsp/sysmanager/user/moveusersout.jsp"
 		path:toMoveInSmUser="/jsp/sysmanager/user/moveusersin.jsp"
+		path:moveinuserlist="/jsp/sysmanager/user/moveinuserlist.jsp"
 		f:smUserService="attr:user.smUserService"
 		class="com.frameworkset.platform.admin.action.SmUserController" >
 	</property>

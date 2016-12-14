@@ -18,6 +18,7 @@ package com.frameworkset.platform.admin.service;
 
 import java.util.List;
 
+import com.frameworkset.platform.admin.entity.MoveinUserCondition;
 import com.frameworkset.platform.admin.entity.SmUser;
 import com.frameworkset.platform.admin.entity.SmUserCondition;
 import com.frameworkset.util.ListInfo;
@@ -61,4 +62,9 @@ public interface SmUserService {
 	 * @param todepartId
 	 */
 	public void saveMoveusers(String userIds, String fromdepartId, String todepartId) throws SmUserException;
+	/**
+	 * @param condition
+	 * @return
+	 */
+	public List<SmUser> getMoveinUsers(MoveinUserCondition condition) throws SmUserException;
 }

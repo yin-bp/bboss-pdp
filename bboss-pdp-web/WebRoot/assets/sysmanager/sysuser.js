@@ -475,6 +475,13 @@ var SysUser = function(){
 	   	
   	 
 	}
+	var loadMoveUsers = function(departId){
+		$(".reset",ModelDialog.getCurrentModal()).trigger("click");
+		$(".select_users_movein",ModelDialog.getCurrentModal()).load(usercontextpath+'/sysmanager/user/moveinuserlist.page',
+				{'departId':departId,'recursive':'0','records':10},function(){
+			
+		});
+	}
 	var initMoveUserInAction = function() {
 		$(".tree-org-moveuserin",ModelDialog.getCurrentModal()).jstree({
             "core" : {
@@ -505,29 +512,58 @@ var SysUser = function(){
             "plugins" : [   "types" ]
         });
 	 
-	 $(".tree-org-moveuserin",ModelDialog.getCurrentModal()).bind("activate_node.jstree", function (obj, e) {
-		    // 处理代码
-		    // 获取当前节点
-		    var currentNode = e.node;
-		    //console.table(currentNode);
-		    //console.table(obj)
-		   // console.dir(currentNode);
-		    var departid = currentNode.id;
-		    
-		    if(currentNode.parent == "#" && departid != 'lisan'){			    	
-		    	departid = '0';
-		    }
-		    	
-		    handleMultiSelect();
-		   // SysUser.showMoveInUsers(departid);
-		    
-		    
-		});
+		 $(".tree-org-moveuserin",ModelDialog.getCurrentModal()).bind("activate_node.jstree", function (obj, e) {
+			    // 处理代码
+			    // 获取当前节点
+			    var currentNode = e.node;
+			    //console.table(currentNode);
+			    //console.table(obj)
+			   // console.dir(currentNode);
+			    var departid = currentNode.id;
+			    
+			    if(currentNode.parent == "#" && departid != 'lisan'){			    	
+			    	departid = '0';
+			    }
+			    	
+			    loadMoveUsers(departid);
+			   // SysUser.showMoveInUsers(departid);
+			    
+			    
+			});
+		 $(".dotempadd_btn",ModelDialog.getCurrentModal()).bind("click",function(){
+			 $('input[name="userId"]:checked',$(".table-moveinuserlist")).each(function(){ 
+				 	var tr = $(this).closest('tr');
+				 	//console.log(tr);
+				 	//console.log($(".selected_users_movein"));
+				 	var selectedtr = $(".table-selected-users input[value='"+$(this).val()+"']");
+				 	console.log(selectedtr);
+				 	if(selectedtr.length == 0){
+				 		tr.clone().insertAfter(".table-selected-users tr:last");//插入到已选表格的最后一行
+				 	}		 		
+				 	
+				 	//$(".selected_users_movein").append(tr);
+				 	tr.remove();
+			 	});
+	         }); 
+		 $(".clearselecteduser_btn",ModelDialog.getCurrentModal()).bind("click",function(){
+			 $('input[name="userId"]:checked',$(".table-selected-users")).each(function(){ 
+				 	var tr = $(this).closest('tr');
+				 	//console.log(tr);
+				 	//console.log($(".selected_users_movein"));
+				 	var selectedtr = $(".table-moveinuserlist input[value='"+$(this).val()+"']");
+				 	console.log(selectedtr);
+				 	if(selectedtr.length == 0){
+				 		tr.clone().insertAfter(".table-moveinuserlist tr:last");//插入到已选表格的最后一行
+				 	}		 		
+				 	
+				 	//$(".selected_users_movein").append(tr);
+				 	tr.remove();
+			 	});
+	         }); 
+		 
+	
 	}
-	var handleMultiSelect = function () {
-        $('#my_multi_select1').multiSelect();
-       
-    }
+	 
 	var initMoveUserAction = function() {	 
 			$(".tree-org-moveuserout",ModelDialog.getCurrentModal()).jstree({
 	            "core" : {
