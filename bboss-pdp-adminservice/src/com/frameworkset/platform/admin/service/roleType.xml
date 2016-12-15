@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+**
+ *  Copyright 2008-2010 biaoping.yin
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ *
+ * Title: roleType.xml
+ * Description: 角色类型管理管理sql配置文件 
+ * Company:bboss
+ * Copyright (c) 2015
+ * @Date 2016-12-15 23:37:09
+ * @author yinbp
+ * @version v1.0 
+ **
+ -->
+<properties>
+	
+		<property name="addRoleType">
+		<![CDATA[
+			insert into td_sm_roletype (TYPE_ID,CREATOR_ORG_ID,CREATOR_USER_ID,TYPE_DESC,TYPE_NAME) values(#[typeId],#[creatorOrgId],#[creatorUserId],#[typeDesc],#[typeName])
+		]]>
+	</property>
+		<property name="deleteByKey">
+		<![CDATA[
+			delete from td_sm_roletype where TYPE_ID=?
+		]]>
+	</property>
+		<property name="updateRoleType">
+		<![CDATA[
+			update td_sm_roletype set TYPE_ID=#[typeId],CREATOR_ORG_ID=#[creatorOrgId],CREATOR_USER_ID=#[creatorUserId],TYPE_DESC=#[typeDesc],TYPE_NAME=#[typeName] where TYPE_ID=#[typeId]
+		]]>
+	</property>
+		<property name="selectById">
+		<![CDATA[
+			select * from td_sm_roletype where TYPE_ID=?
+		]]>
+	</property>
+		<property name="queryListRoleType">
+		<![CDATA[
+			select * from td_sm_roletype where 1=1
+			#if($typeName && !$typeName.equals(""))
+				and TYPE_NAME =#[typeName]		
+			#end
+			
+		]]>
+	</property>
+		<property name="queryAllListRoleType">
+		<![CDATA[
+			select * from td_sm_roletype 
+			
+		]]>
+	</property>
+	
+	</properties>

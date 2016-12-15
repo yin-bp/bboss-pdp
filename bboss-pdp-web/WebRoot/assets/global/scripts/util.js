@@ -66,6 +66,29 @@ var PlatformCommonUtils = function(){
 			);
 	}
 	
+	var popconfirmation = function(options){
+		//'button[data-toggle=role_ops_confirmation]'
+		$(options.selector).confirmation({
+    		  rootSelector: options.selector,
+    		  singleton:true,
+    		 
+    		  template:'<div class="popover confirmation">' +
+    	      '<div class="arrow"></div>' +
+    	      
+    	      '<div class="popover-content">' +
+    	        '<p class="confirmation-content"></p>' +
+    	        '<div class="confirmation-buttons">' +
+    	          '<div class="btn-group">' +
+    	            '<a href="#" class="btn" data-apply="confirmation"></a>' +
+    	            '<a href="#" class="btn" data-dismiss="confirmation"></a>' +
+    	          '</div>' +
+    	        '</div>' +
+    	      '</div>' +
+    	    '</div>',
+			      buttons:options.buttons
+    		});
+	}
+	
 	var initSlimScroll = function(el,container,overflow_x) {
         if (!$().slimScroll) {
             return;
@@ -129,6 +152,9 @@ var PlatformCommonUtils = function(){
 		},
 		initSlimScroll:function(el,container,overflow_x){
 			initSlimScroll(el,container,overflow_x);
+		},
+		popconfirmation:function(options){
+			popconfirmation(options);
 		}
 	}
 }();

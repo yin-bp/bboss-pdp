@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+**
+ *  Copyright 2008-2010 biaoping.yin
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ *
+ * Title: role.xml
+ * Description: 角色管理管理sql配置文件 
+ * Company:bboss
+ * Copyright (c) 2015
+ * @Date 2016-12-15 17:06:09
+ * @author yinbp
+ * @version v1.0 
+ **
+ -->
+<properties>
+	
+		<property name="addRole">
+		<![CDATA[
+			insert into td_sm_role (ROLE_ID,OWNER_ID,REMARK1,REMARK2,REMARK3,ROLE_DESC,ROLE_NAME,ROLE_TYPE,ROLE_USAGE) values(#[roleId],#[ownerId],#[remark1],#[remark2],#[remark3],#[roleDesc],#[roleName],#[roleType],#[roleUsage])
+		]]>
+	</property>
+		<property name="deleteByKey">
+		<![CDATA[
+			delete from td_sm_role where ROLE_ID=?
+		]]>
+	</property>
+		<property name="updateRole">
+		<![CDATA[
+			update td_sm_role set ROLE_ID=#[roleId],OWNER_ID=#[ownerId],REMARK1=#[remark1],REMARK2=#[remark2],REMARK3=#[remark3],ROLE_DESC=#[roleDesc],ROLE_NAME=#[roleName],ROLE_TYPE=#[roleType],ROLE_USAGE=#[roleUsage] where ROLE_ID=#[roleId]
+		]]>
+	</property>
+		<property name="selectById">
+		<![CDATA[
+			select * from td_sm_role where ROLE_ID=?
+		]]>
+	</property>
+		<property name="queryListRole">
+		<![CDATA[
+			select r.*,rt.TYPE_NAME as typeName,u.user_name as ownerAccount,u.USER_REALNAME as ownerName from td_sm_role r 
+			left join td_sm_roletype rt on r.ROLE_TYPE=rt.TYPE_ID 
+			left join td_sm_user u on r.OWNER_ID=u.USER_ID
+			 where 1=1
+			#if($roleAttr && !$roleAttr.equals(""))
+				and (r.ROLE_NAME like #[roleAttr] or r.remark1 like #[roleAttr])		
+			#end
+			#if($roleType && !$roleType.equals("") && !$roleType.equals("-1"))
+				and r.ROLE_TYPE =#[roleType]		
+			#end
+			#if($sortKey && !$sortKey.equals(""))
+				order by r.ROLE_NAME, $sortKey #if($sortDesc)desc#else asc#end
+			#else 
+				order by 	r.ROLE_NAME
+			#end
+
+		]]>
+	</property>
+	</properties>
