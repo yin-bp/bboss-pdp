@@ -307,7 +307,8 @@ public class SmUserServiceImpl implements SmUserService {
 	 * (non-Javadoc)
 	 * @see com.frameworkset.platform.admin.service.SmUserService#getMoveinUsers(com.frameworkset.platform.admin.entity.MoveinUserCondition)
 	 */
-	public List<SmUser> getMoveinUsers(MoveinUserCondition condition) throws SmUserException{
+	public ListInfo getMoveinUsers(MoveinUserCondition condition,long offset,
+			int pagesize) throws SmUserException{
 		if(condition.getRecursive() == null || condition.getRecursive().equals("0") || condition.getRecursive().equals("1")){
 			if(condition.getFromDepartId() == null || condition.getFromDepartId().equals(""))
 				 throw new SmUserException("没有选择部门");
@@ -324,17 +325,18 @@ public class SmUserServiceImpl implements SmUserService {
 				}
 					
 			}
-			List<SmUser> users = null;
-			if(condition.getRecords() == null || condition.getRecords() <= 0){
-				users = this.executor.queryListBean(SmUser.class, "getMoveinUsers", condition);
-			}
-			else
+//			List<SmUser> users = null;
+//			if(condition.getRecords() == null || condition.getRecords() <= 0){
+//				users = this.executor.queryListBean(SmUser.class, "getMoveinUsers", condition);
+//			}
+//			else
 			{
-				ListInfo _users = this.executor.moreListInfoBean(SmUser.class, "getMoveinUsers", 0, condition.getRecords(), condition);
-				users = _users.getDatas();
+				ListInfo _users = this.executor.queryListInfoBean(SmUser.class, "getMoveinUsers", offset, pagesize, condition);
+//				users = _users.getDatas();
+				return _users;
 			}
 				
-			return users;
+//			return users;
 		} 
 		catch(SmUserException e)
 		{

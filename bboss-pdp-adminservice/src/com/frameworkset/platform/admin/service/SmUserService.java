@@ -66,5 +66,6 @@ public interface SmUserService {
 	 * @param condition
 	 * @return
 	 */
-	public List<SmUser> getMoveinUsers(MoveinUserCondition condition) throws SmUserException;
+	public ListInfo getMoveinUsers(MoveinUserCondition condition,long offset,
+			int pagesize) throws SmUserException;
 }

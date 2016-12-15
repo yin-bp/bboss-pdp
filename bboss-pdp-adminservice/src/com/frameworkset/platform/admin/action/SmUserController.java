@@ -327,11 +327,14 @@ public class SmUserController {
 		smUserService.saveSmUsersOrder(userId);
 		return "success";
 	}
-	public String moveinuserlist(MoveinUserCondition condition,ModelMap model){
+	public String moveinuserlist(MoveinUserCondition condition,@PagerParam(name = PagerParam.SORT, defaultvalue = "USER_NAME") String sortKey,
+			@PagerParam(name = PagerParam.DESC, defaultvalue = "false") boolean desc,
+			@PagerParam(name = PagerParam.OFFSET) long offset,
+			@PagerParam(name = PagerParam.PAGE_SIZE, defaultvalue = "10") int pagesize,ModelMap model){
 		if(condition.getUserAttr() != null && !condition.getUserAttr().equals("")){
 			condition.setUserAttr("%"+condition.getUserAttr()  + "%");
 		}
-		List<SmUser> users = smUserService.getMoveinUsers(  condition);
+		ListInfo users = smUserService.getMoveinUsers(  condition,  offset,pagesize);
 		model.addAttribute("users", users);
 		return "path:moveinuserlist";
 	}
