@@ -1,5 +1,12 @@
 var Sysmanager = new function(){
 	var departid;
+	var departName;
+	var setDepartName = function (name){
+		departName = name;
+	}
+	var getDepartName = function(){
+		return departName;
+	}
 	var setDepartid = function (orgid){
 		departid = orgid;
 	}
@@ -44,7 +51,7 @@ var Sysmanager = new function(){
 			    var currentNode = e.node;
 			    //console.table(currentNode);
 			    //console.table(obj)
-			   // console.dir(currentNode);
+			    //console.log(currentNode);
 			    var departid = currentNode.id;
 			    
 			    if(currentNode.parent == "#" && departid != 'lisan'){
@@ -53,6 +60,7 @@ var Sysmanager = new function(){
 			    }
 			    	
 			    //console.dir(obj);
+			    Sysmanager.setDepartName(currentNode.text);
 			    if(isuser)
 			    	SysUser.showUsers(departid);
 			    else
@@ -98,6 +106,12 @@ var Sysmanager = new function(){
 		},
 		validateDepart:function(){
 			return validateDepart();
+		},
+		getDepartName:function(){
+			return getDepartName();
+		},
+		setDepartName : function (name){
+			setDepartName (name);
 		}
 		
 		

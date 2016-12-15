@@ -18,6 +18,6 @@
 <script type="text/javascript">
 
 	jQuery(document).ready(function() {	
-		SysUser.initMoveUserAction();
+		SysMoveUsers.initMoveUserAction();
 	});
 </script>

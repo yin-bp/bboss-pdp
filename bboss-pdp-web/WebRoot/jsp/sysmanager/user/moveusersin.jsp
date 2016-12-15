@@ -187,7 +187,7 @@
 								                <thead >
 													<tr>
 														<th width="2%">
-																<input type="checkbox" class="group-checkable"
+																<input type="checkbox" class="checkboxall" onClick="checkAll('.table-selected-users .checkboxall','.table-selected-users .checkone')"
 																/></th>
 														<th width="6%">序号</th>
 														<th width="20%">账号名称</th>
@@ -222,7 +222,8 @@
 <script type="text/javascript">
 
 	jQuery(document).ready(function() {	
-		SysUser.initMoveUserInAction();
+		
+		SysMoveUsers.initMoveUserInAction();
 		PlatformCommonUtils.initSlimScroll('.scroller',ModelDialog.getCurrentModal(),true);
 	});
 </script>
