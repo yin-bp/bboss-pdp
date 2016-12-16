@@ -30,7 +30,7 @@ public class Role implements java.io.Serializable {
 	/**
 	 * 创建人
 	 */
-	private int ownerId;
+	private String ownerId;
 	private String ownerName;
 	private String ownerAccount;
 	
@@ -74,11 +74,11 @@ public class Role implements java.io.Serializable {
 		return roleId;
 	}
 
-	public void setOwnerId(int ownerId) {
+	public void setOwnerId(String ownerId) {
 		this.ownerId = ownerId;
 	}
 
-	public int getOwnerId() {
+	public String getOwnerId() {
 		return ownerId;
 	}
 

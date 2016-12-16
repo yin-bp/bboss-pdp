@@ -284,13 +284,15 @@ bboss.pager =  function(options){
 		checkAll:function (totalCheck, checkName) {
 			if($(totalCheck)[0].checked){
 				$(checkName).each(function(){
-					$(this).prop("checked",true);
+					if (!this.disabled)
+						$(this).prop("checked",true);
 				})
 			}
 			else
 			{
 				$(checkName).each(function(){
-					$(this).prop("checked",false);
+					if (!this.disabled)
+						$(this).prop("checked",false);
 				})
 			}
 			
@@ -300,8 +302,11 @@ bboss.pager =  function(options){
 		checkOne:function (totalCheck, checkName) {
 			var allchecked = true;
 			$(checkName).each(function(){
-				if(!(this.checked)) 
-					allchecked = false;
+				if (!this.disabled){
+					if(!(this.checked)) 
+						allchecked = false;
+				}					
+				
 			})
 			if(allchecked)
 				$(totalCheck).prop("checked",true);

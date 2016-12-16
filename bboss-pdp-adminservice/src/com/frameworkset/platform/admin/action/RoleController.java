@@ -69,9 +69,13 @@ public class RoleController {
 		}
 
 	}
-	public @ResponseBody String deleteBatchRole(String... roleIds) {
+	public @ResponseBody String deleteBatchRole(String roleIds) {
 		try {
-			roleService.deleteBatchRole(roleIds);
+			if(roleIds != null && !roleIds.equals("")){
+				String[] rs = roleIds.split(",");
+				roleService.deleteBatchRole(rs);
+			}
+				
 			return "success";
 		} catch (Throwable e) {
 			log.error("delete Batch roleIds failed:", e);
@@ -147,6 +151,8 @@ public class RoleController {
 	public String toUpdateRole(String roleId, ModelMap model) throws RoleException {
 		try {
 			Role role = roleService.getRole(roleId);
+			List<RoleType> roleTypes = roleTypeService.queryListRoleTypes(null);
+			model.addAttribute("roleTypes", roleTypes);
 			model.addAttribute("role", role);
 			return "path:updateRole";
 		} catch (RoleException e) {
@@ -156,7 +162,9 @@ public class RoleController {
 		}
 
 	}
-	public String toAddRole() {
+	public String toAddRole(ModelMap model) {
+		List<RoleType> roleTypes = roleTypeService.queryListRoleTypes(null);
+		model.addAttribute("roleTypes", roleTypes);
 		return "path:addRole";
 	}
 	public String index(ModelMap model) {

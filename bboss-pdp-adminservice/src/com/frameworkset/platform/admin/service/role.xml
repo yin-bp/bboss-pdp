@@ -49,7 +49,8 @@
 	</property>
 		<property name="queryListRole">
 		<![CDATA[
-			select r.*,rt.TYPE_NAME as typeName,u.user_name as ownerAccount,u.USER_REALNAME as ownerName from td_sm_role r 
+			select r.*,
+			rt.TYPE_NAME as typeName,u.user_name as ownerAccount,u.USER_REALNAME as ownerName from td_sm_role r 
 			left join td_sm_roletype rt on r.ROLE_TYPE=rt.TYPE_ID 
 			left join td_sm_user u on r.OWNER_ID=u.USER_ID
 			 where 1=1

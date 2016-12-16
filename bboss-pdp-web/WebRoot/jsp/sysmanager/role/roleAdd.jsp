@@ -1,140 +1,108 @@
-<%@ page language="java" pageEncoding="UTF-8"%>
-<%@ include file="/common/jsp/importtaglib.jsp"%>
 
-<!-- 
-	描述:添加角色管理界面。
-	作者:yinbp
-	版权:bboss
-	版本:v1.0 
-	日期:2016-12-15 17:06:09
--->
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-	<head>
-		<title>新增角色管理</title>
-		<%@ include file="/common/jsp/css.jsp"%>
-	</head>
-	<body>
-		<div class="form_box">
-			<form id="addForm" name="addForm" method="post">
-			    				<table border="0" cellpadding="0" cellspacing="0" class="table4">
-																								<tr>
-												<th width=85px >
-							序号：
-						</th>
-						<td width=140px>
-															<input id="roleId" name="roleId" type="text" 								/>														
-							
-						</td>
-																							<th width=85px >
-							创建人：
-						</th>
-						<td width=140px>
-															<input id="ownerId" name="ownerId" type="text" 								/>														
-							
-						</td>
-																							<th width=85px >
-							备注1：
-						</th>
-						<td width=140px>
-															<input id="remark1" name="remark1" type="text" 								/>														
-							
-						</td>
-																								</tr>						<tr>
-												<th width=85px >
-							备注2：
-						</th>
-						<td width=140px>
-															<input id="remark2" name="remark2" type="text" 								/>														
-							
-						</td>
-																							<th width=85px >
-							备注3：
-						</th>
-						<td width=140px>
-															<input id="remark3" name="remark3" type="text" 								/>														
-							
-						</td>
-																							<th width=85px >
-							描述：
-						</th>
-						<td width=140px>
-															<input id="roleDesc" name="roleDesc" type="text" 								/>														
-							
-						</td>
-																								</tr>						<tr>
-												<th width=85px >
-							名称：
-						</th>
-						<td width=140px>
-															<input id="roleName" name="roleName" type="text" 								/>														
-							
-						</td>
-																							<th width=85px >
-							类型：
-						</th>
-						<td width=140px>
-															<input id="roleType" name="roleType" type="text" 								/>														
-							
-						</td>
-																							<th width=85px >
-							用途：
-						</th>
-						<td width=140px>
-															<input id="roleUsage" name="roleUsage" type="text" 								/>														
-							
-						</td>
-											</tr>	
-															</table>			
-			
-			<div class="btnarea" >
-				<a href="javascript:void(0)" class="bt_1" id="addButton" onclick="dosubmit()"><span><pg:message code="sany.pdp.common.operation.add"/></span></a>
-				<a href="javascript:void(0)" class="bt_2" id="resetButton" onclick="doreset()"><span><pg:message code="sany.pdp.common.operation.reset"/></span></a>
-				<a href="javascript:void(0)" class="bt_2" id="closeButton" onclick="closeDlg()"><span><pg:message code="sany.pdp.common.operation.exit"/></span></a>
-				<input type="reset" id="reset" style="display: none;" />
-			</div>
-			</form>
-		</div>
-	</body>
-<script language="javascript">
-var api = frameElement.api, W = api.opener;
+<%@ taglib uri="/WEB-INF/tld/pager-taglib.tld" prefix="pg" %>
 
+	<%@ page session="false" language="java"
+	contentType="text/html; charset=utf-8"%>
 
-   function dosubmit()
-   {
+	<!-- BEGIN FORM-->
+	<form action="#" class="form-horizontal" >
+		<div class="form-body">
 		
-		$.ajax({
-		   type: "POST",
-			url : "addRole.page",
-			data :formToJson("#addForm"),
-			dataType : 'json',
-			async:false,
-			beforeSend: function(XMLHttpRequest){
-					var validated = $("#addForm").form('validate');
-			      	if (validated){
-			      		blockUI();	
-			      		XMLHttpRequest.setRequestHeader("RequestType", "ajax");
-			      	}
-			      	else
-			      	{			      		
-			      		return false;
-			      	}				 	
-				},
-			success : function(responseText){
-				//去掉遮罩
-				unblockUI();
-				if(responseText=="success"){
-					W.$.dialog.alert("新增记录成功",function(){	
-							W.modifyQueryData();
-							api.close();
-					},api);													
-				}else{
-					W.$.dialog.alert("新增出错",function(){},api);
-				}
-			}
-		  });
-   	 }
-function doreset(){
-	$("#reset").click();
-}
+		
+			<div class="row">
+				<div class="col-md-12" >
+					<div class="form-group form-md-line-input">
+						<label class="col-md-3 control-label" for="form_control_1">角色名称
+							<span class="required">*</span>
+						</label>
+						 
+						<div class="col-md-9">
+							<div class="input-group">
+								<div class="input-group-control">
+									<input type="text" class="form-control" name="roleName"
+										placeholder=""  autocomplete="off">
+									<div class="form-control-focus"></div>
+									<span class="help-block">请输入角色名称</span>	
+								</div>
+								<span class="input-group-btn btn-right">
+									<button type="button" class="btn btn-xs green-haze  "
+										  aria-expanded="false">
+										检查角色名称
+									</button>
+									 
+								</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">	
+				<div class="col-md-12" >
+					<div class="form-group form-md-line-input">
+						<label class="col-md-3 control-label" for="form_control_1">中文名称
+							<span class="required">*</span>
+						</label>
+						<div class="col-md-9">
+							<input type="text" class="form-control" placeholder="" name="remark1"  autocomplete="off">
+							<div class="form-control-focus"></div>
+							<span class="help-block">请输入角色中文名</span>	
+						</div>
+					</div>
+				</div>
+			</div>
+		 	
+			<div class="row">
+				<div class="col-md-12" >	
+					<div class="form-group form-md-line-input">
+						<label class="col-md-3 control-label" for="form_control_1">角色类型</label>
+						<div class="col-md-9">
+							<select class="form-control" name="roleType">
+							
+								<pg:list actual="${roleTypes }">
+									<pg:notequal colName="typeId" value="1">
+										<option value="<pg:cell colName="typeId"/>"><pg:cell colName="typeName"/></option>
+									</pg:notequal>
+								</pg:list>
+																					
+							</select>
+							<div class="form-control-focus"></div>
+							<span class="help-block">请设置角色类型</span>	
+						</div>
+					</div>
+				</div>
+			</div>
+		 	
+			<div class="row">	
+				<div class="col-md-12" >
+					<div class="form-group form-md-line-input">
+						<label class="col-md-3 control-label" for="form_control_1">描述
+							<span class="required">*</span>
+						</label>
+						<div class="col-md-9">
+							<input type="text" class="form-control" placeholder="" name="roleDesc"  autocomplete="off">
+							<div class="form-control-focus"></div>
+							<span class="help-block">请输入角色描述</span>	
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row"><div class="col-md-12" >&nbsp;</div></div>
+			
+			<div class="form-actions">
+			<div class="row">
+				<div class="col-md-offset-3 col-md-9">
+					<button type="button" class="btn green btn-roleaddsave">创建</button>
+					<button type="reset" class="btn default">重置</button>
+					<button type="button" class="btn default" data-dismiss="modal">取消</button>
+				</div>
+			</div>
+		</div>
+		</div>
+	</form>
+
+<script type="text/javascript">
+	jQuery(document).ready(function() {
+		SysRole.initAddRole();
+		
+	});
 </script>

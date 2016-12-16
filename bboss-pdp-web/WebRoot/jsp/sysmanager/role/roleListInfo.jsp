@@ -33,7 +33,9 @@
 		<pg:list >
 		  	 <tr>
 		  	 	<td><input
-						name="roleId" type="checkbox" class="checkone" onClick="checkOne('.table-rolelist .checkboxall','.table-rolelist .checkone')" value="<pg:cell colName="roleId"/>" />
+						name="roleId" type="checkbox" class="checkone" onClick="checkOne('.table-rolelist .checkboxall','.table-rolelist .checkone')" value="<pg:cell colName="roleId"/>" 
+						<pg:equal colName="roleType" value="1">disabled</pg:equal>
+						/>
 				</td>
 				 
 	                <td><pg:cell colName="roleName"  /></td>

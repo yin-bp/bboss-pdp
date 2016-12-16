@@ -125,10 +125,10 @@
 																角色列表 </span>
 								
 														</div>
-														<div class="actions">
+														<div class="actions roleactions">
 															<a class="btn btn-xs blue btn-addrole"  > 新增 <i class="fa fa-edit"></i></a>
-															 <a class="btn btn-xs red btn-delrole" >
-																<i class="fa fa-times"></i> 删除
+															 <a class="btn btn-xs red btn-batchdelrole" >
+																<i class="fa fa-times"></i> 批量删除
 															</a> <a href="javascript:;" class="btn btn-xs green"> 批量授权 <i
 																class="fa fa-font"></i>
 															</a> <a href="javascript:;" class="btn btn-xs yellow"> 批量权限回收 <i
