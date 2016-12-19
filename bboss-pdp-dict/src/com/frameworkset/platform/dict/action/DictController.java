@@ -85,9 +85,12 @@ public class DictController {
 		}
 
 	}
-	public @ResponseBody String updateDict(Dict dict) {
+	public @ResponseBody String updateDict(Dict dict,String actiontype,List<DictItem> dictItems) {
 		try {
-			dictService.updateDict(dict);
+			if(actiontype == null)//修改操作
+				dictService.updateDict(dict,  dictItems);
+			else //维护数据操作
+				dictService.maintaindata(dict,  dictItems);
 			return "success";
 		} catch (Throwable e) {
 			log.error("update Dict failed:", e);
@@ -95,6 +98,8 @@ public class DictController {
 		}
 
 	}
+	
+	
 	public String getDict(String dictId, ModelMap model) throws DictException {
 		try {
 			Dict dict = dictService.getDict(dictId);
@@ -143,11 +148,19 @@ public class DictController {
 		}
 
 	}
-	public String toUpdateDict(String dictId, ModelMap model) throws DictException {
+	public String toUpdateDict(String dictId,String actiontype, ModelMap model) throws DictException {
 		try {
 			Dict dict = dictService.getDict(dictId);
 			model.addAttribute("dict", dict);
-			return "path:updateDict";
+			model.addAttribute("actiontype", actiontype);
+			if(actiontype != null && actiontype.equals("maintaindata")){
+				return "path:maintaindata";
+			}
+			else
+			{
+				return "path:updateDict";
+				
+			}
 		} catch (DictException e) {
 			throw e;
 		} catch (Throwable e) {

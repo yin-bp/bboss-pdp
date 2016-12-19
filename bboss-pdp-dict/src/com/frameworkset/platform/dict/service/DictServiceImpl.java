@@ -44,6 +44,7 @@ public class DictServiceImpl implements DictService {
 	private ConfigSQLExecutor executor;
 	private List<Param> params(Dict dict,List<DictItem> dictItems,String dictId){
 		List<Param> params = new ArrayList<Param>();
+		int i = 0;
 		for(DictItem dictItem:dictItems){
 			Param param = new Param();
 			param.setDictId(dictId);
@@ -52,7 +53,9 @@ public class DictServiceImpl implements DictService {
 			param.setDictCode(dict.getDictCode());
 			param.setDictName(dict.getDictName());
 			param.setRn(dictItem.getRn());
+			param.setDataOrder(i);
 			params.add(param);
+			i ++;
 		}
 		return params;
 	}
@@ -103,12 +106,51 @@ public class DictServiceImpl implements DictService {
 		}
 
 	}
-	public void updateDict(Dict dict) throws DictException {
+	/**
+	 * @param dict
+	 * @param dictItems
+	 */
+	public void maintaindata(Dict dict, List<DictItem> dictItems)throws DictException{
+		TransactionManager tm = new TransactionManager();
 		try {
-			executor.updateBean("updateDict", dict);
+			tm.begin();
+			
+			if(dictItems != null && dictItems.size() > 0)
+			{
+				Params params = new Params();				
+				params.setParams(params( dict,dictItems, dict.getDictId()));
+				params.setDictId(dict.getDictId());
+				ParamsHandler.getParamsHandler(dict.getHandler()).saveParams(params) ;
+			}
+		
+			tm.commit();
 		} catch (Throwable e) {
+	
 			throw new DictException("update Dict failed::", e);
-		}
+		} finally {
+			tm.release();
+		} 
+	}
+	public void updateDict(Dict dict,List<DictItem> dictItems) throws DictException {
+		TransactionManager tm = new TransactionManager();
+		try {
+			tm.begin();
+			executor.updateBean("updateDict", dict);
+			if(dictItems != null && dictItems.size() > 0)
+			{
+				Params params = new Params();				
+				params.setParams(params( dict,dictItems, dict.getDictId()));
+				params.setDictId(dict.getDictId());
+				ParamsHandler.getParamsHandler(dict.getHandler()).saveParams(params) ;
+			}
+		
+			tm.commit();
+		} catch (Throwable e) {
+	
+			throw new DictException("update Dict failed::", e);
+		} finally {
+			tm.release();
+		} 
 
 	}
 	public Dict getDict(String dictId) throws DictException {

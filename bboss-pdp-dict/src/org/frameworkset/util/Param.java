@@ -18,7 +18,7 @@ public  class Param {
 	
 	private String dictName;// 参数分类
 	
-
+	private int dataOrder;
 
 	
 
@@ -86,6 +86,12 @@ public  class Param {
 	}
 	public void setDictName(String dictName) {
 		this.dictName = dictName;
+	}
+	public int getDataOrder() {
+		return dataOrder;
+	}
+	public void setDataOrder(int dataOrder) {
+		this.dataOrder = dataOrder;
 	}
 
 	

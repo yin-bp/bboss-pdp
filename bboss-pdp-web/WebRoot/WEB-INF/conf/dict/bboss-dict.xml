@@ -11,11 +11,11 @@
 	<property name="/dictmanager/*.page"
 		path:index="/jsp/dictmanager/main.jsp"
 		path:queryListInfoDicts="/jsp/dictmanager/dictListInfo.jsp"
-		path:queryListDicts="/jsp/dictmanager/dictList.jsp"
-		path:updateDict="/jsp/dictmanager/dictEdit.jsp"
+		path:updateDict="/jsp/dictmanager/dictedit.jsp"
 		path:addDict="/jsp/dictmanager/dictadd.jsp"
 		path:getDict="/jsp/dictmanager/dictview.jsp"
 		path:dictitemlist="/jsp/dictmanager/dictitemlist.jsp"
+		path:maintaindata="/jsp/dictmanager/maintaindata.jsp"
 		f:dictService="attr:dict.dictService"
 		class="com.frameworkset.platform.dict.action.DictController" >
 	</property>

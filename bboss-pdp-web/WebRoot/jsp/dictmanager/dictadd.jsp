@@ -10,7 +10,7 @@
 				<div class="col-md-12">
 					<div class="input-icon right">
 						<input type="text" class="form-control  input-xs" placeholder="名称"
-							name="name" value="<pg:cell colName='name' />">
+							name="name">
 						<div class="form-control-focus"></div>
 
 					</div>
@@ -21,7 +21,7 @@
 
 					<div class="input-icon right">
 						<input type="text" class="form-control  input-xs" placeholder="值"
-							name="value" value="<pg:cell colName='value' />">
+							name="value">
 						<div class="form-control-focus"></div>
 
 					</div>

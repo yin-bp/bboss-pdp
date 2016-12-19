@@ -39,7 +39,7 @@
 	</property>
 		<property name="updateDict">
 		<![CDATA[
-			update td_sm_dict set DICT_ID=#[dictId],CACHE_ENABLE=#[cacheEnable],DICT_CODE=#[dictCode],DICT_DESC=#[dictDesc],DICT_NAME=#[dictName],HANDLER=#[handler],IS_TREE=#[isTree],OWNER_ID=#[ownerId] where DICT_ID=#[dictId]
+			update td_sm_dict set DICT_ID=#[dictId],CACHE_ENABLE=#[cacheEnable],DICT_CODE=#[dictCode],DICT_DESC=#[dictDesc],DICT_NAME=#[dictName],HANDLER=#[handler],IS_TREE=#[isTree],dict_status=#[dictStatus] where DICT_ID=#[dictId]
 		]]>
 	</property>
 		<property name="selectById">

@@ -220,7 +220,7 @@ public class ParamsHandler implements org.frameworkset.spi.InitializingBean,List
 		StringBuilder sql_in = new StringBuilder();
 //		INSERT INTO td_sm_parameters (PAEAM_ID, NAME, RN, VALUE, DICT_ID) VALUES ('', '', 0, '', '');
 		sql_in.append("insert into ").append(tableName).append(
-				"(PAEAM_ID, NAME, RN, VALUE, DICT_ID) values(?,?,?,?,?)");
+				"(PAEAM_ID, NAME, RN, VALUE, DICT_ID,data_order) values(?,?,?,?,?,?)");
 
 		List<Param> paramList = params.getParams();
 		IdGenerator idGenerator = SQLManager.getInstance().getPool(dbname).getIdGenerator();
@@ -266,6 +266,7 @@ public class ParamsHandler implements org.frameworkset.spi.InitializingBean,List
 				dbutil.setInt(3, param.getRn());
 				dbutil.setString(4, String.valueOf(param.getValue()));
 				dbutil.setString(5, param.getDictId());
+				dbutil.setInt(6, param.getDataOrder());
 				
 					
 				dbutil.addPreparedBatch();
@@ -389,7 +390,7 @@ public class ParamsHandler implements org.frameworkset.spi.InitializingBean,List
 	public Params _getParams(String dictCode) {
 		StringBuilder sql_query = new StringBuilder();
 		sql_query.append("select di.*,dct.dict_code,dct.dict_name from ").append(tableName).append(
-				" di,td_sm_dict dct where (dct.dict_code=? or dct.dict_id=?) and di.dict_id=dct.dict_id  order by name,rn asc");//to_do
+				" di,td_sm_dict dct where (dct.dict_code=? or dct.dict_id=?) and di.dict_id=dct.dict_id  order by data_order,rn asc");//to_do
 		PreparedDBUtil pd = new PreparedDBUtil();
 		
 		final Params params = new Params();

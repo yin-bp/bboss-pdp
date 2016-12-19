@@ -16,6 +16,7 @@ public class DictItem {
 	private String name;
 	private String value;
 	private int rn;
+	private int dataOrder;
 	
 	/**
 	 * 
@@ -46,6 +47,12 @@ public class DictItem {
 	}
 	public void setRn(int rn) {
 		this.rn = rn;
+	}
+	public int getDataOrder() {
+		return dataOrder;
+	}
+	public void setDataOrder(int dataOrder) {
+		this.dataOrder = dataOrder;
 	}
 	
 

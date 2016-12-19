@@ -221,29 +221,53 @@ var SysDict = function(){
 
 				});
 	}
-	var initModifyDict = function(){
-		PlatformCommonUtils.validateform({
-			form:"form",
-			messages : {
-					 
-	
-					remark1 : {
-						required : "请输入角色中文名"
+	var initModifyDict = function(actiontype){
+		if(actiontype  == null){
+			PlatformCommonUtils.validateform({
+				form:"form",
+				messages : {
+						dictName : {
+							minlength : jQuery.validator.format("字典名称不能小于{0}个字符"),
+							required : "请输入字典名称"
+						},	
+						dictCode : {
+							required : "请输入字典中文名"
+						}
+				},
+				rules : {			 
+					dictName : {
+						minlength : 2,
+						required : true
+					},	
+					dictCode : {
+						minlength : 2,
+						required : true
 					}
-			},
-			rules : {			 
-				 	
-				remark1 : {
-					minlength : 2,
-					required : true
-				}
-			},
-			submitHandler:modifyRole
-		});
+				},
+				submitHandler:modifyDict
+			});
+		}
 		
-		$(".btn-rolemodifysave",ModelDialog.getCurrentModal()).bind("click",function(){
-			$("form",ModelDialog.getCurrentModal()).submit();
+		if(actiontype  == null){
+			$(".btn-dicteditsave",ModelDialog.getCurrentModal()).bind("click",function(){
+				$("form",ModelDialog.getCurrentModal()).submit();
+			});
+		}
+		else
+		{
+			$(".btn-dicteditsave",ModelDialog.getCurrentModal()).bind("click",function(){
+				modifyDict();
+			});
+		}
+		
+		 
+		$(".btn-adddictitem",ModelDialog.getCurrentModal()).bind("click",function(){
+			addRow();
 		});
+		$(".btn-batchdeldictitem",ModelDialog.getCurrentModal()).bind("click",function(){
+			deleteRow();
+		});
+		 
 	}
 	return {
 		init:function(contextpath){
@@ -260,6 +284,33 @@ var SysDict = function(){
 				title:"查看字典",
 				showfooter:false,
 				url:usercontextpath+"/dictmanager/getDict.page",
+				params:{
+					"dictId":dictId
+				},
+				width:"900px",
+				height:"500px"
+
+			});
+		},
+		mainDictData:function(dictId,dictName,dictCode){
+			ModelDialog.dialog({
+				title:"维护字典数据-"+dictName+"("+dictCode+")",
+				showfooter:false,
+				url:usercontextpath+"/dictmanager/toUpdateDict.page",
+				params:{
+					"dictId":dictId,
+					"actiontype":"maintaindata"
+				},
+				width:"900px",
+				height:"500px"
+
+			});
+		},
+		editDict:function(dictId,dictName,dictCode){
+			ModelDialog.dialog({
+				title:"修改字典",
+				showfooter:false,
+				url:usercontextpath+"/dictmanager/toUpdateDict.page",
 				params:{
 					"dictId":dictId
 				},

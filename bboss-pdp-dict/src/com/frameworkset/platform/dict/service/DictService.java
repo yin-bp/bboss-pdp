@@ -29,8 +29,13 @@ public interface DictService {
 	public void addDict(Dict dict,List<DictItem> dictItems) throws DictException;
 	public void deleteDict(String dictId) throws DictException;
 	public void deleteBatchDict(String... dictIds) throws DictException;
-	public void updateDict(Dict dict) throws DictException;
+	public void updateDict(Dict dict,List<DictItem> dictItems) throws DictException;
 	public Dict getDict(String dictId) throws DictException;
 	public ListInfo queryListInfoDicts(DictCondition conditions, long offset, int pagesize) throws DictException;
 	public List<Dict> queryListDicts(DictCondition conditions) throws DictException;
+	/**
+	 * @param dict
+	 * @param dictItems
+	 */
+	public void maintaindata(Dict dict, List<DictItem> dictItems)throws DictException;
 }

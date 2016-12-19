@@ -80,7 +80,7 @@
 									</div>
 									<div class="col-md-4">
 										<div class="form-group form-md-line-input">
-											<label class="col-md-3 control-label" for="form_control_1">树形
+											<label class="col-md-3 control-label" for="form_control_1">结构
 		
 											</label>
 											<div class="col-md-9">
@@ -111,18 +111,28 @@
 								</div>
 								
 								<div class="row">
-									<div class="col-md-12">
+									<div class="col-md-6">
 										<div class="form-group form-md-line-input">
-											<label class="col-md-1 control-label" for="form_control_1">描述
+											<label class="col-md-2 control-label" for="form_control_1">状态
 		
 											</label>
-											<div class="col-md-11">
+											<div class="col-md-10">
+												<p class="form-control-static"> <pg:equal colName="dictStatus" value="1" evalbody="true"><pg:yes>正常</pg:yes><pg:no>删除</pg:no></pg:equal> </p>
+											</div>
+											 
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group form-md-line-input">
+											<label class="col-md-2 control-label" for="form_control_1">描述
+		
+											</label>
+											<div class="col-md-10">
 												<p class="form-control-static"> <pg:cell colName="dictDesc" htmlEncode="true"/> </p>
 											</div>
 											 
 										</div>
 									</div>
-									
 									
 								</div>
 								 

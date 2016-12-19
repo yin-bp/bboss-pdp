@@ -35,6 +35,10 @@
 <form action="#" class="form-horizontal" >
 	<input type="hidden" name="ownerId"  value="<pg:cell colName="ownerId"/>">
 	<input type="hidden" name="dictId"  value="<pg:cell colName="dictId"/>">
+	<input type="hidden" name="handler"  value="<pg:cell colName="handler"/>">
+	<input type="hidden" name="dictCode"  value="<pg:cell colName="dictCode"/>">
+	<input type="hidden" name="dictName"  value="<pg:cell colName="dictName"/>">
+	<input type="hidden" name="actiontype"  value="maintaindata">
 	<div class="form-body">
 		<div class="row">
 			<div class="col-md-12">
@@ -46,16 +50,10 @@
 								字典基本信息 </span>
 		
 						</div>
-						<div class="actions dictactions">
-							<a class="btn btn-xs blue btn-dicteditsave"> 保存 <i
-								class="fa fa-edit"></i></a> 
-								
-							</a> 							
-						</div>
+						
 					</div>
 					<div class="portlet-body form">
 						<form role="form" class="form-horizontal form-queryrole">
-		
 							<div class="form-body">
 								<div class="row">
 									<div class="col-md-4">
@@ -64,13 +62,9 @@
 		
 											</label>
 											<div class="col-md-9">
-												<div class="input-icon right">
-													<input type="text" class="form-control  input-xs"
-														placeholder="字典名称" name="dictName" value="<pg:cell colName="dictName"/>">
-													<div class="form-control-focus"></div>
-													<span class="help-block">请输入字典名称</span>
-												</div>
+												<p class="form-control-static"> <pg:cell colName="dictName"/> </p>
 											</div>
+											 
 										</div>
 									</div>
 									<div class="col-md-4">
@@ -79,14 +73,9 @@
 		
 											</label>
 											<div class="col-md-9">
-												 
-												<div class="input-icon right">
-													<input type="text" class="form-control  input-xs"
-														placeholder="字典编码" name="dictCode" value="<pg:cell colName="dictCode"/>">
-													<div class="form-control-focus"></div>
-													<span class="help-block">请输入字典编码</span>
-												</div>
+												<p class="form-control-static"> <pg:cell colName="dictCode"/> </p>
 											</div>
+											 
 											 
 										</div>
 									</div>
@@ -96,24 +85,9 @@
 		
 											</label>
 											<div class="col-md-9">
-												<div class="input-icon right">
-													<select class="form-control input-xs" name="handler">
-														 
-														<pg:empty actual="${dictTypes }" evalbody="true">
-															<pg:yes><option value="default">默认类型</option></pg:yes>
-															<pg:no>
-																<pg:list actual="${dictTypes }">
-																	<option value="<pg:cell colName="handler"/>"><pg:cell colName="handlerName" /></option>
-																</pg:list>
-															</pg:no>
-															
-														</pg:empty>	
-		
-													</select>
-													<div class="form-control-focus"></div>
-		
-												</div>
+												<p class="form-control-static"> <pg:cell colName="handler"/> </p>
 											</div>
+											
 										</div>
 									</div>
 									
@@ -125,14 +99,16 @@
 											<label class="col-md-3 control-label" for="form_control_1">缓存		
 											</label>
 											<div class="col-md-9">
-												<div class="input-icon right">
-													<select class="form-control input-xs" name="cacheEnable">
-															<option value="1" <pg:equal colName="cacheEnable" value="1">selected</pg:equal>>启用</option>
-															<option value="0" <pg:equal colName="cacheEnable" value="0">selected</pg:equal>>禁用</option>
-													</select>
-													<div class="form-control-focus"></div>		
-												</div>
+												<p class="form-control-static"> <pg:equal colName="cacheEnable" value="1" evalbody="true">
+												<pg:yes>
+													启用
+												</pg:yes>
+												<pg:no>
+													禁用
+												</pg:no>
+												</pg:equal> </p>
 											</div>
+											 
 										</div>
 									</div>
 									<div class="col-md-4">
@@ -141,15 +117,16 @@
 		
 											</label>
 											<div class="col-md-9">
-												<div class="input-icon right">
-													<select class="form-control input-xs" name="isTree">
-															<option value="0" <pg:equal colName="isTree" value="0">selected</pg:equal>>列表</option>
-															<option value="1" <pg:equal colName="isTree" value="1">selected</pg:equal>>树</option>
-															
-													</select>
-													<div class="form-control-focus"></div>		
-												</div>
+												<p class="form-control-static"> <pg:equal colName="isTree" value="1" evalbody="true">
+												<pg:yes>
+													树
+												</pg:yes>
+												<pg:no>
+													列表
+												</pg:no>
+												</pg:equal> </p>
 											</div>
+											 
 											 
 										</div>
 									</div>
@@ -165,6 +142,7 @@
 									</div>
 									
 								</div>
+								
 								<div class="row">
 									<div class="col-md-6">
 										<div class="form-group form-md-line-input">
@@ -172,15 +150,7 @@
 		
 											</label>
 											<div class="col-md-10">
-												<div class="input-icon right">
-													<select class="form-control input-xs" name="dictStatus">
-															<option value="1" <pg:equal colName="dictStatus" value="1">selected</pg:equal>>正常</option>
-															<option value="0" <pg:equal colName="dictStatus" value="0">selected</pg:equal>>删除</option>
-															
-													</select>
-													<div class="form-control-focus"></div>		
-												</div>
-												
+												<p class="form-control-static"> <pg:equal colName="dictStatus" value="1" evalbody="true"><pg:yes>正常</pg:yes><pg:no>删除</pg:no></pg:equal> </p>
 											</div>
 											 
 										</div>
@@ -191,18 +161,13 @@
 		
 											</label>
 											<div class="col-md-10">
-												<div class="input-icon right">
-													<textarea class="form-control" placeholder="字典描述" name="dictDesc" rows="3"><pg:cell colName="dictDesc" htmlEncode="true"/></textarea>
-													 
-													<div class="form-control-focus"></div>
-													<span class="help-block">请输入字典描述</span>
-												</div>
+												<p class="form-control-static"> <pg:cell colName="dictDesc" htmlEncode="true"/> </p>
 											</div>
+											 
 										</div>
 									</div>
 									
 								</div>
-								
 								 
 		
 							</div>
@@ -223,8 +188,13 @@
 		
 						</div>
 						<div class="actions roleactions">
+							 <a class="btn btn-xs blue btn-dicteditsave"> 提交 <i
+								class="fa fa-edit"></i>
+								
+							</a> 							
+						 
 							<a class="btn btn-xs blue btn-adddictitem" > 新增 <i
-								class="fa fa-edit"></i></a> <a class="btn btn-xs red btn-batchdeldictitem">
+								class="fa fa-add"></i></a> <a class="btn btn-xs red btn-batchdeldictitem">
 								<i class="fa fa-times"></i> 删除
 							</a> 
 							
