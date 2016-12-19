@@ -130,7 +130,7 @@ var DesktopMenus = function() {
 	    {
 	    	gotomenu(menuid,thiselement,e);
 	    },
-	    changeModelFrameHeight(iframeid,modelwindow){
+	    changeModelFrameHeight:function(iframeid,modelwindow){
 	    	
 	    	$("#"+iframeid).height($(modelwindow).height());
 	    	// $("#"+id).height(height);

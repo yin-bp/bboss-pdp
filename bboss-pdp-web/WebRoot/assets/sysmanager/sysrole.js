@@ -13,10 +13,20 @@ var SysRole = function()
 		                     icon: 'fa fa-pencil',
 		                     label:'查看',
 		                     onClick: function() {
-		                    	 var userName = $(this).attr("userName");
-		                    	 var userAccount = $(this).attr("userAccount");
-		                    	 var userId = $(this).attr("userId");
-		                    	 SysUser.viewUser(userId,userName+"("+userAccount+")")
+		                    	 var roleId = $(this).attr("roleId");
+		                    	 var roleName = $(this).attr("roleName");
+		                    	 var remark1 = $(this).attr("remark1");
+		                    	 ModelDialog.dialog({
+			         					title:"查看角色-"+roleName+"("+remark1+")",
+			         					showfooter:false,
+			         					url:usercontextpath+"/sysmanager/role/getRole.page",
+			         					params:{
+			         						"roleId":roleId
+			         				      },
+			         					width:"600px",
+			         					height:"500px"
+	
+			         	         });
 		                     }
 		                   },
 		                   {
@@ -24,10 +34,21 @@ var SysRole = function()
 		                     icon: 'fa fa-pencil',
 		                     label:'修改',
 		                     onClick: function() {
-		                    	 var userName = $(this).attr("userName");
-		                    	 var userAccount = $(this).attr("userAccount");
-		                    	 var userId = $(this).attr("userId");
-		                    	 SysUser.tomodifyUser(userId,userName+"("+userAccount+")");
+		                    	 var roleId = $(this).attr("roleId");
+		                    	 var roleName = $(this).attr("roleName");
+		                    	 var remark1 = $(this).attr("remark1");
+		                    	 ModelDialog.dialog({
+			         					title:"修改角色-"+roleName+"("+remark1+")",
+			         					showfooter:false,
+			         					url:usercontextpath+"/sysmanager/role/toUpdateRole.page",
+			         					params:{
+			         						"roleId":roleId
+			         				      },
+			         					width:"600px",
+			         					height:"500px"
+	
+			         	         });
+		                    	 
 		                     }
 		                   },
 		                  
@@ -218,7 +239,71 @@ var SysRole = function()
 
 				});
 	}
+	var modifyRole = function(){
+		$('form',ModelDialog.getCurrentModal())
+		.ajaxSubmit(
+				{
+					type : 'POST',
+					url : usercontextpath+'/sysmanager/role/updateRole.page',
+					forceSync : false,
+					dataType : 'json',
+					beforeSubmit : function() {
+						 App.startPageLoading({message: '保存中...'});				           
+					},
+					error : function(xhr, ajaxOptions,
+							thrownError) {
+						PlatformCommonUtils.warn(thrownError) ;
+					},
+
+					success : function(responseText,
+							statusText, xhr, $form) {
+						 
+						 window.setTimeout(function() {
+				                App.stopPageLoading();
+				            }, 2000);
+						var msg = responseText;
+						var title = '修改角色';
+						var tiptype = "success";
+						if (msg == 'success') {
+							msg = "修改角色完毕"
+							PlatformCommonUtils.success(msg,function(){
+								ModelDialog.getCurrentModal().modal('hide');
+								afterSaveRole();
+							}) ;
+						} else {							 
+							PlatformCommonUtils.warn(msg) ;
+						}
+						
+						
+
+					}
+
+				});
+	}
+	var initModifyRole = function(){
+		PlatformCommonUtils.validateform({
+			form:"form",
+			messages : {
+					 
 	
+					remark1 : {
+						required : "请输入角色中文名"
+					}
+			},
+			rules : {			 
+				 	
+				remark1 : {
+					minlength : 2,
+					required : true
+				}
+			},
+			submitHandler:modifyRole
+		});
+		
+		$(".btn-rolemodifysave",ModelDialog.getCurrentModal()).bind("click",function(){
+			$("form",ModelDialog.getCurrentModal()).submit();
+		});
+	}
 	return {
 		roleButtonMethods:function(){
 			return roleButtonMethods();
@@ -228,6 +313,9 @@ var SysRole = function()
 		},
 		initAddRole:function(){
 			initAddRole();
+		},
+		initModifyRole:function(){
+			initModifyRole();
 		}
 	}
 }();

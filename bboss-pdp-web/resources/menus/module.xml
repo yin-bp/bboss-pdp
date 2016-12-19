@@ -104,6 +104,7 @@
 				
 		</module>
 		
+		
 		<module name="系统管理" id="sysmanager" used="true" showleftmenu="false"  i18n:en_US="System Manage">
 		
 			<description>系统管理</description>		
@@ -255,7 +256,28 @@
 				
 			</item>
 		</module>
+		<module name="字典管理" id="dictmanager" used="true" showleftmenu="false"  i18n:en_US="System Manage">
 		
+			<description>字典管理</description>		
+			<item name="数据采集" id="dictdatafetch"  i18n:en_US="dictdatafetch Manage" >
+				
+				<workspace>
+					<content>/dictmanager/index.page</content>
+				</workspace>
+				<authoration>				 
+				 			 			 
+				</authoration>
+			</item>
+			<item name="字典定义" id="dictdefine"  i18n:en_US="dictdatafetch Manage" >
+				
+				<workspace>
+					<content>/dictmanager/index.page</content>
+				</workspace>
+				<authoration>				 
+				 			 			 
+				</authoration>
+			</item>
+		</module>	
 
 		<item name="个人信息修改" id="personuserinfomodify" i18n:en_US="User Infomation Modification">
 				<mouseclickimg>html/images/jixiao.jpg</mouseclickimg>

@@ -1,145 +1,118 @@
-<%@ page language="java" pageEncoding="utf-8"%>
-<%@ include file="/common/jsp/importtaglib.jsp"%>
+<%@ page session="false" language="java"
+	contentType="text/html; charset=utf-8"%>
+<%@ taglib uri="/WEB-INF/tld/pager-taglib.tld" prefix="pg" %>
 
-<!-- 
-	描述:编辑角色管理界面。
-	作者:yinbp
-	版权:bboss
-	版本:v1.0 
-	日期:2016-12-15 17:06:09
--->
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-	<head>
-		<title>修改角色管理</title>
-		<%@ include file="/common/jsp/css.jsp"%>
-	</head>
-	<%	String path = request.getContextPath();%>
-	<body>
-		<div class="form_box">
-			
-			<pg:beaninfo requestKey="role">
-				<form id="editForm" name="editForm">
-										<table  border="0" cellpadding="0" cellspacing="0"
-						class="table4">
-																								<tr>
-												<th width=85px >
-							序号：
-						</th>
-						<td width=140px>
-																					<input id="roleId" name="roleId" type="text" value="<pg:cell colName="roleId"  />"
-								/>																				
-						</td>
-																							<th width=85px >
-							创建人：
-						</th>
-						<td width=140px>
-																					<input id="ownerId" name="ownerId" type="text" value="<pg:cell colName="ownerId"  />"
-								/>																				
-						</td>
-																							<th width=85px >
-							备注1：
-						</th>
-						<td width=140px>
-																					<input id="remark1" name="remark1" type="text" value="<pg:cell colName="remark1"  />"
-								/>																				
-						</td>
-																								</tr>						<tr>
-												<th width=85px >
-							备注2：
-						</th>
-						<td width=140px>
-																					<input id="remark2" name="remark2" type="text" value="<pg:cell colName="remark2"  />"
-								/>																				
-						</td>
-																							<th width=85px >
-							备注3：
-						</th>
-						<td width=140px>
-																					<input id="remark3" name="remark3" type="text" value="<pg:cell colName="remark3"  />"
-								/>																				
-						</td>
-																							<th width=85px >
-							描述：
-						</th>
-						<td width=140px>
-																					<input id="roleDesc" name="roleDesc" type="text" value="<pg:cell colName="roleDesc"  />"
-								/>																				
-						</td>
-																								</tr>						<tr>
-												<th width=85px >
-							名称：
-						</th>
-						<td width=140px>
-																					<input id="roleName" name="roleName" type="text" value="<pg:cell colName="roleName"  />"
-								/>																				
-						</td>
-																							<th width=85px >
-							类型：
-						</th>
-						<td width=140px>
-																					<input id="roleType" name="roleType" type="text" value="<pg:cell colName="roleType"  />"
-								/>																				
-						</td>
-																							<th width=85px >
-							用途：
-						</th>
-						<td width=140px>
-																					<input id="roleUsage" name="roleUsage" type="text" value="<pg:cell colName="roleUsage"  />"
-								/>																				
-						</td>
-											</tr>	
-																</table>
-				
-					<div class="btnarea" >
-							<a href="javascript:void(0)" class="bt_1" id="editButton"
-									onclick="dosubmit()"><span>保存</span> </a>
-							<a href="javascript:void(0)" class="bt_2" id="closeButton"
-									onclick="closeDlg()"><span>退出</span> </a>
-					</div>
-			
-				</form>
-			</pg:beaninfo>
-		</div>
-	</body>
-	<script language="javascript">
-	var api = frameElement.api, W = api.opener;
- 
-   function dosubmit()
-   {
-   		
-		$.ajax({
-		   type: "POST",
-			url : "updateRole.page",
-			data :formToJson("#editForm"),
-			dataType : 'json',
-			async:false,
-			beforeSend: function(XMLHttpRequest){
-					var validated = $("#editForm").form('validate');
-			      	if (validated){
-			      		blockUI();	
-			      		XMLHttpRequest.setRequestHeader("RequestType", "ajax");
-			      	}
-			      	else
-			      	{
-			      		return false;
-			      	}
-				 	
-				},
-			success : function(responseText){
-				//去掉遮罩	
-				unblockUI();
-				if(responseText=="success"){
-					W.$.dialog.alert("修改记录成功",function(){	
-							W.modifyQueryData();
-							api.close();
+
+<pg:beaninfo actual="${role}">
+	<!-- BEGIN FORM-->
+	<form action="#" class="form-horizontal" >
+		<div class="form-body">
+		
+		
+			<div class="row">
+				<div class="col-md-12" >
+					<div class="form-group form-md-line-input">
+						<input type="hidden" name="roleId"  value="<pg:cell colName="roleId"/>">
+						<input type="hidden" name="ownerId"  value="<pg:cell colName="ownerId"/>">
+						<input type="hidden" name="roleName"  value="<pg:cell colName="roleName"/>">
+						<label class="col-md-3 control-label" for="form_control_1">角色名称
 							
-					},api);	
-					
-				}else{
-					alert("修改出错");
-				}
-			}
-		  });
-   }
+						</label>
+						 <div class="col-md-9">
+							<p class="form-control-static"> <pg:cell colName="roleName"/> </p>
+						</div>
+						
+					</div>
+				</div>
+			</div>
+			<div class="row">	
+				<div class="col-md-12" >
+					<div class="form-group form-md-line-input">
+						<label class="col-md-3 control-label" for="form_control_1">中文名称
+							<span class="required">*</span>
+						</label>
+						<div class="col-md-9">
+							<input type="text" class="form-control" placeholder="" name="remark1"  value="<pg:cell colName="remark1"/>">
+							<div class="form-control-focus"></div>
+							<span class="help-block">请输入角色中文名</span>	
+						</div>
+					</div>
+				</div>
+			</div>
+		 	
+			<div class="row">
+				<div class="col-md-12" >	
+					<div class="form-group form-md-line-input">
+						<label class="col-md-3 control-label" for="form_control_1">角色类型</label>
+						<div class="col-md-9">
+						<pg:equal colName="roleType" value="1" evalbody="true">
+							<pg:yes>
+								<input type="hidden" name="roleType"  value="<pg:cell colName="roleType"/>">
+								<p class="form-control-static"> <pg:cell colName="typeName"/> </p>
+							</pg:yes>
+							<pg:no>
+								<select class="form-control" name="roleType">							
+									<pg:list actual="${roleTypes }">
+										<pg:notequal colName="typeId" value="1">
+											<option value="<pg:cell colName="typeId"/>" <pg:equal colName="typeId" expressionValue="{0.roleType}">selected</pg:equal>>
+											<pg:cell colName="typeName"/>
+											</option>
+										</pg:notequal>
+									</pg:list>																						
+								</select>
+								<div class="form-control-focus"></div>
+								<span class="help-block">请设置角色类型</span>	
+							</pg:no>
+						</pg:equal>							
+						</div>
+					</div>
+				</div>
+			</div>
+		 	
+			<div class="row">	
+				<div class="col-md-12" >
+					<div class="form-group form-md-line-input">
+						<label class="col-md-3 control-label" for="form_control_1">描述
+							
+						</label>
+						<div class="col-md-9">
+							<textarea class="form-control" name="roleDesc" rows="3"><pg:cell colName="roleDesc" htmlEncode="true"/></textarea>
+							<div class="form-control-focus"></div>
+							<span class="help-block">请输入角色描述</span>
+						</div>
+						
+					</div>
+				</div>
+			</div>
+			<div class="row">	
+				<div class="col-md-12" >
+					<div class="form-group form-md-line-input">
+						<label class="col-md-3 control-label" for="form_control_1">创建人
+							 
+						</label>
+						<div class="col-md-9">
+							<p class="form-control-static"> <pg:cell colName="ownerName"/>(<pg:cell colName="ownerAccount"/>) </p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row"><div class="col-md-12" >&nbsp;</div></div>
+			
+			<div class="form-actions">
+			<div class="row">
+				<div class="col-md-offset-3 col-md-9">
+					<button type="button" class="btn green btn-rolemodifysave">保存</button>
+					<button type="reset" class="btn default">重置</button>
+					<button type="button" class="btn default" data-dismiss="modal">取消</button>
+				</div>
+			</div>
+		</div>
+		</div>
+	</form>
+</pg:beaninfo>
+<script type="text/javascript">
+	jQuery(document).ready(function() {
+		SysRole.initModifyRole();
+		
+	});
 </script>

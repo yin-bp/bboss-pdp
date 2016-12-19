@@ -43,7 +43,7 @@
 	                 <td><pg:cell colName="typeName"  /></td>
 	                <td><pg:cell colName="ownerName"  />(<pg:cell colName="ownerAccount"  />)</td>
 	                 <td><pg:cell colName="roleDesc"  /></td>
-	                <td><button roleName="<pg:cell colName="roleName"  />" userAccount="<pg:cell colName="roleName"  />"  roleId="<pg:cell colName="roleId"  />" class="btn btn-outline btn-xs green-sharp  uppercase" data-toggle="role_ops_confirmation"  data-singleton="true" data-placement="left">操作</button></td>
+	                <td><button roleName="<pg:cell colName="roleName"  />" remark1="<pg:cell colName="remark1"  />"  roleId="<pg:cell colName="roleId"  />" class="btn btn-outline btn-xs green-sharp  uppercase" data-toggle="role_ops_confirmation"  data-singleton="true" data-placement="left">操作</button></td>
 	        </tr>
 	    </pg:list>
 		

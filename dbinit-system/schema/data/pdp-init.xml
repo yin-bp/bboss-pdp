@@ -281,12 +281,12 @@
 								<property index="0"><![CDATA[insert into td_sm_roletype
   				(TYPE_NAME, TYPE_DESC, TYPE_ID, CREATOR_USER_ID,CREATOR_ORG_ID)
 				values
-  				('通用角色类型','通用角色类型',1,'1','1')]]></property>
+  				('系统默认角色','系统默认角色',1,'1','1')]]></property>
   				
   				               <property index="1"><![CDATA[insert into td_sm_roletype
   				(TYPE_NAME, TYPE_DESC, TYPE_ID, CREATOR_USER_ID,CREATOR_ORG_ID)
 				values
-  				('监控系统角色','监控系统角色',2,'2','2')]]></property>
+  				('普遍角色','普遍角色','3','1','1')]]></property>
 
 							</list>
 						</property>

@@ -1,11 +1,11 @@
-
 <%@ taglib uri="/WEB-INF/tld/pager-taglib.tld" prefix="pg" %>
-
+<%@ taglib uri="/WEB-INF/tld/admin-taglib.tld" prefix="admin"%>
 	<%@ page session="false" language="java"
 	contentType="text/html; charset=utf-8"%>
 
 	<!-- BEGIN FORM-->
 	<form action="#" class="form-horizontal" >
+		<input type="hidden" name="ownerId"  value="<admin:accesscontrol userattribute="userID"/>">
 		<div class="form-body">
 		
 		
@@ -76,12 +76,25 @@
 				<div class="col-md-12" >
 					<div class="form-group form-md-line-input">
 						<label class="col-md-3 control-label" for="form_control_1">描述
-							<span class="required">*</span>
+							
 						</label>
 						<div class="col-md-9">
-							<input type="text" class="form-control" placeholder="" name="roleDesc"  autocomplete="off">
+							<textarea class="form-control" name="roleDesc" rows="3"></textarea>
 							<div class="form-control-focus"></div>
-							<span class="help-block">请输入角色描述</span>	
+							<span class="help-block">请输入角色描述</span>
+						</div>
+						
+					</div>
+				</div>
+			</div>
+			<div class="row">	
+				<div class="col-md-12" >
+					<div class="form-group form-md-line-input">
+						<label class="col-md-3 control-label" for="form_control_1">创建人
+							 
+						</label>
+						<div class="col-md-9">
+							<p class="form-control-static"> <admin:accesscontrol userattribute="userName"/>(<admin:accesscontrol userattribute="userAccount"/>) </p>
 						</div>
 					</div>
 				</div>

@@ -1,95 +1,92 @@
-<%@ page language="java" pageEncoding="UTF-8"%>
-<%@ include file="/common/jsp/importtaglib.jsp"%>
-<!-- 
-	描述:查看角色管理界面。
-	作者:yinbp
-	版权:bboss
-	版本:v1.0 
-	日期:2016-12-15 17:06:09
--->
+<%@ page session="false" language="java"
+	contentType="text/html; charset=utf-8"%>
+<%@ taglib uri="/WEB-INF/tld/pager-taglib.tld" prefix="pg" %>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<title>查看角色管理</title>
-<%@ include file="/common/jsp/css.jsp"%>
-</head>
-<body>
-		<div class="mcontent">
-			<div id="searchblock">
-				<pg:beaninfo requestKey="role">
-				<form id="editForm" name="editForm">
-				  						<table border="0" cellpadding="0" cellspacing="0"
-						class="table4">
-																								<tr>
-												<th width=85px >
-							序号：
-						</th>
-						<td width=140px>
-							<input id="roleId" name="roleId" type="text" value="<pg:cell colName="roleId"    />" readonly/>
-						</td>
-																							<th width=85px >
-							创建人：
-						</th>
-						<td width=140px>
-							<input id="ownerId" name="ownerId" type="text" value="<pg:cell colName="ownerId"    />" readonly/>
-						</td>
-																							<th width=85px >
-							备注1：
-						</th>
-						<td width=140px>
-							<input id="remark1" name="remark1" type="text" value="<pg:cell colName="remark1"    />" readonly/>
-						</td>
-																								</tr>						<tr>
-												<th width=85px >
-							备注2：
-						</th>
-						<td width=140px>
-							<input id="remark2" name="remark2" type="text" value="<pg:cell colName="remark2"    />" readonly/>
-						</td>
-																							<th width=85px >
-							备注3：
-						</th>
-						<td width=140px>
-							<input id="remark3" name="remark3" type="text" value="<pg:cell colName="remark3"    />" readonly/>
-						</td>
-																							<th width=85px >
-							描述：
-						</th>
-						<td width=140px>
-							<input id="roleDesc" name="roleDesc" type="text" value="<pg:cell colName="roleDesc"    />" readonly/>
-						</td>
-																								</tr>						<tr>
-												<th width=85px >
-							名称：
-						</th>
-						<td width=140px>
-							<input id="roleName" name="roleName" type="text" value="<pg:cell colName="roleName"    />" readonly/>
-						</td>
-																							<th width=85px >
-							类型：
-						</th>
-						<td width=140px>
-							<input id="roleType" name="roleType" type="text" value="<pg:cell colName="roleType"    />" readonly/>
-						</td>
-																							<th width=85px >
-							用途：
-						</th>
-						<td width=140px>
-							<input id="roleUsage" name="roleUsage" type="text" value="<pg:cell colName="roleUsage"    />" readonly/>
-						</td>
-											</tr>	
-																	
-					</table>
-				
+
+<pg:beaninfo actual="${role}">
+	<!-- BEGIN FORM-->
+	<form action="#" class="form-horizontal" >
+		<div class="form-body">
 		
-				<div class="btnarea" >
-					<a href="javascript:void(0)" class="bt_2" id="closeButton" onclick="closeDlg()"><span>退出</span></a>
-				</div>	
-				</form>
-				</pg:beaninfo>
+		
+			<div class="row">
+				<div class="col-md-12" >
+					<div class="form-group form-md-line-input">
+						<input type="hidden" name="roleId"  value="<pg:cell colName="roleId"/>">
+						<input type="hidden" name="ownerId"  value="<pg:cell colName="ownerId"/>">
+						<input type="hidden" name="roleName"  value="<pg:cell colName="roleName"/>">
+						<label class="col-md-3 control-label" for="form_control_1">角色名称
+							
+						</label>
+						 <div class="col-md-9">
+							<p class="form-control-static"> <pg:cell colName="roleName"/> </p>
+						</div>
+						
+					</div>
+				</div>
 			</div>
+			<div class="row">	
+				<div class="col-md-12" >
+					<div class="form-group form-md-line-input">
+						<label class="col-md-3 control-label" for="form_control_1">中文名称
+							<span class="required">*</span>
+						</label>
+						<div class="col-md-9">
+							<p class="form-control-static"> <pg:cell colName="remark1" htmlEncode="true"/> </p>
+							 
+						</div>
+					</div>
+				</div>
+			</div>
+		 	
+			<div class="row">
+				<div class="col-md-12" >	
+					<div class="form-group form-md-line-input">
+						<label class="col-md-3 control-label" for="form_control_1">角色类型</label>
+						<div class="col-md-9">
+						 
+								<p class="form-control-static"> <pg:cell colName="typeName"/> </p>
+							 		
+						</div>
+					</div>
+				</div>
+			</div>
+		 	
+			<div class="row">	
+				<div class="col-md-12" >
+					<div class="form-group form-md-line-input">
+						<label class="col-md-3 control-label" for="form_control_1">描述
+							
+						</label>
+						<div class="col-md-9">
+							<p class="form-control-static"> <pg:cell colName="roleDesc" htmlEncode="true"/> </p>
+						</div>
+						 
+					</div>
+				</div>
+			</div>
+			<div class="row">	
+				<div class="col-md-12" >
+					<div class="form-group form-md-line-input">
+						<label class="col-md-3 control-label" for="form_control_1">创建人
+							 
+						</label>
+						<div class="col-md-9">
+							<p class="form-control-static"> <pg:cell colName="ownerName"/>(<pg:cell colName="ownerAccount"/>) </p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row"><div class="col-md-12" >&nbsp;</div></div>
 			
-  
-  	</div>					
-</body>
+			<div class="form-actions">
+			<div class="row">
+				<div class="col-md-offset-3 col-md-9">					
+					<button type="button" class="btn green" data-dismiss="modal">关闭</button>
+				</div>
+			</div>
+		</div>
+		</div>
+	</form>
+</pg:beaninfo>
+

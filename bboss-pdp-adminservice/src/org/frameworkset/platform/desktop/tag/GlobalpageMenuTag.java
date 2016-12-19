@@ -103,7 +103,7 @@ public class GlobalpageMenuTag extends BaseTag {
 //			url =  MenuHelper.getRealUrl(contextpath, MenuHelper.iframeurl,MenuHelper.selecturl,StringUtil.urlencode(url,"UTF-8"));
 //		}
 		datas.append("<li ").append(selectedclass).append(">")
-			 .append("<a id=\"left__").append(item.getId()).append("\"  href=\"javascript:void(0);\" onclick=\"DesktopMenus.gotomenu('").append(item.getId()).append("',this,event)\" class=\"nav-link \">");
+			 .append("<a id=\"left__").append(item.getId()).append("\"  href=\"javascript:void(0);\" onclick=\"javascript:DesktopMenus.gotomenu('").append(item.getId()).append("',this,event)\" class=\"nav-link \">");
 		if(icon != null && !icon.equals(""))
 		{
 			 datas.append("    <i class=\"").append(icon).append("\"></i>");
@@ -158,7 +158,7 @@ public class GlobalpageMenuTag extends BaseTag {
 //		}
 		if(url != null && !item.isUsesubpermission())
 			datas.append("<li ").append(selectedclass).append(">")
-				 .append("<a id=\"left__").append(item.getId()).append("\" href=\"javascript:void(0);\" onclick=\"DesktopMenus.gotomenu('").append(item.getId()).append("',this,event)\" class=\"nav-link \">");
+				 .append("<a id=\"left__").append(item.getId()).append("\" href=\"javascript:void(0);\" onclick=\"javascript:DesktopMenus.gotomenu('").append(item.getId()).append("',this,event)\" class=\"nav-link \">");
 		else
 		{
 			datas.append("<li ").append(selectedclass).append(">")
@@ -226,11 +226,11 @@ public class GlobalpageMenuTag extends BaseTag {
 //				url =  MenuHelper.getRealUrl(contextpath, MenuHelper.iframeurl,MenuHelper.selecturl,StringUtil.urlencode(url,"UTF-8"));
 //			}
 			if(theme == null || theme.equals("admin_3"))
-				datas.append("<a id=\"left__").append(item.getId()).append("\"  href=\"javascript:void(0);\" onclick=\"DesktopMenus.gotomenu('").append(item.getId()).append("',this,event)\" class=\"nav-link nav-toggle\">");
+				datas.append("<a id=\"left__").append(item.getId()).append("\"  href=\"javascript:void(0);\" onclick=\"javascript:DesktopMenus.gotomenu('").append(item.getId()).append("',this,event)\" class=\"nav-link nav-toggle\">");
 			else
 			{
 				//ondblclick
-				datas.append("<a id=\"left__").append(item.getId()).append("\"  href=\"javascript:void(0);\" onclick=\"DesktopMenus.gotomenu('").append(item.getId()).append("',this,event)\" class=\"nav-link nav-toggle\">");
+				datas.append("<a id=\"left__").append(item.getId()).append("\"  href=\"javascript:void(0);\" onclick=\"javascript:DesktopMenus.gotomenu('").append(item.getId()).append("',this,event)\" class=\"nav-link nav-toggle\">");
 				 
 			}
 		}

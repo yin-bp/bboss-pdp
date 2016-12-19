@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+**
+ *  Copyright 2008-2010 biaoping.yin
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ *
+ * Title: dict.xml
+ * Description: 字典管理管理sql配置文件 
+ * Company:bboss
+ * Copyright (c) 2015
+ * @Date 2016-12-18 11:29:08
+ * @author yinbp
+ * @version v1.0 
+ **
+ -->
+<properties>
+	
+		<property name="addDict">
+		<![CDATA[
+			insert into td_sm_dict (DICT_ID,CACHE_ENABLE,DICT_CODE,DICT_DESC,DICT_NAME,HANDLER,IS_TREE,OWNER_ID) values(#[dictId],#[cacheEnable],#[dictCode],#[dictDesc],#[dictName],#[handler],#[isTree],#[ownerId])
+		]]>
+	</property>
+		<property name="updateByKeys">
+		<![CDATA[
+			update td_sm_dict set DICT_STATUS = '0' where DICT_ID=?
+		]]>
+	</property>
+		<property name="updateDict">
+		<![CDATA[
+			update td_sm_dict set DICT_ID=#[dictId],CACHE_ENABLE=#[cacheEnable],DICT_CODE=#[dictCode],DICT_DESC=#[dictDesc],DICT_NAME=#[dictName],HANDLER=#[handler],IS_TREE=#[isTree],OWNER_ID=#[ownerId] where DICT_ID=#[dictId]
+		]]>
+	</property>
+		<property name="selectById">
+		<![CDATA[
+			select d.*,u.user_name as ownerAccount,u.USER_REALNAME as ownerName from td_sm_dict d left join td_sm_user u on d.OWNER_ID=u.USER_ID  where DICT_ID=?
+		]]>
+	</property>
+		<property name="queryListDict">
+		<![CDATA[
+			select d.*,u.user_name as ownerAccount,u.USER_REALNAME as ownerName from td_sm_dict d left join td_sm_user u on d.OWNER_ID=u.USER_ID where 1=1
+			#if($dictAttr && !$dictAttr.equals(""))
+				and (DICT_NAME like #[dictAttr] or DICT_code like #[dictAttr])
+			#end
+			
+			#if($handler && !$handler.equals("") && !$handler.equals("-1"))
+				and HANDLER = #[handler]
+			#end
+			#if($dictStatus && !$dictStatus.equals("") && !$dictStatus.equals("-1"))
+				and dict_status = #[dictStatus]
+			#end
+			order by DICT_code
+			
+		]]>
+	</property>
+	</properties>
