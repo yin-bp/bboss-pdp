@@ -1,4 +1,4 @@
-package org.frameworkset.util;
+package com.frameworkset.platform.dict.core;
 
 /**
  * params util 组件名称类

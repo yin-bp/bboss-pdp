@@ -51,7 +51,7 @@ var Datatable = function() {
   	                  // data tables spesific
   	                  "lengthMenu": "每页 _MENU_ 条记录",
   	                  "info": "共 _TOTAL_ 条记录",
-  	                  "infoEmpty": "没有找到记录",
+  	                  "infoEmpty": "",
   	                  "emptyTable": "没有找到记录",
   	                  "zeroRecords": "没有匹配的记录",
   	                  "paginate": {

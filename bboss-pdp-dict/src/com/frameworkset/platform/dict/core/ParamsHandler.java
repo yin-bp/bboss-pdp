@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 
-package org.frameworkset.util;
+package com.frameworkset.platform.dict.core;
 
 
 import java.io.Serializable;
@@ -43,6 +43,7 @@ import org.frameworkset.spi.BeanNameAware;
 import org.frameworkset.spi.DefaultApplicationContext;
 import org.frameworkset.spi.assemble.Pro;
 import org.frameworkset.spi.assemble.ProMap;
+import org.frameworkset.util.ClassUtil;
 import org.frameworkset.util.ClassUtil.ClassInfo;
 import org.frameworkset.util.ClassUtil.PropertieDescription;
 import org.frameworkset.util.beans.PropertyAccessException;
@@ -235,7 +236,7 @@ public class ParamsHandler implements org.frameworkset.spi.InitializingBean,List
 			{
 				rnParams(paramList );
 				for (Param param : paramList) {
-					String key = param.getDictId();
+					String key = param.getDictCode();
 					if (trace.containsKey(key))
 						continue;
 					dbutil.preparedDelete(this.getDbname(), sql_del.toString());
@@ -247,7 +248,7 @@ public class ParamsHandler implements org.frameworkset.spi.InitializingBean,List
 			}
 			else
 			{
-				String key = params.getDictId() ;
+				String key = params.getDictCode() ;
 				trace.put(key, t);
 				rnParams(paramList );
 				dbutil.preparedDelete(this.getDbname(), sql_del.toString());

@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 
-package org.frameworkset.util;
+package com.frameworkset.platform.dict.core;
 
 /**
  * <p>Title: ParamException.java</p> 

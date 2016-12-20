@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.frameworkset.util;
+package com.frameworkset.platform.dict.core;
 
 /**
  * @author yinbp

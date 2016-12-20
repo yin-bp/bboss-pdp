@@ -20,17 +20,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.frameworkset.util.Param;
-import org.frameworkset.util.Params;
-import org.frameworkset.util.ParamsHandler;
 
 import com.frameworkset.common.poolman.ConfigSQLExecutor;
 import com.frameworkset.orm.transaction.TransactionManager;
+import com.frameworkset.platform.dict.core.Param;
+import com.frameworkset.platform.dict.core.Params;
+import com.frameworkset.platform.dict.core.ParamsHandler;
 import com.frameworkset.platform.dict.entity.Dict;
 import com.frameworkset.platform.dict.entity.DictCondition;
 import com.frameworkset.platform.dict.entity.DictItem;
 import com.frameworkset.util.ListInfo;
-import com.sun.javafx.collections.MappingChange.Map;
 
 /**
  * <p>Title: DictServiceImpl</p> <p>Description: 字典管理管理业务处理类 </p> <p>bboss</p>
@@ -120,6 +119,7 @@ public class DictServiceImpl implements DictService {
 				Params params = new Params();				
 				params.setParams(params( dict,dictItems, dict.getDictId()));
 				params.setDictId(dict.getDictId());
+				params.setDictCode(dict.getDictCode());
 				ParamsHandler.getParamsHandler(dict.getHandler()).saveParams(params) ;
 			}
 		
@@ -141,6 +141,7 @@ public class DictServiceImpl implements DictService {
 				Params params = new Params();				
 				params.setParams(params( dict,dictItems, dict.getDictId()));
 				params.setDictId(dict.getDictId());
+				params.setDictCode(dict.getDictCode());
 				ParamsHandler.getParamsHandler(dict.getHandler()).saveParams(params) ;
 			}
 		

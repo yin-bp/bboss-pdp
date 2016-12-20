@@ -19,12 +19,12 @@ package com.frameworkset.platform.dict.action;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.frameworkset.util.Params;
-import org.frameworkset.util.ParamsHandler;
 import org.frameworkset.util.annotations.PagerParam;
 import org.frameworkset.util.annotations.ResponseBody;
 import org.frameworkset.web.servlet.ModelMap;
 
+import com.frameworkset.platform.dict.core.Params;
+import com.frameworkset.platform.dict.core.ParamsHandler;
 import com.frameworkset.platform.dict.entity.Dict;
 import com.frameworkset.platform.dict.entity.DictCondition;
 import com.frameworkset.platform.dict.entity.DictItem;

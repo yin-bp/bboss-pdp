@@ -9,7 +9,7 @@
   <info>dictionary</info>
     <tag>
         <name>select</name>
-        <tagclass>com.frameworkset.dictionary.tag.XMLSelectTag</tagclass>
+        <tagclass>com.frameworkset.platform.dict.tag.SelectTag</tagclass>
 		<attribute>
 			<name>type</name>
 			<required>true</required>
@@ -114,7 +114,7 @@
 
     <tag>
         <name>radio</name>
-        <tagclass>com.frameworkset.dictionary.tag.XMLRadioTag</tagclass>
+        <tagclass>com.frameworkset.platform.dict.tag.RadioTag</tagclass>
 		<attribute>
 			<name>type</name>
 			<required>true</required>
@@ -197,7 +197,7 @@
 
     <tag>
         <name>checkbox</name>
-        <tagclass>com.frameworkset.dictionary.tag.XMLCheckboxTag</tagclass>
+        <tagclass>com.frameworkset.platform.dict.tag.CheckboxTag</tagclass>
 		<attribute>
 			<name>type</name>
 			<required>true</required>
@@ -289,7 +289,7 @@
     <!--\u6839\u636E\u5B57\u5178\u503C,\u83B7\u53D6\u5B57\u5178\u540D\u79F0-->
     <tag>
         <name>itemvalue</name>
-        <tagclass>com.frameworkset.dictionary.tag.XMLItemvalueTag</tagclass>
+        <tagclass>com.frameworkset.platform.dict.tag.ItemvalueTag</tagclass>
 		<attribute>
 			<name>type</name>
 			<required>true</required>
@@ -340,7 +340,7 @@
     <!--\u6839\u636E\u503C\u83B7\u53D6\u540D\u79F0-->
     <tag>
         <name>itemname</name>
-        <tagclass>com.frameworkset.dictionary.tag.XMLItemnameTag</tagclass>
+        <tagclass>com.frameworkset.platform.dict.tag.ItemnameTag</tagclass>
 		<attribute>
 			<name>type</name>
 			<required>true</required>

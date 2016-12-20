@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.frameworkset.util;
+package com.frameworkset.platform.dict.core;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +17,11 @@ public  class Params{
 	private String dictName;
 	private String tableName;
 	private String dbname;
-	
+	public int size(){
+		if (params == null )
+			return 0;
+		return this.params.size() ;
+	}
 	public int getSize(String code)
 	{
 		if (params == null || this.params.size() <= 0)
@@ -171,7 +175,9 @@ public  class Params{
 	public boolean getAttributeBoolean(String code) {
 		return getAttributeBoolean(0, code);
 	}
-
+	public Param getParam(int i){
+		return this.params.get(i);
+	}
 	public List<Param> getParams() {
 		return params;
 	}
@@ -269,6 +275,228 @@ public  class Params{
 	public void setDictName(String dictName) {
 		this.dictName = dictName;
 	}
+	private Param getParamByValue(String value){
+		if(this.params == null )
+			return null;
+		for(Param p:params){
+			if(p.getValue().equals(value))
+				return p;
+		}
+		return null;
+	}
+	private Param getParamByName(String name){
+		if(this.params == null )
+			return null;
+		for(Param p:params){
+			if(p.getName().equals(name))
+				return p;
+		}
+		return null;
+	}
+	/**
+	 * @param valueOf
+	 * @param defaultName
+	 * @return
+	 */
+	public String getItemName(String value, String defaultName) {
+		if (params == null){
+			if(defaultName == null)
+			{
+//			throw new ProfessionDataManagerException("id为'" + dataId
+//					+ "'的专业数据不能为空");
+//			System.out.println("id为'" + dataId + "'的专业数据不能为空");
+				return value;
+			}
+			else
+			{
+				return defaultName;
+			}
+		}
+
+		Param item =   getParamByValue( value);
+		if (item != null)
+			return item.getName();
+		// for(int i = 0; i < items.size(); i ++)
+		// {
+		// Item item = (Item)items.get(i);
+		// if(item.getValue().equals(value))
+		// return item.getName();
+		// }
+//		throw new ProfessionDataManagerException("id为'" + dataId
+//				+ "'专业数据中不存在值为'" + value + "'的数据项");
+		if(defaultName == null)
+		{
+			return value;
+		}
+		else
+		{
+			return defaultName;
+		}
+	}
+	
+	public String getItemName(String value)
+			 {
+		if (params == null){
+			 
+				return value;
+			 
+		}
+
+		Param item =   getParamByValue( value);
+		if (item != null)
+			return item.getName();
+		// for(int i = 0; i < items.size(); i ++)
+		// {
+		// Item item = (Item)items.get(i);
+		// if(item.getValue().equals(value))
+		// return item.getName();
+		// }
+//		throw new ProfessionDataManagerException("id为'" + dataId
+//				+ "'专业数据中不存在值为'" + value + "'的数据项");
+		 
+		return value;
+		 
+	}
+	
+	
+	public String getItemNameByValue(String value)
+	{
+		if (params == null){			 
+			return value;
+		}
+	
+		Param item =   getParamByValue( value);
+		if (item != null)
+			return item.getName();
+	// for(int i = 0; i < items.size(); i ++)
+	// {
+	// Item item = (Item)items.get(i);
+	// if(item.getValue().equals(value))
+	// return item.getName();
+	// }
+//	throw new ProfessionDataManagerException("id为'" + dataId
+//			+ "'专业数据中不存在值为'" + value + "'的数据项");
+	 
+		return value;
+	}
+	 
+	public String getItemValue(String name)
+			  {
+		if (params == null){
+//			throw new ProfessionDataManagerException("id为'" + dataId
+//					+ "'的专业数据不能为空");
+			return name;
+		}
+		Param item = getParamByName(name);
+
+		if (item != null)
+			return item.getValue();
+
+		// for(int i = 0; i < items.size(); i ++)
+		// {
+		// Item item = (Item)items.get(i);
+		// if(item.getName().equals(name))
+		// return item.getValue();
+		// }
+//		throw new ProfessionDataManagerException("id为'" + dataId
+//				+ "'的专业数据中不存在名称为" + name + "数据项");
+		return name;
+	}
+	
+	public String getItemValueByName(String name)
+			 {
+		if (params == null){
+//			throw new ProfessionDataManagerException("id为'" + dataId
+//					+ "'的专业数据不能为空");
+			return name;
+		}
+		Param item = getParamByName(name);
+
+		if (item != null)
+			return item.getValue();
+
+		// for(int i = 0; i < items.size(); i ++)
+		// {
+		// Item item = (Item)items.get(i);
+		// if(item.getName().equals(name))
+		// return item.getValue();
+		// }
+//		throw new ProfessionDataManagerException("id为'" + dataId
+//				+ "'的专业数据中不存在名称为" + name + "数据项");
+		return null;
+	}
+	
+	public String getItemValue(String name,String defaultValue)
+			 {
+		if (params == null){
+//			throw new ProfessionDataManagerException("id为'" + dataId
+//					+ "'的专业数据不能为空");
+			if(defaultValue == null)
+			{
+				return name;
+			}
+			else
+			{
+				return defaultValue;
+			}
+		}
+		Param item = getParamByName(name);
+
+		if (item != null)
+			return item.getValue();
+
+		// for(int i = 0; i < items.size(); i ++)
+		// {
+		// Item item = (Item)items.get(i);
+		// if(item.getName().equals(name))
+		// return item.getValue();
+		// }
+//		throw new ProfessionDataManagerException("id为'" + dataId
+//				+ "'的专业数据中不存在名称为" + name + "数据项");
+		if(defaultValue == null)
+		{
+			return name;
+		}
+		else
+			return defaultValue;
+	}
+	
+	public String getItemValueByName(String name,String defaultValue)
+			 {
+		if (params == null){
+//			throw new ProfessionDataManagerException("id为'" + dataId
+//					+ "'的专业数据不能为空");
+			if(defaultValue == null)
+			{
+				return name;
+			}
+			else
+			{
+				return defaultValue;
+			}
+		}
+		Param item = getParamByName(name);
+
+		if (item != null)
+			return item.getValue();
+
+		// for(int i = 0; i < items.size(); i ++)
+		// {
+		// Item item = (Item)items.get(i);
+		// if(item.getName().equals(name))
+		// return item.getValue();
+		// }
+//		throw new ProfessionDataManagerException("id为'" + dataId
+//				+ "'的专业数据中不存在名称为" + name + "数据项");
+		if(defaultValue == null)
+		{
+			return name;
+		}
+		else
+			return defaultValue;
+	}
+
+	 
 
 }
 

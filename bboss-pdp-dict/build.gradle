@@ -23,7 +23,8 @@ dependencies {
         [group: 'com.bbossgroups', name: 'bboss-persistent', version: "${bboss_version}", transitive: false],
              [group: 'com.bbossgroups', name: 'bboss-event', version: "${bboss_version}", transitive: false],
           [group: 'com.bbossgroups', name: 'bboss-util', version: "${bboss_version}", transitive: false],           
-			
+			  [group: 'com.bbossgroups', name: 'bboss-taglib', version: "${bboss_version}", transitive: false],
+          
 			   [group: 'com.bbossgroups', name: 'bboss-mvc', version: "${bboss_version}", transitive: false],
             
     )

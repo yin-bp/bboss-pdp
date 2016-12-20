@@ -1,4 +1,4 @@
-package org.frameworkset.util;
+package com.frameworkset.platform.dict.core;
 
 import java.util.List;
 

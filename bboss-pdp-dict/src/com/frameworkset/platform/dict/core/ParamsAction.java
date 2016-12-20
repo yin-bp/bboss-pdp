@@ -12,7 +12,7 @@
  * with the terms of the license agreement you entered into with
  * SANY Group Co, Ltd.
  */
-package org.frameworkset.util;
+package com.frameworkset.platform.dict.core;
 
 import java.util.List;
 

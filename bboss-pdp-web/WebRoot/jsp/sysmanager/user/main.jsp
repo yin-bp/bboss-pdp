@@ -2,6 +2,7 @@
 	contentType="text/html; charset=utf-8"%>
 
 <%@ taglib uri="/WEB-INF/tld/admin-taglib.tld" prefix="admin"%>
+<%@ taglib uri="/WEB-INF/tld/dictionary.tld" prefix="dict"%>
 <!-- BEGIN PAGE LEVEL PLUGINS -->
 
 <link
