@@ -95,6 +95,9 @@ public class ParamsHandler implements org.frameworkset.spi.InitializingBean,List
 			}
 		});
 	}
+	public void sendEvent(Map<String,Serializable> trace){
+		EventHandle.sendEvent(new EventImpl<Map<String, Serializable>>(trace,this.eventtype));
+	}
 	/**
 	 * 缓存参数数据
 	 * paramType:paramID:Params
@@ -214,7 +217,7 @@ public class ParamsHandler implements org.frameworkset.spi.InitializingBean,List
 	 * @param paramType
 	 * @return
 	 */
-	public boolean saveParams(Params params) {
+	public Map<String, Serializable> saveParams(Params params) {
 		StringBuilder sql_del = new StringBuilder();
 		sql_del.append("delete from ").append(tableName).append(
 				" where DICT_ID=?");
@@ -275,9 +278,9 @@ public class ParamsHandler implements org.frameworkset.spi.InitializingBean,List
 			dbutil.executePreparedBatch();
 			tm.commit();
 //			cleanCaches(trace);
-			EventHandle.sendEvent(new EventImpl<Map<String, Serializable>>(trace,this.eventtype));
-			trace = null;
-			return true;
+//			EventHandle.sendEvent(new EventImpl<Map<String, Serializable>>(trace,this.eventtype));
+			
+			return trace;
 		
 		} catch (Exception e) {
 			
@@ -287,7 +290,7 @@ public class ParamsHandler implements org.frameworkset.spi.InitializingBean,List
 		{
 			tm.release();
 		}
-		return false;
+		return trace;
 	}
 
 	public static Params getParams(String handler,String dictCode) {

@@ -58,6 +58,6 @@ public class ParamsAction {
 		params.setParams(paramsList);
 		params.setDictId(dictId);
 		
-		return ParamsHandler.getParamsHandler(handler).saveParams(params) ? "success" : "fail";
+		return ParamsHandler.getParamsHandler(handler).saveParams(params).size() > 0? "success" : "fail";
 	}
 }

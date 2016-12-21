@@ -7,7 +7,7 @@
 	class="table table-striped table-hover table-bordered table-dictitemlist">
 	<thead>
 		<tr>
-			<th  ><input type="checkbox" class="checkall"
+			<th width="5%" ><input type="checkbox" class="checkall"
 				onClick="checkAll('.table-dictitemlist .checkall','.table-dictitemlist .checkone')" /></th>
 			<th>名称</th>
 			<th>值</th>
@@ -19,7 +19,7 @@
 				<pg:list requestKey="paramsList">
 					
 					<tr>
-						<td ><input type="checkbox" name="paramId" class="checkone"
+						<td  width="5%" ><input type="checkbox" name="paramId" class="checkone"
 							value="<pg:cell colName='paramId' />"
 							onClick="checkOne('.table-dictitemlist .checkall','.table-dictitemlist .checkone')" /></td>
 						<td><p class="form-control-static"> <pg:cell colName="name" /> </p></td>
@@ -32,7 +32,7 @@
 				<pg:list requestKey="paramsList">
 					
 					<tr>
-						<td ><input type="checkbox" name="paramId" class="checkone"
+						<td  width="5%" ><pg:rowid increament="1"/><input type="checkbox" name="paramId" class="checkone"
 							value="<pg:cell colName='paramId' />"
 							onClick="checkOne('.table-dictitemlist .checkall','.table-dictitemlist .checkone')" /></td>
 						<td><div class="form-group form-md-line-input">
@@ -67,3 +67,11 @@
 		</pg:equal>
 	</tbody>
 </table>
+<script type="text/javascript">
+	jQuery(document).ready(function() {
+		<pg:notequal actual="${actiontype }" value="view" >
+		SysDict.initDictItemOrderTable();
+		</pg:notequal>
+		
+	});
+</script>

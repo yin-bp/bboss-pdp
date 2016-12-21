@@ -16,8 +16,10 @@
 
 package com.frameworkset.platform.dict.service;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 
@@ -110,9 +112,9 @@ public class DictServiceImpl implements DictService {
 	 * @param dictItems
 	 */
 	public void maintaindata(Dict dict, List<DictItem> dictItems)throws DictException{
-		TransactionManager tm = new TransactionManager();
+		Map<String, Serializable> trace = null;
 		try {
-			tm.begin();
+			
 			
 			if(dictItems != null && dictItems.size() > 0)
 			{
@@ -120,19 +122,29 @@ public class DictServiceImpl implements DictService {
 				params.setParams(params( dict,dictItems, dict.getDictId()));
 				params.setDictId(dict.getDictId());
 				params.setDictCode(dict.getDictCode());
-				ParamsHandler.getParamsHandler(dict.getHandler()).saveParams(params) ;
+				trace =ParamsHandler.getParamsHandler(dict.getHandler()).saveParams(params) ;
+			}
+			else
+			{
+				Params params = new Params();				
+				
+				params.setDictId(dict.getDictId());
+				params.setDictCode(dict.getDictCode());
+				trace =ParamsHandler.getParamsHandler(dict.getHandler()).saveParams(params) ;
 			}
 		
-			tm.commit();
+			
 		} catch (Throwable e) {
 	
 			throw new DictException("update Dict failed::", e);
-		} finally {
-			tm.release();
 		} 
+		if(trace != null)
+			ParamsHandler.getParamsHandler(dict.getHandler()).sendEvent(trace);
+
 	}
 	public void updateDict(Dict dict,List<DictItem> dictItems) throws DictException {
 		TransactionManager tm = new TransactionManager();
+		Map<String, Serializable> trace = null;
 		try {
 			tm.begin();
 			executor.updateBean("updateDict", dict);
@@ -142,7 +154,14 @@ public class DictServiceImpl implements DictService {
 				params.setParams(params( dict,dictItems, dict.getDictId()));
 				params.setDictId(dict.getDictId());
 				params.setDictCode(dict.getDictCode());
-				ParamsHandler.getParamsHandler(dict.getHandler()).saveParams(params) ;
+				trace =ParamsHandler.getParamsHandler(dict.getHandler()).saveParams(params) ;
+			}
+			else
+			{
+				Params params = new Params();				
+				params.setDictId(dict.getDictId());
+				params.setDictCode(dict.getDictCode());
+				trace =ParamsHandler.getParamsHandler(dict.getHandler()).saveParams(params) ;
 			}
 		
 			tm.commit();
@@ -152,6 +171,8 @@ public class DictServiceImpl implements DictService {
 		} finally {
 			tm.release();
 		} 
+		if(trace != null)
+			ParamsHandler.getParamsHandler(dict.getHandler()).sendEvent(trace);
 
 	}
 	public Dict getDict(String dictId) throws DictException {
