@@ -10,24 +10,20 @@ package com.frameworkset.platform.admin.entity;
  * @Date:2016-12-14 11:23:48
  */
 public class MoveinUserCondition {
-	private String departId;
+	private String fromDepartId;
 	private String userAttr;
 	private String recursive;
 	private Integer userIsvalid;	
 	private Integer records;
 	private String orgtreelevel;
+	private String orgtreelevelLike;
 	/**
 	 * 
 	 */
 	public MoveinUserCondition() {
 		
 	}
-	public String getDepartId() {
-		return departId;
-	}
-	public void setDepartId(String departId) {
-		this.departId = departId;
-	}
+	
 	public String getUserAttr() {
 		return userAttr;
 	}
@@ -57,6 +53,22 @@ public class MoveinUserCondition {
 	}
 	public void setOrgtreelevel(String orgtreelevel) {
 		this.orgtreelevel = orgtreelevel;
+	}
+
+	public String getFromDepartId() {
+		return fromDepartId;
+	}
+
+	public void setFromDepartId(String fromDepartId) {
+		this.fromDepartId = fromDepartId;
+	}
+
+	public String getOrgtreelevelLike() {
+		return orgtreelevelLike;
+	}
+
+	public void setOrgtreelevelLike(String orgtreelevelLike) {
+		this.orgtreelevelLike = orgtreelevelLike;
 	}
 
 }

@@ -15,7 +15,7 @@
         <column name="REMARK5" size="100" type="VARCHAR"/>
         <column name="PARENT_ID" size="22" type="DECIMAL"/>
         <column name="GROUP_TREE_LEVEL" size="200" type="VARCHAR"/>
-        <column default="1" name="OWNER_ID" size="22" type="DECIMAL"/>
+        <column default="1" name="OWNER_ID" size="50" type="VARCHAR"/>
     </table>
     <table name="TD_SM_GROUPROLE">
         <column name="GROUP_ID" primaryKey="true" required="true"
@@ -38,7 +38,7 @@
         <column name="JOB_NUMBER" size="100" type="VARCHAR"/>
         <column name="JOB_CONDITION" size="200" type="VARCHAR"/>
         <column name="JOB_RANK" size="100" type="VARCHAR"/>
-        <column default="1" name="OWNER_ID" size="22" type="DECIMAL"/>
+        <column default="1" name="OWNER_ID" size="50" type="VARCHAR"/>
     </table>
     <table name="TD_SM_LOG">
         <column name="LOG_ID" primaryKey="true" required="true"
@@ -125,7 +125,7 @@
         <column default="0" name="ISFOREIGNPARTY" size="1" type="DECIMAL"/>
         <column default="0" name="ISJICHAPARTY" size="1" type="DECIMAL"/>
         <column default="0" name="ISDIRECTGUANHU" size="1" type="DECIMAL"/>
-        <column name="ORGLEADER" size="100" type="VARCHAR"/>
+        <column name="ORGLEADER" size="50" type="VARCHAR"/>
     </table>
     <table name="TD_SM_ORGJOB">
         <column name="ORG_ID" primaryKey="true" required="true"
@@ -188,7 +188,9 @@
         <column name="RES_ID" primaryKey="true" required="true"
             size="50" type="VARCHAR"/>
         <column name="RESTYPE_ID" size="50" type="VARCHAR"/>
-        <column name="TITLE" size="500" type="VARCHAR"/>
+        <column name="RESTYPE_Name" size="50" type="VARCHAR"/>
+        <column name="RES_NAME" size="500" type="VARCHAR"/>
+        <column name="RES_CODE" size="500" type="VARCHAR"/>
         <column name="ROLE_USAGE" size="1" type="VARCHAR"/>
         <column name="PARENT_ID" size="50" type="VARCHAR"/>
         <column name="PATH" size="1000" type="VARCHAR"/>
@@ -235,7 +237,7 @@
         <column name="REMARK1" size="100" type="VARCHAR"/>
         <column name="REMARK2" size="100" type="VARCHAR"/>
         <column name="REMARK3" size="100" type="VARCHAR"/>
-        <column default="1" name="OWNER_ID" size="22" type="DECIMAL"/>
+        <column default="1" name="OWNER_ID" size="50" type="VARCHAR"/>
     </table>
     <table name="TD_SM_ROLERESOP">
         <column name="OP_ID" primaryKey="true" required="true" size="50" type="VARCHAR"/>

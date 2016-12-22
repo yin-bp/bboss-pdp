@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+**
+ *  Copyright 2008-2010 biaoping.yin
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ *
+ * Title: resource.xml
+ * Description: 资源管理管理sql配置文件 
+ * Company:bboss
+ * Copyright (c) 2015
+ * @Date 2016-12-21 00:46:37
+ * @author yinbp
+ * @version v1.0 
+ **
+ -->
+<properties>
+	
+		<property name="addResource">
+		<![CDATA[
+			insert into td_sm_res (RES_ID,ATTR1,ATTR10,ATTR11,ATTR12,ATTR13,ATTR14,ATTR15,ATTR16,ATTR17,ATTR18,ATTR19,ATTR2,ATTR20,ATTR21,ATTR22,ATTR23,ATTR24,ATTR25,ATTR26,ATTR27,ATTR3,ATTR4,ATTR5,ATTR6,ATTR7,ATTR8,ATTR9,MARKER,PARENT_ID,PATH,RES_CODE,RES_NAME,RESERVED1,RESERVED3,RESERVED4,RESERVED5,RESTYPE_ID,RESTYPE_Name,ROLE_USAGE,TITLE) values(#[resId],#[attr1],#[attr10],#[attr11],#[attr12],#[attr13],#[attr14],#[attr15],#[attr16],#[attr17],#[attr18],#[attr19],#[attr2],#[attr20],#[attr21],#[attr22],#[attr23],#[attr24],#[attr25],#[attr26],#[attr27],#[attr3],#[attr4],#[attr5],#[attr6],#[attr7],#[attr8],#[attr9],#[marker],#[parentId],#[path],#[resCode],#[resName],#[reserved1],#[reserved3],#[reserved4],#[reserved5],#[restypeId],#[restypeName],#[roleUsage],#[title])
+		]]>
+	</property>
+		<property name="deleteByKey">
+		<![CDATA[
+			delete from td_sm_res where RES_ID=?
+		]]>
+	</property>
+		<property name="updateResource">
+		<![CDATA[
+			update td_sm_res set RES_ID=#[resId],ATTR1=#[attr1],ATTR10=#[attr10],ATTR11=#[attr11],ATTR12=#[attr12],ATTR13=#[attr13],ATTR14=#[attr14],ATTR15=#[attr15],ATTR16=#[attr16],ATTR17=#[attr17],ATTR18=#[attr18],ATTR19=#[attr19],ATTR2=#[attr2],ATTR20=#[attr20],ATTR21=#[attr21],ATTR22=#[attr22],ATTR23=#[attr23],ATTR24=#[attr24],ATTR25=#[attr25],ATTR26=#[attr26],ATTR27=#[attr27],ATTR3=#[attr3],ATTR4=#[attr4],ATTR5=#[attr5],ATTR6=#[attr6],ATTR7=#[attr7],ATTR8=#[attr8],ATTR9=#[attr9],MARKER=#[marker],PARENT_ID=#[parentId],PATH=#[path],RES_CODE=#[resCode],RES_NAME=#[resName],RESERVED1=#[reserved1],RESERVED3=#[reserved3],RESERVED4=#[reserved4],RESERVED5=#[reserved5],RESTYPE_ID=#[restypeId],RESTYPE_Name=#[restypeName],ROLE_USAGE=#[roleUsage],TITLE=#[title] where RES_ID=#[resId]
+		]]>
+	</property>
+		<property name="selectById">
+		<![CDATA[
+			select * from td_sm_res where RES_ID=?
+		]]>
+	</property>
+		<property name="queryListResource">
+		<![CDATA[
+			select * from td_sm_res where 1=1
+						#if($resCode && !$resCode.equals(""))
+				and RES_CODE like #[resCode]		
+			#end
+								#if($resName && !$resName.equals(""))
+				and RES_NAME like #[resName]		
+			#end
+			
+		]]>
+	</property>
+	</properties>

@@ -1,0 +1,32 @@
+<properties>
+
+	<!-- 
+		描述:初始化角色类型管理管理控制器RoleTypeController，并将所有关联的角色类型管理管理service注入到此控制器中。并以别名的形式定义好跳转页面。
+	    author:yinbp
+		CopyRight:bboss
+		版本:v1.0 
+	    Date: 2016-12-15 23:37:09
+	-->
+
+	<property name="/sysmanager/roletype/*.page"
+		path:index="/jsp/sysmanager/roletype/main.jsp"
+		path:queryListInfoRoleTypes="/jsp/sysmanager/roletype/roleTypeListInfo.jsp"
+		path:queryListRoleTypes="/jsp/sysmanager/roletype/roleTypeList.jsp"
+		path:updateRoleType="/jsp/sysmanager/roletype/roleTypeEdit.jsp"
+		path:addRoleType="/jsp/sysmanager/roletype/roleTypeAdd.jsp"
+		path:getRoleType="/jsp/sysmanager/roletype/roleTypeView.jsp"
+		f:roleTypeService="attr:roletype.roleTypeService"
+		class="com.frameworkset.platform.admin.action.RoleTypeController" >
+	</property>
+		<property name="roletype.roleTypeService"
+		f:executor="attr:roletype.configsqlexecutor"
+		class="com.frameworkset.platform.admin.service.RoleTypeServiceImpl"
+		/>
+	<property name="roletype.configsqlexecutor"		
+		class="com.frameworkset.common.poolman.ConfigSQLExecutor" >
+		<construction>
+			<property value="com/frameworkset/platform/admin/service/roleType.xml"/>
+		</construction>
+	</property>
+	
+</properties>

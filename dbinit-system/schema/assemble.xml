@@ -20,7 +20,7 @@
 	<properties>
 		<property name="schemafiles">
 				<list>
-					<property dbname="bspf"><![CDATA[schema/pdp.xml,schema/token.xml]]></property>
+					<property dbname="bspf"><![CDATA[schema/pdp.xml,schema/token.xml,schema/dict.xml]]></property>
 				 
 	  			</list>
 		</property>
@@ -34,7 +34,8 @@
 		
 		<property name="schemafiles_patch">
 				<list>
-				
+				<property dbname="bspf"><![CDATA[schema/dict.xml]]></property>
+				 
 	  			</list>
 		</property>
 		<property name="executefiles_patch">

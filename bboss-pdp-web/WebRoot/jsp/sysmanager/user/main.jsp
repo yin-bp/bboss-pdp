@@ -2,19 +2,12 @@
 	contentType="text/html; charset=utf-8"%>
 
 <%@ taglib uri="/WEB-INF/tld/admin-taglib.tld" prefix="admin"%>
+<%@ taglib uri="/WEB-INF/tld/dictionary.tld" prefix="dict"%>
 <!-- BEGIN PAGE LEVEL PLUGINS -->
 
 <link
 	href="${pageContext.request.contextPath}/assets/global/plugins/jstree/dist/themes/default/style.min.css"
 	rel="stylesheet" type="text/css" />
-
-<!-- END PAGE LEVEL PLUGINS -->
-
-	
- <link href="${pageContext.request.contextPath}/assets/global/plugins/datatables/datatables.min.css" rel="stylesheet" type="text/css" />
- <link href="${pageContext.request.contextPath}/assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css" rel="stylesheet" type="text/css" />
-       
-<!-- END PAGE LEVEL STYLES -->
 
 
 
@@ -24,13 +17,13 @@
 	<admin:menuposition />
 
 </div>
-<!-- END PAGE BAR -->
-<!-- BEGIN PAGE TITLE-->
-
-<!-- END PAGE TITLE-->
-<!-- END PAGE HEADER-->
-
-<div class="tabbable-line tabbable-full-width">	
+ <div class="row">
+	<div class="col-md-12" >&nbsp;<div class="alert alert-danger  display-hide">
+                    <button class="close" data-close="alert"></button>
+                    <span  class="msg"> 提示信息区 </span>
+                </div></div>
+ </div>
+ 
 			<div class="row">
 				<div class="col-md-3" >
 					<div class="portlet light bordered">
@@ -66,8 +59,7 @@
 			</div>
 		
 
-
-</div>
+ 
  
 
 <script
@@ -85,7 +77,7 @@
 		
 		SysUser.getUserList('0');
 		
-		PlatformCommonUtils.initSlimScroll('.scroller');
+		PlatformCommonUtils.initSlimScroll('.scroller',null,true);
 		
 	});
 </script>

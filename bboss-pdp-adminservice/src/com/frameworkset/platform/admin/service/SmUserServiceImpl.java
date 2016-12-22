@@ -302,9 +302,15 @@ public class SmUserServiceImpl implements SmUserService {
 			throw new SmUserException("pagine query SmUser failed:", e);
 		}
 	}
-	public List<SmUser> getMoveinUsers(MoveinUserCondition condition) throws SmUserException{
-		if(condition.getRecursive() == null || condition.getRecursive().equals("0")){
-			if(condition.getDepartId() == null || condition.getDepartId().equals(""))
+	/**
+	 * 查询需要调入的用户列表
+	 * (non-Javadoc)
+	 * @see com.frameworkset.platform.admin.service.SmUserService#getMoveinUsers(com.frameworkset.platform.admin.entity.MoveinUserCondition)
+	 */
+	public ListInfo getMoveinUsers(MoveinUserCondition condition,long offset,
+			int pagesize) throws SmUserException{
+		if(condition.getRecursive() == null || condition.getRecursive().equals("0") || condition.getRecursive().equals("1")){
+			if(condition.getFromDepartId() == null || condition.getFromDepartId().equals(""))
 				 throw new SmUserException("没有选择部门");
 		}
 			
@@ -313,22 +319,24 @@ public class SmUserServiceImpl implements SmUserService {
 			if(condition.getRecursive() != null)
 			{
 				if(condition.getRecursive().equals("1")){//含子机构查询
-					String orgtreelevel = smOrganizationService.getOrgTreeLevel(condition.getDepartId());
+					String orgtreelevel = smOrganizationService.getOrgTreeLevel(condition.getFromDepartId());
 					condition.setOrgtreelevel(orgtreelevel);
+					condition.setOrgtreelevelLike(orgtreelevel+"|%");
 				}
 					
 			}
-			List<SmUser> users = null;
-			if(condition.getRecords() == null || condition.getRecords() <= 0){
-				users = this.executor.queryListBean(SmUser.class, "getMoveinUsers", condition);
-			}
-			else
+//			List<SmUser> users = null;
+//			if(condition.getRecords() == null || condition.getRecords() <= 0){
+//				users = this.executor.queryListBean(SmUser.class, "getMoveinUsers", condition);
+//			}
+//			else
 			{
-				ListInfo _users = this.executor.moreListInfoBean(SmUser.class, "getMoveinUsers", 0, condition.getRecords(), condition);
-				users = _users.getDatas();
+				ListInfo _users = this.executor.queryListInfoBean(SmUser.class, "getMoveinUsers", offset, pagesize, condition);
+//				users = _users.getDatas();
+				return _users;
 			}
 				
-			return users;
+//			return users;
 		} 
 		catch(SmUserException e)
 		{
@@ -363,6 +371,11 @@ public class SmUserServiceImpl implements SmUserService {
 			}
 		}
 	}
+	/**
+	 * 保存调动用户记录
+	 * (non-Javadoc)
+	 * @see com.frameworkset.platform.admin.service.SmUserService#saveMoveusers(java.lang.String, java.lang.String, java.lang.String)
+	 */
 	public void saveMoveusers(String userIds_, String fromdepartId, String todepartId) throws SmUserException{
 		String[] userIds = userIds_.split(",");
 		if(userIds != null && userIds.length > 0)

@@ -11,8 +11,7 @@
 <!-- END PAGE LEVEL PLUGINS -->
 
 	
- <link href="${pageContext.request.contextPath}/assets/global/plugins/datatables/datatables.min.css" rel="stylesheet" type="text/css" />
- <link href="${pageContext.request.contextPath}/assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css" rel="stylesheet" type="text/css" />
+
        
 <!-- END PAGE LEVEL STYLES -->
 
@@ -24,13 +23,9 @@
 	<admin:menuposition />
 
 </div>
-<!-- END PAGE BAR -->
-<!-- BEGIN PAGE TITLE-->
-
-<!-- END PAGE TITLE-->
-<!-- END PAGE HEADER-->
-
-<div class="tabbable-line tabbable-full-width">	
+ <div class="row">
+	<div class="col-md-12" >&nbsp;</div>
+ </div>
 			<div class="row">
 				<div class="col-md-3" >
 					<div class="portlet light bordered">
@@ -67,7 +62,7 @@
 		
 
 
-</div>
+
  
 
 <script
@@ -83,7 +78,7 @@
 		Sysmanager.initorg_tree(false); //  initorg_tree core componets
 		
 		SysOrg.getOrgList('0');
-		PlatformCommonUtils.initSlimScroll('.scroller');
+		PlatformCommonUtils.initSlimScroll('.scroller',null,true);
 		
 	});
 </script>

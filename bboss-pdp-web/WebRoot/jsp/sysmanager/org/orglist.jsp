@@ -17,17 +17,17 @@
 
 			</a> -->
 			<a
-				class="btn btn-sm blue"  
+				class="btn btn-xs blue"  
 				data-toggle="modal" data-backdrop="static" id="button_sys_add_org"> 新增 <i class="fa fa-edit"></i>
 
 			</a>
-			 <a class="btn btn-sm red" id="button_sys_delete_org">
+			 <a class="btn btn-xs red" id="button_sys_delete_org">
 				<i class="fa fa-times"></i> 删除
 			</a>
-			<a href="javascript:;" class="btn btn-sm purple"> <i
+			<a href="javascript:;" class="btn btn-xs purple"> <i
 				class="fa fa-file-o"></i> 机构排序
 			</a>
-			<a href="javascript:;" onclick="javascript:SysOrg.buildTreeLevel();" class="btn btn-sm purple"> <i
+			<a href="javascript:;" onclick="javascript:SysOrg.buildTreeLevel();" class="btn btn-xs purple"> <i
 				class="fa fa-file-o"></i> 更新机构层级关系
 			</a>
 		</div>

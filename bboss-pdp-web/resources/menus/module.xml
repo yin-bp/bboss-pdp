@@ -104,6 +104,7 @@
 				
 		</module>
 		
+		
 		<module name="系统管理" id="sysmanager" used="true" showleftmenu="false"  i18n:en_US="System Manage">
 		
 			<description>系统管理</description>		
@@ -149,6 +150,19 @@
 				 	<url>/purviewmanager/jobmanager/*.jsp</url>
 				 	<url>/purviewmanager/groupmanager/*.jsp</url>
 				 	<url>/purviewmanager/resmanager/*.jsp</url>					 			 
+				</authoration>
+			</item>
+			<item name="资源管理" id="resquery"   i18n:en_US="Resource Query">
+					<mouseclickimg>html/images/jixiao.jpg</mouseclickimg>
+				<top>header.page</top>
+				<!-- <top>perspective_toolbar.jsp</top> -->
+				<!-- <left>perspective_outlookbar.jsp</left> -->
+				<navigator></navigator>
+				<workspace>
+					<content>sysmanager/resource/index.page</content>
+				</workspace>
+				<authoration>				 
+				 	<url>/sysmanager/resmanager/*.jsp</url>
 				</authoration>
 			</item>
 			<item name="用户组管理" id="groupmanager"  i18n:en_US="groupmanager Manage" >
@@ -199,19 +213,7 @@
 				</authoration>
 				
 			</item>
-			<item name="资源查询" id="resquery"   i18n:en_US="Resource Query">
-					<mouseclickimg>html/images/jixiao.jpg</mouseclickimg>
-				<top>header.page</top>
-				<!-- <top>perspective_toolbar.jsp</top> -->
-				<!-- <left>perspective_outlookbar.jsp</left> -->
-				<navigator></navigator>
-				<workspace>
-					<content>sysmanager/resmanager/resquery_tab.jsp</content>
-				</workspace>
-				<authoration>				 
-				 	<url>/sysmanager/resmanager/*.jsp</url>
-				</authoration>
-			</item>
+			
 
 			<item name="日志查询" id="logquery"   i18n:en_US="Log Query">
 					<mouseclickimg>html/images/jixiao.jpg</mouseclickimg>
@@ -255,14 +257,18 @@
 				
 			</item>
 		</module>
+		<module name="字典管理" id="dictmanager" used="true" showleftmenu="false" url="/dictmanager/index.page"  i18n:en_US="System Manage">
 		
+			<description>字典管理</description>		
+			
+		</module>	
 
 		<item name="个人信息修改" id="personuserinfomodify" i18n:en_US="User Infomation Modification">
 				<mouseclickimg>html/images/jixiao.jpg</mouseclickimg>
 			<top>perspective_toolbar.jsp</top>
 			<left>perspective_outlookbar.jsp</left>
 			<workspace>
-				<content>person/personinfo.jsp</content>
+				<content>/jsp/sysmanager/personal/main.jsp</content>
 			</workspace>
 			<authoration>				 
 				 	<url>/person/*.jsp,/sysmanager/resmanager/res_query.jsp,/sysmanager/user/userres_querylist.jsp</url>	 	

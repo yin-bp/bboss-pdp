@@ -5,7 +5,7 @@
          xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
          version="2.4">
 
-    <display-name>SanyPDP Web Application</display-name>
+    <display-name>BBoss Web Application</display-name>
 	<listener>
 	<description><![CDATA[应用销毁监听器：
 		在应用销毁之前调用系统shutdown 回调函数，前提是所有的shutdown回调函数
@@ -32,24 +32,12 @@
 	 
     <filter>
 	    <filter-name>CharsetEncoding</filter-name>
-	    <filter-class>com.frameworkset.common.filter.SessionCharsetEncodingFilter</filter-class>
+	    <filter-class>com.frameworkset.common.filter.TicketSessionCharsetEncodingFilter</filter-class>
 	    <init-param>
 	      <param-name>RequestEncoding</param-name>
 	      <param-value>UTF-8</param-value>
 	    </init-param>
-	    <init-param>
-	      <param-name>ResponseEncoding</param-name>
-	      <param-value>UTF-8</param-value>
-	    </init-param>
-	    <init-param>
-	      <param-name>mode</param-name>
-	      <param-value>0</param-value>
-	    </init-param>  
-	    <init-param>
-	      <param-name>checkiemodeldialog</param-name>
-	      <param-value>false</param-value>
-	      
-	    </init-param>
+
 	    <init-param>
 	      <param-name>refererDefender</param-name>
 	      <param-value>false</param-value>

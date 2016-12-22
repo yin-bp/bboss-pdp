@@ -17,21 +17,21 @@
 
 			</a> -->
 			<a
-				class="btn btn-sm blue"  
+				class="btn btn-xs blue"  
 				data-toggle="modal" data-backdrop="static" id="button_sys_add_user"> 新增 <i class="fa fa-edit"></i>
 
 			</a>
-			 <a class="btn btn-sm red" id="button_sys_delete_user">
+			 <a class="btn btn-xs red" id="button_sys_delete_user">
 				<i class="fa fa-times"></i> 删除
-			</a> <a href="javascript:;" class="btn btn-sm green"> 批量授权 <i
+			</a> <a href="javascript:;" class="btn btn-xs green"> 批量授权 <i
 				class="fa fa-font"></i>
-			</a> <a href="javascript:;" class="btn btn-sm yellow"> 批量角色设置 <i
+			</a> <a href="javascript:;" class="btn btn-xs yellow"> 批量角色设置 <i
 				class="fa fa-search"></i>
-			</a> <a href="javascript:;" class="btn btn-sm purple" id="button_sys_order_user"> <i
+			</a> <a href="javascript:;" class="btn btn-xs purple" id="button_sys_order_user"> <i
 				class="fa fa-file-o"></i> 用户排序
-			</a> <a href="javascript:;" class="btn btn-sm green" id="button_sys_moveout_user"> 用户调出 <i
+			</a> <a href="javascript:;" class="btn btn-xs green" id="button_sys_moveout_user"> 用户调出 <i
 				class="fa fa-plus"></i>
-			</a> <a href="javascript:;" class="btn btn-sm grey-cascade" id="button_sys_movein_user"> 用户调入 <i
+			</a> <a href="javascript:;" class="btn btn-xs grey-cascade" id="button_sys_movein_user"> 用户调入 <i
 				class="fa fa-link"></i>
 			</a>
 		</div>
@@ -76,14 +76,11 @@
                           <td>
                             <input type="text" class="form-control form-filter input-xs" name="userMobiletel1"> </td>
                          <td>
-                             <select name="userSex" class="form-control form-filter input-xs">
-                                <option value="">全部</option>
-                                <option value="M">男</option>
-                                <option value="F">女</option>
-                                <option value="-1">未知</option>
-                            </select> </td>
+                         		<dict:select  type="sex" name="userSex" textValue="全部" textNAN="-1" extend="class=\"form-control form-filter input-xs\"" />
+                            
+                            </td>
                           <td>
-                            <select name="userType" class="form-control form-filter input-xs">
+                          	<select name="userType" class="form-control form-filter input-xs">
                                 <option value="">全部</option>
                                 <option value="0">系统用户</option>
                                 <option value="1">域用户</option>
@@ -127,10 +124,12 @@
 </div>
 <script
 	src="${pageContext.request.contextPath}/assets/sysmanager/sysuser.js" type="text/javascript"></script>
+<script
+	src="${pageContext.request.contextPath}/assets/sysmanager/moveuser.js" type="text/javascript"></script>
 	
 <script type="text/javascript">
 	jQuery(document).ready(function() {
 		SysUser.init('${pageContext.request.contextPath}');
-		
+		SysMoveUsers.init('${pageContext.request.contextPath}');
 	});
 </script>

@@ -1,0 +1,33 @@
+<properties>
+
+	<!-- 
+		描述:初始化字典管理管理控制器DictController，并将所有关联的字典管理管理service注入到此控制器中。并以别名的形式定义好跳转页面。
+	    author:yinbp
+		CopyRight:bboss
+		版本:v1.0 
+	    Date: 2016-12-18 11:29:08
+	-->
+
+	<property name="/dictmanager/*.page"
+		path:index="/jsp/dictmanager/main.jsp"
+		path:queryListInfoDicts="/jsp/dictmanager/dictListInfo.jsp"
+		path:updateDict="/jsp/dictmanager/dictedit.jsp"
+		path:addDict="/jsp/dictmanager/dictadd.jsp"
+		path:getDict="/jsp/dictmanager/dictview.jsp"
+		path:dictitemlist="/jsp/dictmanager/dictitemlist.jsp"
+		path:maintaindata="/jsp/dictmanager/maintaindata.jsp"
+		f:dictService="attr:dict.dictService"
+		class="com.frameworkset.platform.dict.action.DictController" >
+	</property>
+		<property name="dict.dictService"
+		f:executor="attr:dict.configsqlexecutor"
+		class="com.frameworkset.platform.dict.service.DictServiceImpl"
+		/>
+	<property name="dict.configsqlexecutor"		
+		class="com.frameworkset.common.poolman.ConfigSQLExecutor" >
+		<construction>
+			<property value="com/frameworkset/platform/dict/service/dict.xml"/>
+		</construction>
+	</property>
+	
+</properties>

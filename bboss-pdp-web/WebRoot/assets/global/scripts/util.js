@@ -1,5 +1,49 @@
 var PlatformCommonUtils = function(){
-	
+	var validateform = function(options){
+		var form2 = $(options.form,ModelDialog.getCurrentModal());		
+		form2.validate({
+					focusInvalid : false, // do not focus the last invalid
+											// input
+					ignore : "", // validate all fields including form hidden
+									// input
+					errorElement: 'span', //default input error message container
+		            errorClass: 'help-block help-block-error', // default input error message class
+					messages : options.messages,
+					rules : options.rules,
+
+					errorPlacement: function(error, element) {
+		                if (element.is(':checkbox')) {
+		                    error.insertAfter(element.closest(".md-checkbox-list, .md-checkbox-inline, .checkbox-list, .checkbox-inline"));
+		                } else if (element.is(':radio')) {
+		                    error.insertAfter(element.closest(".md-radio-list, .md-radio-inline, .radio-list,.radio-inline"));
+		                } else {
+		                    error.insertAfter(element); // for other inputs, just perform default behavior
+		                }
+		            },
+
+		            highlight: function(element) { // hightlight error inputs
+		                $(element)
+		                    .closest('.form-group').addClass('has-error'); // set error class to the control group
+		            },
+
+		            unhighlight: function(element) { // revert the change done by hightlight
+		                $(element)
+		                    .closest('.form-group').removeClass('has-error'); // set error class to the control group
+		            },
+
+		            success: function(label) {
+		                label
+		                    .closest('.form-group').removeClass('has-error'); // set success class to the control group
+		            },
+					
+
+					submitHandler : function(form) {
+						options.submitHandler();
+						
+						
+					}
+				});
+	}
 	//初始化日期控件
 	var initPickers = function() {
         //init date pickers
@@ -66,16 +110,44 @@ var PlatformCommonUtils = function(){
 			);
 	}
 	
-	var initSlimScroll = function(el,container) {
+	var popconfirmation = function(options){
+		//'button[data-toggle=role_ops_confirmation]'
+		$(options.selector).confirmation({
+    		  rootSelector: options.selector,
+    		  singleton:true,
+    		 
+    		  template:'<div class="popover confirmation">' +
+    	      '<div class="arrow"></div>' +
+    	      
+    	      '<div class="popover-content">' +
+    	        '<p class="confirmation-content"></p>' +
+    	        '<div class="confirmation-buttons">' +
+    	          '<div class="btn-group">' +
+    	            '<a href="#" class="btn" data-apply="confirmation"></a>' +
+    	            '<a href="#" class="btn" data-dismiss="confirmation"></a>' +
+    	          '</div>' +
+    	        '</div>' +
+    	      '</div>' +
+    	    '</div>',
+			      buttons:options.buttons
+    		});
+	}
+	
+	var initSlimScroll = function(el,container,overflow_x) {
         if (!$().slimScroll) {
             return;
         }
-        var _el = el;
+        var _el = null;
         if(container){
         	_el = $(el,container);
         }
-        
-        $(_el).each(function() {
+        else
+    	{
+        	_el = $(el);
+    	}
+        if(overflow_x == undefined)
+        	overflow_x = false;
+        _el.each(function() {
             if ($(this).attr("data-initialized")) {
                 return; // exit
             }
@@ -99,7 +171,8 @@ var PlatformCommonUtils = function(){
                 alwaysVisible: ($(this).attr("data-always-visible") == "1" ? true : false),
                 railVisible: ($(this).attr("data-rail-visible") == "1" ? true : false),
                 disableFadeOut: true,
-                distance :'1px'
+                distance :'1px',
+                "overflow_x":overflow_x
             });
 
             $(this).attr("data-initialized", "1");
@@ -121,8 +194,14 @@ var PlatformCommonUtils = function(){
 		initPickers:function(){
 			initPickers();
 		},
-		initSlimScroll:function(el,container){
-			initSlimScroll(el,container);
+		initSlimScroll:function(el,container,overflow_x){
+			initSlimScroll(el,container,overflow_x);
+		},
+		popconfirmation:function(options){
+			popconfirmation(options);
+		},
+		validateform:function(options){
+			validateform (options);
 		}
 	}
 }();
