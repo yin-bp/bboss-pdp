@@ -18,6 +18,7 @@ dependencies {
             [group: 'log4j', name: 'log4j', version: '1.2.16', transitive: false],
             [group: 'com.bbossgroups', name: 'bboss-util', version: "${bboss_version}", transitive: false],
             [group: 'com.bbossgroups', name: 'bboss-core', version: "${bboss_version}", transitive: false],
+             [group: 'com.bbossgroups', name: 'bboss-soa', version: "${bboss_version}", transitive: false],
             [group: 'com.bbossgroups', name: 'bboss-taglib', version: "${bboss_version}", transitive: false],
             [group: 'com.bbossgroups', name: 'bboss-data', version: "${bboss_version}", transitive: true],
            [group: 'com.bbossgroups', name: 'bboss-mvc', version: "${bboss_version}", transitive: false],

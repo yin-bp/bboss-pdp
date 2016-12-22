@@ -268,7 +268,7 @@
 			<top>perspective_toolbar.jsp</top>
 			<left>perspective_outlookbar.jsp</left>
 			<workspace>
-				<content>person/personinfo.jsp</content>
+				<content>/jsp/sysmanager/personal/main.jsp</content>
 			</workspace>
 			<authoration>				 
 				 	<url>/person/*.jsp,/sysmanager/resmanager/res_query.jsp,/sysmanager/user/userres_querylist.jsp</url>	 	

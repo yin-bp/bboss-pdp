@@ -23,13 +23,9 @@
 	<admin:menuposition />
 
 </div>
-<!-- END PAGE BAR -->
-<!-- BEGIN PAGE TITLE-->
-
-<!-- END PAGE TITLE-->
-<!-- END PAGE HEADER-->
-
-<div class="tabbable-line tabbable-full-width">	
+ <div class="row">
+	<div class="col-md-12" >&nbsp;</div>
+ </div>
 			<div class="row">
 				<div class="col-md-3" >
 					<div class="portlet light bordered">
@@ -66,7 +62,7 @@
 		
 
 
-</div>
+
  
 
 <script

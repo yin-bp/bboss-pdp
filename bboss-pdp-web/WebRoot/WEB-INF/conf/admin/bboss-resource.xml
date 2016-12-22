@@ -1,0 +1,32 @@
+<properties>
+
+	<!-- 
+		描述:初始化资源管理管理控制器ResourceController，并将所有关联的资源管理管理service注入到此控制器中。并以别名的形式定义好跳转页面。
+	    author:yinbp
+		CopyRight:bboss
+		版本:v1.0 
+	    Date: 2016-12-21 00:46:37
+	-->
+
+	<property name="/sysmanager/resource/*.page"
+		path:index="/jsp/sysmanager/resource/main.jsp"
+		path:queryListInfoResources="/jsp/sysmanager/resource/resourceListInfo.jsp"
+		path:queryListResources="/jsp/sysmanager/resource/resourceList.jsp"
+		path:updateResource="/jsp/sysmanager/resource/resourceEdit.jsp"
+		path:addResource="/jsp/sysmanager/resource/resourceAdd.jsp"
+		path:getResource="/jsp/sysmanager/resource/resourceView.jsp"
+		f:resourceService="attr:resource.resourceService"
+		class="com.frameworkset.platform.admin.action.ResourceController" >
+	</property>
+	<property name="resource.resourceService"
+		f:executor="attr:resource.configsqlexecutor"
+		class="com.frameworkset.platform.admin.service.ResourceServiceImpl"
+		/>
+	<property name="resource.configsqlexecutor"		
+		class="com.frameworkset.common.poolman.ConfigSQLExecutor" >
+		<construction>
+			<property value="com/frameworkset/platform/admin/service/resource.xml"/>
+		</construction>
+	</property>
+	
+</properties>

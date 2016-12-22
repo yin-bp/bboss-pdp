@@ -17,13 +17,13 @@
 	<admin:menuposition />
 
 </div>
-<!-- END PAGE BAR -->
-<!-- BEGIN PAGE TITLE-->
-
-<!-- END PAGE TITLE-->
-<!-- END PAGE HEADER-->
-
-<div class="tabbable-line tabbable-full-width">	
+ <div class="row">
+	<div class="col-md-12" >&nbsp;<div class="alert alert-danger  display-hide">
+                    <button class="close" data-close="alert"></button>
+                    <span  class="msg"> 提示信息区 </span>
+                </div></div>
+ </div>
+ 
 			<div class="row">
 				<div class="col-md-3" >
 					<div class="portlet light bordered">
@@ -59,8 +59,7 @@
 			</div>
 		
 
-
-</div>
+ 
  
 
 <script
