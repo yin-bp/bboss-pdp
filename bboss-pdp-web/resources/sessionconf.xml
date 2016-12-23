@@ -8,8 +8,8 @@
 		init-method="init" destroy-method="destroy">		
 			<property name="sessionTimeout" value="600000"/>
 			<property name="sessionstore" refid="attr:sessionstore"/>
-			<!-- <property name="sessionstore" value="session"/> -->
-			<property name="cookiename" value="pdp_sessionid"/>			
+			<property name="sessionstore" value="session"/>
+			<!-- <property name="cookiename" value="pdp_sessionid"/> -->			
 			<property name="httpOnly" value="true"/>
 			<property name="secure" value="false"/>
 			<property name="lazystore" value="true"/>

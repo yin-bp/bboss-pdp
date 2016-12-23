@@ -288,7 +288,7 @@ var SysUser = function(){
             	 "dom": "<'row'<'col-md-4 col-sm-12'<'table-group-actions pull-right'>>r><'table-responsive't><'row'<'col-md-8 col-sm-12'lip><'col-md-4 col-sm-12'>>", // datatable layout
             	 // setup rowreorder extension: http://datatables.net/extensions/fixedheader/
                  fixedHeader: {
-                     header: true,
+                     header: false,
                      headerOffset: fixedHeaderOffset
                  },
                  "drawCallback": function( settings ) {

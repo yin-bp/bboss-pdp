@@ -47,6 +47,10 @@ public class ResourceController {
 	private static Logger log = Logger.getLogger(ResourceController.class);
 
 	private ResourceService resourceService;
+	public String loadResourceMaintain(String resourceType){
+		
+		return "path:loadResourceMaintain";
+	}
 	public @ResponseBody String addResource(Resource resource) {
 		// 控制器
 		try {
@@ -181,6 +185,8 @@ public class ResourceController {
              }
          }
 		model.addAttribute("resourceTypes", resourceTypes);
+		if(resourceTypes.size() > 0)
+			model.addAttribute("resourceType", resourceTypes.get(0).getId());
 		return "path:index";
 
 	}

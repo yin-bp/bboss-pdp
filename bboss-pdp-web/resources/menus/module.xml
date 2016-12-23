@@ -108,7 +108,7 @@
 		<module name="系统管理" id="sysmanager" used="true" showleftmenu="false"  i18n:en_US="System Manage">
 		
 			<description>系统管理</description>		
-			<item name="用户管理" id="usermanager"  i18n:en_US="usermanager Manage" >
+			<item name="用户管理" id="usermanager"  i18n:en_US="usermanager Manage" fullpageload="false">
 				
 				<workspace>
 					<content>/sysmanager/user/index.page</content>
