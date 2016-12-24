@@ -75,16 +75,17 @@
 	<property name="getDepartUsers">
 		<![CDATA[
 			select u.*,o.org_name as departName from td_sm_user u left join td_sm_organization o on u.depart_id = o.org_id where 1=1 
-			#if(!$departId.equals("lisan"))
-				#if( !$recursive  || $recursive.equals("0") || $recursive.equals("") )
-					and depart_id=#[departId]
-				#elseif($recursive.equals("1"))
-					and (o.ORG_TREE_LEVEL like #[orgtreelevelLike] or o.ORG_TREE_LEVEL=#[orgtreelevel])
-				#end
-			#else
-				and (depart_id is null or depart_id ='')
-			#end	
-			
+			#if( !($recursive  && $recursive.equals("3")) )			
+				#if(!$departId.equals("lisan"))
+					#if( !$recursive  || $recursive.equals("0") || $recursive.equals("") )
+						and depart_id=#[departId]
+					#elseif($recursive.equals("1"))
+						and (o.ORG_TREE_LEVEL like #[orgtreelevelLike] or o.ORG_TREE_LEVEL=#[orgtreelevel])
+					#end
+				#else
+					and (depart_id is null or depart_id ='')
+				#end	
+			#end
 			#if($userIdcard && !$userIdcard.equals(""))
 				and USER_IDCARD =#[userIdcard]		
 			#end
