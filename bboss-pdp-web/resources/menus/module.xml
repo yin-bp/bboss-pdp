@@ -293,7 +293,7 @@
 			<top>perspective_toolbar.jsp</top>
 			<left>perspective_outlookbar.jsp</left>
 			<workspace>
-				<content>sysmanager/password/modifySelfPassword.jsp</content>
+				<content>/sysmanager/user/tomodifyPassword.page?frompersonal=true</content>
 			</workspace>
 			<authoration>				 
 				 	<url>/sysmanager/password/saveModifySelfPWD.jsp</url>

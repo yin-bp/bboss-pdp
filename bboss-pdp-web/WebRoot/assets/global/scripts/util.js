@@ -1,6 +1,10 @@
 var PlatformCommonUtils = function(){
+	var validataformset = {
+			inmodal:true
+	}
 	var validateform = function(options){
-		var form2 = $(options.form,ModelDialog.getCurrentModal());		
+		var $setting = $.extend(true,validataformset,options);
+		var form2 = $setting.inmodal? $($setting.form,ModelDialog.getCurrentModal()):$($setting.form);		
 		form2.validate({
 					focusInvalid : false, // do not focus the last invalid
 											// input
@@ -8,8 +12,8 @@ var PlatformCommonUtils = function(){
 									// input
 					errorElement: 'span', //default input error message container
 		            errorClass: 'help-block help-block-error', // default input error message class
-					messages : options.messages,
-					rules : options.rules,
+					messages : $setting.messages,
+					rules : $setting.rules,
 
 					errorPlacement: function(error, element) {
 		                if (element.is(':checkbox')) {
@@ -38,7 +42,7 @@ var PlatformCommonUtils = function(){
 					
 
 					submitHandler : function(form) {
-						options.submitHandler();
+						$setting.submitHandler();
 						
 						
 					}

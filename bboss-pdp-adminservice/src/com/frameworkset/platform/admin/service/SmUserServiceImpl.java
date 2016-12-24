@@ -260,12 +260,15 @@ public class SmUserServiceImpl implements SmUserService {
 			if(!newPassword.equals(newPasswordSecond)){
 				return "两次输入口令不一致!";
 			}
-				
-			String encrptoldPassword = EncrpyPwd.encodePassword(oldPassword);
-			int exist = executor.queryObject(int.class, "oldPasswordright", userId,encrptoldPassword);
-			if(exist ==0){
-				return "旧口令不正确!";
+			if(oldPassword != null && !oldPassword.equals(""))	{
+				String encrptoldPassword = EncrpyPwd.encodePassword(oldPassword);
+				int exist = executor.queryObject(int.class, "oldPasswordright", userId,encrptoldPassword);
+				if(exist ==0){
+					return "旧口令不正确!";
+				}
 			}
+				
+			
 				
 			String encrptnewPassword = EncrpyPwd.encodePassword(newPassword);
 			executor.update("resetpassword", encrptnewPassword,userId);

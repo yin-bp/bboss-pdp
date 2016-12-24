@@ -281,10 +281,13 @@ public class SmUserController {
 		}
 		
 	}
-	public String tomodifyPassword(String userId, ModelMap model){
+	public String tomodifyPassword(String userId,boolean frompersonal, ModelMap model){
 		try {
+			if(frompersonal)
+				userId = AccessControl.getAccessControl().getUserID();
 			SmUser smUser = smUserService.getSmUser(userId);
 			model.addAttribute("smUser", smUser);
+			model.addAttribute("frompersonal", frompersonal);
 			return "path:modifypassword";
 		} catch (SmUserException e) {
 			throw e;
