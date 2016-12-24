@@ -59,4 +59,10 @@
 			
 		]]>
 	</property>
+	<property name="queryListResourceByType">
+		<![CDATA[
+			select * from td_sm_res where  RESTYPE_ID =?		
+		
+		]]>
+	</property>
 	</properties>

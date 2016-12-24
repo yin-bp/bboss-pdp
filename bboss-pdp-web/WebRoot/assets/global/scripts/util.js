@@ -179,6 +179,11 @@ var PlatformCommonUtils = function(){
         });
         
     }
+	var showError = function(id,message){
+		$('.msg',id).text(message);
+		$(id).show();
+	}
+	
 	return {
 		warn:function(msg,warnfun){
 			warn(msg,warnfun);
@@ -202,9 +207,13 @@ var PlatformCommonUtils = function(){
 		},
 		validateform:function(options){
 			validateform (options);
+		},
+		showError :function(id,message){
+			showError(id,message);
 		}
 	}
 }();
+var PDP = PlatformCommonUtils;
 var ModelDialog_Modal = function(options){
 	var $setting = $.extend(true,{
 						 width :"900px",

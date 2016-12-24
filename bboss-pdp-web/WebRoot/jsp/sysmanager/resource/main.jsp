@@ -18,8 +18,8 @@
 <!-- END PAGE TITLE-->
 <!-- END PAGE HEADER-->
 <div class="row">
-	<div class="col-md-12">
-		<div class="alert alert-danger  display-hide">
+	<div class="col-md-12">&nbsp;		 
+		<div class="alert alert-danger display-hide  alert-resourcemanager">
 			<button class="close" data-close="alert"></button>
 			<span class="msg"> 提示信息区 </span>
 		</div>
@@ -29,16 +29,16 @@
 	<div class="tabbable-line tabbable-full-width">
 		<ul class="nav nav-tabs">
 
-			<li class="active"><a href="#tab_1_3" data-toggle="tab">
+			<li class="active"><a href="#tab_resource" data-toggle="tab">
 					资源管理 </a></li>
-			<li><a href="#tab_1_6" data-toggle="tab"> 授权查询 </a></li>
+			<li><a href="#tab_permissionquery" data-toggle="tab"> 授权查询 </a></li>
 		</ul>
 		<div class="tab-content">
 			<!--tab_1_2-->
-			<div class="tab-pane  active" id="tab_1_3">
+			<div class="tab-pane  active" id="tab_resource">
 				<div class="row profile-account">
 					<div class="col-md-2">
-						<ul class="ver-inline-menu tabbable margin-bottom-10">
+						<ul class="ver-inline-menu tabbable margin-bottom-10 resourcetypelist">
 						<pg:list actual="${resourceTypes }">
 							<li <pg:equal expression="{rowid }" value="0">class="active"</pg:equal>>
 								<a data-toggle="tab" href="#resource_tab_1_1" resourceType="<pg:cell colName="id"/>">
@@ -62,7 +62,7 @@
 				</div>
 			</div>
 			<!--end tab-pane-->
-			<div class="tab-pane" id="tab_1_6">
+			<div class="tab-pane" id="tab_permissionquery">
 				<div class="row">
 					<div class="col-md-2">
 						<ul class="ver-inline-menu tabbable margin-bottom-10">
@@ -120,7 +120,8 @@
 		SysResource.init('${pageContext.request.contextPath}');
 		<pg:notnull actual="${resourceType}">
 			SysResource.loadResourceMaintain('${resourceType}');
-		</pg:notnull>	
+		</pg:notnull>
+		
 	});
 </script>
 

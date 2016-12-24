@@ -20,6 +20,8 @@ import com.frameworkset.platform.admin.entity.*;
 import com.frameworkset.util.ListInfo;
 import com.frameworkset.common.poolman.ConfigSQLExecutor;
 import org.apache.log4j.Logger;
+
+import java.sql.SQLException;
 import java.util.List;
 import com.frameworkset.orm.transaction.TransactionManager;
 
@@ -41,6 +43,13 @@ public class ResourceServiceImpl implements ResourceService {
 			throw new ResourceException("add Resource failed:", e);
 		}
 
+	}
+	public List<Resource> queryListResources(String resourceType) throws ResourceException{
+		try {
+			return executor.queryList(Resource.class, "queryListResourceByType", resourceType);
+		} catch (SQLException e) {
+			throw new ResourceException(e);
+		}
 	}
 	public void deleteResource(String resId) throws ResourceException {
 		try {
