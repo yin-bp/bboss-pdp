@@ -347,7 +347,9 @@
             size="50" type="VARCHAR"/>
         <column name="ROLE_ID" primaryKey="true" required="true"
             size="50" type="VARCHAR"/>
-        <column default="1" name="RESOP_ORIGIN_USERID" size="50" type="VARCHAR"/>
+        <column default="1" name="RESOP_ORIGIN_USERID" size="50" type="VARCHAR"/> 
+        <column name="START_DATE" type="DATE"/>
+        <column name="END_DATE" type="DATE"/>        
         <foreign-key foreignTable="TD_SM_ROLE">
             <reference foreign="ROLE_ID" local="ROLE_ID"/>
         </foreign-key>

@@ -140,7 +140,10 @@ public class RoleController {
 			}
 			List<Role> roles = roleService.queryListRoles(conditions);
 			model.addAttribute("roles", roles);
-			return "path:queryListRoles";
+			if(!conditions.isFromAuthmain())
+				return "path:queryListRoles";
+			else
+				return "path:authmainRoles";
 		} catch (RoleException e) {
 			throw e;
 		} catch (Exception e) {
@@ -148,6 +151,8 @@ public class RoleController {
 		}
 
 	}
+	
+	
 	public String toUpdateRole(String roleId, ModelMap model) throws RoleException {
 		try {
 			Role role = roleService.getRole(roleId);

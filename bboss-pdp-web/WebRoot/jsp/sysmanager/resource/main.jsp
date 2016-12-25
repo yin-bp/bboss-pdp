@@ -114,7 +114,7 @@
 <script
 	src="${pageContext.request.contextPath}/assets/sysmanager/sysresource.js"
 	type="text/javascript"></script>
-
+<script src="${pageContext.request.contextPath}/assets/global/plugins/layer/layer.js"></script>
 <script type="text/javascript">
 	jQuery(document).ready(function() {
 		SysResource.init('${pageContext.request.contextPath}');
@@ -123,6 +123,7 @@
 		</pg:notnull>
 		
 	});
+	
 </script>
 
 <!-- END CONTENT BODY -->

@@ -55,9 +55,11 @@ var SysUser = function(){
 		                     onClick: function() {
 		                    	 var userId = $(this).attr("userId");
 		                    	 var defaultAdmin = $(this).attr("defaultAdmin");
-		                    	 if(!defaultAdmin)
+		                    	 var userName = $(this).attr("userName");
+		                    	 var userAccount = $(this).attr("userAccount");
+		                    	 if(defaultAdmin == 'false')
 		                    	 {
-		                    		 SysUser.toauthUser(userId)
+		                    		 toauthUser(userId,userName,userAccount)
 		                    	 }
 		                    	 else
 	                    		 {
@@ -74,6 +76,19 @@ var SysUser = function(){
 			                   }
 		                 ];
 		return content_;
+	}
+	var toauthUser = function(userId,userName,userAccount){
+		$currentmodal = ModelDialog.dialog({
+			title:"用户授权-<span class=\"label label-sm label-success\">"+userName+"("+userAccount+")</span>",
+			showfooter:false,
+			url:usercontextpath+"/sysmanager/user/authmain.page",
+			params:{
+				"userId":userId
+		      },
+			width:"1000px",
+			height:"600px"
+
+	 });
 	}
 	var tomodifyPassword = function(userId,userName,userAccount){
 		 $currentmodal = ModelDialog.dialog({
@@ -437,6 +452,7 @@ var SysUser = function(){
 		                        }
                             },
                             { "data": "userId","render": function ( data, type, full, meta ) {
+                            	 
 	                        	 var ops = "<button userName=\""+full.userRealname+"\" userAccount=\""+full.userName+"\" defaultAdmin=\""+full.defaultAdmin+"\" userId=\""+data+"\" class=\"btn btn-outline btn-xs green-sharp  uppercase\" data-toggle=\"user_ops_confirmation\"  data-singleton=\"true\" data-placement=\"left\">操作</button>";
 	                             return ops;
 	                           	} 

@@ -30,6 +30,8 @@ import org.frameworkset.web.servlet.ModelMap;
 import com.frameworkset.platform.admin.entity.MoveinUserCondition;
 import com.frameworkset.platform.admin.entity.SmUser;
 import com.frameworkset.platform.admin.entity.SmUserCondition;
+import com.frameworkset.platform.admin.entity.UserRole;
+import com.frameworkset.platform.admin.service.RoleService;
 import com.frameworkset.platform.admin.service.SmUserException;
 import com.frameworkset.platform.admin.service.SmUserService;
 import com.frameworkset.util.ListInfo;
@@ -45,6 +47,16 @@ public class SmUserController {
 	private static Logger log = Logger.getLogger(SmUserController.class);
 
 	private SmUserService smUserService;
+	private RoleService roleService;
+	public String authmain(String userId,ModelMap model){
+		if(StringUtil.isEmpty(userId) ){
+			model.addAttribute("errorMessage", "请选择需要设置角色的用户!");
+		}
+		List<UserRole> userroles = roleService.getUserRoles(userId);
+		model.addAttribute("userroles", userroles);
+		return "path:authmain";
+	}
+	
 	public @ResponseBody String saveMoveusers(String userIds,String fromDepartId,String toDepartId){
 		if(StringUtil.isEmpty(fromDepartId) || StringUtil.isEmpty(toDepartId) || StringUtil.isEmpty(userIds)){
 			return "请确保调出用户、调出部门、被调出部门都已经选中!";

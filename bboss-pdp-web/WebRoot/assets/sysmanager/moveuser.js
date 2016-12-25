@@ -6,7 +6,7 @@ var SysMoveUsers = function(){
 	var loadMoveUsers = function(departId){
 		$(".reset",ModelDialog.getCurrentModal()).trigger("click");
 		$(".select_users_movein",ModelDialog.getCurrentModal()).load(usercontextpath+'/sysmanager/user/moveinuserlist.page',
-				{'fromDepartId':departId,'recursive':'0','records':10},function(){
+				{'fromDepartId':departId,'recursive':'0'},function(){
 					
 		});
 	}

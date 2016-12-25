@@ -100,4 +100,16 @@ public class RoleServiceImpl implements RoleService {
 		}
 
 	}
+	/** (non-Javadoc)
+	 * @see com.frameworkset.platform.admin.service.RoleService#getUserRoles(java.lang.String)
+	 */
+	@Override
+	public List<UserRole> getUserRoles(String userId) throws RoleException {
+		try {
+			List<UserRole> beans = executor.queryList(UserRole.class, "getUserRoles", userId);
+			return beans;
+		} catch (Exception e) {
+			throw new RoleException("query Role failed:", e);
+		}
+	}
 }

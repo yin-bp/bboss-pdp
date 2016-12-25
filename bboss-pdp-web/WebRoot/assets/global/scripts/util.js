@@ -377,8 +377,8 @@ var ModelDialog = function(){
 			modalcontent =modalcontent + "<iframe allowfullscreen "+
 			"frameborder=\"0\"  "+
 			"src=\""+setting.url+"\" "+
-			"scrolling=\"auto\" "+
-			
+			//"scrolling=\"auto\" "+
+			"width=\"100%\" height=\"50%\""+
 			"onLoad=\"javascript:ModelDialog.changeModelFrameHeight(this);\">"+
 			"</iframe>";
 		}

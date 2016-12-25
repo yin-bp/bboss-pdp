@@ -5,6 +5,33 @@
 	包含：机构资源，岗位资源，角色资源，用户组资源，菜单资源
 -->
 <resources >
+		<!--  
+			角色管理操作组
+		-->
+		<group id="roleoperation" name="角色管理操作组" i18n:en_US="Grant Roles">
+			<operation id="roleset" priority="30" name="角色授予" i18n:en_US="Grant Roles">
+			  <description i18n:en_US="Grant Roles,You can grant some role to other users since that role's grant authoriation be granted to you.">
+				<![CDATA[
+					角色授予，用户拥有角色的角色授予权限就可以将该角色赋给其他用户，用户自己创建的角色缺省拥有该权限
+				]]>
+			  </description>
+			</operation>
+			
+			
+		</group>
+	    <!--
+	    	角色全局资源操作组 
+	    -->
+		<group id="globalroleoperation" name="角色全局资源操作组" i18n:en_US="Grant Global resources">
+			<operation id="rolemanager" priority="20" name="角色管理" i18n:en_US="Role Manager">
+			  <description i18n:en_US="Role Manager:Add,Delete,Edit,Query Role or RoleType,These operations Only for the owner of Roles.">
+				<![CDATA[
+					新增角色，删除角色只能删除自己创建的角色，角色修改，角色类型添加，角色类型删除，角色查询，角色信息查看，用户只能对自己创建的角色进行角色管理
+				]]>
+			  </description>
+			</operation>
+    	</group>
+		
 	 <!--
 			机构资源操作组 
 		-->
@@ -138,6 +165,18 @@
 		<!--</exclude>-->
 		<!--定义资源操作组-->
 		<operationgroup groupid="group23"/>
+	</resource>
+	
+	<!-- 角色资源 -->
+	<resource id="role" name="角色资源"  i18n:en_US="Role Resource"  class="resRoleTree.jsp"  auto="true" system="module,cms,trans_server,trans_client,esb,autodeploy,mbp,sanylog">
+		<!--定义非未受保护的特殊资源-->
+		<!--
+                定义资源操作组
+               name:指定资源操作组的名称，具体的操作定义在操作组中
+        -->
+        <operationgroup groupid="roleoperation"/>		
+		<!-- 角色资源全局操作组 -->
+		<globaloperationgroup globalresourceid="globalrole" groupid="globalroleoperation"/>
 	</resource>
 	 
 </resources >

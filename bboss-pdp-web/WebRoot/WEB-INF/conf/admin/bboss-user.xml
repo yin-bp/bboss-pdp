@@ -20,6 +20,8 @@
 		path:toMoveOutSmUser="/jsp/sysmanager/user/moveusersout.jsp"
 		path:toMoveInSmUser="/jsp/sysmanager/user/moveusersin.jsp"
 		path:moveinuserlist="/jsp/sysmanager/user/moveinuserlist.jsp"
+		path:authmain="/jsp/sysmanager/user/authmain.jsp"
+		f:roleService="attr:role.roleService"
 		f:smUserService="attr:user.smUserService"
 		class="com.frameworkset.platform.admin.action.SmUserController" >
 	</property>

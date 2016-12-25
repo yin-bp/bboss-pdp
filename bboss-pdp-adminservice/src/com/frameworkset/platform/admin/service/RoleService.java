@@ -33,4 +33,9 @@ public interface RoleService {
 	public Role getRole(String roleId) throws RoleException;
 	public ListInfo queryListInfoRoles(RoleCondition conditions, long offset, int pagesize) throws RoleException;
 	public List<Role> queryListRoles(RoleCondition conditions) throws RoleException;
+	/**
+	 * @param userId
+	 * @return
+	 */
+	public List<UserRole> getUserRoles(String userId) throws RoleException;
 }

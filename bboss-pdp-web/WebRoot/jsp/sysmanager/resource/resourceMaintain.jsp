@@ -16,6 +16,7 @@
 						</div>
 						<div class="actions roleactions">
 							<a class="btn btn-xs blue btn-addresource"  > 新增 <i class="fa fa-edit"></i></a>
+						
 							 <a class="btn btn-xs red btn-batchdelresource" >
 								<i class="fa fa-times"></i> 删除
 							</a> 
