@@ -72,11 +72,11 @@ var SysAuthmain = function(){
 				 	
 				 	
 			 	});
-			 if(roleIds == "")
-			{
-				 ModelDialog.warn('请选择设置的角色!');
-				 return;
-			}	 
+//			 if(roleIds == "")
+//			{
+//				 ModelDialog.warn('请选择设置的角色!');
+//				 return;
+//			}	 
 			
 			 $.ajax({
 		 		   type: "POST",

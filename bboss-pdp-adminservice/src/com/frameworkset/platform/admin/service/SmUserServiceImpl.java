@@ -420,18 +420,22 @@ public class SmUserServiceImpl implements SmUserService {
 		TransactionManager tm = new TransactionManager();
 		try {
 			tm.begin();
-			String roleIds_[] = roleIds.split(",");
+			String roleIds_[] = StringUtil.isEmpty(roleIds)?null: roleIds.split(",");
 			List<Map> userRoles = new ArrayList<Map>();
-			int num = 0;
-			for(String roleId:roleIds_){
-				num = executor.queryObject(int.class, "existUserRoles", userId,roleId);
-				if(num == 0){
-					Map data = new HashMap();
-					data.put("userId", userId);
-					data.put("roleId", roleId);
-					userRoles.add(data);
+//			int num = 0;
+			if(roleIds_ != null){
+				for(String roleId:roleIds_){
+	//				num = executor.queryObject(int.class, "existUserRoles", userId,roleId);
+	//				if(num == 0)
+	//				{
+						Map data = new HashMap();
+						data.put("userId", userId);
+						data.put("roleId", roleId);
+						userRoles.add(data);
+	//				}
 				}
 			}
+			executor.delete("removeUserRoles", userId);//删除手动为用户设置的角色，缺省的系统级别的角色不能被删除
 			if(userRoles.size() > 0)
 				this.executor.insertBeans("saveUserRoles", userRoles);
 			tm.commit();
