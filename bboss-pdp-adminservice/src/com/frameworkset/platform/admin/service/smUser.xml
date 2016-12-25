@@ -27,6 +27,17 @@
  -->
 <properties>
 	
+	<property name="existUserRoles">
+		<![CDATA[
+			select count(1) from td_sm_userrole where user_id = ? and role_id =?
+		]]>
+	</property>
+	
+	<property name="saveUserRoles">
+		<![CDATA[
+			insert into td_sm_userrole(user_id ,role_id ) values(#[userId],#[roleId])
+		]]>
+	</property>
 		<property name="addSmUser">
 		<![CDATA[
 			insert into td_sm_user (USER_ID,CERT_SN,DEPART_ID,DREDGE_TIME,ISTAXMANAGER,LASTLOGIN_DATE,LOGON_IP,Password_DualTime,PASSWORD_UPDATETIME,PAST_TIME,POLITICS,REMARK1,REMARK2,REMARK3,REMARK4,REMARK5,update_time,USER_ADDRESS,USER_BIRTHDAY,USER_EMAIL,USER_FAX,USER_HOMETEL,USER_IDCARD,USER_ISVALID,USER_LOGINCOUNT,USER_MOBILETEL1,USER_MOBILETEL2,USER_NAME,USER_OICQ,USER_PASSWORD,USER_PINYIN,USER_POSTALCODE,USER_REALNAME,USER_REGDATE,USER_SEX,USER_SN,USER_TYPE,USER_WORKNUMBER,USER_WORKTEL,WORKLENGTH) values(#[userId],#[certSn],#[departId],#[dredgeTime],#[istaxmanager],#[lastloginDate],#[logonIp],#[passwordDualtime],#[passwordUpdatetime],#[pastTime],#[politics],#[remark1],#[remark2],#[remark3],#[remark4],#[remark5],#[updateTime],#[userAddress],#[userBirthday],#[userEmail],#[userFax],#[userHometel],#[userIdcard],#[userIsvalid],#[userLogincount],#[userMobiletel1],#[userMobiletel2],#[userName],#[userOicq],#[userPassword],#[userPinyin],#[userPostalcode],#[userRealname],#[userRegdate],#[userSex],#[userSn],#[userType],#[userWorknumber],#[userWorktel],#[worklength])

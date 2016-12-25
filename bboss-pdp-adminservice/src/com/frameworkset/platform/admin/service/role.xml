@@ -57,6 +57,9 @@
 			left join td_sm_roletype rt on r.ROLE_TYPE=rt.TYPE_ID 
 			left join td_sm_user u on r.OWNER_ID=u.USER_ID
 			 where 1=1
+			#if($fromAuthmain)
+				and r.role_name <> 'guest'
+			#end
 			#if($roleAttr && !$roleAttr.equals(""))
 				and (r.ROLE_NAME like #[roleAttr] or r.remark1 like #[roleAttr])		
 			#end

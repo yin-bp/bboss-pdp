@@ -16,9 +16,11 @@
 
 package com.frameworkset.platform.admin.action;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.frameworkset.platform.security.AccessControl;
 import org.frameworkset.util.annotations.PagerParam;
 import org.frameworkset.util.annotations.ResponseBody;
 import org.frameworkset.web.servlet.ModelMap;
@@ -123,8 +125,26 @@ public class RoleController {
 			}
 
 			ListInfo roles = roleService.queryListInfoRoles(conditions, offset, pagesize);
-			model.addAttribute("roles", roles);
-			return "path:queryListInfoRoles";
+			
+			if(!conditions.isFromAuthmain()){
+				model.addAttribute("roles", roles);
+				return "path:queryListInfoRoles";
+			}
+			else
+			{
+				List<Role> temp = roles.getDatas();//过滤当前用户没有设置权限的角色
+				List<Role> rolesetPermissions = new ArrayList<Role>();
+				if(temp.size() > 0){
+					AccessControl control = AccessControl.getAccessControl();
+					for(Role role : temp){
+						if(control.checkPermission(role.getRoleName(), "roleset", "role"))
+							rolesetPermissions.add(role);
+					}
+				}
+				roles.setDatas(rolesetPermissions);
+				model.addAttribute("roles", roles);
+				return "path:authmainRoles";
+			}
 		} catch (RoleException e) {
 			throw e;
 		} catch (Exception e) {
@@ -140,10 +160,8 @@ public class RoleController {
 			}
 			List<Role> roles = roleService.queryListRoles(conditions);
 			model.addAttribute("roles", roles);
-			if(!conditions.isFromAuthmain())
-				return "path:queryListRoles";
-			else
-				return "path:authmainRoles";
+			return "path:queryListRoles";
+			
 		} catch (RoleException e) {
 			throw e;
 		} catch (Exception e) {

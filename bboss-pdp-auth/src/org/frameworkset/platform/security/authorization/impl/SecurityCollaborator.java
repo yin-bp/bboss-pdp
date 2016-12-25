@@ -329,10 +329,10 @@ public abstract class SecurityCollaborator{
     	return appAccessManager.hasGrantedAnyRole(context,resource,resourceType);
     }
     
-    public AuthUser[] getAllPermissionUsersOfResource(AccessContext context,String resourceid,String operation,String resourceType)
-    {	
-    	return appAccessManager.getAllPermissionUsersOfResource(context,resourceid,operation,resourceType);
-    }
+//    public AuthUser[] getAllPermissionUsersOfResource(AccessContext context,String resourceid,String operation,String resourceType)
+//    {	
+//    	return appAccessManager.getAllPermissionUsersOfResource(context,resourceid,operation,resourceType);
+//    }
 
 	public String getEveryonegrantedRoleName(AppAccessContext context)
 	{	

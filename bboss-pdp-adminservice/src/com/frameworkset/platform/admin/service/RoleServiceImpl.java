@@ -84,6 +84,7 @@ public class RoleServiceImpl implements RoleService {
 	public ListInfo queryListInfoRoles(RoleCondition conditions, long offset, int pagesize) throws RoleException {
 		ListInfo datas = null;
 		try {
+			//如果是在角色设置界面，则需要过滤没有授予权限的角色和guest角色
 			datas = executor.queryListInfoBean(Role.class, "queryListRole", offset, pagesize, conditions);
 		} catch (Exception e) {
 			throw new RoleException("pagine query Role failed:", e);

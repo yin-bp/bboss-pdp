@@ -21,8 +21,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.frameworkset.event.Event;
+import org.frameworkset.event.EventHandle;
+import org.frameworkset.event.EventImpl;
 import org.frameworkset.platform.common.DatagridBean;
 import org.frameworkset.platform.security.AccessControl;
+import org.frameworkset.platform.security.event.ACLEventType;
 import org.frameworkset.util.annotations.PagerParam;
 import org.frameworkset.util.annotations.ResponseBody;
 import org.frameworkset.web.servlet.ModelMap;
@@ -36,6 +40,7 @@ import com.frameworkset.platform.admin.service.SmUserException;
 import com.frameworkset.platform.admin.service.SmUserService;
 import com.frameworkset.util.ListInfo;
 import com.frameworkset.util.StringUtil;
+import com.sun.javafx.event.EventUtil;
 
 /**
  * <p>Title: SmUserController</p> <p>Description: 用户管理管理控制器处理类 </p> <p>bboss</p>
@@ -54,7 +59,16 @@ public class SmUserController {
 		}
 		List<UserRole> userroles = roleService.getUserRoles(userId);
 		model.addAttribute("userroles", userroles);
+		model.addAttribute("userId", userId);
+		
 		return "path:authmain";
+	}
+	public @ResponseBody String saveUserRoles(String userId,String roleIds){
+		smUserService.saveUserRoles(userId,roleIds);
+		Event event = new EventImpl(userId,
+				ACLEventType.USER_ROLE_INFO_CHANGE);
+		EventHandle.sendEvent(event);
+		return "success";
 	}
 	
 	public @ResponseBody String saveMoveusers(String userIds,String fromDepartId,String toDepartId){

@@ -381,24 +381,24 @@ public abstract class BaseAccessManager implements AccessManager {
 		}
     }
     
-    public AuthUser[] getAllPermissionUsersOfResource(AccessContext accesscontext,
-    												  String resourceid,
-    												  String operation,
-    												  String resourceType) 
-    {
-    	try
-		{
-			return getAuthorizationTable(accesscontext).getAllPermissionPrincipalsOfResource(resourceid,
-					  operation,
-					  resourceType);
-		}
-		catch (SecurityException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return null;
-		}
-    }
+//    public AuthUser[] getAllPermissionUsersOfResource(AccessContext accesscontext,
+//    												  String resourceid,
+//    												  String operation,
+//    												  String resourceType) 
+//    {
+//    	try
+//		{
+//			return getAuthorizationTable(accesscontext).getAllPermissionPrincipalsOfResource(resourceid,
+//					  operation,
+//					  resourceType);
+//		}
+//		catch (SecurityException e)
+//		{
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//			return null;
+//		}
+//    }
     
     public boolean hasGrantedAnyRole(AccessContext context,String resource,String resourceType)
     {

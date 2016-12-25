@@ -37,19 +37,19 @@
 			<!--tab_1_2-->
 			<div class="tab-pane  active" id="tab_resource">
 				<div class="row profile-account">
-					<div class="col-md-2">
+					<div class="col-md-3">
 						<ul class="ver-inline-menu tabbable margin-bottom-10 resourcetypelist">
 						<pg:list actual="${resourceTypes }">
 							<li <pg:equal expression="{rowid }" value="0">class="active"</pg:equal>>
 								<a data-toggle="tab" href="#resource_tab_1_1" resourceType="<pg:cell colName="id"/>">
-										<i class="fa fa-cog"></i> <pg:cell colName="name"/>
+										<i class="fa fa-cog"></i> <pg:cell colName="name"/> <pg:cell colName="id"/>
 								</a> <span class="after"> </span>
 							</li>
 						</pg:list>	
 							 
 						</ul>
 					</div>
-					<div class="col-md-10">
+					<div class="col-md-9">
 						<div class="tab-content">
 							<div id="resource_tab_1_1" class="tab-pane active">
 							<p>请选择一个资源进行操作</p>

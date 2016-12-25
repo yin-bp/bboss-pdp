@@ -25,7 +25,7 @@
 		</ul>
 		<div class="tab-content">
 			<!--tab_1_2-->
-			<div class="tab-pane  active" id="tab_resource">
+			<div class="tab-pane  active" id="tab_userroleset">
 				<div class="row profile-account">
 					<div class="col-md-6">
 						
@@ -105,11 +105,12 @@
 				
 										</div>
 										<div class="actions">
+											
 											<a href="javascript:;"
-												class="btn btn-circle blue btn-xs btn-submitmoveinusers"> <i
+												class="btn btn-circle blue btn-xs btn-submituserroles"> <i
 												class="fa fa-plus"></i> 提交入库
 											</a> <a href="javascript:;"
-												class="btn btn-circle default btn-xs clearselecteduser_btn">
+												class="btn btn-circle default btn-xs clearselectedrole_btn">
 												<i class="fa fa-plus"></i> 移除
 											</a>
 				
@@ -122,15 +123,26 @@
 											<thead>
 												<tr>
 													<th width="2%"><input type="checkbox" class="checkboxall"
-														onClick="checkAll('.table-selected-users .checkboxall','.table-selected-users .checkone')" /></th>
-													<th width="6%">序号</th>
+														onClick="checkAll('.table-selected-roles .checkboxall','.table-selected-roles .checkone')" /></th>
+													
 													<th width="10%">角色</th>
-													<th width="20%">有效时间</th>
+													<th width="20%">中文名</th>
 													 
 												</tr>
 											</thead>
 											<tbody>
-				
+												<pg:list actual="${userroles }">
+													 <tr>
+												  	 	<td><input
+																name="roleId" type="checkbox" class="checkone" onClick="checkOne('.table-selected-roles .checkboxall','.table-selected-roles .checkone')" value="<pg:cell colName="roleId"/>" />
+														</td>			
+												  	 	
+											            <td> <pg:cell colName="roleName"/> </td>
+											            <td> <pg:cell colName="remark1"/><pg:cell colName="startDate" dateformat="yyyy-MM-dd mm:HH:ss"/> <pg:cell colName="endDate" dateformat="yyyy-MM-dd mm:HH:ss"/> </td>
+											            
+											        </tr>
+												</pg:list>
+												
 				
 											</tbody>
 										</table>
@@ -202,7 +214,7 @@
 	jQuery(document).ready(function() {
 		 
 		
-			SysResource.initAuthmain('${pageContext.request.contextPath}');
+		SysAuthmain.initAuthmain('${pageContext.request.contextPath}','${userId}');
 		
 		
 	});

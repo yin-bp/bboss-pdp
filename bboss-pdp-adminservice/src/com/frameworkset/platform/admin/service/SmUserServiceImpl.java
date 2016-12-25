@@ -17,6 +17,7 @@
 package com.frameworkset.platform.admin.service;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -409,5 +410,38 @@ public class SmUserServiceImpl implements SmUserService {
 				throw new SmUserException("pagine query SmUser failed:", e);
 			}
 		}
+	}
+	/** (non-Javadoc)
+	 * @see com.frameworkset.platform.admin.service.SmUserService#saveUserRoles(java.lang.String, java.lang.String)
+	 */
+	@Override
+	public void saveUserRoles(String userId, String roleIds) throws SmUserException {
+		
+		TransactionManager tm = new TransactionManager();
+		try {
+			tm.begin();
+			String roleIds_[] = roleIds.split(",");
+			List<Map> userRoles = new ArrayList<Map>();
+			int num = 0;
+			for(String roleId:roleIds_){
+				num = executor.queryObject(int.class, "existUserRoles", userId,roleId);
+				if(num == 0){
+					Map data = new HashMap();
+					data.put("userId", userId);
+					data.put("roleId", roleId);
+					userRoles.add(data);
+				}
+			}
+			if(userRoles.size() > 0)
+				this.executor.insertBeans("saveUserRoles", userRoles);
+			tm.commit();
+		} catch (Exception e) {
+			throw new SmUserException(e);
+		}
+		finally
+		{
+			tm.release();
+		}
+		
 	}
 }
