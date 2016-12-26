@@ -52,33 +52,18 @@ var SysRole = function()
 		                     }
 		                   },
 		                  
+		                  
 		                   {
 		                     class: 'btn  btn-xs btn-default',
 		                     icon: 'fa fa-pencil',
-		                     label:'设置用户',
+		                     label:'设置授权',
 		                     onClick: function() {
+		                    	 var roleId = $(this).attr("roleId");
+		                    	 var roleName = $(this).attr("roleName");
+		                    	 var remark1 = $(this).attr("remark1");
+		                    	
+		                    	toroleauthset(roleId,roleName,remark1);
 		                    	 
-		                    	 var userId = $(this).attr("userId");
-		                    	 var userName = $(this).attr("userName");
-		                    	 var userAccount = $(this).attr("userAccount");
-		                    	 SysUser.tomodifyPassword(userId,userName,userAccount)
-		                     }
-		                   },
-		                   {
-		                     class: 'btn  btn-xs btn-default',
-		                     icon: 'fa fa-pencil',
-		                     label:'授权',
-		                     onClick: function() {
-		                    	 var userId = $(this).attr("userId");
-		                    	 var defaultAdmin = $(this).attr("defaultAdmin");
-		                    	 if(!defaultAdmin)
-		                    	 {
-		                    		 SysUser.toauthUser(userId)
-		                    	 }
-		                    	 else
-	                    		 {
-		                    		 PlatformCommonUtils.warn("管理员无需授权!");
-	                    		 }
 		                     }
 		                   },		                   
 		                  
@@ -90,6 +75,22 @@ var SysRole = function()
 			                   }
 		                 ];
 		return content_;
+	}
+	var toroleauthset = function(roleId,roleName,remark1){
+		ModelDialog.dialog({
+				title:"权限用户设置-"+roleName+"("+remark1+")",
+				showfooter:false,
+				url:usercontextpath+"/sysmanager/role/toroleauthset.page",
+				params:{
+					"roleId":roleId,
+					"roleName":roleName,
+					"roleType":"role",
+					"remark1":remark1 
+			      },
+				width:"1000px",
+				height:"600px"
+
+      });
 	}
 	var queryRoles = function(doquery){
 		

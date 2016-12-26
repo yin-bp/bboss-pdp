@@ -69,6 +69,8 @@ public class ResourceController {
 			if(resourceInfo.getGlobalresourceid() != null && !resourceInfo.getGlobalresourceid().equals("")){
 				model.addAttribute("hasGlobalresource",true);
 				OperationQueue goperationQueue = resourceInfo.getGlobalOperationQueue();
+				
+				model.addAttribute("globalResourceid",resourceInfo.getGlobalresourceid());
 				if(goperationQueue != null && goperationQueue.size() > 0)
 				{
 					model.addAttribute("globalOperationQueue",goperationQueue.getList());

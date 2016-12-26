@@ -55,14 +55,14 @@
 			<div class="row"><div class="col-md-12" >&nbsp;</div></div>
 			
 			<div class="form-actions">
-			<div class="row">
-				<div class="col-md-offset-3 col-md-9">
-					<button type="button" class="btn green btn-resourceaddsave">创建</button>
-					<button type="reset" class="btn default">重置</button>
-					<button type="button" class="btn default" data-dismiss="modal">取消</button>
+				<div class="row">
+					<div class="col-md-offset-3 col-md-9">
+						<button type="button" class="btn green btn-resourceaddsave">创建</button>
+						<button type="reset" class="btn default">重置</button>
+						<button type="button" class="btn default" data-dismiss="modal">取消</button>
+					</div>
 				</div>
 			</div>
-		</div>
 		</div>
 	</form>
 

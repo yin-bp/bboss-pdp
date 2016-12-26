@@ -1,6 +1,13 @@
 <%@ page session="false" language="java"
 	contentType="text/html; charset=utf-8"%>
 <%@ taglib uri="/WEB-INF/tld/pager-taglib.tld" prefix="pg" %>
+<!-- 
+用户角色设置：展示角色列表
+	作者:yinbp
+	版权:bboss
+	版本:v1.0 
+	日期:2016-12-15 17:06:09
+ -->
 <pg:pager scope="request"  data="roles" desc="false" isList="false" containerid=".select_roles">
 	 
 	<pg:param name="role'Attr"/>

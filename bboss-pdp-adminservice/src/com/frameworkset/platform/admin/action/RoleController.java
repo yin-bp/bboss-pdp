@@ -20,14 +20,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.frameworkset.platform.config.ResourceInfoQueue;
+import org.frameworkset.platform.config.model.OperationQueue;
+import org.frameworkset.platform.config.model.ResourceInfo;
+import org.frameworkset.platform.resource.ResourceManager;
 import org.frameworkset.platform.security.AccessControl;
 import org.frameworkset.util.annotations.PagerParam;
 import org.frameworkset.util.annotations.ResponseBody;
 import org.frameworkset.web.servlet.ModelMap;
 
+import com.frameworkset.platform.admin.entity.Resource;
 import com.frameworkset.platform.admin.entity.Role;
 import com.frameworkset.platform.admin.entity.RoleCondition;
 import com.frameworkset.platform.admin.entity.RoleType;
+import com.frameworkset.platform.admin.service.ResourceService;
 import com.frameworkset.platform.admin.service.RoleException;
 import com.frameworkset.platform.admin.service.RoleService;
 import com.frameworkset.platform.admin.service.RoleTypeService;
@@ -43,6 +49,8 @@ public class RoleController {
 
 	private static Logger log = Logger.getLogger(RoleController.class);
 	private RoleTypeService roleTypeService;
+	private ResourceService resourceService;
+	private ResourceManager resourceManager = new ResourceManager();
 	private RoleService roleService;
 	public @ResponseBody String addRole(Role role) {
 		// 控制器
@@ -107,6 +115,77 @@ public class RoleController {
 		}
 
 	}
+	
+	public String toroleauthset(String roleId,
+			String  roleName,
+			String  roleType ,
+			String roleCName,ModelMap model){
+		String curSystem = AccessControl.getAccessControl().getCurrentSystemID();
+		ResourceInfoQueue  resQueue = resourceManager.getResourceInfoQueue();
+		List<ResourceInfo> resourceTypes = new ArrayList<ResourceInfo>();
+		 for (int i = 0; resQueue != null && i < resQueue.size(); i++) {
+             ResourceInfo res = resQueue.getResourceInfo(i);
+//             System.out.println("res.isAuto() = " + res.isAuto());
+             //判断当前系统模块；
+             if (res.isUsed() && res.containSystem(curSystem) ) {
+            	 resourceTypes.add(res);
+               
+             }
+         }
+		model.addAttribute("resourceTypes", resourceTypes);
+		if(resourceTypes.size() > 0)
+		{
+			model.addAttribute("resourceType", resourceTypes.get(0).getId());
+			model.addAttribute("resourceName", resourceTypes.get(0).getName());
+		}
+		model.addAttribute("roleId", roleId);
+		model.addAttribute("roleName", roleName);
+		model.addAttribute("roleType", roleType);
+		model.addAttribute("roleCName", roleCName);
+		
+		return "path:toroleauthset";
+	}
+	
+	public String loadResourceOperations(String resourceType,String roleId,String roleType,ModelMap model){
+		if(StringUtil.isEmpty(resourceType))
+		{
+			model.addAttribute("errorMessage", "没有选择资源类型");
+			return "path:loadResourceOperations";
+		}
+			
+		
+		ResourceInfo resourceInfo = resourceManager.getResourceInfoByType(resourceType);
+		if(resourceInfo != null){
+			model.addAttribute("resourceInfo", resourceInfo);
+			model.addAttribute("resourceType", resourceInfo.getId());
+			model.addAttribute("resourceName", resourceInfo.getName());
+			model.addAttribute("roleId", roleId);
+			model.addAttribute("roleType", roleType);
+			boolean maintaindata = !resourceInfo.isAuto() && resourceInfo.maintaindata();
+			model.addAttribute("maintaindata", maintaindata);
+			if(maintaindata){
+				List<Resource> resources = resourceService.queryListResources(resourceType);
+				model.addAttribute("resources", resources);
+			}
+			if(resourceInfo.getGlobalresourceid() != null && !resourceInfo.getGlobalresourceid().equals("")){
+				model.addAttribute("hasGlobalresource",true);
+				model.addAttribute("globalResourceid",resourceInfo.getGlobalresourceid());
+				OperationQueue goperationQueue = resourceInfo.getGlobalOperationQueue();
+				if(goperationQueue != null && goperationQueue.size() > 0)
+				{
+					model.addAttribute("globalOperationQueue",goperationQueue.getList());
+				}
+			}
+			OperationQueue operationQueue = resourceInfo.getOperationQueue();
+			if(operationQueue != null && operationQueue.size() > 0)
+			{
+				model.addAttribute("operationQueue",operationQueue.getList());
+			}
+			
+		}
+		return "path:loadResourceOperations";
+	}
+	
 	public String queryListInfoRoles(RoleCondition conditions,
 			@PagerParam(name = PagerParam.SORT, defaultvalue = "ROLE_TYPE") String sortKey,
 			@PagerParam(name = PagerParam.DESC, defaultvalue = "false") boolean desc,

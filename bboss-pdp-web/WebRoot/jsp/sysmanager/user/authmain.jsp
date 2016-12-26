@@ -100,8 +100,8 @@
 									<div class="portlet-title tabbable-line">
 										<div class="caption">
 											<i class="icon-pin font-yellow-crusta"></i> <span
-												class="caption-subject bold font-yellow-crusta uppercase">
-												已选角色 </span>
+												class="caption-subject bold font-green ">
+												已选角色 -roleofeveryone为所以用户默认拥有角色，无需设置给用户</span>
 				
 										</div>
 										<div class="actions">
