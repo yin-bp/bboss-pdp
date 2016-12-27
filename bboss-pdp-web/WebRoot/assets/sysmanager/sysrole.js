@@ -56,7 +56,7 @@ var SysRole = function()
 		                   {
 		                     class: 'btn  btn-xs btn-default',
 		                     icon: 'fa fa-pencil',
-		                     label:'设置授权',
+		                     label:'授权设置',
 		                     onClick: function() {
 		                    	 var roleId = $(this).attr("roleId");
 		                    	 var roleName = $(this).attr("roleName");
@@ -78,7 +78,7 @@ var SysRole = function()
 	}
 	var toroleauthset = function(roleId,roleName,remark1){
 		ModelDialog.dialog({
-				title:"权限用户设置-"+roleName+"("+remark1+")",
+				title:"角色授权及用户设置-"+roleName+"("+remark1+")",
 				showfooter:false,
 				url:usercontextpath+"/sysmanager/role/toroleauthset.page",
 				params:{

@@ -40,7 +40,6 @@ import com.frameworkset.platform.admin.service.SmUserException;
 import com.frameworkset.platform.admin.service.SmUserService;
 import com.frameworkset.util.ListInfo;
 import com.frameworkset.util.StringUtil;
-import com.sun.javafx.event.EventUtil;
 
 /**
  * <p>Title: SmUserController</p> <p>Description: 用户管理管理控制器处理类 </p> <p>bboss</p>

@@ -16,12 +16,24 @@
 
 package com.frameworkset.platform.admin.service;
 
-import com.frameworkset.platform.admin.entity.*;
-import com.frameworkset.util.ListInfo;
-import com.frameworkset.common.poolman.ConfigSQLExecutor;
-import org.apache.log4j.Logger;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import org.apache.log4j.Logger;
+
+import com.frameworkset.common.poolman.ConfigSQLExecutor;
+import com.frameworkset.common.poolman.Record;
+import com.frameworkset.common.poolman.handle.NullRowHandler;
 import com.frameworkset.orm.transaction.TransactionManager;
+import com.frameworkset.platform.admin.entity.ResOpr;
+import com.frameworkset.platform.admin.entity.Role;
+import com.frameworkset.platform.admin.entity.RoleCondition;
+import com.frameworkset.platform.admin.entity.UserRole;
+import com.frameworkset.util.ListInfo;
+import com.frameworkset.util.StringUtil;
 
 /**
  * <p>Title: RoleServiceImpl</p> <p>Description: 角色管理管理业务处理类 </p> <p>bboss</p>
@@ -111,6 +123,118 @@ public class RoleServiceImpl implements RoleService {
 			return beans;
 		} catch (Exception e) {
 			throw new RoleException("query Role failed:", e);
+		}
+	}
+	/** 
+	 * op_id,AUTHORIZATION_STIME,AUTHORIZATION_ETIME
+	 * @see com.frameworkset.platform.admin.service.RoleService#getGrantedGlobalOperations(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+	 */
+	@Override
+	public Map getGrantedGlobalOperations(String globalresourceid, String resourceType, String roleId,
+			String roleType, String permissionTable) throws RoleException {
+		
+		try {
+			// rop.ROLE_ID = ? and rop.TYPES =? and RESTYPE_ID = ? and RES_ID = ?
+			Map params = new HashMap();
+			params.put("roleId", roleId);
+			params.put("resourceType", resourceType);
+			params.put("globalresourceid", globalresourceid);
+			params.put("roleType", roleType);
+			params.put("permissionTable", permissionTable);
+			final Map ps = new HashMap();
+			this.executor.queryBeanByNullRowHandler(new NullRowHandler(){
+
+				@Override
+				public void handleRow(Record origine) throws Exception {
+					String op_id = origine.getString("op_id");
+					Date[] stime = new Date[2];
+					stime[0] = origine.getDate("AUTHORIZATION_STIME");
+					stime[1] = origine.getDate("AUTHORIZATION_ETIME");
+					ps.put(op_id, stime);
+				}
+				
+			},  "getGrantedGlobalOperations", params);
+			return ps;
+		} catch (Exception e) {
+			throw new RoleException(" getGrantedGlobalOperations failed:", e);
+		}
+	}
+	/** (non-Javadoc)
+	 * @see com.frameworkset.platform.admin.service.RoleService#saveRoleAuths(java.lang.String, java.lang.String[], java.util.List, java.lang.String, java.lang.String, java.lang.String)
+	 */
+	@Override
+	public void saveRoleAuths(String globalresourceid, String[] globalopcode, List<ResOpr> resOprs, String resourceType,
+			String roleId, String roleType,String permissionTable) throws RoleException  {
+		TransactionManager tm = new TransactionManager();
+		try
+		{
+			tm.begin();
+			List<Map> deleteAuths = new ArrayList<Map>();
+			Map authinfos = authinfos = new HashMap();
+			authinfos.put("roleId", roleId);
+			authinfos.put("resourceType", resourceType);
+			authinfos.put("roleType", roleType);
+//			authinfos.put("resCode", globalresourceid);
+			authinfos.put("permissionTable", permissionTable);
+			this.executor.deleteBean("cleanroleAuths", authinfos);
+//			if(StringUtil.isNotEmpty(globalresourceid)){
+//				authinfos = new HashMap();
+//				authinfos.put("roleId", roleId);
+//				authinfos.put("resourceType", resourceType);
+//				authinfos.put("roleType", roleType);
+////				authinfos.put("resCode", globalresourceid);
+//				authinfos.put("permissionTable", permissionTable);
+//				deleteAuths.add(authinfos);
+//			}
+//				
+//			
+//			for(int i = 0;  resOprs != null && i< resOprs.size(); i ++){
+//				ResOpr resOpr = resOprs.get(i);
+//				authinfos = new HashMap();
+//				authinfos.put("roleId", roleId);
+//				authinfos.put("resCode", resOpr.getResCode());
+//				authinfos.put("resourceType", resourceType);
+//				authinfos.put("roleType", roleType);
+//				authinfos.put("permissionTable", permissionTable);
+//				deleteAuths.add(authinfos);
+//			}
+//			this.executor.deleteBeans("cleanroleAuths", deleteAuths);
+			
+			List<Map> addAuths = new ArrayList<Map>();
+			for(int i = 0; globalopcode !=null && i < globalopcode.length; i ++){
+				authinfos = new HashMap();
+				authinfos.put("roleId", roleId);
+				authinfos.put("resourceType", resourceType);
+				authinfos.put("roleType", roleType);
+				authinfos.put("resCode", globalresourceid);
+				authinfos.put("resName", "全局资源");
+				authinfos.put("opCode", globalopcode[i]);
+				authinfos.put("permissionTable", permissionTable);
+				addAuths.add(authinfos);
+			}
+			
+			for(int i = 0; resOprs !=null && i < resOprs.size(); i ++){
+				authinfos = new HashMap();
+				ResOpr resOpr = resOprs.get(i);
+				authinfos.put("roleId", roleId);
+				authinfos.put("resourceType", resourceType);
+				authinfos.put("roleType", roleType);
+				authinfos.put("resCode", resOpr.getResCode());
+				authinfos.put("resName", resOpr.getResName());
+				authinfos.put("opCode", resOpr.getOp());
+				authinfos.put("permissionTable", permissionTable);
+				addAuths.add(authinfos);
+			}
+			this.executor.insertBeans("addAuths", addAuths);
+			tm.commit();
+		}
+		catch(Exception e)
+		{
+			throw new RoleException(e);
+		}
+		finally
+		{
+			tm.release();
 		}
 	}
 }

@@ -18,18 +18,26 @@ package com.frameworkset.platform.admin.action;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.frameworkset.event.Event;
+import org.frameworkset.event.EventHandle;
+import org.frameworkset.event.EventImpl;
 import org.frameworkset.platform.config.ResourceInfoQueue;
 import org.frameworkset.platform.config.model.OperationQueue;
 import org.frameworkset.platform.config.model.ResourceInfo;
 import org.frameworkset.platform.resource.ResourceManager;
 import org.frameworkset.platform.security.AccessControl;
+import org.frameworkset.platform.security.event.ACLEventType;
 import org.frameworkset.util.annotations.PagerParam;
 import org.frameworkset.util.annotations.ResponseBody;
 import org.frameworkset.web.servlet.ModelMap;
 
+import com.frameworkset.orm.transaction.TransactionManager;
+import com.frameworkset.platform.admin.entity.ResOpr;
 import com.frameworkset.platform.admin.entity.Resource;
+import com.frameworkset.platform.admin.entity.ResourceWithOPS;
 import com.frameworkset.platform.admin.entity.Role;
 import com.frameworkset.platform.admin.entity.RoleCondition;
 import com.frameworkset.platform.admin.entity.RoleType;
@@ -145,17 +153,64 @@ public class RoleController {
 		
 		return "path:toroleauthset";
 	}
-	
+	public @ResponseBody String saveRoleAuths(String[] globalopcode,
+									  String[] res_opcode,
+									   String resourceType,
+									   String roleId,
+									   String roleType){
+		if(StringUtil.isEmpty(resourceType))
+		{
+			return  "没有选择资源类型";
+		}
+		ResourceInfo resourceInfo = resourceManager.getResourceInfoByType(resourceType);
+		if(resourceInfo == null)
+		{
+			return "资源类别"+resourceType+"不存在！";
+		}
+		List<ResOpr> resOprs = null;
+		if(res_opcode != null && res_opcode.length > 0){
+			resOprs = new ArrayList<ResOpr>(res_opcode.length);
+			ResOpr _resOpr = null;
+			for(String resOpr:res_opcode){
+				String[] _temp = resOpr.split("::");
+				_resOpr = new ResOpr();
+				_resOpr.setOp(_temp[0]);
+				_resOpr.setResCode(_temp[1]);
+				_resOpr.setResName(_temp[2]);
+				resOprs.add(_resOpr);
+			}
+		}
+		this.roleService.saveRoleAuths( resourceInfo.getGlobalresourceid(),globalopcode,
+				  	 resOprs,
+				     resourceType,
+				     roleId,
+				     roleType,resourceInfo.getPermissionTable());
+		Event event = new EventImpl(new String[]{roleType,roleId,resourceType},
+				ACLEventType.RESOURCE_ROLE_INFO_CHANGE);
+		EventHandle.sendEvent(event);
+		//to log
+		return "success";
+		
+	}
+	/**
+	 * 
+	 * @param resourceType
+	 * @param roleId
+	 * @param roleType
+	 * @param model
+	 * @return
+	 */
 	public String loadResourceOperations(String resourceType,String roleId,String roleType,ModelMap model){
 		if(StringUtil.isEmpty(resourceType))
 		{
 			model.addAttribute("errorMessage", "没有选择资源类型");
 			return "path:loadResourceOperations";
 		}
-			
+		model.addAttribute("isAdministratorRole", AccessControl.isAdministratorRole(this.roleService.getRole(roleId).getRoleName()));	
 		
 		ResourceInfo resourceInfo = resourceManager.getResourceInfoByType(resourceType);
 		if(resourceInfo != null){
+			
 			model.addAttribute("resourceInfo", resourceInfo);
 			model.addAttribute("resourceType", resourceInfo.getId());
 			model.addAttribute("resourceName", resourceInfo.getName());
@@ -163,24 +218,62 @@ public class RoleController {
 			model.addAttribute("roleType", roleType);
 			boolean maintaindata = !resourceInfo.isAuto() && resourceInfo.maintaindata();
 			model.addAttribute("maintaindata", maintaindata);
+			OperationQueue operationQueue = resourceInfo.getOperationQueue();
+			if(operationQueue != null && operationQueue.size() > 0)
+			{
+				model.addAttribute("operationQueue",operationQueue.getList());
+			}
 			if(maintaindata){
-				List<Resource> resources = resourceService.queryListResources(resourceType);
-				model.addAttribute("resources", resources);
+				if(operationQueue == null || operationQueue.size() == 0){
+					List<Resource> resources = resourceService.queryListResources(resourceType);
+					if(resources != null && resources.size() > 0)
+						model.addAttribute("resources", resources);
+				}
+				else
+				{
+					TransactionManager tm = new TransactionManager();
+					try
+					{
+						tm.begin();
+						List<ResourceWithOPS> resources = resourceService.queryListResourceWithOPS(resourceType);
+						if(resources == null || resources.size() == 0)
+							;
+						else
+						{
+							for(int i = 0; i < resources.size(); i ++){
+								ResourceWithOPS res = resources.get(i);
+								Map ps = this.roleService.getGrantedGlobalOperations(  res.getResCode(),resourceType,  roleId,  roleType,resourceInfo.getPermissionTable());
+								res.setPermissionOPS(operationQueue.getList(ps));
+							}
+							model.addAttribute("resources", resources);
+						}
+						tm.commit();
+					}
+					catch(Exception e){
+					
+					}
+					finally
+					{
+						tm.release();
+					}
+					
+				}
+			}
+			if(resourceInfo.isAuto() && StringUtil.isNotEmpty(resourceInfo.getSource())){
+				model.addAttribute("resourceSource", resourceInfo.getSource());
 			}
 			if(resourceInfo.getGlobalresourceid() != null && !resourceInfo.getGlobalresourceid().equals("")){
 				model.addAttribute("hasGlobalresource",true);
 				model.addAttribute("globalResourceid",resourceInfo.getGlobalresourceid());
 				OperationQueue goperationQueue = resourceInfo.getGlobalOperationQueue();
 				if(goperationQueue != null && goperationQueue.size() > 0)
-				{
-					model.addAttribute("globalOperationQueue",goperationQueue.getList());
+				{					
+					Map ps = this.roleService.getGrantedGlobalOperations(  resourceInfo.getGlobalresourceid(),resourceType,  roleId,  roleType,resourceInfo.getPermissionTable());					
+					model.addAttribute("globalOperationQueue",goperationQueue.getList(ps));
+					 
 				}
 			}
-			OperationQueue operationQueue = resourceInfo.getOperationQueue();
-			if(operationQueue != null && operationQueue.size() > 0)
-			{
-				model.addAttribute("operationQueue",operationQueue.getList());
-			}
+			
 			
 		}
 		return "path:loadResourceOperations";

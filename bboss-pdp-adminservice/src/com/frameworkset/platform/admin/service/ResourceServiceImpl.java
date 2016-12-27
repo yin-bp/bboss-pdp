@@ -16,14 +16,17 @@
 
 package com.frameworkset.platform.admin.service;
 
-import com.frameworkset.platform.admin.entity.*;
-import com.frameworkset.util.ListInfo;
-import com.frameworkset.common.poolman.ConfigSQLExecutor;
-import org.apache.log4j.Logger;
-
 import java.sql.SQLException;
 import java.util.List;
+
+import org.apache.log4j.Logger;
+
+import com.frameworkset.common.poolman.ConfigSQLExecutor;
 import com.frameworkset.orm.transaction.TransactionManager;
+import com.frameworkset.platform.admin.entity.Resource;
+import com.frameworkset.platform.admin.entity.ResourceCondition;
+import com.frameworkset.platform.admin.entity.ResourceWithOPS;
+import com.frameworkset.util.ListInfo;
 
 /**
  * <p>Title: ResourceServiceImpl</p> <p>Description: 资源管理管理业务处理类 </p>
@@ -44,6 +47,15 @@ public class ResourceServiceImpl implements ResourceService {
 		}
 
 	}
+	public List<ResourceWithOPS> queryListResourceWithOPS(String resourceType) throws ResourceException{
+		try {
+			List<ResourceWithOPS> reses = executor.queryList(ResourceWithOPS.class, "queryListResourceByType", resourceType);
+			return reses;
+		} catch (SQLException e) {
+			throw new ResourceException(e);
+		}
+	}
+	
 	public List<Resource> queryListResources(String resourceType) throws ResourceException{
 		try {
 			return executor.queryList(Resource.class, "queryListResourceByType", resourceType);

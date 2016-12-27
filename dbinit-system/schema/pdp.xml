@@ -252,7 +252,7 @@
         <column name="TYPES" primaryKey="true" required="true" size="50" type="VARCHAR"/>
         <column default="0" name="AUTHORIZATION_TYPE" size="22" type="DECIMAL"/>
         <column name="USE_COUNT" size="22" type="DECIMAL"/>
-        <column default="sysdate" name="AUTHORIZATION_STIME" type="DATE"/>
+        <column name="AUTHORIZATION_STIME" type="DATE"/>
         <column name="AUTHORIZATION_ETIME" type="DATE"/>
         <column name="USE_COUNTED" size="22" type="DECIMAL"/>
     </table>

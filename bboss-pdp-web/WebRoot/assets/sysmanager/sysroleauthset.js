@@ -27,6 +27,46 @@ var SysRoleAuthset = function(){
 			
 	}
 	var initRoleAuthAction = function(){
+		$('.btn-saveroleauths',ModelDialog.getCurrentModal()).bind('click',function(){			
+			$('.form-roleauthset',ModelDialog.getCurrentModal())
+			.ajaxSubmit(
+					{
+						type : 'POST',
+						url : usercontextpath+'/sysmanager/role/saveRoleAuths.page',
+						forceSync : false,
+						dataType : 'json',
+						beforeSubmit : function() {
+							 App.startPageLoading({message: '保存中...'});				           
+						},
+						error : function(xhr, ajaxOptions,
+								thrownError) {
+							PDP.warn(thrownError) ;
+						},
+
+						success : function(responseText,
+								statusText, xhr, $form) {
+							 
+							 window.setTimeout(function() {
+					                App.stopPageLoading();
+					            }, 2000);
+							var msg = responseText;
+							var title = '设置角色权限';
+							var tiptype = "success";
+							if (msg == 'success') {
+								msg = "设置角色权限完毕"
+								PDP.success(msg,function(){									
+									
+								}) ;
+							} else {							 
+								PDP.warn(msg) ;
+							}
+							
+							
+
+						}
+
+					});
+		});
 		
 	}	 
 	return {

@@ -35,4 +35,5 @@ public interface ResourceService {
 			throws ResourceException;
 	public List<Resource> queryListResources(ResourceCondition conditions) throws ResourceException;
 	public List<Resource> queryListResources(String resourceType) throws ResourceException;
+	public List<ResourceWithOPS> queryListResourceWithOPS(String resourceType) throws ResourceException;
 }

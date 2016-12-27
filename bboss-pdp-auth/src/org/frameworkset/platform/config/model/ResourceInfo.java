@@ -28,7 +28,7 @@ import org.frameworkset.platform.util.I18nResource;
  * @version 1.0
  */
 public class ResourceInfo extends I18nResource {
-    private String resource;
+    private String source;
     private String id;
     private boolean defaultResourceInfo = false;
     private ResourceInfo parent;
@@ -37,6 +37,10 @@ public class ResourceInfo extends I18nResource {
     private ResourceInfoQueue subResources ;
     private ResourceIndentity resourceIndentity;
     private String name;
+    /**
+     * 资源自定义的授权表
+     */
+    private String permissionTable;
   
 
 	/**自定义资源类型是否维护数据标识，默认为true，true标识维护数据，false，标识不维护数据*/
@@ -96,9 +100,7 @@ public class ResourceInfo extends I18nResource {
         excludeResources = new ExcludeResourceQueue();
         subResources = new ResourceInfoQueue();
     }
-    public String getResource() {
-        return resource;
-    }
+    
 
     public boolean isDefaultResourceInfo() {
         return defaultResourceInfo;
@@ -109,20 +111,20 @@ public class ResourceInfo extends I18nResource {
     }
 
 
-    public ResourceIndentity getResourceIndentity() {
-        if(resourceIndentity == null)
-        {
-            try {
-                resourceIndentity = (ResourceIndentity) Class.forName(
-                        getResource()).newInstance();
-                resourceIndentity.setResourceInfo(this);
-            } catch (ClassNotFoundException ex) {
-            } catch (IllegalAccessException ex) {
-            } catch (InstantiationException ex) {
-            }
-        }
-        return resourceIndentity;
-    }
+//    public ResourceIndentity getResourceIndentity() {
+//        if(resourceIndentity == null)
+//        {
+//            try {
+//                resourceIndentity = (ResourceIndentity) Class.forName(
+//                        getResource()).newInstance();
+//                resourceIndentity.setResourceInfo(this);
+//            } catch (ClassNotFoundException ex) {
+//            } catch (IllegalAccessException ex) {
+//            } catch (InstantiationException ex) {
+//            }
+//        }
+//        return resourceIndentity;
+//    }
 
     public String getName() {
         return name;
@@ -133,9 +135,7 @@ public class ResourceInfo extends I18nResource {
     }
 
 
-    public void setResource(String resource) {
-        this.resource = resource;
-    }
+   
 
     public void setDefaultResourceInfo(boolean defaultResourceInfo) {
         this.defaultResourceInfo = defaultResourceInfo;
@@ -373,4 +373,16 @@ public class ResourceInfo extends I18nResource {
 		String temp = super.getName(request);
     	return temp == null?name:temp;
     }
+	public String getPermissionTable() {
+		return permissionTable;
+	}
+	public void setPermissionTable(String permissionTable) {
+		this.permissionTable = permissionTable;
+	}
+	public String getSource() {
+		return source;
+	}
+	public void setSource(String source) {
+		this.source = source;
+	}
 }

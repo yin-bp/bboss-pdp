@@ -17,7 +17,6 @@
 package com.frameworkset.platform.admin.service;
 
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

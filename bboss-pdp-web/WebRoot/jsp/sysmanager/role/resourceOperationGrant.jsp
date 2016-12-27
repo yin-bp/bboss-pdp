@@ -3,7 +3,7 @@
 <%@ taglib uri="/WEB-INF/tld/pager-taglib.tld" prefix="pg"%>
 
 <div class=" col-md-12">
-<form action="#" class="form-horizontal" >
+<form action="#" class="form-horizontal form-roleauthset" >
 	<input type="hidden" name="resourceType"  value="${resourceType }">	
 	<input type="hidden" name="resourceName"  value="${resourceName }">	
 	<input type="hidden" name="roleId"  value="${roleId }">	
@@ -33,18 +33,19 @@
 					          </tr>
 					      </thead> 
 					      <tbody>
-							<pg:list actual="${resources }">
+							<pg:list actual="${resources }" var="resource">
 					          <tr>
 					          	  
-					              <td> <pg:cell colName="resCode" defaultValue="" />  </td>
+					              <td> <pg:cell colName="resCode"/>  </td>
 					              
 					              <td>
-					                  <pg:cell colName="resName" defaultValue="" />
+					                  <pg:cell colName="resName" />
 					              </td>
 					                <td>
-					                   <pg:list actual="${operationQueue }">
-					                   <input
-										name="opcode-<pg:cell colName="resCode" index="0"/>" type="checkbox"  value="<pg:cell colName="id" defaultValue="" />" /> <pg:cell colName="name" defaultValue="" />
+					                   <pg:list actual="${resource.permissionOPS }">
+						                   <input name="res_opcode" type="checkbox"  <pg:true colName="hasPermission">checked</pg:true>
+											value="<pg:cell colName="id"  />::<pg:cell colName="resCode" index="0"/>::<pg:cell colName="resName" index="0"/>"/> 
+											<pg:cell colName="name"  />
 										</pg:list>
 					              </td>
 					          </tr>
@@ -91,7 +92,9 @@
 	     
 					          <tr>
 					          		<td width="10%"><input
-										name="globalopcode" type="checkbox" class="checkone" onClick="checkOne('.table-globalresops .checkboxall','.table-globalresops .checkone')" value="<pg:cell colName="id" defaultValue="" />" />
+										name="globalopcode" type="checkbox" 
+										<pg:true colName="hasPermission">checked</pg:true>
+										class="checkone" onClick="checkOne('.table-globalresops .checkboxall','.table-globalresops .checkone')" value="<pg:cell colName="id" defaultValue="" />" />
 								</td>
 					              
 					              

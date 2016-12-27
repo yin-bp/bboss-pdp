@@ -84,4 +84,26 @@
 		]]>
 	</property>
 	
+	<property name="getGrantedGlobalOperations">
+		<![CDATA[
+			select op_id,AUTHORIZATION_STIME,AUTHORIZATION_ETIME
+			from ${permissionTable} rop 
+			 	 
+			 where rop.ROLE_ID = #[roleId] and rop.TYPES =#[roleType] and RESTYPE_ID = #[resourceType] and RES_ID = #[globalresourceid]		 
+		]]>
+	</property>
+	<property name="cleanroleAuths">
+		<![CDATA[
+			delete 
+			from ${permissionTable}   
+			 where  ROLE_ID = #[roleId] and  TYPES =#[roleType] and RESTYPE_ID = #[resourceType]	 
+		]]>
+	</property>
+	
+	<property name="addAuths">
+		<![CDATA[
+			INSERT INTO ${permissionTable} (OP_ID, RES_ID, ROLE_ID, RESTYPE_ID, RES_NAME, TYPES) VALUES (#[opCode], #[resCode], #[roleId], #[resourceType], #[resName], #[roleType]) 
+		]]>
+	</property>
+	
 	</properties>
