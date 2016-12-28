@@ -139,7 +139,10 @@
 		<operation id="visible" priority="10" name="可点击" />
     </group>	
 	<!-- 菜单资源 -->
-	<resource id="column" name="菜单资源"  i18n:en_US="Menu Resource"   class="resColumnTree.jsp" auto="true" allowIfNoRequiredRole="false" struction="tree"  system="module,cms,trans_server,trans_client,cimconsole,esb,autodeploy,mbp,sanylog">
+	<resource id="column" name="菜单资源"  i18n:en_US="Menu Resource"  
+			 source="/menu/grantedcolumns.page" 
+			auto="true" allowIfNoRequiredRole="false"
+			 system="module">
 		<unprotected resourceid="personuserinfomodify" />
 		<unprotected resourceid="personsecretpassword" />
 		<unprotected resourceid="appManager" />
@@ -168,7 +171,7 @@
 	</resource>
 	
 	<!-- 角色资源 -->
-	<resource id="role" name="角色资源"  i18n:en_US="Role Resource"  class="resRoleTree.jsp"  auto="true" system="module,cms,trans_server,trans_client,esb,autodeploy,mbp,sanylog">
+	<resource id="role" name="角色资源"  i18n:en_US="Role Resource"  source="resRoleTree.jsp"  auto="true" system="module">
 		<!--定义非未受保护的特殊资源-->
 		<!--
                 定义资源操作组

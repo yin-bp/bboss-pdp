@@ -3,16 +3,13 @@
  */
 package com.frameworkset.platform.admin.entity;
 
-import org.frameworkset.util.annotations.RequestParam;
-
 /**
  * @author yinbp
  *
  * @Date:2016-12-27 22:16:27
  */
 public class ResOpr {
-	private String resCode;
-	@RequestParam(name="opcode-${resCode}")
+	private String resCode;	
 	private String op;
 	private String resName;
 	/**

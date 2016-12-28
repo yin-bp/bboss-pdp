@@ -27,13 +27,14 @@ import org.apache.log4j.Logger;
 import com.frameworkset.common.poolman.ConfigSQLExecutor;
 import com.frameworkset.common.poolman.Record;
 import com.frameworkset.common.poolman.handle.NullRowHandler;
+import com.frameworkset.common.poolman.handle.RowHandler;
 import com.frameworkset.orm.transaction.TransactionManager;
+import com.frameworkset.platform.admin.entity.AuthOPS;
 import com.frameworkset.platform.admin.entity.ResOpr;
 import com.frameworkset.platform.admin.entity.Role;
 import com.frameworkset.platform.admin.entity.RoleCondition;
 import com.frameworkset.platform.admin.entity.UserRole;
 import com.frameworkset.util.ListInfo;
-import com.frameworkset.util.StringUtil;
 
 /**
  * <p>Title: RoleServiceImpl</p> <p>Description: 角色管理管理业务处理类 </p> <p>bboss</p>
@@ -157,6 +158,53 @@ public class RoleServiceImpl implements RoleService {
 			return ps;
 		} catch (Exception e) {
 			throw new RoleException(" getGrantedGlobalOperations failed:", e);
+		}
+	}
+	
+	/**
+	 * 获取资源类型下面的，授予角色的全局操作及有效时间
+	 * op_id,AUTHORIZATION_STIME,AUTHORIZATION_ETIME
+	 * @param opcode
+	 * @param resourceType
+	 * @param roleId
+	 * @param roleType
+	 */
+	public List<AuthOPS> getGrantedOperations(String opcode, String resourceType, String roleId,
+			String roleType,String permissionTable,RowHandler rowHandler)throws RoleException{
+		try {
+			// rop.ROLE_ID = ? and rop.TYPES =? and RESTYPE_ID = ? and RES_ID = ?
+			Map params = new HashMap();
+			params.put("roleId", roleId);
+			params.put("resourceType", resourceType);
+			params.put("opcode", opcode);
+			params.put("roleType", roleType);
+			params.put("permissionTable", permissionTable);
+			List<AuthOPS> menus = null;
+			if(rowHandler == null){
+				menus = this.executor.queryListBeanByRowHandler(new RowHandler<AuthOPS>(){
+	
+					@Override
+					public void handleRow(AuthOPS menu,Record origine) throws Exception {
+						String op_id = origine.getString("op_id");
+						menu.setOpcode(op_id);
+						menu.setResCode(origine.getString("RES_ID"));
+						menu.setResName(origine.getString("RES_NAME"));
+						menu.setResourceType(origine.getString("RESTYPE_ID"));					
+						menu.setAUTHORIZATION_ETIME(origine.getDate("AUTHORIZATION_ETIME"));
+						menu.setAUTHORIZATION_STIME(origine.getDate("AUTHORIZATION_STIME"));
+						
+						
+					}
+					
+				}, AuthOPS.class, "getGrantedOperations", params);
+			}
+			else
+			{
+				menus = this.executor.queryListBeanByRowHandler(rowHandler, AuthOPS.class, "getGrantedOperations", params);
+			}
+			return menus;
+		} catch (Exception e) {
+			throw new RoleException(" getGrantedOperations failed:", e);
 		}
 	}
 	/** (non-Javadoc)

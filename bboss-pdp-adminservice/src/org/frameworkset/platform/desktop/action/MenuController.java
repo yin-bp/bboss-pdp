@@ -1,85 +1,116 @@
-/*     */ package org.frameworkset.platform.desktop.action;
-/*     */ 
-/*     */ import java.util.List;
+package org.frameworkset.platform.desktop.action;
 
-/*     */ import javax.servlet.http.HttpServletRequest;
-/*     */ import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.frameworkset.platform.common.JSTreeNode;
+import org.frameworkset.platform.common.TreeNodeStage;
+import org.frameworkset.platform.config.model.ResourceInfo;
+import org.frameworkset.platform.framework.Framework;
+import org.frameworkset.platform.framework.MenuItem;
+import org.frameworkset.platform.framework.MenuQueue;
+import org.frameworkset.platform.framework.Module;
+import org.frameworkset.platform.resource.ResourceManager;
+import org.frameworkset.platform.security.AccessControl;
+import org.frameworkset.platform.security.AuthorResource;
+import org.frameworkset.util.annotations.ResponseBody;
+import org.frameworkset.web.servlet.ModelMap;
+
+import com.frameworkset.common.poolman.Record;
+import com.frameworkset.common.poolman.handle.RowHandler;
+import com.frameworkset.platform.admin.entity.MenuOPS;
+import com.frameworkset.platform.admin.service.RoleService;
+
+public class MenuController{
+	private ResourceManager resourceManager = new ResourceManager();
+	private RoleService roleService;
+	public String grantedcolumns(String resourceType,String roleId,String roleType,ModelMap model){
+		if(resourceType == null)
+			resourceType = "column";
+		String currentSystem = AccessControl.getAccessControl().getCurrentSystemID();
+		final Framework framework = Framework.getInstance(currentSystem);		
+		model.addAttribute("roleId", roleId);
+		model.addAttribute("roleType", roleType);
+		model.addAttribute("resourceType", resourceType);
+		ResourceInfo resourceInfo = resourceManager.getResourceInfoByType(resourceType);
+		List<MenuOPS> grantedcolumns = this.roleService.getGrantedOperations("visible",resourceType, roleId, roleType, resourceInfo.getPermissionTable(), new RowHandler<MenuOPS>(){
+			
+			@Override
+			public void handleRow(MenuOPS menu,Record origine) throws Exception {
+				String op_id = origine.getString("op_id");
+				menu.setOpcode(op_id);
+				menu.setResCode(origine.getString("RES_ID"));
+				menu.setResName(origine.getString("RES_NAME"));
+				menu.setResourceType(origine.getString("RESTYPE_ID"));					
+				menu.setAUTHORIZATION_ETIME(origine.getDate("AUTHORIZATION_ETIME"));
+				menu.setAUTHORIZATION_STIME(origine.getDate("AUTHORIZATION_STIME"));
+				MenuItem menuItem = framework.getMenuByID(menu.getResCode());
+				menu.setMenuName(menuItem.getName());
+				menu.setMenupath(menuItem.getPath());
+				AuthorResource ar = (AuthorResource)menuItem;
+				menu.setUrls(ar.toString());
+				
+			}
+			
+		});
+		model.addAttribute("grantedcolumns", grantedcolumns);
+		return "path:grantedcolumns";
+	}
+	private JSTreeNode buildJSTreeNode(MenuItem menu)
+	{
+		JSTreeNode JSTreeNode = new JSTreeNode();
+		JSTreeNode.setId(menu.getId());
+//		JSTreeNode.setText(new StringBuilder().append("<a href=\"#\" onclick=\"javascript:Sysmanager.showOrgUsers('").append(org.getOrgId()).append("');\">").append(org.getOrgName()).append("</a>").toString());
+		JSTreeNode.setText(menu.getName());
+		JSTreeNode.setIcon(null);
+		TreeNodeStage state = new TreeNodeStage();
+		state.setDisabled(false);
+		state.setOpened(false);
+		state.setSelected(false);
+		JSTreeNode.setState(state);
+		JSTreeNode.setChildren(true);
+		return JSTreeNode;
+	}
+	public @ResponseBody List<JSTreeNode> getChildrens(String parent,String roleId,String roleType){
+		String currentSystem = AccessControl.getAccessControl().getCurrentSystemID();
+		Framework framework = Framework.getInstance(currentSystem);
+		if(parent == null || parent.equals("#")){
+			MenuQueue menus = framework.getMenus();
+			if(menus != null && menus.size() > 0){
+				List<JSTreeNode> treeNodes = new ArrayList<JSTreeNode>();
+				for(MenuItem menu:menus.getList())
+				{
+					treeNodes.add(this.buildJSTreeNode(menu));
+				}
+				return treeNodes;
+			}
+				
+			
+		}
+		else
+		{
+			MenuItem menuItem = framework.getMenuByID(parent);
+			if(menuItem instanceof Module){
+				MenuQueue menus = ((Module)menuItem).getMenus();
+				if(menus != null && menus.size() > 0){
+					List<JSTreeNode> treeNodes = new ArrayList<JSTreeNode>();
+					for(MenuItem menu:menus.getList())
+					{
+						treeNodes.add(this.buildJSTreeNode(menu));
+					}
+					return treeNodes;
+				}
+			}
+			
+		}
+		 
+		return null;
+		 
+			
+	}
+	public String columnAuthTree(String roleId,String roleType){
+		return "path:columnAuthTree";
+	}
 
 
-
-/*     */ import org.apache.commons.lang.StringUtils;
-/*     */ import org.apache.log4j.Logger;
-
-
-/*     */ 
-/*     */ 
-/*     */
-/*     */public class MenuController
-/*     */ {
-/*  33 */   private static final Logger log = Logger.getLogger(MenuController.class);
-
-/*     */ 		
-/*     */   public String initMenu(HttpServletRequest request, HttpServletResponse response)
-/*     */   {
-/*     */    
-/*  69 */     return null;
-/*     */   }
-/*     */   public String initMenuMain(HttpServletRequest request) throws Exception {
-/*  72 */     return "path:initMenuMain";
-/*     */   }
-/*     */   public String initMenuAdd(HttpServletRequest request) throws Exception {
-/*  75 
-/*  87 */     return "path:initMenuAdd";
-/*     */   }
-/*     */   public void initMenuTree(HttpServletRequest request, HttpServletResponse response) throws Exception {
-/*  90 */    
-/*     */   }
-/*     */    
-/*     */ 
-/*     */  
-/*     */ 
-/*     */   public void saveModify(HttpServletRequest request, HttpServletResponse response) throws Exception {
-/* 129 */    
-/* 130 */     response.getWriter().println("success");
-/*     */   }
-/*     */ 
-/*     */   public void saveAdd(HttpServletRequest request, HttpServletResponse response) throws Exception {
-/* 134 */     
-/* 135 */     response.getWriter().println("success");
-/*     */   }
-/*     */ 
-/*     */   public String loadDesk(HttpServletRequest request, HttpServletResponse response)
-/*     */   {
-/* 163 */     return "path:loadDesk";
-/*     */   }
-/*     */ 
-/*     */   public void deleteMenu(HttpServletRequest request, HttpServletResponse response) throws Exception {
-/* 167 */     String id = request.getParameter("id");
-/* 168 */     if ((id != null) && (!"".equals(id))) {
-/* 169 */     
-/* 170 */       response.getWriter().println("success");
-/*     */     } else {
-/* 172 */       response.getWriter().println("error");
-/*     */     }
-/*     */   }
-/*     */ 
-/*     */   public void loadLeftTreeMenu(HttpServletRequest request, HttpServletResponse response)
-/*     */     throws Exception
-/*     */   {
-/* 252 */     response.setCharacterEncoding("UTF-8");
-/* 253 */     
-/* 255 */     String parentId = request.getParameter("parentId");
-/* 256 */     if ((parentId != null) && (!"".equals(parentId))) {
-/*     */       
-/* 263 */           response.getWriter().println("");
-/*     */       
-/*     */     }
-/*     */     else
-/* 270 */       response.getWriter().println("error");
-/*     */   }
-/*     */ }
-
-/* Location:           D:\workspace3\radar\WebRoot\WEB-INF\classes\
- * Qualified Name:     com.system.sm.menu.web.MenuController
- * JD-Core Version:    0.6.2
- */
+}

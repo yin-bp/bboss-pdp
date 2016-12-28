@@ -16,6 +16,7 @@
 
 package com.frameworkset.platform.admin.service;
 
+import com.frameworkset.common.poolman.handle.RowHandler;
 import com.frameworkset.platform.admin.entity.*;
 import com.frameworkset.util.ListInfo;
 import java.util.List;
@@ -49,6 +50,17 @@ public interface RoleService {
 	 */
 	public Map getGrantedGlobalOperations(String globalresourceid, String resourceType, String roleId,
 			String roleType,String permissionTable)throws RoleException;
+	
+	/**
+	 * 获取资源类型下面的，授予角色的全局操作及有效时间
+	 * op_id,AUTHORIZATION_STIME,AUTHORIZATION_ETIME
+	 * @param opcode
+	 * @param resourceType
+	 * @param roleId
+	 * @param roleType
+	 */
+	public <T> List<T> getGrantedOperations(String opcode, String resourceType, String roleId,
+			String roleType,String permissionTable,RowHandler<T> rowHandler)throws RoleException;
 	/**
 	 * @param globalresourceid
 	 * @param globalopcode

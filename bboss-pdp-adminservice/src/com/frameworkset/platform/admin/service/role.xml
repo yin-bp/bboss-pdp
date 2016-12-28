@@ -87,11 +87,18 @@
 	<property name="getGrantedGlobalOperations">
 		<![CDATA[
 			select op_id,AUTHORIZATION_STIME,AUTHORIZATION_ETIME
-			from ${permissionTable} rop 
-			 	 
+			from ${permissionTable} rop 			 	 
 			 where rop.ROLE_ID = #[roleId] and rop.TYPES =#[roleType] and RESTYPE_ID = #[resourceType] and RES_ID = #[globalresourceid]		 
 		]]>
 	</property>
+	<property name="getGrantedOperations">
+		<![CDATA[
+			select *
+			from ${permissionTable} rop 			 	 
+			 where rop.ROLE_ID = #[roleId] and rop.TYPES =#[roleType] and RESTYPE_ID = #[resourceType] and op_id = #[opcode]		 
+		]]>
+	</property>
+	
 	<property name="cleanroleAuths">
 		<![CDATA[
 			delete 

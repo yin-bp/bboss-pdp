@@ -20,6 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.log4j.Logger;
 import org.frameworkset.event.Event;
 import org.frameworkset.event.EventHandle;
@@ -200,7 +202,7 @@ public class RoleController {
 	 * @param model
 	 * @return
 	 */
-	public String loadResourceOperations(String resourceType,String roleId,String roleType,ModelMap model){
+	public String loadResourceOperations(String resourceType,String roleId,String roleType,ModelMap model,HttpServletRequest request){
 		if(StringUtil.isEmpty(resourceType))
 		{
 			model.addAttribute("errorMessage", "没有选择资源类型");
@@ -260,7 +262,7 @@ public class RoleController {
 				}
 			}
 			if(resourceInfo.isAuto() && StringUtil.isNotEmpty(resourceInfo.getSource())){
-				model.addAttribute("resourceSource", resourceInfo.getSource());
+				model.addAttribute("resourceSource", StringUtil.getRealPath(request.getContextPath(), resourceInfo.getSource()));
 			}
 			if(resourceInfo.getGlobalresourceid() != null && !resourceInfo.getGlobalresourceid().equals("")){
 				model.addAttribute("hasGlobalresource",true);

@@ -3,6 +3,22 @@
 <%@ taglib uri="/WEB-INF/tld/pager-taglib.tld" prefix="pg"%>
 
 <div class=" col-md-12">
+	<pg:notempty actual="${resourceSource }">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="portlet light bordered auto-resourcesauthsource">
+					<script type="text/javascript">
+							jQuery(document).ready(function() {								
+								$(".auto-resourcesauthsource").load("${resourceSource}",{"roleId":"${roleId}","roleType":"${roleType}","resourceType":"${resourceType}"},function(){
+									 Layout.fixContentHeight(); // fix content height
+						             App.initAjax(); // initialize core stuff
+								});
+							});
+					</script>
+				</div>
+			</div>
+		</div>
+	</pg:notempty>
 <form action="#" class="form-horizontal form-roleauthset" >
 	<input type="hidden" name="resourceType"  value="${resourceType }">	
 	<input type="hidden" name="resourceName"  value="${resourceName }">	
@@ -60,6 +76,7 @@
 			</div>
 		</div>
 	</pg:true>
+	
 	<pg:true actual="${hasGlobalresource }">
 		 
 		<div class="row">
@@ -115,7 +132,7 @@
 			</div>
 		</div>
 	</pg:true>	
-		
+	<pg:true actual="${maintaindata || hasGlobalresource}">	
 			<div class="form-actions">
 				<div class="row">
 					<div class="col-md-offset-3 col-md-9">
@@ -127,7 +144,7 @@
 				</div>
 			</div>
 			<div class="row"><div class="col-md-12" >&nbsp;</div></div>
-			
+	</pg:true>		
 </form>	
 		<div class="row">
 			<div class="col-md-12">
