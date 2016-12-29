@@ -49,7 +49,13 @@
 	             </td>
 	         </tr>
 		</pg:list>
-   
+   		 <tr>
+	         	<td colspan="100"><input
+					id="xxxxxxmenuid" type="text" 					
+					/>
+				</td>             
+	             
+	         </tr>
      </tbody>
  </table>
 </div>

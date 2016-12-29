@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.frameworkset.platform.common.JSTreeNode;
 import org.frameworkset.platform.common.TreeNodeStage;
+import org.frameworkset.platform.common.ZKTreeNode;
 import org.frameworkset.platform.config.model.ResourceInfo;
 import org.frameworkset.platform.framework.Framework;
 import org.frameworkset.platform.framework.MenuItem;
@@ -56,6 +57,16 @@ public class MenuController{
 		model.addAttribute("grantedcolumns", grantedcolumns);
 		return "path:grantedcolumns";
 	}
+	
+	private ZKTreeNode buildZKTreeNode(MenuItem menu)
+	{
+		ZKTreeNode JSTreeNode = new ZKTreeNode();
+		JSTreeNode.setId(menu.getId());
+//		JSTreeNode.setText(new StringBuilder().append("<a href=\"#\" onclick=\"javascript:Sysmanager.showOrgUsers('").append(org.getOrgId()).append("');\">").append(org.getOrgName()).append("</a>").toString());
+		JSTreeNode.setName(menu.getName());
+		JSTreeNode.setIsParent(true);
+		return JSTreeNode;
+	}
 	private JSTreeNode buildJSTreeNode(MenuItem menu)
 	{
 		JSTreeNode JSTreeNode = new JSTreeNode();
@@ -97,6 +108,44 @@ public class MenuController{
 					for(MenuItem menu:menus.getList())
 					{
 						treeNodes.add(this.buildJSTreeNode(menu));
+					}
+					return treeNodes;
+				}
+			}
+			
+		}
+		 
+		return null;
+		 
+			
+	}
+	
+	public @ResponseBody List<ZKTreeNode> getzkChildrens(String id,String roleId,String roleType){
+		String currentSystem = AccessControl.getAccessControl().getCurrentSystemID();
+		Framework framework = Framework.getInstance(currentSystem);
+		if(id == null || id.equals("#")){
+			MenuQueue menus = framework.getMenus();
+			if(menus != null && menus.size() > 0){
+				List<ZKTreeNode> treeNodes = new ArrayList<ZKTreeNode>();
+				for(MenuItem menu:menus.getList())
+				{
+					treeNodes.add(this.buildZKTreeNode(menu));
+				}
+				return treeNodes;
+			}
+				
+			
+		}
+		else
+		{
+			MenuItem menuItem = framework.getMenuByID(id);
+			if(menuItem instanceof Module){
+				MenuQueue menus = ((Module)menuItem).getMenus();
+				if(menus != null && menus.size() > 0){
+					List<ZKTreeNode> treeNodes = new ArrayList<ZKTreeNode>();
+					for(MenuItem menu:menus.getList())
+					{
+						treeNodes.add(this.buildZKTreeNode(menu));
 					}
 					return treeNodes;
 				}

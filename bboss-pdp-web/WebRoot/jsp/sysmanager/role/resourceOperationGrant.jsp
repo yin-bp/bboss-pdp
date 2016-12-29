@@ -9,11 +9,14 @@
 				<div class="portlet light bordered auto-resourcesauthsource">
 					<script type="text/javascript">
 							jQuery(document).ready(function() {								
+								loadauto_resourcesauthsource();
+							});
+							function loadauto_resourcesauthsource(){
 								$(".auto-resourcesauthsource").load("${resourceSource}",{"roleId":"${roleId}","roleType":"${roleType}","resourceType":"${resourceType}"},function(){
 									 Layout.fixContentHeight(); // fix content height
 						             App.initAjax(); // initialize core stuff
 								});
-							});
+							}
 					</script>
 				</div>
 			</div>
