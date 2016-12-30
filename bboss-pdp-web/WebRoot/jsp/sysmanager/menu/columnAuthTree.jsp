@@ -57,11 +57,49 @@ jQuery(document).ready(function() {
  
 	 	$(".btn-savecolumnauths",ModelDialog.getCurrentModal()).bind("click",function(){
 	 		var nodes = culumn_authtree.getCheckedNodes(true);
+	 		 
+	 		var resCodes = "";
+	 		var resNames = "";
+	 		if(nodes.length == 0){
+	 			PDP.warn("请选择要授予的菜单");
+	 			return ;
+	 		}
+	 		nodes.forEach(function( val, index ) {
+	 			if(resCodes == ""){
+	 				resCodes = val.id;
+	 				resNames = val.name;
+	 			}
+	 			else
+	 			{
+	 				resCodes = resCodes+","+val.id;
+	 				resNames = resNames+","+val.name;
+	 			}
+	 		}); 
+	 		$.ajax({
+       		   type: "POST",
+       			url : "${pageContext.request.contextPath}/sysmanager/role/saveRoleResourceAuths.page",
+       			data :{"opCode":"visible","resCodes":resCodes,"resNames":resNames,"resourceType":"column",roleId:'${roleId}',roleType:'${roleType}'},
+       			dataType : 'json',
+       			async:false,
+       			beforeSend: function(XMLHttpRequest){ 					
+       				 	
+       				},
+       			success : function(responseText){
+       				
+       				if(responseText=="success"){
+       					
+       					PlatformCommonUtils.success("菜单授权成功!");
+       					ModelDialog.getCurrentModal().modal('hide');
+       					loadauto_resourcesauthsource();
+       				}else{
+       					PlatformCommonUtils.warn("菜单授权失败:"+responseText);
+       				}
+       			}
+       		  });
+	 		 
 	 		
-	 		$("#xxxxxxmenuid",ModelDialog.getParentModal()).val("ddddd");
-	 		ModelDialog.getCurrentModal().modal('hide');
-	 		console.log($("#xxxxxxmenuid",ModelDialog.getParentModal()).val())
-	 		loadauto_resourcesauthsource();
+	 		 
+	 		
 
 	 	});
 		PDP.initSlimScroll('.scroller',ModelDialog.getCurrentModal(),true);

@@ -112,5 +112,11 @@
 			INSERT INTO ${permissionTable} (OP_ID, RES_ID, ROLE_ID, RESTYPE_ID, RES_NAME, TYPES) VALUES (#[opCode], #[resCode], #[roleId], #[resourceType], #[resName], #[roleType]) 
 		]]>
 	</property>
+	<property name="hasgranted">
+		<![CDATA[
+			select count(1) from ${permissionTable} where OP_ID = #[opCode] and  RES_ID = #[resCode] and  RESTYPE_ID = #[resourceType]  and ROLE_ID = #[roleId] and TYPES = #[roleType]
+		]]>
+	</property>
 	
-	</properties>
+	
+</properties>

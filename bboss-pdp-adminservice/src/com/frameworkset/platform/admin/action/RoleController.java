@@ -51,9 +51,19 @@ import com.frameworkset.util.ListInfo;
 import com.frameworkset.util.StringUtil;
 
 /**
- * <p>Title: RoleController</p> <p>Description: 角色管理管理控制器处理类 </p> <p>bboss</p>
- * <p>Copyright (c) 2007</p> @Date 2016-12-15 17:06:09 @author yinbp @version
- * v1.0
+ * <p>
+ * Title: RoleController
+ * </p>
+ * <p>
+ * Description: 角色管理管理控制器处理类
+ * </p>
+ * <p>
+ * bboss
+ * </p>
+ * <p>
+ * Copyright (c) 2007
+ * </p>
+ * @Date 2016-12-15 17:06:09 @author yinbp @version v1.0
  */
 public class RoleController {
 
@@ -62,6 +72,7 @@ public class RoleController {
 	private ResourceService resourceService;
 	private ResourceManager resourceManager = new ResourceManager();
 	private RoleService roleService;
+
 	public @ResponseBody String addRole(Role role) {
 		// 控制器
 		try {
@@ -76,6 +87,7 @@ public class RoleController {
 		}
 
 	}
+
 	public @ResponseBody String deleteRole(String roleId) {
 		try {
 			roleService.deleteRole(roleId);
@@ -89,13 +101,14 @@ public class RoleController {
 		}
 
 	}
+
 	public @ResponseBody String deleteBatchRole(String roleIds) {
 		try {
-			if(roleIds != null && !roleIds.equals("")){
+			if (roleIds != null && !roleIds.equals("")) {
 				String[] rs = roleIds.split(",");
 				roleService.deleteBatchRole(rs);
 			}
-				
+
 			return "success";
 		} catch (Throwable e) {
 			log.error("delete Batch roleIds failed:", e);
@@ -103,6 +116,7 @@ public class RoleController {
 		}
 
 	}
+
 	public @ResponseBody String updateRole(Role role) {
 		try {
 			roleService.updateRole(role);
@@ -113,6 +127,7 @@ public class RoleController {
 		}
 
 	}
+
 	public String getRole(String roleId, ModelMap model) throws RoleException {
 		try {
 			Role role = roleService.getRole(roleId);
@@ -125,26 +140,22 @@ public class RoleController {
 		}
 
 	}
-	
-	public String toroleauthset(String roleId,
-			String  roleName,
-			String  roleType ,
-			String roleCName,ModelMap model){
+
+	public String toroleauthset(String roleId, String roleName, String roleType, String roleCName, ModelMap model) {
 		String curSystem = AccessControl.getAccessControl().getCurrentSystemID();
-		ResourceInfoQueue  resQueue = resourceManager.getResourceInfoQueue();
+		ResourceInfoQueue resQueue = resourceManager.getResourceInfoQueue();
 		List<ResourceInfo> resourceTypes = new ArrayList<ResourceInfo>();
-		 for (int i = 0; resQueue != null && i < resQueue.size(); i++) {
-             ResourceInfo res = resQueue.getResourceInfo(i);
-//             System.out.println("res.isAuto() = " + res.isAuto());
-             //判断当前系统模块；
-             if (res.isUsed() && res.containSystem(curSystem) ) {
-            	 resourceTypes.add(res);
-               
-             }
-         }
+		for (int i = 0; resQueue != null && i < resQueue.size(); i++) {
+			ResourceInfo res = resQueue.getResourceInfo(i);
+			// System.out.println("res.isAuto() = " + res.isAuto());
+			// 判断当前系统模块；
+			if (res.isUsed() && res.containSystem(curSystem)) {
+				resourceTypes.add(res);
+
+			}
+		}
 		model.addAttribute("resourceTypes", resourceTypes);
-		if(resourceTypes.size() > 0)
-		{
+		if (resourceTypes.size() > 0) {
 			model.addAttribute("resourceType", resourceTypes.get(0).getId());
 			model.addAttribute("resourceName", resourceTypes.get(0).getName());
 		}
@@ -152,28 +163,24 @@ public class RoleController {
 		model.addAttribute("roleName", roleName);
 		model.addAttribute("roleType", roleType);
 		model.addAttribute("roleCName", roleCName);
-		
+
 		return "path:toroleauthset";
 	}
-	public @ResponseBody String saveRoleAuths(String[] globalopcode,
-									  String[] res_opcode,
-									   String resourceType,
-									   String roleId,
-									   String roleType){
-		if(StringUtil.isEmpty(resourceType))
-		{
-			return  "没有选择资源类型";
+
+	public @ResponseBody String saveRoleAuths(String[] globalopcode, String[] res_opcode, String resourceType,
+			String roleId, String roleType) {
+		if (StringUtil.isEmpty(resourceType)) {
+			return "没有选择资源类型";
 		}
 		ResourceInfo resourceInfo = resourceManager.getResourceInfoByType(resourceType);
-		if(resourceInfo == null)
-		{
-			return "资源类别"+resourceType+"不存在！";
+		if (resourceInfo == null) {
+			return "资源类别" + resourceType + "不存在！";
 		}
 		List<ResOpr> resOprs = null;
-		if(res_opcode != null && res_opcode.length > 0){
+		if (res_opcode != null && res_opcode.length > 0) {
 			resOprs = new ArrayList<ResOpr>(res_opcode.length);
 			ResOpr _resOpr = null;
-			for(String resOpr:res_opcode){
+			for (String resOpr : res_opcode) {
 				String[] _temp = resOpr.split("::");
 				_resOpr = new ResOpr();
 				_resOpr.setOp(_temp[0]);
@@ -182,18 +189,94 @@ public class RoleController {
 				resOprs.add(_resOpr);
 			}
 		}
-		this.roleService.saveRoleAuths( resourceInfo.getGlobalresourceid(),globalopcode,
-				  	 resOprs,
-				     resourceType,
-				     roleId,
-				     roleType,resourceInfo.getPermissionTable());
-		Event event = new EventImpl(new String[]{roleType,roleId,resourceType},
+		this.roleService.saveRoleAuths(resourceInfo.getGlobalresourceid(), globalopcode, resOprs, resourceType, roleId,
+				roleType, resourceInfo.getPermissionTable());
+		Event event = new EventImpl(new String[] { roleType, roleId, resourceType },
 				ACLEventType.RESOURCE_ROLE_INFO_CHANGE);
 		EventHandle.sendEvent(event);
-		//to log
+		// to log
 		return "success";
-		
+
 	}
+
+	/**
+	 * 自动维护的资源授权保存方法
+	 * 
+	 * @param opCode
+	 * @param resCodes
+	 * @param resNames
+	 * @param resourceType
+	 * @param roleId
+	 * @param roleType
+	 * @return
+	 */
+	public @ResponseBody String saveRoleResourceAuths(String opCode, String resCodes, String resNames,
+			String resourceType, String roleId, String roleType) {
+		if (StringUtil.isEmpty(resourceType)) {
+			return "没有选择资源类型";
+		}
+		ResourceInfo resourceInfo = resourceManager.getResourceInfoByType(resourceType);
+		if (resourceInfo == null) {
+			return "资源类别" + resourceType + "不存在！";
+		}
+		List<ResOpr> resOprs = null;
+		if (resCodes != null) {
+			String[] res_code = resCodes.split(",");
+			String[] res_name = resNames.split(",");
+			resOprs = new ArrayList<ResOpr>(res_code.length);
+			ResOpr _resOpr = null;
+			for (int i = 0; i < res_code.length; i++) {
+
+				_resOpr = new ResOpr();
+				_resOpr.setOp(opCode);
+				_resOpr.setResCode(res_code[i]);
+				_resOpr.setResName(res_name[i]);
+				resOprs.add(_resOpr);
+			}
+		}
+		this.roleService.saveRoleAuths(resOprs, resourceType, roleId, roleType, resourceInfo.getPermissionTable());
+		Event event = new EventImpl(new String[] { roleType, roleId, resourceType },
+				ACLEventType.RESOURCE_ROLE_INFO_CHANGE);
+		EventHandle.sendEvent(event);
+		// to log
+		return "success";
+
+	}
+	
+	public @ResponseBody String deleteRoleAuthResources(String opCode, String resCodes,
+			String resourceType, String roleId, String roleType){
+		if (StringUtil.isEmpty(resourceType)) {
+			return "没有选择资源类型";
+		}
+		if (StringUtil.isEmpty(resCodes)) {
+			return "没有选择资源";
+		}
+		ResourceInfo resourceInfo = resourceManager.getResourceInfoByType(resourceType);
+		if (resourceInfo == null) {
+			return "资源类别" + resourceType + "不存在！";
+		}
+		List<ResOpr> resOprs = null;
+		if (resCodes != null) {
+			String[] res_code = resCodes.split(",");
+			resOprs = new ArrayList<ResOpr>(res_code.length);
+			ResOpr _resOpr = null;
+			for (int i = 0; i < res_code.length; i++) {
+
+				_resOpr = new ResOpr();
+				_resOpr.setOp(opCode);
+				_resOpr.setResCode(res_code[i]);
+				
+				resOprs.add(_resOpr);
+			}
+		}
+		this.roleService.deleteRoleAuthResources(resOprs, resourceType, roleId, roleType, resourceInfo.getPermissionTable());
+		Event event = new EventImpl(new String[] { roleType, roleId, resourceType },
+				ACLEventType.RESOURCE_ROLE_INFO_CHANGE);
+		EventHandle.sendEvent(event);
+		// to log
+		return "success";
+	}
+
 	/**
 	 * 
 	 * @param resourceType
@@ -202,17 +285,18 @@ public class RoleController {
 	 * @param model
 	 * @return
 	 */
-	public String loadResourceOperations(String resourceType,String roleId,String roleType,ModelMap model,HttpServletRequest request){
-		if(StringUtil.isEmpty(resourceType))
-		{
+	public String loadResourceOperations(String resourceType, String roleId, String roleType, ModelMap model,
+			HttpServletRequest request) {
+		if (StringUtil.isEmpty(resourceType)) {
 			model.addAttribute("errorMessage", "没有选择资源类型");
 			return "path:loadResourceOperations";
 		}
-		model.addAttribute("isAdministratorRole", AccessControl.isAdministratorRole(this.roleService.getRole(roleId).getRoleName()));	
-		
+		model.addAttribute("isAdministratorRole",
+				AccessControl.isAdministratorRole(this.roleService.getRole(roleId).getRoleName()));
+
 		ResourceInfo resourceInfo = resourceManager.getResourceInfoByType(resourceType);
-		if(resourceInfo != null){
-			
+		if (resourceInfo != null) {
+
 			model.addAttribute("resourceInfo", resourceInfo);
 			model.addAttribute("resourceType", resourceInfo.getId());
 			model.addAttribute("resourceName", resourceInfo.getName());
@@ -221,72 +305,65 @@ public class RoleController {
 			boolean maintaindata = !resourceInfo.isAuto() && resourceInfo.maintaindata();
 			model.addAttribute("maintaindata", maintaindata);
 			OperationQueue operationQueue = resourceInfo.getOperationQueue();
-			if(operationQueue != null && operationQueue.size() > 0)
-			{
-				model.addAttribute("operationQueue",operationQueue.getList());
+			if (operationQueue != null && operationQueue.size() > 0) {
+				model.addAttribute("operationQueue", operationQueue.getList());
 			}
-			if(maintaindata){
-				if(operationQueue == null || operationQueue.size() == 0){
+			if (maintaindata) {
+				if (operationQueue == null || operationQueue.size() == 0) {
 					List<Resource> resources = resourceService.queryListResources(resourceType);
-					if(resources != null && resources.size() > 0)
+					if (resources != null && resources.size() > 0)
 						model.addAttribute("resources", resources);
-				}
-				else
-				{
+				} else {
 					TransactionManager tm = new TransactionManager();
-					try
-					{
+					try {
 						tm.begin();
 						List<ResourceWithOPS> resources = resourceService.queryListResourceWithOPS(resourceType);
-						if(resources == null || resources.size() == 0)
+						if (resources == null || resources.size() == 0)
 							;
-						else
-						{
-							for(int i = 0; i < resources.size(); i ++){
+						else {
+							for (int i = 0; i < resources.size(); i++) {
 								ResourceWithOPS res = resources.get(i);
-								Map ps = this.roleService.getGrantedGlobalOperations(  res.getResCode(),resourceType,  roleId,  roleType,resourceInfo.getPermissionTable());
+								Map ps = this.roleService.getGrantedGlobalOperations(res.getResCode(), resourceType,
+										roleId, roleType, resourceInfo.getPermissionTable());
 								res.setPermissionOPS(operationQueue.getList(ps));
 							}
 							model.addAttribute("resources", resources);
 						}
 						tm.commit();
-					}
-					catch(Exception e){
-					
-					}
-					finally
-					{
+					} catch (Exception e) {
+
+					} finally {
 						tm.release();
 					}
-					
+
 				}
 			}
-			if(resourceInfo.isAuto() && StringUtil.isNotEmpty(resourceInfo.getSource())){
-				model.addAttribute("resourceSource", StringUtil.getRealPath(request.getContextPath(), resourceInfo.getSource()));
+			if (resourceInfo.isAuto() && StringUtil.isNotEmpty(resourceInfo.getSource())) {
+				model.addAttribute("resourceSource",
+						StringUtil.getRealPath(request.getContextPath(), resourceInfo.getSource()));
 			}
-			if(resourceInfo.getGlobalresourceid() != null && !resourceInfo.getGlobalresourceid().equals("")){
-				model.addAttribute("hasGlobalresource",true);
-				model.addAttribute("globalResourceid",resourceInfo.getGlobalresourceid());
+			if (resourceInfo.getGlobalresourceid() != null && !resourceInfo.getGlobalresourceid().equals("")) {
+				model.addAttribute("hasGlobalresource", true);
+				model.addAttribute("globalResourceid", resourceInfo.getGlobalresourceid());
 				OperationQueue goperationQueue = resourceInfo.getGlobalOperationQueue();
-				if(goperationQueue != null && goperationQueue.size() > 0)
-				{					
-					Map ps = this.roleService.getGrantedGlobalOperations(  resourceInfo.getGlobalresourceid(),resourceType,  roleId,  roleType,resourceInfo.getPermissionTable());					
-					model.addAttribute("globalOperationQueue",goperationQueue.getList(ps));
-					 
+				if (goperationQueue != null && goperationQueue.size() > 0) {
+					Map ps = this.roleService.getGrantedGlobalOperations(resourceInfo.getGlobalresourceid(),
+							resourceType, roleId, roleType, resourceInfo.getPermissionTable());
+					model.addAttribute("globalOperationQueue", goperationQueue.getList(ps));
+
 				}
 			}
-			
-			
+
 		}
 		return "path:loadResourceOperations";
 	}
-	
+
 	public String queryListInfoRoles(RoleCondition conditions,
 			@PagerParam(name = PagerParam.SORT, defaultvalue = "ROLE_TYPE") String sortKey,
 			@PagerParam(name = PagerParam.DESC, defaultvalue = "false") boolean desc,
 			@PagerParam(name = PagerParam.OFFSET) long offset,
 			@PagerParam(name = PagerParam.PAGE_SIZE, defaultvalue = "10") int pagesize, ModelMap model)
-					throws RoleException {
+			throws RoleException {
 		// Constant.component_type_actionimpl
 		try {
 			if (sortKey != null && !sortKey.equals("")) {
@@ -299,19 +376,17 @@ public class RoleController {
 			}
 
 			ListInfo roles = roleService.queryListInfoRoles(conditions, offset, pagesize);
-			
-			if(!conditions.isFromAuthmain()){
+
+			if (!conditions.isFromAuthmain()) {
 				model.addAttribute("roles", roles);
 				return "path:queryListInfoRoles";
-			}
-			else
-			{
-				List<Role> temp = roles.getDatas();//过滤当前用户没有设置权限的角色
+			} else {
+				List<Role> temp = roles.getDatas();// 过滤当前用户没有设置权限的角色
 				List<Role> rolesetPermissions = new ArrayList<Role>();
-				if(temp.size() > 0){
+				if (temp.size() > 0) {
 					AccessControl control = AccessControl.getAccessControl();
-					for(Role role : temp){
-						if(control.checkPermission(role.getRoleName(), "roleset", "role"))
+					for (Role role : temp) {
+						if (control.checkPermission(role.getRoleName(), "roleset", "role"))
 							rolesetPermissions.add(role);
 					}
 				}
@@ -326,6 +401,7 @@ public class RoleController {
 		}
 
 	}
+
 	public String queryListRoles(RoleCondition conditions, ModelMap model) throws RoleException {
 		try {
 			String roleAttr = conditions.getRoleAttr();
@@ -335,7 +411,7 @@ public class RoleController {
 			List<Role> roles = roleService.queryListRoles(conditions);
 			model.addAttribute("roles", roles);
 			return "path:queryListRoles";
-			
+
 		} catch (RoleException e) {
 			throw e;
 		} catch (Exception e) {
@@ -343,8 +419,7 @@ public class RoleController {
 		}
 
 	}
-	
-	
+
 	public String toUpdateRole(String roleId, ModelMap model) throws RoleException {
 		try {
 			Role role = roleService.getRole(roleId);
@@ -359,11 +434,13 @@ public class RoleController {
 		}
 
 	}
+
 	public String toAddRole(ModelMap model) {
 		List<RoleType> roleTypes = roleTypeService.queryListRoleTypes(null);
 		model.addAttribute("roleTypes", roleTypes);
 		return "path:addRole";
 	}
+
 	public String index(ModelMap model) {
 		List<RoleType> roleTypes = roleTypeService.queryListRoleTypes(null);
 		model.addAttribute("roleTypes", roleTypes);

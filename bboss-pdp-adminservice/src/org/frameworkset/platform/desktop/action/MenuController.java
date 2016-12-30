@@ -34,6 +34,7 @@ public class MenuController{
 		model.addAttribute("roleType", roleType);
 		model.addAttribute("resourceType", resourceType);
 		ResourceInfo resourceInfo = resourceManager.getResourceInfoByType(resourceType);
+		@SuppressWarnings("unchecked")
 		List<MenuOPS> grantedcolumns = this.roleService.getGrantedOperations("visible",resourceType, roleId, roleType, resourceInfo.getPermissionTable(), new RowHandler<MenuOPS>(){
 			
 			@Override
@@ -49,11 +50,11 @@ public class MenuController{
 				menu.setMenuName(menuItem.getName());
 				menu.setMenupath(menuItem.getPath());
 				AuthorResource ar = (AuthorResource)menuItem;
-				menu.setUrls(ar.toString());
+				menu.setUrls(ar.toString("<br>"));
 				
 			}
 			
-		});
+		},MenuOPS.class);
 		model.addAttribute("grantedcolumns", grantedcolumns);
 		return "path:grantedcolumns";
 	}
@@ -120,8 +121,11 @@ public class MenuController{
 			
 	}
 	
-	public @ResponseBody List<ZKTreeNode> getzkChildrens(String id,String roleId,String roleType){
+	public @ResponseBody List<ZKTreeNode> getzkChildrens(String id,String roleId,String roleType,ModelMap model){
 		String currentSystem = AccessControl.getAccessControl().getCurrentSystemID();
+		model.addAttribute("roleId", roleId);
+		model.addAttribute("roleType", roleType);
+		 
 		Framework framework = Framework.getInstance(currentSystem);
 		if(id == null || id.equals("#")){
 			MenuQueue menus = framework.getMenus();
@@ -138,6 +142,7 @@ public class MenuController{
 		}
 		else
 		{
+			
 			MenuItem menuItem = framework.getMenuByID(id);
 			if(menuItem instanceof Module){
 				MenuQueue menus = ((Module)menuItem).getMenus();
@@ -157,7 +162,9 @@ public class MenuController{
 		 
 			
 	}
-	public String columnAuthTree(String roleId,String roleType){
+	public String columnAuthTree(String roleId,String roleType,ModelMap model){
+		model.addAttribute("roleId", roleId);
+		model.addAttribute("roleType", roleType);
 		return "path:columnAuthTree";
 	}
 

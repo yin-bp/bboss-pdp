@@ -1086,7 +1086,7 @@ var SysUser = function(){
              }
              var extendtext = "<input type=\"radio\"  name=\"user_deltype\" value=\"0\" checked>逻辑删除";
              extendtext += "<input type=\"radio\"  name=\"user_deltype\" value=\"1\">物理删除";
-             PlatformCommonUtils.confirm("确定要删除选中的用户吗?",function(isConfirm){
+             PDP.confirm("确定要删除选中的用户吗?",function(isConfirm){
             	 	if(isConfirm)
             	 	{
             	 		var user_deltype = '0';

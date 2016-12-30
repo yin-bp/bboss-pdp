@@ -59,8 +59,8 @@ public interface RoleService {
 	 * @param roleId
 	 * @param roleType
 	 */
-	public <T> List<T> getGrantedOperations(String opcode, String resourceType, String roleId,
-			String roleType,String permissionTable,RowHandler<T> rowHandler)throws RoleException;
+	public  List  getGrantedOperations(String opcode, String resourceType, String roleId,
+			String roleType,String permissionTable,RowHandler  rowHandler,Class poclazz)throws RoleException;
 	/**
 	 * @param globalresourceid
 	 * @param globalopcode
@@ -71,4 +71,25 @@ public interface RoleService {
 	 */
 	public void saveRoleAuths(String globalresourceid, String[] globalopcode, List<ResOpr> resOprs, String resourceType,
 			String roleId, String roleType,String permissionTable);
+	
+	/**
+	 * @param globalresourceid
+	 * @param globalopcode
+	 * @param resOprs
+	 * @param resourceType
+	 * @param roleId
+	 * @param roleType
+	 */
+	public void saveRoleAuths( List<ResOpr> resOprs, String resourceType,
+			String roleId, String roleType,String permissionTable);
+	/**
+	 * 删除角色资源
+	 * @param resOprs
+	 * @param resourceType
+	 * @param roleId
+	 * @param roleType
+	 * @param permissionTable
+	 */
+	public void deleteRoleAuthResources(List<ResOpr> resOprs, String resourceType, String roleId, String roleType,
+			String permissionTable)  throws RoleException ;
 }

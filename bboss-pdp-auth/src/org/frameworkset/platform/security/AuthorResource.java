@@ -22,11 +22,14 @@ public class AuthorResource {
 	public List<ResourceToken> getAuthorResources() {
 		return authorResources;
 	}
-	public String toString(){
+	public String toString(String split){
 		StringBuilder ret = new StringBuilder();
 		for(int i = 0; authorResources != null && i <this.authorResources.size(); i ++){
 			ResourceToken rt = this.authorResources.get(i);
-			ret.append(rt.getOrigineUrl());
+			if(i == 0 || split == null)
+				ret.append(rt.getOrigineUrl());
+			else
+				ret.append(split).append(rt.getOrigineUrl());
 		}
 		return ret.toString();
 	}
