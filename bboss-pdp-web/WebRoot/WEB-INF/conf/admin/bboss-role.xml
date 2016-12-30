@@ -15,7 +15,11 @@
 		path:updateRole="/jsp/sysmanager/role/roleEdit.jsp"
 		path:addRole="/jsp/sysmanager/role/roleAdd.jsp"
 		path:getRole="/jsp/sysmanager/role/roleView.jsp"
+		path:authmainRoles="/jsp/sysmanager/role/authmainRoles.jsp"
+		path:toroleauthset="/jsp/sysmanager/role/roleauthset.jsp"
+		path:loadResourceOperations="/jsp/sysmanager/role/resourceOperationGrant.jsp"		
 		f:roleService="attr:role.roleService"
+		f:resourceService="attr:resource.resourceService"
 		f:roleTypeService="attr:roletype.roleTypeService"
 		class="com.frameworkset.platform.admin.action.RoleController" >
 	</property>

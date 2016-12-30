@@ -17,12 +17,11 @@
 package com.frameworkset.platform.admin.action;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.frameworkset.platform.config.ResourceInfoQueue;
+import org.frameworkset.platform.config.model.OperationQueue;
 import org.frameworkset.platform.config.model.ResourceInfo;
 import org.frameworkset.platform.resource.ResourceManager;
 import org.frameworkset.platform.security.AccessControl;
@@ -45,11 +44,52 @@ import com.frameworkset.util.StringUtil;
 public class ResourceController {
 
 	private static Logger log = Logger.getLogger(ResourceController.class);
-
+	private ResourceManager resourceManager = new ResourceManager();
 	private ResourceService resourceService;
+	public String loadResourceMaintain(String resourceType,ModelMap model){
+		if(StringUtil.isEmpty(resourceType))
+		{
+			model.addAttribute("errorMessage", "没有选择资源类型");
+			return "path:loadResourceMaintain";
+		}
+			
+		
+		ResourceInfo resourceInfo = resourceManager.getResourceInfoByType(resourceType);
+		if(resourceInfo != null){
+			model.addAttribute("resourceInfo", resourceInfo);
+			model.addAttribute("resourceType", resourceInfo.getId());
+			model.addAttribute("resourceName", resourceInfo.getName());
+			model.addAttribute("resourceInfo", resourceInfo);
+			boolean maintaindata = !resourceInfo.isAuto() && resourceInfo.maintaindata();
+			model.addAttribute("maintaindata", maintaindata);
+			if(maintaindata){
+				List<Resource> resources = resourceService.queryListResources(resourceType);
+				model.addAttribute("resources", resources);
+			}
+			if(resourceInfo.getGlobalresourceid() != null && !resourceInfo.getGlobalresourceid().equals("")){
+				model.addAttribute("hasGlobalresource",true);
+				OperationQueue goperationQueue = resourceInfo.getGlobalOperationQueue();
+				
+				model.addAttribute("globalResourceid",resourceInfo.getGlobalresourceid());
+				if(goperationQueue != null && goperationQueue.size() > 0)
+				{
+					model.addAttribute("globalOperationQueue",goperationQueue.getList());
+				}
+			}
+			OperationQueue operationQueue = resourceInfo.getOperationQueue();
+			if(operationQueue != null && operationQueue.size() > 0)
+			{
+				model.addAttribute("operationQueue",operationQueue.getList());
+			}
+			
+		}
+		return "path:loadResourceMaintain";
+	}
 	public @ResponseBody String addResource(Resource resource) {
 		// 控制器
 		try {
+			ResourceInfo resourceInfo = resourceManager.getResourceInfoByType(resource.getRestypeId());
+			resource.setRestypeName(resourceInfo.getName());
 			resourceService.addResource(resource);
 			return "success";
 		} catch (ResourceException e) {
@@ -74,9 +114,14 @@ public class ResourceController {
 		}
 
 	}
-	public @ResponseBody String deleteBatchResource(String... resIds) {
+	public @ResponseBody String deleteBatchResource(String resIds) {
 		try {
-			resourceService.deleteBatchResource(resIds);
+			if(StringUtil.isEmpty(resIds))
+			{
+				return "没有选择要删除的资源";
+			}
+			String[] _resIds = resIds.split(",");
+			resourceService.deleteBatchResource(_resIds);
 			return "success";
 		} catch (Throwable e) {
 			log.error("delete Batch resIds failed:", e);
@@ -163,11 +208,11 @@ public class ResourceController {
 		}
 
 	}
-	public String toAddResource() {
+	public String toAddResource(String restypeId,ModelMap model) {
+		model.addAttribute("restypeId", restypeId);
 		return "path:addResource";
 	}
 	public String index(ModelMap model) {
-		ResourceManager resourceManager = new ResourceManager();
 		String curSystem = AccessControl.getAccessControl().getCurrentSystemID();
 		ResourceInfoQueue  resQueue = resourceManager.getResourceInfoQueue();
 		List<ResourceInfo> resourceTypes = new ArrayList<ResourceInfo>();
@@ -181,6 +226,8 @@ public class ResourceController {
              }
          }
 		model.addAttribute("resourceTypes", resourceTypes);
+		if(resourceTypes.size() > 0)
+			model.addAttribute("resourceType", resourceTypes.get(0).getId());
 		return "path:index";
 
 	}

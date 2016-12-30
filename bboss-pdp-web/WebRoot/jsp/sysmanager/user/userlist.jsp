@@ -123,8 +123,6 @@
     </div>
 </div>
 <script
-	src="${pageContext.request.contextPath}/assets/sysmanager/sysuser.js" type="text/javascript"></script>
-<script
 	src="${pageContext.request.contextPath}/assets/sysmanager/moveuser.js" type="text/javascript"></script>
 	
 <script type="text/javascript">

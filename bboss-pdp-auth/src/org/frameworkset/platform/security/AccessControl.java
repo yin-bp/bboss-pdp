@@ -3695,20 +3695,20 @@ passwordUpdateTime
 				roleType, resource, resourceType);
 	}
 
-	/**
-	 * 获取拥有特定资源许可操作的用户列表
-	 * 
-	 * @param resourceid
-	 * @param operation
-	 * @param resourceType
-	 * @return
-	 */
-	public static AuthUser[] getAllPermissionUsersOfResource(String resourceid,
-			String operation, String resourceType) {
-		return AppSecurityCollaborator.getInstance()
-				.getAllPermissionUsersOfResource(resourceid, operation,
-						resourceType);
-	}
+//	/**
+//	 * 获取拥有特定资源许可操作的用户列表
+//	 * 
+//	 * @param resourceid
+//	 * @param operation
+//	 * @param resourceType
+//	 * @return
+//	 */
+//	public static AuthUser[] getAllPermissionUsersOfResource(String resourceid,
+//			String operation, String resourceType) {
+//		return AppSecurityCollaborator.getInstance()
+//				.getAllPermissionUsersOfResource(resourceid, operation,
+//						resourceType);
+//	}
 
 	
 	public String getMacAddr() {

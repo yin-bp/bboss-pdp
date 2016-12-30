@@ -338,6 +338,20 @@ var Application = function(){
 					}
 				});
 	}
+	var openwindow = function(){
+		top.layer.open({
+		    type: 2,
+		    title: 'layer弹层组件官网',
+		    fix: false,
+		    maxmin: true,
+		    shadeClose: true,
+		    area: ['500px', '300px'],
+		    content: 'http://sentsin.com/jquery/layer/?form=local',
+		    end: function(){
+		      layer.tips('Hi', '#about', {tips: 1})
+		    }
+		  });
+	}
 	return {
 		initform:function(formid,actiontype)
 		{
@@ -357,6 +371,9 @@ var Application = function(){
 		deleteapp: function(appId)
 		{
 			deleteapp(appId)
+		},
+		openwindow:function(){
+			openwindow();
 		}
 		
 	}

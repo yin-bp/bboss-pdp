@@ -9,7 +9,7 @@
 <script src="${pageContext.request.contextPath}/static/plugins/jquery.form.js" type="text/javascript"></script>
 
 <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/static/js/plugins/layer/layer.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/static/js/plugins/layer301/layer.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/plugins/pace/pace.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/plugins/chosen/chosen.jquery.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/plugins/zTree/jquery.ztree.all.min.js"></script>

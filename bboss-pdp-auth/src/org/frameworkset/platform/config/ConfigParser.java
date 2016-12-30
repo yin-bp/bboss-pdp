@@ -189,8 +189,13 @@ public class ConfigParser extends I18nXMLParser  {
     	            ResourceInfo resourceInfo = new ResourceInfo();
     	            resourceInfo.setId(attributes.getValue("id"));
     	            resourceInfo.setName(attributes.getValue("name"));
+    	            String permissionTable = attributes.getValue("permissionTable");
+    	            if(permissionTable == null || permissionTable.equals("")){
+    	            	permissionTable = "TD_SM_ROLERESOP";
+    	            }
+    	            resourceInfo.setPermissionTable(permissionTable);
     	            resourceInfo.setLocaleNames(convertI18n(attributes, resourceInfo.getName(), resourceInfo.getId(), "resourceInfo"));
-    	            resourceInfo.setResource(attributes.getValue("class"));
+    	            resourceInfo.setSource(attributes.getValue("source"));
     	            resourceInfo.setAuto(StringUtil.getBoolean(attributes.getValue("auto"),false));
     	            resourceInfo.setUsed(StringUtil.getBoolean(attributes.getValue("used"),true));
     	            boolean isdefault = StringUtil.getBoolean(attributes.getValue("default"),true);
@@ -531,7 +536,7 @@ public class ConfigParser extends I18nXMLParser  {
             resourceInfo.setId(attributes.getValue("id"));
             resourceInfo.setName(attributes.getValue("name"));
           
-            resourceInfo.setResource(attributes.getValue("class"));
+            resourceInfo.setSource(attributes.getValue("source"));
             resourceInfo.setAuto(StringUtil.getBoolean(attributes.getValue("auto"),false));
             resourceInfo.setUsed(StringUtil.getBoolean(attributes.getValue("used"),true));
             boolean isdefault = StringUtil.getBoolean(attributes.getValue("default"),true);

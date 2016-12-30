@@ -252,7 +252,7 @@
         <column name="TYPES" primaryKey="true" required="true" size="50" type="VARCHAR"/>
         <column default="0" name="AUTHORIZATION_TYPE" size="22" type="DECIMAL"/>
         <column name="USE_COUNT" size="22" type="DECIMAL"/>
-        <column default="sysdate" name="AUTHORIZATION_STIME" type="DATE"/>
+        <column name="AUTHORIZATION_STIME" type="DATE"/>
         <column name="AUTHORIZATION_ETIME" type="DATE"/>
         <column name="USE_COUNTED" size="22" type="DECIMAL"/>
     </table>
@@ -307,6 +307,7 @@
         <column name="Password_DualTime" size="10" type="DECIMAL"/>
         <column name="PASSWORD_TEXT" size="50" type="VARCHAR"/>
         <column name="DEPART_ID" size="50" type="VARCHAR"/>
+        <column name="USER_PICTURE" size="500" type="VARCHAR"/>
         <column name="update_time"  type="TIMESTAMP"/>
         
     </table>
@@ -346,7 +347,9 @@
             size="50" type="VARCHAR"/>
         <column name="ROLE_ID" primaryKey="true" required="true"
             size="50" type="VARCHAR"/>
-        <column default="1" name="RESOP_ORIGIN_USERID" size="50" type="VARCHAR"/>
+        <column default="1" name="RESOP_ORIGIN_USERID" size="50" type="VARCHAR"/> 
+        <column name="START_DATE" type="DATE"/>
+        <column name="END_DATE" type="DATE"/>        
         <foreign-key foreignTable="TD_SM_ROLE">
             <reference foreign="ROLE_ID" local="ROLE_ID"/>
         </foreign-key>

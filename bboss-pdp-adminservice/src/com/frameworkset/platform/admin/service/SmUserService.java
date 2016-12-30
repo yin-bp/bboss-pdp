@@ -68,4 +68,9 @@ public interface SmUserService {
 	 */
 	public ListInfo getMoveinUsers(MoveinUserCondition condition,long offset,
 			int pagesize) throws SmUserException;
+	/**
+	 * @param userId
+	 * @param roleIds
+	 */
+	public void saveUserRoles(String userId, String roleIds) throws SmUserException;
 }

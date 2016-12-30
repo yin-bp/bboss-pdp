@@ -16,9 +16,11 @@
 
 package com.frameworkset.platform.admin.service;
 
+import com.frameworkset.common.poolman.handle.RowHandler;
 import com.frameworkset.platform.admin.entity.*;
 import com.frameworkset.util.ListInfo;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>Title: RoleService</p> <p>Description: 角色管理管理服务接口 </p> <p>bboss</p>
@@ -33,4 +35,61 @@ public interface RoleService {
 	public Role getRole(String roleId) throws RoleException;
 	public ListInfo queryListInfoRoles(RoleCondition conditions, long offset, int pagesize) throws RoleException;
 	public List<Role> queryListRoles(RoleCondition conditions) throws RoleException;
+	/**
+	 * @param userId
+	 * @return
+	 */
+	public List<UserRole> getUserRoles(String userId) throws RoleException;
+	/**
+	 * 获取资源类型下面的，授予角色的全局操作及有效时间
+	 * op_id,AUTHORIZATION_STIME,AUTHORIZATION_ETIME
+	 * @param globalresourceid
+	 * @param resourceType
+	 * @param roleId
+	 * @param roleType
+	 */
+	public Map getGrantedGlobalOperations(String globalresourceid, String resourceType, String roleId,
+			String roleType,String permissionTable)throws RoleException;
+	
+	/**
+	 * 获取资源类型下面的，授予角色的全局操作及有效时间
+	 * op_id,AUTHORIZATION_STIME,AUTHORIZATION_ETIME
+	 * @param opcode
+	 * @param resourceType
+	 * @param roleId
+	 * @param roleType
+	 */
+	public  List  getGrantedOperations(String opcode, String resourceType, String roleId,
+			String roleType,String permissionTable,RowHandler  rowHandler,Class poclazz)throws RoleException;
+	/**
+	 * @param globalresourceid
+	 * @param globalopcode
+	 * @param resOprs
+	 * @param resourceType
+	 * @param roleId
+	 * @param roleType
+	 */
+	public void saveRoleAuths(String globalresourceid, String[] globalopcode, List<ResOpr> resOprs, String resourceType,
+			String roleId, String roleType,String permissionTable);
+	
+	/**
+	 * @param globalresourceid
+	 * @param globalopcode
+	 * @param resOprs
+	 * @param resourceType
+	 * @param roleId
+	 * @param roleType
+	 */
+	public void saveRoleAuths( List<ResOpr> resOprs, String resourceType,
+			String roleId, String roleType,String permissionTable);
+	/**
+	 * 删除角色资源
+	 * @param resOprs
+	 * @param resourceType
+	 * @param roleId
+	 * @param roleType
+	 * @param permissionTable
+	 */
+	public void deleteRoleAuthResources(List<ResOpr> resOprs, String resourceType, String roleId, String roleType,
+			String permissionTable)  throws RoleException ;
 }

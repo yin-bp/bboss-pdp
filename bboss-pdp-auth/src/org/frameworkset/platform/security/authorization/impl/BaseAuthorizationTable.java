@@ -62,8 +62,8 @@ public abstract class BaseAuthorizationTable implements AuthorizationTable,
 
     /**缓冲用户与角色的关系*/
     private Map authorizationTable;
-    /**缓冲每个用户都拥有的角色*/
-    private Map everyOneGrantedRole;
+//    /**缓冲每个用户都拥有的角色*/
+//    private Map everyOneGrantedRole;
 
     /**缓冲角色拥有的用户*/
     //2008-12-11  gao.tang 注释  没有使用的缓冲
@@ -72,7 +72,7 @@ public abstract class BaseAuthorizationTable implements AuthorizationTable,
     /**
      * 缓冲用户和资源许可的关系
      */
-    private Map permission_users;
+//    private Map permission_users;
 
     protected AccessContext context;
 
@@ -104,10 +104,11 @@ public abstract class BaseAuthorizationTable implements AuthorizationTable,
 
             if(authorTableInfo.isCachable())
             {
-                authorizationTable = Collections.synchronizedMap( new HashMap());
-                everyOneGrantedRole = Collections.synchronizedMap( new HashMap());
+//                authorizationTable = Collections.synchronizedMap( new HashMap());
+            	authorizationTable =  new HashMap();
+//                everyOneGrantedRole = Collections.synchronizedMap( new HashMap());
 //                roleUser_cache = Collections.synchronizedMap( new HashMap()); //gao.tang 2008-12-11 没有被使用的缓冲
-                permission_users = Collections.synchronizedMap( new HashMap());
+//                permission_users = Collections.synchronizedMap( new HashMap());
                 List eventType = new ArrayList();
                 
              
@@ -125,8 +126,8 @@ public abstract class BaseAuthorizationTable implements AuthorizationTable,
             	eventType.add(ACLEventType.ORGUNIT_INFO_DELETE);
             	eventType.add(ACLEventType.ORGUNIT_ROLE_CHANGE);      
         		
-        		eventType.add(ACLEventType.RESOURCE_ROLE_INFO_CHANGE);
-		    	eventType.add(ACLEventType.RESOURCE_INFO_CHANGE);
+//        		eventType.add(ACLEventType.RESOURCE_ROLE_INFO_CHANGE);
+//		    	eventType.add(ACLEventType.RESOURCE_INFO_CHANGE);
 		    	
 		    	/**
 		    	 * 内容管理相关事件管理
@@ -286,25 +287,25 @@ public abstract class BaseAuthorizationTable implements AuthorizationTable,
 
         for (int i = 0; i < requireRoles.length; i++) {
             //cachKey = application + ":"
-            if(this.authorTableInfo.isCachable())
-            {
-            	AuthRole cachKey = requireRoles[i];
-	            temp = (String) everyOneGrantedRole.get(cachKey);
-	            if (temp != null) {
-	                if(temp.equals("true"))
-	                {
-	                    everyOneGranted = true;
-	                    break;
-	                }
-	            } else {
-	                everyOneGranted = isEveryoneGranted(requireRoles[i]);
-	                everyOneGrantedRole.put(cachKey, everyOneGranted + "");
-	                if (everyOneGranted) {
-	                    break;
-	                }
-	            }
-            }
-            else
+//            if(this.authorTableInfo.isCachable())
+//            {
+//            	AuthRole cachKey = requireRoles[i];
+//	            temp = (String) everyOneGrantedRole.get(cachKey);
+//	            if (temp != null) {
+//	                if(temp.equals("true"))
+//	                {
+//	                    everyOneGranted = true;
+//	                    break;
+//	                }
+//	            } else {
+//	                everyOneGranted = isEveryoneGranted(requireRoles[i]);
+//	                everyOneGrantedRole.put(cachKey, everyOneGranted + "");
+//	                if (everyOneGranted) {
+//	                    break;
+//	                }
+//	            }
+//            }
+//            else
             {
                 everyOneGranted = isEveryoneGranted(requireRoles[i]);
                 if (everyOneGranted) {
@@ -536,13 +537,13 @@ public abstract class BaseAuthorizationTable implements AuthorizationTable,
 //            authorizationTable.remove(authorizeCachKey);
             removeUserFromRole("");
             authorizationTable.clear();
-            permission_users.clear();
+//            permission_users.clear();
         }
-        if( e.getType() .equals( ACLEventType.RESOURCE_ROLE_INFO_CHANGE)
-                || e.getType() .equals( ACLEventType.RESOURCE_INFO_CHANGE )|| (e.getType() instanceof ResourceChangeEventType))
-        {
-        	permission_users.clear();
-        }
+//        if( e.getType() .equals( ACLEventType.RESOURCE_ROLE_INFO_CHANGE)
+//                || e.getType() .equals( ACLEventType.RESOURCE_INFO_CHANGE )|| (e.getType() instanceof ResourceChangeEventType))
+//        {
+////        	permission_users.clear();
+//        }
 
         //当角色名称发生变化时，清除为原有角色所缓冲的权限资源
         if (e.getType() .equals( ACLEventType.ROLE_INFO_CHANGE)) {
@@ -555,7 +556,7 @@ public abstract class BaseAuthorizationTable implements AuthorizationTable,
 
             //清除所有根角色roleName相关的用户权限列表
             //removeUserAuth(roleName);
-            everyOneGrantedRole.clear();
+//            everyOneGrantedRole.clear();
         }
 
         //组和角色的关系发生变化时，删除组所属的用户的权限缓冲资源
@@ -595,23 +596,23 @@ public abstract class BaseAuthorizationTable implements AuthorizationTable,
      */
     public void reset(){
 		 authorizationTable.clear();
-         everyOneGrantedRole.clear();
+//         everyOneGrantedRole.clear();
        //gao.tang 2008-12-11 没有被使用的缓冲
 //         roleUser_cache.clear();
-         permission_users.clear();
+//         permission_users.clear();
     }
     public void destroy()
     {
     	 authorizationTable.clear();
-         everyOneGrantedRole.clear();
+//         everyOneGrantedRole.clear();
        //gao.tang 2008-12-11 没有被使用的缓冲
 //         roleUser_cache.clear();
-         permission_users.clear();
+//         permission_users.clear();
          authorizationTable = null;
-         everyOneGrantedRole = null;
+//         everyOneGrantedRole = null;
        //gao.tang 2008-12-11 没有被使用的缓冲
 //         roleUser_cache.clear();
-         permission_users = null;
+//         permission_users = null;
     }
 
     public AuthorTableInfo getAuthorTableInfo() {
@@ -659,63 +660,63 @@ public abstract class BaseAuthorizationTable implements AuthorizationTable,
      */
     public abstract AuthUser[] getAllPermissionUsersOfResource(String resourceid,String operation,String resourceType) throws SecurityException;
     
-    /**
-     * 获取资源操作许可的用户列表的抽象方法，
-     * 并且根据系统配置对获取的结果进行缓冲
-     * @param resourceid
-     * @param operation
-     * @param resourceType
-     * @return
-     * @throws SecurityException
-     */
-    public AuthUser[] getAllPermissionPrincipalsOfResource(String resourceid,String operation,String resourceType) throws SecurityException
-    {
-    
-    	
-    	String cacheKey = resourceid.concat(":").concat(operation).concat(":").concat(resourceType);
-    	AuthUser[] users = null;
-    	if(this.authorTableInfo.isCachable())
-    	{
-    		users = (AuthUser[])this.permission_users.get(cacheKey);
-	    	if(users == null)
-	    	{
-	    		try
-	    		{
-		    		users = this.getAllPermissionUsersOfResource(resourceid,operation,resourceType);
-		    		if(users == null || users.length == 0)
-		    		{
-		    			users = EMPTY_USERS;
-		    		}
-		    		this.permission_users.put(cacheKey,users);
-	    		}
-	    		catch(Exception e)
-	    		{
-	    			users = EMPTY_USERS;
-	    		}
-	    		
-	    	}
-    	}
-    	else
-    	{	
-    		
-    		try
-    		{
-	    		users = this.getAllPermissionUsersOfResource(resourceid,operation,resourceType);
-	    		if(users == null || users.length == 0)
-	    		{
-	    			users = EMPTY_USERS;
-	    		}
-    		}
-    		catch(Exception e)
-    		{
-    			users = EMPTY_USERS;
-    		}
-    	}
-    		
-    	
-    	return users;
-    	
-    }
+//    /**
+//     * 获取资源操作许可的用户列表的抽象方法，
+//     * 并且根据系统配置对获取的结果进行缓冲
+//     * @param resourceid
+//     * @param operation
+//     * @param resourceType
+//     * @return
+//     * @throws SecurityException
+//     */
+//    public AuthUser[] getAllPermissionPrincipalsOfResource(String resourceid,String operation,String resourceType) throws SecurityException
+//    {
+//    
+//    	
+//    	String cacheKey = resourceid.concat(":").concat(operation).concat(":").concat(resourceType);
+//    	AuthUser[] users = null;
+//    	if(this.authorTableInfo.isCachable())
+//    	{
+//    		users = (AuthUser[])this.permission_users.get(cacheKey);
+//	    	if(users == null)
+//	    	{
+//	    		try
+//	    		{
+//		    		users = this.getAllPermissionUsersOfResource(resourceid,operation,resourceType);
+//		    		if(users == null || users.length == 0)
+//		    		{
+//		    			users = EMPTY_USERS;
+//		    		}
+//		    		this.permission_users.put(cacheKey,users);
+//	    		}
+//	    		catch(Exception e)
+//	    		{
+//	    			users = EMPTY_USERS;
+//	    		}
+//	    		
+//	    	}
+//    	}
+//    	else
+//    	{	
+//    		
+//    		try
+//    		{
+//	    		users = this.getAllPermissionUsersOfResource(resourceid,operation,resourceType);
+//	    		if(users == null || users.length == 0)
+//	    		{
+//	    			users = EMPTY_USERS;
+//	    		}
+//    		}
+//    		catch(Exception e)
+//    		{
+//    			users = EMPTY_USERS;
+//    		}
+//    	}
+//    		
+//    	
+//    	return users;
+//    	
+//    }
     
     	
     

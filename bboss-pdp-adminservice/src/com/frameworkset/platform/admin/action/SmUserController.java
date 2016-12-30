@@ -21,8 +21,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.frameworkset.event.Event;
+import org.frameworkset.event.EventHandle;
+import org.frameworkset.event.EventImpl;
 import org.frameworkset.platform.common.DatagridBean;
 import org.frameworkset.platform.security.AccessControl;
+import org.frameworkset.platform.security.event.ACLEventType;
 import org.frameworkset.util.annotations.PagerParam;
 import org.frameworkset.util.annotations.ResponseBody;
 import org.frameworkset.web.servlet.ModelMap;
@@ -30,6 +34,8 @@ import org.frameworkset.web.servlet.ModelMap;
 import com.frameworkset.platform.admin.entity.MoveinUserCondition;
 import com.frameworkset.platform.admin.entity.SmUser;
 import com.frameworkset.platform.admin.entity.SmUserCondition;
+import com.frameworkset.platform.admin.entity.UserRole;
+import com.frameworkset.platform.admin.service.RoleService;
 import com.frameworkset.platform.admin.service.SmUserException;
 import com.frameworkset.platform.admin.service.SmUserService;
 import com.frameworkset.util.ListInfo;
@@ -45,6 +51,29 @@ public class SmUserController {
 	private static Logger log = Logger.getLogger(SmUserController.class);
 
 	private SmUserService smUserService;
+	private RoleService roleService;
+	public String authmain(String userId,ModelMap model){
+		if(StringUtil.isEmpty(userId) ){
+			model.addAttribute("errorMessage", "请选择需要设置角色的用户!");
+		}
+		List<UserRole> userroles = roleService.getUserRoles(userId);
+		model.addAttribute("userroles", userroles);
+		model.addAttribute("userId", userId);
+		
+		return "path:authmain";
+	}
+	public @ResponseBody String saveUserRoles(String userId,String roleIds){
+		if(StringUtil.isEmpty(userId))
+		{
+			return "请选择要设置角色的用户";
+		}
+		smUserService.saveUserRoles(userId,roleIds);
+		Event event = new EventImpl(userId,
+				ACLEventType.USER_ROLE_INFO_CHANGE);
+		EventHandle.sendEvent(event);
+		return "success";
+	}
+	
 	public @ResponseBody String saveMoveusers(String userIds,String fromDepartId,String toDepartId){
 		if(StringUtil.isEmpty(fromDepartId) || StringUtil.isEmpty(toDepartId) || StringUtil.isEmpty(userIds)){
 			return "请确保调出用户、调出部门、被调出部门都已经选中!";
@@ -281,10 +310,13 @@ public class SmUserController {
 		}
 		
 	}
-	public String tomodifyPassword(String userId, ModelMap model){
+	public String tomodifyPassword(String userId,boolean frompersonal, ModelMap model){
 		try {
+			if(frompersonal)
+				userId = AccessControl.getAccessControl().getUserID();
 			SmUser smUser = smUserService.getSmUser(userId);
 			model.addAttribute("smUser", smUser);
+			model.addAttribute("frompersonal", frompersonal);
 			return "path:modifypassword";
 		} catch (SmUserException e) {
 			throw e;

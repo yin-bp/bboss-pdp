@@ -109,10 +109,10 @@ public interface AccessManager {
     		AccessContext accessContext,
             String resource,
             String resourceType);
-    
-    public AuthUser[] getAllPermissionUsersOfResource(AccessContext accesscontext,
-			  String resourceid,
-			  String operation,
-			  String resourceType);
+//    
+//    public AuthUser[] getAllPermissionUsersOfResource(AccessContext accesscontext,
+//			  String resourceid,
+//			  String operation,
+//			  String resourceType);
     public AuthorizationTable getAuthorizationTable(AccessContext accesscontext);
 }

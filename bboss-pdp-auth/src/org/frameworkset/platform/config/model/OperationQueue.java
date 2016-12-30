@@ -3,6 +3,7 @@ package org.frameworkset.platform.config.model;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>Title: </p> 
@@ -62,6 +63,23 @@ public class OperationQueue implements java.io.Serializable {
     public List<Operation> getList()
     {
         return this.queue;
+    }
+    
+    public List<Operation> getList(Map permissions)
+    {
+    	if(permissions == null || permissions.size() == 0)
+    		return this.queue;
+    	List<Operation> _queue = new ArrayList<Operation>();
+    	for(Operation op : queue){
+    		Operation newOp = new Operation();
+    		newOp.setId(op.getId());
+    		newOp.setName(op.getName());
+    		newOp.setDescription(op.getDescription());
+    		newOp.setHasPermission(permissions.containsKey(op.getId()));
+    		_queue.add(newOp);
+    	}
+    	
+        return _queue;
     }
 
     public void sort()

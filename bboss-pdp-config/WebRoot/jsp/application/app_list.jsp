@@ -43,6 +43,7 @@
                         <div class="form-group">
                             <div class="col-sm-offset-1 col-sm-11">
                                 <a class="btn btn-xs btn-primary" type="button" href="javascript:Application.searchAppSystem(true)">查 询</a>
+                                <a class="btn btn-xs btn-primary" type="button" href="javascript:Application.openwindow()">弹窗</a>
                                 <a class="btn btn-xs btn-white" type="button" href="${pageContext.request.contextPath}/application/toAddApplication.page">新 增</a>
                             </div>
                         </div>
@@ -80,9 +81,12 @@
 
 <%@ include file="/jsp/inc/js-link.inc"%>
 <script type="text/javascript" src="${pageContext.request.contextPath}/jsp/application/formvalidate.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/jsp/application/layer-demo.min.js"></script>
+
 <script type="text/javascript">
 	$(function(){
 		Application.searchAppSystem(false);
+		
 	});
 	
 	

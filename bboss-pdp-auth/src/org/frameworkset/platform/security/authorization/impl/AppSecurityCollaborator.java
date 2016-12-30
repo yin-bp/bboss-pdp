@@ -390,12 +390,12 @@ public class AppSecurityCollaborator extends SecurityCollaborator
 	}
 	
 
-    public AuthUser[] getAllPermissionUsersOfResource(String resourceid,String operation,String resourceType)
-    {	
-    	return super.getAllPermissionUsersOfResource(new AppAccessContext(ConfigManager
-				.getInstance().getAppName(), ConfigManager
-				.getInstance().getModuleName()), resourceid,operation,resourceType);
-    }
+//    public AuthUser[] getAllPermissionUsersOfResource(String resourceid,String operation,String resourceType)
+//    {	
+//    	return super.getAllPermissionUsersOfResource(new AppAccessContext(ConfigManager
+//				.getInstance().getAppName(), ConfigManager
+//				.getInstance().getModuleName()), resourceid,operation,resourceType);
+//    }
     
 
     /**

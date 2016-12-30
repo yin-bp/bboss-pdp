@@ -71,20 +71,20 @@ public interface AuthorizationTable {
     public AuthRole[] getAllRoleOfPrincipal(String userName)
 	throws SecurityException;
     
-    
-    /**
-     * 获取资源操作许可的用户列表的抽象方法，
-     * 并且根据系统配置对获取的结果进行缓冲
-     * @param resourceid
-     * @param operation
-     * @param resourceType
-     * @return
-     * @throws SecurityException
-     */
-    public AuthUser[] getAllPermissionPrincipalsOfResource(String resourceid,
-    													   String operation,
-    													   String resourceType) 
-    throws SecurityException;
+//    
+//    /**
+//     * 获取资源操作许可的用户列表的抽象方法，
+//     * 并且根据系统配置对获取的结果进行缓冲
+//     * @param resourceid
+//     * @param operation
+//     * @param resourceType
+//     * @return
+//     * @throws SecurityException
+//     */
+//    public AuthUser[] getAllPermissionPrincipalsOfResource(String resourceid,
+//    													   String operation,
+//    													   String resourceType) 
+//    throws SecurityException;
     public void reset();
     public void destroy();
 }

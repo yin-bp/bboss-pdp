@@ -55,9 +55,11 @@ var SysUser = function(){
 		                     onClick: function() {
 		                    	 var userId = $(this).attr("userId");
 		                    	 var defaultAdmin = $(this).attr("defaultAdmin");
-		                    	 if(!defaultAdmin)
+		                    	 var userName = $(this).attr("userName");
+		                    	 var userAccount = $(this).attr("userAccount");
+		                    	 if(defaultAdmin == 'false')
 		                    	 {
-		                    		 SysUser.toauthUser(userId)
+		                    		 toauthUser(userId,userName,userAccount)
 		                    	 }
 		                    	 else
 	                    		 {
@@ -75,6 +77,19 @@ var SysUser = function(){
 		                 ];
 		return content_;
 	}
+	var toauthUser = function(userId,userName,userAccount){
+		$currentmodal = ModelDialog.dialog({
+			title:"用户授权-<span class=\"label label-sm label-success\">"+userName+"("+userAccount+")</span>",
+			showfooter:false,
+			url:usercontextpath+"/sysmanager/user/authmain.page",
+			params:{
+				"userId":userId
+		      },
+			width:"1000px",
+			height:"600px"
+
+	 });
+	}
 	var tomodifyPassword = function(userId,userName,userAccount){
 		 $currentmodal = ModelDialog.dialog({
 				title:"修改用户口令-<span class=\"label label-sm label-success\">"+userName+"("+userAccount+")</span>",
@@ -88,89 +103,98 @@ var SysUser = function(){
 
 		 });
 	}
-	var iniModifyPasswordValidateform = function()
+	var iniModifyPasswordValidateform = function(frompersonal)
 	{
-		var form2 = $("form",$currentmodal);		
-		form2.validate({
-					focusInvalid : false, // do not focus the last invalid
-											// input
-					ignore : "", // validate all fields including form hidden
-									// input
-					errorElement: 'span', //default input error message container
-		            errorClass: 'help-block help-block-error', // default input error message class
-					messages : {
-						
-					 
-							oldPassword : {								
-								required : "请输入旧口令"
-							},
-
-							newPassword : {
-								minlength : jQuery.validator.format("应用名称不能小于{0}个字符"),
-								required : "请输入6位以上口令"
-							},
-
-							newPasswordSecond : {
-								minlength : jQuery.validator.format("二次输入口令不能小于{0}个字符"),
-								required : "请二次输入口令"
-							} ,
-							
-					},
-					rules : {
-					 
-						oldPassword : {
-							minlength : 1,
-							required : true
-						},
-
-						newPassword : {
-							minlength : 6,
-							required : true
-						},
-
-						newPasswordSecond : {
-							minlength : 6,
-							required : true
-						},
-
-						
-					},
-
-					errorPlacement: function(error, element) {
-		                if (element.is(':checkbox')) {
-		                    error.insertAfter(element.closest(".md-checkbox-list, .md-checkbox-inline, .checkbox-list, .checkbox-inline"));
-		                } else if (element.is(':radio')) {
-		                    error.insertAfter(element.closest(".md-radio-list, .md-radio-inline, .radio-list,.radio-inline"));
-		                } else {
-		                    error.insertAfter(element); // for other inputs, just perform default behavior
-		                }
-		            },
-
-		            highlight: function(element) { // hightlight error inputs
-		                $(element)
-		                    .closest('.form-group').addClass('has-error'); // set error class to the control group
-		            },
-
-		            unhighlight: function(element) { // revert the change done by hightlight
-		                $(element)
-		                    .closest('.form-group').removeClass('has-error'); // set error class to the control group
-		            },
-
-		            success: function(label) {
-		                label
-		                    .closest('.form-group').removeClass('has-error'); // set success class to the control group
-		            },
+		if(frompersonal){
+			PDP.validateform({
+				form:".form-modifypassword",
+				inmodal:false,
+				messages : {
 					
+					 
+					oldPassword : {								
+						required : "请输入旧口令"
+					},
 
-					submitHandler : function(form) {
-						// success1.show();
-						modifypassword()
-						
-					}
-				});
+					newPassword : {
+						minlength : jQuery.validator.format("应用名称不能小于{0}个字符"),
+						required : "请输入6位以上口令"
+					},
+
+					newPasswordSecond : {
+						minlength : jQuery.validator.format("二次输入口令不能小于{0}个字符"),
+						required : "请二次输入口令"
+					} ,
+					
+				},
+				rules : {
+				 
+					oldPassword : {
+						minlength : 1,
+						required : true
+					},
+		
+					newPassword : {
+						minlength : 6,
+						required : true
+					},
+		
+					newPasswordSecond : {
+						minlength : 6,
+						required : true
+					},
+		
+					
+				},
+
+				submitHandler:function(){ modifypassword(frompersonal)}
+			});
+		}
+		else
+		{
+			PDP.validateform({
+				form:".form-modifypassword",
+				messages : {
+					
+					 
+					 
+
+					newPassword : {
+						minlength : jQuery.validator.format("应用名称不能小于{0}个字符"),
+						required : "请输入6位以上口令"
+					},
+
+					newPasswordSecond : {
+						minlength : jQuery.validator.format("二次输入口令不能小于{0}个字符"),
+						required : "请二次输入口令"
+					} ,
+					
+				},
+				rules : {
+				 
+					 
+		
+					newPassword : {
+						minlength : 6,
+						required : true
+					},
+		
+					newPasswordSecond : {
+						minlength : 6,
+						required : true
+					},
+		
+					
+				},
+
+				submitHandler:function(){ modifypassword(frompersonal)}
+			});
+		}
+		
+		
 	}
-	var modifypassword = function(){
-		$("form",$currentmodal)
+	var modifypassword = function(frompersonal){
+		$(".form-modifypassword")
 		.ajaxSubmit(
 				{
 					type : 'POST',
@@ -198,8 +222,10 @@ var SysUser = function(){
 						var tiptype = "success";
 						if (msg == 'success') {
 							msg = "修改口令成功";
+							
 							PlatformCommonUtils.success(msg,function(){
-								$currentmodal.modal('hide');
+								if(!frompersonal)
+									$currentmodal.modal('hide');
 							}) ;
 						} else {
 							 
@@ -213,17 +239,17 @@ var SysUser = function(){
 				});
 		
 	}
-	var initModifyUserPasswordAction = function(userId,userName){
-		iniModifyPasswordValidateform();
-		$(".passwordsave",$currentmodal).bind('click',function(){
-			 if($("#newPassword",$currentmodal).val() != $("#newPasswordSecond",$currentmodal).val()){				
+	var initModifyUserPasswordAction = function(userId,userName,frompersonal){
+		iniModifyPasswordValidateform(frompersonal);
+		$(".passwordsave",".form-modifypassword").bind('click',function(){
+			 if($("#newPassword",".form-modifypassword").val() != $("#newPasswordSecond",".form-modifypassword").val()){				
 	   			PlatformCommonUtils.warn("两次口令不一致,请重新输入!") ;
 	   			return false;
 	   		}			  
-			$("form",$currentmodal).submit();
+			$(".form-modifypassword").submit();
 			return false;
 		});
-		$(".passwordreset",$currentmodal).bind('click',function(){
+		$(".passwordreset",".form-modifypassword").bind('click',function(){
 			PlatformCommonUtils.confirm('确定要重置为默认口令123456吗？重置后请修改默认口令!',function(){
 				$.ajax({
 			 		   type: "POST",
@@ -239,11 +265,12 @@ var SysUser = function(){
 			 				if(responseText=="success"){
 			 					
 			 					PlatformCommonUtils.success("重置用户"+userName+"口令成功!");
-			 					afterSaveUser();
+			 					
 			 				}else{
 			 					PlatformCommonUtils.warn("重置用户"+userName+"口令失败:"+responseText);
 			 				}
-			 				$currentmodal.modal('hide');
+			 				if(!frompersonal)
+		 						$currentmodal.modal('hide');
 			 			}
 			 			
 			 		  });
@@ -288,7 +315,7 @@ var SysUser = function(){
             	 "dom": "<'row'<'col-md-4 col-sm-12'<'table-group-actions pull-right'>>r><'table-responsive't><'row'<'col-md-8 col-sm-12'lip><'col-md-4 col-sm-12'>>", // datatable layout
             	 // setup rowreorder extension: http://datatables.net/extensions/fixedheader/
                  fixedHeader: {
-                     header: true,
+                     header: false,
                      headerOffset: fixedHeaderOffset
                  },
                  "drawCallback": function( settings ) {
@@ -425,6 +452,7 @@ var SysUser = function(){
 		                        }
                             },
                             { "data": "userId","render": function ( data, type, full, meta ) {
+                            	 
 	                        	 var ops = "<button userName=\""+full.userRealname+"\" userAccount=\""+full.userName+"\" defaultAdmin=\""+full.defaultAdmin+"\" userId=\""+data+"\" class=\"btn btn-outline btn-xs green-sharp  uppercase\" data-toggle=\"user_ops_confirmation\"  data-singleton=\"true\" data-placement=\"left\">操作</button>";
 	                             return ops;
 	                           	} 
@@ -712,208 +740,143 @@ var SysUser = function(){
     
     var iniModifyUserValidateform = function()
 	{
-		var form2 = $("#form_sys_modifyuser");		
-		form2.validate({
-					focusInvalid : false, // do not focus the last invalid
-											// input
-					ignore : "", // validate all fields including form hidden
-									// input
-					errorElement: 'span', //default input error message container
-		            errorClass: 'help-block help-block-error', // default input error message class
-					messages : {
-						
-					 
-							userRealname : {
-								minlength : jQuery.validator.format("应用编码不能小于{0}个字符"),
-								required : "请输入中文名称"
-							},
+    	PDP.validateform({
+			form:"#form_sys_modifyuser",
+			inmodal:true,
+			messages : {
+				
+				 
+				userRealname : {
+					minlength : jQuery.validator.format("应用编码不能小于{0}个字符"),
+					required : "请输入中文名称"
+				},
 
-							userPassword : {
-								minlength : jQuery.validator.format("应用名称不能小于{0}个字符"),
-								required : "请输入6位以上口令"
-							},
+				userPassword : {
+					minlength : jQuery.validator.format("应用名称不能小于{0}个字符"),
+					required : "请输入6位以上口令"
+				},
 
-							userPasswordSecond : {
-								minlength : jQuery.validator.format("二次输入口令不能小于{0}个字符"),
-								required : "请二次输入口令"
-							} ,
-							userIdcard : {
-								minlength : jQuery.validator.format("应用口令不能小于{0}个字符"),
-								required : "请输入身份证"
-							},
+				userPasswordSecond : {
+					minlength : jQuery.validator.format("二次输入口令不能小于{0}个字符"),
+					required : "请二次输入口令"
+				} ,
+				userIdcard : {
+					minlength : jQuery.validator.format("应用口令不能小于{0}个字符"),
+					required : "请输入身份证"
+				},
 
-							userWorknumber : {
-								minlength : jQuery.validator.format("应用编码不能小于{0}个字符"),
-								required : "请输入工号"
-							}
-					},
-					rules : {
-					 
-						userRealname : {
-							minlength : 1,
-							required : true
-						},
+				userWorknumber : {
+					minlength : jQuery.validator.format("应用编码不能小于{0}个字符"),
+					required : "请输入工号"
+				}
+			},
+			rules : {
+			 
+				userRealname : {
+					minlength : 1,
+					required : true
+				},
+	
+				userPassword : {
+					minlength : 1,
+					required : true
+				},
+	
+				userPasswordSecond : {
+					minlength : 1,
+					required : true
+				},
+	
+				userIdcard : {
+					minlength : 1,
+					required : true
+				},
+	
+				userWorknumber : {
+					minlength : 1,
+					required : true
+				}  
+			},
 
-						userPassword : {
-							minlength : 1,
-							required : true
-						},
-
-						userPasswordSecond : {
-							minlength : 1,
-							required : true
-						},
-
-						userIdcard : {
-							minlength : 1,
-							required : true
-						},
-
-						userWorknumber : {
-							minlength : 1,
-							required : true
-						}  
-					},
-
-					errorPlacement: function(error, element) {
-		                if (element.is(':checkbox')) {
-		                    error.insertAfter(element.closest(".md-checkbox-list, .md-checkbox-inline, .checkbox-list, .checkbox-inline"));
-		                } else if (element.is(':radio')) {
-		                    error.insertAfter(element.closest(".md-radio-list, .md-radio-inline, .radio-list,.radio-inline"));
-		                } else {
-		                    error.insertAfter(element); // for other inputs, just perform default behavior
-		                }
-		            },
-
-		            highlight: function(element) { // hightlight error inputs
-		                $(element)
-		                    .closest('.form-group').addClass('has-error'); // set error class to the control group
-		            },
-
-		            unhighlight: function(element) { // revert the change done by hightlight
-		                $(element)
-		                    .closest('.form-group').removeClass('has-error'); // set error class to the control group
-		            },
-
-		            success: function(label) {
-		                label
-		                    .closest('.form-group').removeClass('has-error'); // set success class to the control group
-		            },
-					
-
-					submitHandler : function(form) {
-						// success1.show();
-						modifyuser()
-						
-					}
-				});
+			submitHandler:function(){ modifyuser()}
+		});
+		
 	}
     var initAdduserValidateform = function()
 	{
-		var form2 = $("#form_sys_adduser");		
-		form2.validate({
-					focusInvalid : false, // do not focus the last invalid
-											// input
-					ignore : "", // validate all fields including form hidden
-									// input
-					errorElement: 'span', //default input error message container
-		            errorClass: 'help-block help-block-error', // default input error message class
-					messages : {
-						
-						userName : {
-								minlength : jQuery.validator.format("应用口令不能小于{0}个字符"),
-								required : "请输入账号"
-							},
-
-							userRealname : {
-								minlength : jQuery.validator.format("应用编码不能小于{0}个字符"),
-								required : "请输入中文名称"
-							},
-
-							userPassword : {
-								minlength : jQuery.validator.format("应用名称不能小于{0}个字符"),
-								required : "请输入6位以上口令"
-							},
-
-							userPasswordSecond : {
-								minlength : jQuery.validator.format("二次输入口令不能小于{0}个字符"),
-								required : "请二次输入口令"
-							} ,
-							userIdcard : {
-								minlength : jQuery.validator.format("应用口令不能小于{0}个字符"),
-								required : "请输入身份证"
-							},
-
-							userWorknumber : {
-								minlength : jQuery.validator.format("应用编码不能小于{0}个字符"),
-								required : "请输入工号"
-							}
-					},
-					rules : {
-						userName : {
-							minlength : 2,
-							required : true
-						},
-
-						userRealname : {
-							minlength : 1,
-							required : true
-						},
-
-						userPassword : {
-							minlength : 1,
-							required : true
-						},
-
-						userPasswordSecond : {
-							minlength : 1,
-							required : true
-						},
-
-						userIdcard : {
-							minlength : 1,
-							required : true
-						},
-
-						userWorknumber : {
-							minlength : 1,
-							required : true
-						}  
+    	PDP.validateform({
+			form:"#form_sys_adduser",
+			inmodal:true,
+			messages : {
+				
+				userName : {
+						minlength : jQuery.validator.format("应用口令不能小于{0}个字符"),
+						required : "请输入账号"
 					},
 
-					errorPlacement: function(error, element) {
-		                if (element.is(':checkbox')) {
-		                    error.insertAfter(element.closest(".md-checkbox-list, .md-checkbox-inline, .checkbox-list, .checkbox-inline"));
-		                } else if (element.is(':radio')) {
-		                    error.insertAfter(element.closest(".md-radio-list, .md-radio-inline, .radio-list,.radio-inline"));
-		                } else {
-		                    error.insertAfter(element); // for other inputs, just perform default behavior
-		                }
-		            },
+					userRealname : {
+						minlength : jQuery.validator.format("应用编码不能小于{0}个字符"),
+						required : "请输入中文名称"
+					},
 
-		            highlight: function(element) { // hightlight error inputs
-		                $(element)
-		                    .closest('.form-group').addClass('has-error'); // set error class to the control group
-		            },
+					userPassword : {
+						minlength : jQuery.validator.format("应用名称不能小于{0}个字符"),
+						required : "请输入6位以上口令"
+					},
 
-		            unhighlight: function(element) { // revert the change done by hightlight
-		                $(element)
-		                    .closest('.form-group').removeClass('has-error'); // set error class to the control group
-		            },
+					userPasswordSecond : {
+						minlength : jQuery.validator.format("二次输入口令不能小于{0}个字符"),
+						required : "请二次输入口令"
+					} ,
+					userIdcard : {
+						minlength : jQuery.validator.format("应用口令不能小于{0}个字符"),
+						required : "请输入身份证"
+					},
 
-		            success: function(label) {
-		                label
-		                    .closest('.form-group').removeClass('has-error'); // set success class to the control group
-		            },
-					
-
-					submitHandler : function(form) {
-						// success1.show();
-						adduser()
-						
+					userWorknumber : {
+						minlength : jQuery.validator.format("应用编码不能小于{0}个字符"),
+						required : "请输入工号"
 					}
-				});
+			},
+			rules : {
+				userName : {
+					minlength : 2,
+					required : true
+				},
+
+				userRealname : {
+					minlength : 1,
+					required : true
+				},
+
+				userPassword : {
+					minlength : 1,
+					required : true
+				},
+
+				userPasswordSecond : {
+					minlength : 1,
+					required : true
+				},
+
+				userIdcard : {
+					minlength : 1,
+					required : true
+				},
+
+				userWorknumber : {
+					minlength : 1,
+					required : true
+				}  
+			},
+
+			submitHandler:function(){ adduser()}
+		});
+		
 	}
+    var initusercontextpath = function(relativepath){
+   	 	usercontextpath = relativepath;
+    }
      var init = function(relativepath){
     	 usercontextpath = relativepath;
     	 //initAddUserModal();
@@ -1123,7 +1086,7 @@ var SysUser = function(){
              }
              var extendtext = "<input type=\"radio\"  name=\"user_deltype\" value=\"0\" checked>逻辑删除";
              extendtext += "<input type=\"radio\"  name=\"user_deltype\" value=\"1\">物理删除";
-             PlatformCommonUtils.confirm("确定要删除选中的用户吗?",function(isConfirm){
+             PDP.confirm("确定要删除选中的用户吗?",function(isConfirm){
             	 	if(isConfirm)
             	 	{
             	 		var user_deltype = '0';
@@ -1267,8 +1230,8 @@ var SysUser = function(){
 		 tomodifyPassword:function(userId,userName,userAccount){
 			 tomodifyPassword(userId,userName,userAccount);
 		 },
-		 initModifyUserPasswordAction:function(userId,userName){
-			 initModifyUserPasswordAction(userId,userName);
+		 initModifyUserPasswordAction:function(userId,userName,frompersonal){
+			 initModifyUserPasswordAction(userId,userName,frompersonal);
 		 },
 		 initUserOrderModalExtend:function(){
 			 initUserOrderModalExtend();
@@ -1278,6 +1241,9 @@ var SysUser = function(){
 		 },
 		 afterSaveUser:function(){
 			 afterSaveUser();
+		 },
+		 initusercontextpath:function(path){
+			 initusercontextpath(path);
 		 }
 		
     	

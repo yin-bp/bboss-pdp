@@ -817,7 +817,8 @@ License: You must have a valid license purchased only from themeforest(the above
                         <!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing -->
                         <!-- DOC: Set data-keep-expand="true" to keep the submenues expanded -->
                         <!-- DOC: Set data-auto-speed="200" to adjust the sub menu slide up/down speed -->
-                       <admin:globalpagemenu/>	
+                       
+                       <admin:menu/>	
                        <!-- END SIDEBAR MENU -->
                         <!-- END SIDEBAR MENU -->
                     </div>
@@ -1445,7 +1446,7 @@ License: You must have a valid license purchased only from themeforest(the above
         <script src="${pageContext.request.contextPath}/assets/global/scripts/app.min.js" type="text/javascript"></script>
         <!-- END THEME GLOBAL SCRIPTS -->
         <!-- BEGIN PAGE LEVEL SCRIPTS -->
-        <script src="${pageContext.request.contextPath}/assets/pages/scripts/desktop-menus.js" type="text/javascript"></script>
+        <script src="${pageContext.request.contextPath}/assets/desktop/desktop-menus.js" type="text/javascript"></script>
         <script src="${pageContext.request.contextPath}/assets/global/scripts/util.js" type="text/javascript"></script>
         
              <!-- BEGIN PAGE LEVEL PLUGINS -->
@@ -1471,12 +1472,14 @@ License: You must have a valid license purchased only from themeforest(the above
         <script src="${pageContext.request.contextPath}/assets/layouts/layout/scripts/demo.min.js" type="text/javascript"></script>
         <script src="${pageContext.request.contextPath}/assets/layouts/global/scripts/quick-sidebar.min.js" type="text/javascript"></script>
         <script src="${pageContext.request.contextPath}/assets/global/scripts/pager.js" type="text/javascript"></script>
+       <script
+	src="${pageContext.request.contextPath}/assets/sysmanager/sysuser.js" type="text/javascript"></script>
        
         <!-- END THEME LAYOUT SCRIPTS -->
         <script   type="text/javascript"> 
         jQuery(document).ready(function() {
         	App.setAssetsPath('${pageContext.request.contextPath}/assets/'); // init metronic core componets
-        	DesktopMenus.gotoworkspace('','${workspaceurl}','${menupath_menuid}'); // init metronic core componets
+        	DesktopMenus.gotoworkspace('','${workspaceurl}','${menupath_menuid}',true); // init metronic core componets
         	
         });</script>
         <!-- 临时区域分割点，菜单切换时，需要将其后去的节点都删除 -->

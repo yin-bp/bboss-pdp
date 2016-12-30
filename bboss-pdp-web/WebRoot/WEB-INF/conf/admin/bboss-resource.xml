@@ -15,6 +15,7 @@
 		path:updateResource="/jsp/sysmanager/resource/resourceEdit.jsp"
 		path:addResource="/jsp/sysmanager/resource/resourceAdd.jsp"
 		path:getResource="/jsp/sysmanager/resource/resourceView.jsp"
+		path:loadResourceMaintain="/jsp/sysmanager/resource/resourceMaintain.jsp"
 		f:resourceService="attr:resource.resourceService"
 		class="com.frameworkset.platform.admin.action.ResourceController" >
 	</property>

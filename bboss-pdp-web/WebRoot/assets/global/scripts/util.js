@@ -1,6 +1,10 @@
 var PlatformCommonUtils = function(){
+	var validataformset = {
+			inmodal:true
+	}
 	var validateform = function(options){
-		var form2 = $(options.form,ModelDialog.getCurrentModal());		
+		var $setting = $.extend(true,validataformset,options);
+		var form2 = $setting.inmodal? $($setting.form,ModelDialog.getCurrentModal()):$($setting.form);		
 		form2.validate({
 					focusInvalid : false, // do not focus the last invalid
 											// input
@@ -8,8 +12,8 @@ var PlatformCommonUtils = function(){
 									// input
 					errorElement: 'span', //default input error message container
 		            errorClass: 'help-block help-block-error', // default input error message class
-					messages : options.messages,
-					rules : options.rules,
+					messages : $setting.messages,
+					rules : $setting.rules,
 
 					errorPlacement: function(error, element) {
 		                if (element.is(':checkbox')) {
@@ -38,7 +42,7 @@ var PlatformCommonUtils = function(){
 					
 
 					submitHandler : function(form) {
-						options.submitHandler();
+						$setting.submitHandler();
 						
 						
 					}
@@ -179,6 +183,11 @@ var PlatformCommonUtils = function(){
         });
         
     }
+	var showError = function(id,message){
+		$('.msg',id).text(message);
+		$(id).show();
+	}
+	
 	return {
 		warn:function(msg,warnfun){
 			warn(msg,warnfun);
@@ -202,9 +211,13 @@ var PlatformCommonUtils = function(){
 		},
 		validateform:function(options){
 			validateform (options);
+		},
+		showError :function(id,message){
+			showError(id,message);
 		}
 	}
 }();
+var PDP = PlatformCommonUtils;
 var ModelDialog_Modal = function(options){
 	var $setting = $.extend(true,{
 						 width :"900px",
@@ -257,26 +270,108 @@ var ModelDialog_Modal = function(options){
 		
 	}
 }
-var ModelDialog = function(){
-	
-	if(!window.top.$modals)
-	{
-		window.top.$modals = new Array();
-	}
-	var $modals = window.top.$modals;
-	 
-	
+var $_modalcontainer_platform = function(){
+	var $modals = new Array();
+	 var currentPostion = -1;
 	 var getIframe = function(){
 		 return getCurrentModalDialog().getIframe();
 	 }
 	 var removeCurrentModal = function(){
 		 $modals.pop();
+		 currentPostion --;
 	 }
 	 var getCurrentModalDialog = function (){
 		 return $modals[$modals.length -1];
 	 }
+	 var getModalDialog = function (idx){
+		 return $modals[idx];
+	 }
 	 var modalSize = function(){
 		 return $modals.length;
+	 }
+	 var getParentModelDialog = function(){
+		 var parent = currentPostion -1;
+		 if(parent < 0){
+			 return $(window.top);
+		 }
+		 else
+		 {
+			 return getModalDialog(parent)
+		 }
+	 }
+	 var addModal = function(modal){
+		 $modals.push( modal);
+		
+	 }
+	 var incrementCurrentPostion = function(){
+		 currentPostion ++;
+	 }
+	 var getCurrentPosition = function(){
+		 return currentPostion;
+	 }
+	 return {
+		 getIframe:function(){
+			 return getIframe()
+		 },
+		 removeCurrentModal:function(){
+			 removeCurrentModal();
+		 },
+		 getCurrentModalDialog:function(){
+			 return getCurrentModalDialog();
+		 },
+		 getModalDialog:function(){
+			 return getModalDialog();
+		 },
+		 modalSize:function(){
+			 return modalSize();
+		 },
+		 getParentModelDialog:function(){
+			 return getParentModelDialog();
+		 },
+		 addModal:function(modal){
+			 addModal(modal);
+		 },
+		 getCurrentPosition:function(){
+			 return getCurrentPosition();
+		 },
+		 incrementCurrentPostion:function(){
+			 incrementCurrentPostion();
+		 }
+		 	
+	 }
+}
+var ModelDialog = function(){
+	
+	
+	var $_modalcontainer = window.top.$_modalcontainer;
+	 var getModalContainer = function(){
+		if(!window.top.$_modalcontainer)
+		{
+			window.top.$_modalcontainer = $_modalcontainer_platform();
+		}
+		 return window.top.$_modalcontainer;
+	 }
+	
+	 var getIframe = function(){
+		 return getModalContainer().getIframe();
+	 }
+	 var removeCurrentModal = function(){
+		 getModalContainer().removeCurrentModal();
+	 }
+	 var getCurrentModalDialog = function (){
+		 return getModalContainer().getCurrentModalDialog();
+	 }
+	 var getModalDialog = function (idx){
+		 return getModalContainer().getModalDialog();
+	 }
+	 var modalSize = function(){
+		 return getModalContainer().modalSize();
+	 }
+	 var getParentModelDialog = function(){
+		 return getModalContainer().getParentModelDialog();
+	 }
+	 var incrementCurrentPostion = function(){
+		 getModalContainer().incrementCurrentPostion();
 	 }
 	 
 	 var initModal = function(options){
@@ -298,8 +393,8 @@ var ModelDialog = function(){
 		 var _modal = new ModelDialog_Modal(options)
 		 _modal.setModal($modal)
 		
-		 
-		 $modals.push( _modal);
+		 getModalContainer().addModal(_modal)
+//		 $modals.push( _modal);
 		 return _modal;
 	 }
 	var changeModelFrameHeight =function(iframeobject){
@@ -312,7 +407,7 @@ var ModelDialog = function(){
     	{
     		if($iframe == null)
     		{
-    			$iframe = $currentmodal.getIframe();
+    			$iframe = getCurrentModalDialog().getIframe();
     		}
     	}
     	var setting = getCurrentModalDialog().getSetting();
@@ -364,8 +459,8 @@ var ModelDialog = function(){
 			modalcontent =modalcontent + "<iframe allowfullscreen "+
 			"frameborder=\"0\"  "+
 			"src=\""+setting.url+"\" "+
-			"scrolling=\"auto\" "+
-			
+			//"scrolling=\"auto\" "+
+			"width=\"100%\" height=\"50%\""+
 			"onLoad=\"javascript:ModelDialog.changeModelFrameHeight(this);\">"+
 			"</iframe>";
 		}
@@ -440,7 +535,8 @@ var ModelDialog = function(){
         	 "height":setting.height
          });
           // https://github.com/jschr/bootstrap-modal
-       
+		//currentPostion ++;
+		 incrementCurrentPostion()
          return $modal; 
        
 		
@@ -470,6 +566,17 @@ var ModelDialog = function(){
 		getCurrentModal:function(){
 			return getCurrentModalDialog().getModal();
 		},
+		getParentModal:function(){
+			var modal = getParentModelDialog()
+			 
+			if("getModal" in modal)
+				return modal.getModal();
+			else
+				return modal;
+		},
+		getModal:function(indx){
+			return getModalDialog(indx).getModal();
+		},
 		getIframe:function(){
 			return getIframe();
 		},
@@ -488,6 +595,13 @@ var ModelDialog = function(){
 		},
 		initPickers:function(){
 			PlatformCommonUtils.initPickers();
-		}
+		},
+		 getModalDialog : function (idx){
+			 return getModalDialog(idx);
+		 },
+		 
+		  getParentModelDialog:function(){
+			  return getParentModelDialog();
+		  }
 	}
 }();

@@ -16,12 +16,25 @@
 
 package com.frameworkset.platform.admin.service;
 
-import com.frameworkset.platform.admin.entity.*;
-import com.frameworkset.util.ListInfo;
-import com.frameworkset.common.poolman.ConfigSQLExecutor;
-import org.apache.log4j.Logger;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import org.apache.log4j.Logger;
+
+import com.frameworkset.common.poolman.ConfigSQLExecutor;
+import com.frameworkset.common.poolman.Record;
+import com.frameworkset.common.poolman.handle.NullRowHandler;
+import com.frameworkset.common.poolman.handle.RowHandler;
 import com.frameworkset.orm.transaction.TransactionManager;
+import com.frameworkset.platform.admin.entity.AuthOPS;
+import com.frameworkset.platform.admin.entity.ResOpr;
+import com.frameworkset.platform.admin.entity.Role;
+import com.frameworkset.platform.admin.entity.RoleCondition;
+import com.frameworkset.platform.admin.entity.UserRole;
+import com.frameworkset.util.ListInfo;
 
 /**
  * <p>Title: RoleServiceImpl</p> <p>Description: 角色管理管理业务处理类 </p> <p>bboss</p>
@@ -84,6 +97,7 @@ public class RoleServiceImpl implements RoleService {
 	public ListInfo queryListInfoRoles(RoleCondition conditions, long offset, int pagesize) throws RoleException {
 		ListInfo datas = null;
 		try {
+			//如果是在角色设置界面，则需要过滤没有授予权限的角色和guest角色
 			datas = executor.queryListInfoBean(Role.class, "queryListRole", offset, pagesize, conditions);
 		} catch (Exception e) {
 			throw new RoleException("pagine query Role failed:", e);
@@ -99,5 +113,255 @@ public class RoleServiceImpl implements RoleService {
 			throw new RoleException("query Role failed:", e);
 		}
 
+	}
+	/** (non-Javadoc)
+	 * @see com.frameworkset.platform.admin.service.RoleService#getUserRoles(java.lang.String)
+	 */
+	@Override
+	public List<UserRole> getUserRoles(String userId) throws RoleException {
+		try {
+			List<UserRole> beans = executor.queryList(UserRole.class, "getUserRoles", userId);
+			return beans;
+		} catch (Exception e) {
+			throw new RoleException("query Role failed:", e);
+		}
+	}
+	/** 
+	 * op_id,AUTHORIZATION_STIME,AUTHORIZATION_ETIME
+	 * @see com.frameworkset.platform.admin.service.RoleService#getGrantedGlobalOperations(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+	 */
+	@Override
+	public Map getGrantedGlobalOperations(String globalresourceid, String resourceType, String roleId,
+			String roleType, String permissionTable) throws RoleException {
+		
+		try {
+			// rop.ROLE_ID = ? and rop.TYPES =? and RESTYPE_ID = ? and RES_ID = ?
+			Map params = new HashMap();
+			params.put("roleId", roleId);
+			params.put("resourceType", resourceType);
+			params.put("globalresourceid", globalresourceid);
+			params.put("roleType", roleType);
+			params.put("permissionTable", permissionTable);
+			final Map ps = new HashMap();
+			this.executor.queryBeanByNullRowHandler(new NullRowHandler(){
+
+				@Override
+				public void handleRow(Record origine) throws Exception {
+					String op_id = origine.getString("op_id");
+					Date[] stime = new Date[2];
+					stime[0] = origine.getDate("AUTHORIZATION_STIME");
+					stime[1] = origine.getDate("AUTHORIZATION_ETIME");
+					ps.put(op_id, stime);
+				}
+				
+			},  "getGrantedGlobalOperations", params);
+			return ps;
+		} catch (Exception e) {
+			throw new RoleException(" getGrantedGlobalOperations failed:", e);
+		}
+	}
+	
+	/**
+	 * 获取资源类型下面的，授予角色的全局操作及有效时间
+	 * op_id,AUTHORIZATION_STIME,AUTHORIZATION_ETIME
+	 * @param opcode
+	 * @param resourceType
+	 * @param roleId
+	 * @param roleType
+	 */
+	public List<AuthOPS> getGrantedOperations(String opcode, String resourceType, String roleId,
+			String roleType,String permissionTable,RowHandler rowHandler,Class poclazz)throws RoleException{
+		try {
+			// rop.ROLE_ID = ? and rop.TYPES =? and RESTYPE_ID = ? and RES_ID = ?
+			Map params = new HashMap();
+			params.put("roleId", roleId);
+			params.put("resourceType", resourceType);
+			params.put("opcode", opcode);
+			params.put("roleType", roleType);
+			params.put("permissionTable", permissionTable);
+			List<AuthOPS> menus = null;
+			if(rowHandler == null){
+				menus = this.executor.queryListBeanByRowHandler(new RowHandler<AuthOPS>(){
+	
+					@Override
+					public void handleRow(AuthOPS menu,Record origine) throws Exception {
+						String op_id = origine.getString("op_id");
+						menu.setOpcode(op_id);
+						menu.setResCode(origine.getString("RES_ID"));
+						menu.setResName(origine.getString("RES_NAME"));
+						menu.setResourceType(origine.getString("RESTYPE_ID"));					
+						menu.setAUTHORIZATION_ETIME(origine.getDate("AUTHORIZATION_ETIME"));
+						menu.setAUTHORIZATION_STIME(origine.getDate("AUTHORIZATION_STIME"));
+						
+						
+					}
+					
+				}, AuthOPS.class, "getGrantedOperations", params);
+			}
+			else
+			{
+				menus = this.executor.queryListBeanByRowHandler(rowHandler,poclazz, "getGrantedOperations", params);
+			}
+			return menus;
+		} catch (Exception e) {
+			throw new RoleException(" getGrantedOperations failed:", e);
+		}
+	}
+	
+	/**
+	 * 删除角色资源操作权限
+	 * @param resOprs
+	 * @param resourceType
+	 * @param roleId
+	 * @param roleType
+	 * @param permissionTable
+	 */
+	public void deleteRoleAuthResources(List<ResOpr> resOprs, String resourceType, String roleId, String roleType,
+			String permissionTable)  throws RoleException {
+		TransactionManager tm = new TransactionManager();
+		try
+		{
+			tm.begin();
+			List<Map> deleteAuths = new ArrayList<Map>();
+			
+			for(int i = 0;  resOprs != null && i< resOprs.size(); i ++){
+				ResOpr resOpr = resOprs.get(i);
+				HashMap authinfos = new HashMap();
+				authinfos.put("roleId", roleId);
+				authinfos.put("resCode", resOpr.getResCode());
+				authinfos.put("resourceType", resourceType);
+				authinfos.put("roleType", roleType);
+				authinfos.put("permissionTable", permissionTable);
+				deleteAuths.add(authinfos);
+			}
+			this.executor.deleteBeans("cleanroleAuths", deleteAuths);
+			
+			tm.commit();
+		}
+		catch(Exception e)
+		{
+			throw new RoleException(e);
+		}
+		finally
+		{
+			tm.release();
+		}
+	}
+	/** (non-Javadoc)
+	 * @see com.frameworkset.platform.admin.service.RoleService#saveRoleAuths(java.lang.String, java.lang.String[], java.util.List, java.lang.String, java.lang.String, java.lang.String)
+	 */
+	@Override
+	public void saveRoleAuths(String globalresourceid, String[] globalopcode, List<ResOpr> resOprs, String resourceType,
+			String roleId, String roleType,String permissionTable) throws RoleException  {
+		TransactionManager tm = new TransactionManager();
+		try
+		{
+			tm.begin();
+			List<Map> deleteAuths = new ArrayList<Map>();
+			Map authinfos = authinfos = new HashMap();
+			authinfos.put("roleId", roleId);
+			authinfos.put("resourceType", resourceType);
+			authinfos.put("roleType", roleType);
+//			authinfos.put("resCode", globalresourceid);
+			authinfos.put("permissionTable", permissionTable);
+			this.executor.deleteBean("cleanroleAuths", authinfos);
+//			if(StringUtil.isNotEmpty(globalresourceid)){
+//				authinfos = new HashMap();
+//				authinfos.put("roleId", roleId);
+//				authinfos.put("resourceType", resourceType);
+//				authinfos.put("roleType", roleType);
+////				authinfos.put("resCode", globalresourceid);
+//				authinfos.put("permissionTable", permissionTable);
+//				deleteAuths.add(authinfos);
+//			}
+//				
+//			
+//			for(int i = 0;  resOprs != null && i< resOprs.size(); i ++){
+//				ResOpr resOpr = resOprs.get(i);
+//				authinfos = new HashMap();
+//				authinfos.put("roleId", roleId);
+//				authinfos.put("resCode", resOpr.getResCode());
+//				authinfos.put("resourceType", resourceType);
+//				authinfos.put("roleType", roleType);
+//				authinfos.put("permissionTable", permissionTable);
+//				deleteAuths.add(authinfos);
+//			}
+//			this.executor.deleteBeans("cleanroleAuths", deleteAuths);
+			
+			List<Map> addAuths = new ArrayList<Map>();
+			for(int i = 0; globalopcode !=null && i < globalopcode.length; i ++){
+				authinfos = new HashMap();
+				authinfos.put("roleId", roleId);
+				authinfos.put("resourceType", resourceType);
+				authinfos.put("roleType", roleType);
+				authinfos.put("resCode", globalresourceid);
+				authinfos.put("resName", "全局资源");
+				authinfos.put("opCode", globalopcode[i]);
+				authinfos.put("permissionTable", permissionTable);
+				addAuths.add(authinfos);
+			}
+			
+			for(int i = 0; resOprs !=null && i < resOprs.size(); i ++){
+				authinfos = new HashMap();
+				ResOpr resOpr = resOprs.get(i);
+				authinfos.put("roleId", roleId);
+				authinfos.put("resourceType", resourceType);
+				authinfos.put("roleType", roleType);
+				authinfos.put("resCode", resOpr.getResCode());
+				authinfos.put("resName", resOpr.getResName());
+				authinfos.put("opCode", resOpr.getOp());
+				authinfos.put("permissionTable", permissionTable);
+				addAuths.add(authinfos);
+			}
+			this.executor.insertBeans("addAuths", addAuths);
+			tm.commit();
+		}
+		catch(Exception e)
+		{
+			throw new RoleException(e);
+		}
+		finally
+		{
+			tm.release();
+		}
+	}
+	
+	/** (non-Javadoc)
+	 * @see com.frameworkset.platform.admin.service.RoleService#saveRoleAuths(java.lang.String, java.lang.String[], java.util.List, java.lang.String, java.lang.String, java.lang.String)
+	 */
+	@Override
+	public void saveRoleAuths(List<ResOpr> resOprs, String resourceType,
+			String roleId, String roleType,String permissionTable) throws RoleException  {
+		TransactionManager tm = new TransactionManager();
+		try
+		{
+			tm.begin();
+			List<Map> addAuths = new ArrayList<Map>();
+			for(int i = 0; resOprs !=null && i < resOprs.size(); i ++){
+				HashMap authinfos = new HashMap();
+				ResOpr resOpr = resOprs.get(i);
+				authinfos.put("roleId", roleId);
+				authinfos.put("resourceType", resourceType);
+				authinfos.put("roleType", roleType);
+				authinfos.put("resCode", resOpr.getResCode());
+				authinfos.put("resName", resOpr.getResName());
+				authinfos.put("opCode", resOpr.getOp());
+				authinfos.put("permissionTable", permissionTable);
+				int exit = this.executor.queryObjectBean(int.class, "hasgranted", authinfos);
+				if(exit <= 0)
+					addAuths.add(authinfos);
+			}
+			if(addAuths.size() > 0)
+				this.executor.insertBeans("addAuths", addAuths);
+			tm.commit();
+		}
+		catch(Exception e)
+		{
+			throw new RoleException(e);
+		}
+		finally
+		{
+			tm.release();
+		}
 	}
 }

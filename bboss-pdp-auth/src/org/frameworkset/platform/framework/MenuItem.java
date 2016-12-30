@@ -23,6 +23,7 @@ public interface MenuItem  {
     public MenuItem getParent();
 
     public String getName(HttpServletRequest pageContext) ;
+    public String getName();
 
     public String getMouseclickimg(HttpServletRequest pageContext) ;
 

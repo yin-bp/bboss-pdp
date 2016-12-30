@@ -24,6 +24,7 @@ public class Operation extends I18nResource {
     private String id;
     private String name;
     private String priority;
+    private boolean hasPermission;
     /**
      * 管理员和部门管理员特有操作标识，默认为false，所有的用户都可以授予该操作，为true时
      * 只有管理员和部门管理员才能授予改操作
@@ -195,6 +196,12 @@ public class Operation extends I18nResource {
 	public List<ResourceToken> getAuthoresouresList()
 	{
 		return this.authorResource.getAuthorResources();
+	}
+	public boolean isHasPermission() {
+		return hasPermission;
+	}
+	public void setHasPermission(boolean hasPermission) {
+		this.hasPermission = hasPermission;
 	}
 
 

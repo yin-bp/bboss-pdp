@@ -92,21 +92,31 @@ public class MenuTag extends BaseTag {
 	
 		String mname = item.getName(request);
 		String icon = item.getStringExtendAttribute("icon","icon-settings");
-		String iframe = item.getStringExtendAttribute("iframe");
-		String url =  null;
-		if(iframe == null || !iframe.equals("true"))
+		String fullpageload = item.getStringExtendAttribute("fullpageload","false");
+		if(fullpageload.equals("true"))
 		{
-			url =  MenuHelper.getRealUrl(contextpath, Framework.getWorkspaceContent(item,control),MenuHelper.menupath_menuid,item.getId());
+			datas.append("<li ").append(selectedclass).append(">")
+			 .append("<a id=\"left__").append(item.getId()).append("\"  href=\"javascript:void(0);\" onclick=\"javascript:DesktopMenus.gotomenu('").append(item.getId()).append("',this,event)\" class=\"nav-link \">");
+
 		}
 		else
 		{
+			String iframe = item.getStringExtendAttribute("iframe");
+			String url =  null;
+			if(iframe == null || !iframe.equals("true"))
+			{
+				url =  MenuHelper.getRealUrl(contextpath, Framework.getWorkspaceContent(item,control),MenuHelper.menupath_menuid,item.getId());
+			}
+			else
+			{
 			
-			url =  MenuHelper.getRealUrl(contextpath, Framework.getWorkspaceContent(item,control),MenuHelper.menupath_menuid,item.getId());
-			url =  MenuHelper.getRealUrl(contextpath, MenuHelper.iframeurl,MenuHelper.selecturl,StringUtil.urlencode(url,"UTF-8"));
-		}
-		datas.append("<li ").append(selectedclass).append(">")
-			 .append("<a href=\"javascript:void(0);\" onclick=\"DesktopMenus.gotoworkspace('','").append(url)
-			 .append("','").append(item.getId()).append("',false,this)\" class=\"nav-link \">");
+				url =  MenuHelper.getRealUrl(contextpath, Framework.getWorkspaceContent(item,control),MenuHelper.menupath_menuid,item.getId());
+				url =  MenuHelper.getRealUrl(contextpath, MenuHelper.iframeurl,MenuHelper.selecturl,StringUtil.urlencode(url,"UTF-8"));
+			}
+			datas.append("<li ").append(selectedclass).append(">")
+				 .append("<a href=\"javascript:void(0);\" onclick=\"DesktopMenus.gotoworkspace('','").append(url)
+				 .append("','").append(item.getId()).append("',false,this)\" class=\"nav-link \">");
+		}		 
 		if(icon != null && !icon.equals(""))
 		{
 			 datas.append("    <i class=\"").append(icon).append("\"></i>");
@@ -147,26 +157,50 @@ public class MenuTag extends BaseTag {
 	
 		String mname = item.getName(request);
 		String icon = item.getStringExtendAttribute("icon","icon-settings");
-		
-		String iframe = item.getStringExtendAttribute("iframe");
-		String url =  null;
-		if(iframe == null || !iframe.equals("true"))
-		{
-			url =  MenuHelper.getModuleUrl(item, contextpath,  control);
+		String fullpageload = item.getStringExtendAttribute("fullpageload","false");
+		if(fullpageload.equals("true")){
+			//		String iframe = item.getStringExtendAttribute("iframe");
+			String url =  item.getUrl();
+	//		if(iframe == null || !iframe.equals("true"))
+	//		{
+	//			url =  MenuHelper.getModuleUrl(item, contextpath,  control);
+	//		}
+	//		else
+	//		{
+	//			url = MenuHelper.getModuleUrl(item, contextpath,  control);
+	//			url =  MenuHelper.getRealUrl(contextpath, MenuHelper.iframeurl,MenuHelper.selecturl,StringUtil.urlencode(url,"UTF-8"));
+	//		}
+			if(url != null && !item.isUsesubpermission())
+				datas.append("<li ").append(selectedclass).append(">")
+					 .append("<a id=\"left__").append(item.getId()).append("\" href=\"javascript:void(0);\" onclick=\"javascript:DesktopMenus.gotomenu('").append(item.getId()).append("',this,event)\" class=\"nav-link \">");
+			else
+			{
+				datas.append("<li ").append(selectedclass).append(">")
+				 .append("<a id=\"left__").append(item.getId()).append("\"  href=\"javascript:void(0);\" hasurl=\"false\" class=\"nav-link \">");
+			}
 		}
 		else
 		{
-			url = MenuHelper.getModuleUrl(item, contextpath,  control);
-			url =  MenuHelper.getRealUrl(contextpath, MenuHelper.iframeurl,MenuHelper.selecturl,StringUtil.urlencode(url,"UTF-8"));
-		}
-		if(url != null && !item.isUsesubpermission())
-			datas.append("<li ").append(selectedclass).append(">")
-				 .append("<a href=\"javascript:void(0);\" onclick=\"DesktopMenus.gotoworkspace('','").append(url)
-				 .append("','").append(item.getId()).append("',false,this)\" class=\"nav-link \">");
-		else
-		{
-			datas.append("<li ").append(selectedclass).append(">")
-			 .append("<a href=\"javascript:void(0);\" hasurl=\"false\" class=\"nav-link \">");
+			String iframe = item.getStringExtendAttribute("iframe");
+			String url =  null;
+			if(iframe == null || !iframe.equals("true"))
+			{
+				url =  MenuHelper.getModuleUrl(item, contextpath,  control);
+			}
+			else
+			{
+				url = MenuHelper.getModuleUrl(item, contextpath,  control);
+				url =  MenuHelper.getRealUrl(contextpath, MenuHelper.iframeurl,MenuHelper.selecturl,StringUtil.urlencode(url,"UTF-8"));
+			}
+			if(url != null && !item.isUsesubpermission())
+				datas.append("<li ").append(selectedclass).append(">")
+					 .append("<a href=\"javascript:void(0);\" onclick=\"DesktopMenus.gotoworkspace('','").append(url)
+					 .append("','").append(item.getId()).append("',false,this)\" class=\"nav-link \">");
+			else
+			{
+				datas.append("<li ").append(selectedclass).append(">")
+				 .append("<a href=\"javascript:void(0);\" hasurl=\"false\" class=\"nav-link \">");
+			}
 		}
 		if(icon != null && !icon.equals(""))
 		{
@@ -214,30 +248,55 @@ public class MenuTag extends BaseTag {
 		datas.append("<li ").append(selectedclass).append(">");
 		MenuQueue menus = item.getMenus();
 		if(item.getUrl() == null || item.getUrl().equals("") || item.isUsesubpermission())
-			datas.append("<a href=\"javascript:;\" hasurl=\"false\" class=\"nav-link nav-toggle\">");
+			datas.append("<a id=\"left__").append(item.getId()).append("\" href=\"javascript:;\" hasurl=\"false\" class=\"nav-link nav-toggle\">");
 		else
 		{
 //			String url = MenuHelper.getModuleUrl(item, contextpath,  control);
-			String iframe = item.getStringExtendAttribute("iframe");
-			String url =  null;
-			if(iframe == null || !iframe.equals("true"))
-			{
-				url =  MenuHelper.getModuleUrl(item, contextpath,  control);
-			}
-			else
-			{
-				url = MenuHelper.getModuleUrl(item, contextpath,  control);
-				url =  MenuHelper.getRealUrl(contextpath, MenuHelper.iframeurl,MenuHelper.selecturl,StringUtil.urlencode(url,"UTF-8"));
-			}
-			if(theme == null || theme.equals("admin_3"))
-				datas.append("<a href=\"javascript:void(0);\" onclick=\"DesktopMenus.gotoworkspace('','").append(url)
-				 .append("','").append(item.getId()).append("',false,this)\" class=\"nav-link nav-toggle\">");
-			else
-			{
-				//ondblclick
-				datas.append("<a href=\"javascript:void(0);\" onclick=\"DesktopMenus.gotoworkspace('','").append(url)
-				 .append("','").append(item.getId()).append("',false,this)\" class=\"nav-link nav-toggle\">");
+			String fullpageload = item.getStringExtendAttribute("fullpageload","false");
+			if(!fullpageload.equals("true")){
+				String iframe = item.getStringExtendAttribute("iframe");
+				String url =  null;
+				if(iframe == null || !iframe.equals("true"))
+				{
+					url =  MenuHelper.getModuleUrl(item, contextpath,  control);
+				}
+				else
+				{
+					url = MenuHelper.getModuleUrl(item, contextpath,  control);
+					url =  MenuHelper.getRealUrl(contextpath, MenuHelper.iframeurl,MenuHelper.selecturl,StringUtil.urlencode(url,"UTF-8"));
+				}
+				if(theme == null || theme.equals("admin_3"))
+					datas.append("<a href=\"javascript:void(0);\" onclick=\"DesktopMenus.gotoworkspace('','").append(url)
+					 .append("','").append(item.getId()).append("',false,this)\" class=\"nav-link nav-toggle\">");
+				else
+				{
+					//ondblclick
+					datas.append("<a href=\"javascript:void(0);\" onclick=\"DesktopMenus.gotoworkspace('','").append(url)
+					 .append("','").append(item.getId()).append("',false,this)\" class=\"nav-link nav-toggle\">");
 				 
+				}
+			}
+			else
+			{
+				//String iframe = item.getStringExtendAttribute("iframe");
+				String url =  item.getUrl();
+	//			if(iframe == null || !iframe.equals("true"))
+	//			{
+	//				url =  MenuHelper.getModuleUrl(item, contextpath,  control);
+	//			}
+	//			else
+	//			{
+	//				url = MenuHelper.getModuleUrl(item, contextpath,  control);
+	//				url =  MenuHelper.getRealUrl(contextpath, MenuHelper.iframeurl,MenuHelper.selecturl,StringUtil.urlencode(url,"UTF-8"));
+	//			}
+				if(theme == null || theme.equals("admin_3"))
+					datas.append("<a id=\"left__").append(item.getId()).append("\"  href=\"javascript:void(0);\" onclick=\"javascript:DesktopMenus.gotomenu('").append(item.getId()).append("',this,event)\" class=\"nav-link nav-toggle\">");
+				else
+				{
+					//ondblclick
+					datas.append("<a id=\"left__").append(item.getId()).append("\"  href=\"javascript:void(0);\" onclick=\"javascript:DesktopMenus.gotomenu('").append(item.getId()).append("',this,event)\" class=\"nav-link nav-toggle\">");
+				 
+				}
 			}
 		}
 		

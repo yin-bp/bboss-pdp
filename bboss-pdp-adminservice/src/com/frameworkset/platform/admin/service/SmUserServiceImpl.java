@@ -260,12 +260,15 @@ public class SmUserServiceImpl implements SmUserService {
 			if(!newPassword.equals(newPasswordSecond)){
 				return "两次输入口令不一致!";
 			}
-				
-			String encrptoldPassword = EncrpyPwd.encodePassword(oldPassword);
-			int exist = executor.queryObject(int.class, "oldPasswordright", userId,encrptoldPassword);
-			if(exist ==0){
-				return "旧口令不正确!";
+			if(oldPassword != null && !oldPassword.equals(""))	{
+				String encrptoldPassword = EncrpyPwd.encodePassword(oldPassword);
+				int exist = executor.queryObject(int.class, "oldPasswordright", userId,encrptoldPassword);
+				if(exist ==0){
+					return "旧口令不正确!";
+				}
 			}
+				
+			
 				
 			String encrptnewPassword = EncrpyPwd.encodePassword(newPassword);
 			executor.update("resetpassword", encrptnewPassword,userId);
@@ -406,5 +409,42 @@ public class SmUserServiceImpl implements SmUserService {
 				throw new SmUserException("pagine query SmUser failed:", e);
 			}
 		}
+	}
+	/** (non-Javadoc)
+	 * @see com.frameworkset.platform.admin.service.SmUserService#saveUserRoles(java.lang.String, java.lang.String)
+	 */
+	@Override
+	public void saveUserRoles(String userId, String roleIds) throws SmUserException {
+		
+		TransactionManager tm = new TransactionManager();
+		try {
+			tm.begin();
+			String roleIds_[] = StringUtil.isEmpty(roleIds)?null: roleIds.split(",");
+			List<Map> userRoles = new ArrayList<Map>();
+//			int num = 0;
+			if(roleIds_ != null){
+				for(String roleId:roleIds_){
+	//				num = executor.queryObject(int.class, "existUserRoles", userId,roleId);
+	//				if(num == 0)
+	//				{
+						Map data = new HashMap();
+						data.put("userId", userId);
+						data.put("roleId", roleId);
+						userRoles.add(data);
+	//				}
+				}
+			}
+			executor.delete("removeUserRoles", userId);//删除手动为用户设置的角色，缺省的系统级别的角色不能被删除
+			if(userRoles.size() > 0)
+				this.executor.insertBeans("saveUserRoles", userRoles);
+			tm.commit();
+		} catch (Exception e) {
+			throw new SmUserException(e);
+		}
+		finally
+		{
+			tm.release();
+		}
+		
 	}
 }
