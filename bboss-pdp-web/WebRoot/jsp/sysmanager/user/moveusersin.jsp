@@ -169,8 +169,8 @@
 								class="btn btn-circle blue btn-xs btn-submitmoveinusers"> <i
 								class="fa fa-plus"></i> 提交入库
 							</a> <a href="javascript:;"
-								class="btn btn-circle default btn-xs clearselecteduser_btn">
-								<i class="fa fa-plus"></i> 移除
+								class="btn btn-circle red btn-xs clearselecteduser_btn">
+								<i class="fa fa-times"></i> 移除
 							</a>
 
 						</div>

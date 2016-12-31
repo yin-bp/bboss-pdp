@@ -355,7 +355,11 @@ var $_modalcontainer_platform = function(){
 }
 var ModelDialog = function(){
 	
-	
+	var closeDialog = function(){
+		var $modal = getCurrentModal();
+		 
+		$modal.modal('hide');
+	}
 	var $_modalcontainer = window.top.$_modalcontainer;
 	 var getModalContainer = function(){
 		if(!window.top.$_modalcontainer)
@@ -565,6 +569,9 @@ var ModelDialog = function(){
 	return {
 		dialog : function(options){
 			return dialog(options);
+		},
+		close:function(){
+			closeDialog();
 		},
 		modalSize:function(){
 			return modalSize();

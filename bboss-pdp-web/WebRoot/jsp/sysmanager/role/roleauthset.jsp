@@ -136,10 +136,11 @@
 <script type="text/javascript">
 	jQuery(document).ready(function() {
 		SysRoleAuthset.initRoleAuthset('${pageContext.request.contextPath}','${roleId}','${roleType}','${resourceType}','${resourceName}');
-		var queryRoleUsers = function(doquery){
-			
-			$(".portlet_roleusers",ModelDialog.getCurrentModal()).load("${pageContext.request.contextPath}/sysmanager/role/queryRoleUsers.page",
-					doquery?$('.form-queryroleusers',ModelDialog.getCurrentModal()).serialize():{roleName:"${roleName}"},
+		var queryRoleUsers = function(doquery,modeldialog){
+			if(!modeldialog )
+				modeldialog = ModelDialog.getCurrentModal();
+			$(".portlet_roleusers",modeldialog).load("${pageContext.request.contextPath}/sysmanager/role/queryRoleUsers.page",
+					doquery?$('.form-queryroleusers',modeldialog).serialize():{roleName:"${roleName}"},
 						function(){
 						
 						});
@@ -149,17 +150,70 @@
 		$(".btn-query",ModelDialog.getCurrentModal()).bind("click",function(){
 			queryRoleUsers(true);
 		});
-		$(".btn-addroleusers",ModelDialog.getCurrentModal()).bind("click",function(){
-			ModelDialog.dialog({
-					title:"选择待授予的用户",
-					showfooter:false,
-					url:"${pageContext.request.contextPath}/sysmanager/role/toaddroleusers.page",
-					params:{"roleName":"${roleName}"},
-					width:"600px",
-					height:"500px"
-
-	         });
-		});
+		$(".btn-addroleusers",ModelDialog.getCurrentModal()).bind('click',function(){
+	  		ModelDialog.dialog({
+	  							title:"选择待授予的用户",
+	  							iframe:false,
+	  							url:"${pageContext.request.contextPath}/jsp/sysmanager/common/choosemultiusers.jsp",
+	  							width:"1260px",
+	  							height:"500px",
+	  							okCallBack:function(modal){
+	  								 
+	  								var selectUsers = SysChoosemultiUsers.getSelectUsers();
+	  								
+	  								if(selectUsers == null || selectUsers == "")
+	  								{
+	  									PDP.warn("没有选择用户！");
+	  	  								return false;
+	  								}
+	  								else
+	  								{
+	  									//PlatformCommonUtils.success("部门主管:"+selectUsers);
+	  									//userId+":"+userRealname+":"+userName+":"+userWorknumber+":"+userMobiletel1
+	  									var users = selectUsers.split(",");
+	  									var userIds="";
+	  									for(i =0 ; i < users.length; i++){
+	  										
+	  										var user = users[i];
+	  										var _user = user.split(":");
+	  										if(userIds == ""){
+	  											userIds = _user[0] ;
+	  										}
+	  										else
+  											{
+	  											userIds = userIds +","+_user[0] ;
+  											}
+	  									}
+	  									
+	  									 $.ajax({
+	  							 		   type: "POST",
+	  							 			url : '${pageContext.request.contextPath}/sysmanager/user/saveRoleUsers.page',
+	  							 			data :{"userIds":userIds,"roleId":'${roleName }'},
+	  							 			dataType : 'json',
+	  							 			async:false,
+	  							 			beforeSend: function(XMLHttpRequest){ 					
+	  							 				 	
+	  							 			},
+	  							 			success : function(responseText){
+	  							 				
+	  							 				if(responseText=="success"){	  							 					
+	  							 					PDP.success("为角色设置用户成功!");
+	  							 					queryRoleUsers(false,ModelDialog.getParentModal());
+	  							 				}else{
+	  							 					PDP.warn("为角色设置用户失败:"+responseText);
+	  							 				}
+	  							 			}
+	  							 		  });	
+	  									return true;
+	  								}
+	  								
+	  							},
+	  							closeCallBack:undefined,
+	  							urlLoadCallBack:undefined
+	  			
+	  			});
+	   	 });
+		
 		
 		$(".btn-removeroleusers",ModelDialog.getCurrentModal()).bind("click",function(){
 			var chk_value =""; 
@@ -180,8 +234,8 @@
 	           	 		
 		           	 	$.ajax({
 		          		   type: "POST",
-		          			url : "${pageContext.request.contextPath}/sysmanager/role/deleteRoleAuthResources.page",
-		          			data :{"opCode":"roleset","resCodes":chk_value,"roleId":"${roleId}","roleType":"${roleType}","resourceType":"${resourceType}"},
+		          			url : "${pageContext.request.contextPath}/sysmanager/role/deleteRoleUsers.page",
+		          			data :{"users":chk_value,"roleName":"${roleName}"},
 		          			dataType : 'json',
 		          			async:false,
 		          			error : function(xhr, ajaxOptions,
@@ -195,10 +249,10 @@
 		          				
 		          				if(responseText=="success"){
 		          					
-		          					PDP.success("角色删除成功!");
+		          					PDP.success("用户移除成功!");
 		          					loadauto_resourcesauthsource();
 		          				}else{
-		          					PDP.warn("角色删除失败:"+responseText);
+		          					PDP.warn("用户移除失败:"+responseText);
 		          				}
 		          			}
 		          		  });
