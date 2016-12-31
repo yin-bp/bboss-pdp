@@ -29,6 +29,7 @@ import org.frameworkset.event.EventImpl;
 import org.frameworkset.platform.config.ResourceInfoQueue;
 import org.frameworkset.platform.config.model.OperationQueue;
 import org.frameworkset.platform.config.model.ResourceInfo;
+import org.frameworkset.platform.framework.Framework;
 import org.frameworkset.platform.resource.ResourceManager;
 import org.frameworkset.platform.security.AccessControl;
 import org.frameworkset.platform.security.event.ACLEventType;
@@ -37,6 +38,7 @@ import org.frameworkset.util.annotations.ResponseBody;
 import org.frameworkset.web.servlet.ModelMap;
 
 import com.frameworkset.orm.transaction.TransactionManager;
+import com.frameworkset.platform.admin.entity.AuthOPS;
 import com.frameworkset.platform.admin.entity.ResOpr;
 import com.frameworkset.platform.admin.entity.Resource;
 import com.frameworkset.platform.admin.entity.ResourceWithOPS;
@@ -419,6 +421,21 @@ public class RoleController {
 		}
 
 	}
+	
+	/**
+	 * 获取角色授予的用户列表
+	 * @param roleName
+	 * @return
+	 */
+	public String queryRoleUsers(String userAttr,String roleName,			 
+			@PagerParam(name = PagerParam.OFFSET) long offset,
+			@PagerParam(name = PagerParam.PAGE_SIZE, defaultvalue = "10") int pagesize, ModelMap model){
+		if(StringUtil.isNotEmpty(userAttr ))
+			userAttr = "%"+userAttr+"%";
+		ListInfo roleusers = this.roleService.queryRoleUsers( userAttr,  roleName,offset,pagesize);
+		model.addAttribute("roleusers", roleusers);
+		return "path:queryRoleUsers";
+	}
 
 	public String toUpdateRole(String roleId, ModelMap model) throws RoleException {
 		try {
@@ -446,5 +463,26 @@ public class RoleController {
 		model.addAttribute("roleTypes", roleTypes);
 		return "path:index";
 
+	}
+	public String grantedroles(String resourceType,String roleId,String roleType,ModelMap model){
+		if(resourceType == null)
+			resourceType = "role";
+		String currentSystem = AccessControl.getAccessControl().getCurrentSystemID();
+		final Framework framework = Framework.getInstance(currentSystem);		
+		model.addAttribute("roleId", roleId);
+		model.addAttribute("roleType", roleType);
+		model.addAttribute("resourceType", resourceType);
+		ResourceInfo resourceInfo = resourceManager.getResourceInfoByType(resourceType);
+		@SuppressWarnings("unchecked")
+		List<AuthOPS> grantedroles = this.roleService.getGrantedOperations("roleset",resourceType, roleId, roleType, resourceInfo.getPermissionTable(),null,AuthOPS.class);
+		model.addAttribute("grantedroles", grantedroles);
+		return "path:grantedroles";
+	}
+	public String rolesetAuthList(String resourceType,String roleId,String roleType,ModelMap model){
+		model.addAttribute("roleId", roleId);
+		model.addAttribute("roleType", roleType);
+		model.addAttribute("resourceType", resourceType);
+		return "path:rolesetAuthList";
+		
 	}
 }

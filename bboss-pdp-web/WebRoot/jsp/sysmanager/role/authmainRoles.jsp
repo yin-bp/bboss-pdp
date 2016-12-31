@@ -10,7 +10,7 @@
  -->
 <pg:pager scope="request"  data="roles" desc="false" isList="false" containerid=".select_roles">
 	 
-	<pg:param name="role'Attr"/>
+	<pg:param name="roleAttr"/>
 	
 <table	class="table table-bordered table-striped table-condensed table-unselectrole" style="height:50px;">
 	<thead >
@@ -31,7 +31,7 @@
 		  	 	<td>
 		  	 	
 		  	 	<input
-						name="roleId" type="checkbox" class="checkone" onClick="checkOne('.table-unselectrole .checkboxall','.table-unselectrole .checkone')" value="<pg:cell colName="roleId"/>" />
+						name="roleName" type="checkbox" class="checkone" onClick="checkOne('.table-unselectrole .checkboxall','.table-unselectrole .checkone')" value="<pg:cell colName="roleName"/>" roleName="<pg:cell colName="remark1"/>" />
 				</td>			
 		  	 	
 	            <td> <pg:cell colName="roleName"/> </td>

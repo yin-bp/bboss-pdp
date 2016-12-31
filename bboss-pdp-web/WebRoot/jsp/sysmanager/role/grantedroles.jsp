@@ -6,46 +6,46 @@
 <div class="portlet-title">
 	<div class="caption">
 		<i class="icon-pin font-yellow-crusta"></i> <span
-			class="caption-subject bold font-yellow-crusta uppercase tooltips" data-original-title="菜单资源授权：将菜单操作权限授予角色">
-			设置角色菜单权限 </span>
+			class="caption-subject bold font-yellow-crusta uppercase tooltips" data-original-title="角色资源授权：将角色授予权限授予角色，以便实现分级授权">
+			设置角色授予权限 </span>
 
 	</div>
 	<div class="actions">
 			<a
 				class="btn btn-xs blue"  
-				id="button_sys_add_authmenu"> 添加菜单 <i class="fa fa-edit"></i>
+				id="button_sys_add_authrole"> 添加角色 <i class="fa fa-edit"></i>
 
 			</a>
-			 <a class="btn btn-xs red" id="button_sys_delete_authmenu">
-				<i class="fa fa-times"></i> 移除选中菜单
+			 <a class="btn btn-xs red" id="button_sys_delete_authrole">
+				<i class="fa fa-times"></i> 移除选中角色
 			</a> 
 		</div>
 </div>
 <div class="portlet-body">
  
-<table class="table table-striped table-bordered table-hover order-column table-grantedcolumns">
+<table class="table table-striped table-bordered table-hover order-column table-grantedroles">
      <thead>
          <tr>
-         		<th  >
-				<input type="checkbox" class="checkboxall" onClick="checkAll('.table-grantedcolumns .checkboxall','.table-grantedcolumns .checkone')"/>
-		</th>
+        	<th  >
+				<input type="checkbox" class="checkboxall" onClick="checkAll('.table-grantedroles .checkboxall','.table-grantedroles .checkone')"/>
+			</th>
               
-             <th  > 编码/名称</th>
-             <th  > <span class="tooltips" data-original-title="当url与操作关联，则url的访问权限自动与对应的操作权限一致"> 关联url</span></th>
+             <th  > 角色</th>
+             <th > 中文名称</th>
          </tr>
      </thead> 
      <tbody>
-		<pg:list actual="${grantedcolumns }">
+		<pg:list actual="${grantedroles }">
 	         <tr>
-	         	<td ><input
-					name="menuid" type="checkbox" 					
-					class="checkone" onClick="checkOne('.table-grantedcolumns .checkboxall','.table-grantedcolumns .checkone')" value="<pg:cell colName="resCode" defaultValue="" />" />
+	         	<td  ><input
+					name="roleId" type="checkbox" 					
+					class="checkone" onClick="checkOne('.table-grantedroles .checkboxall','.table-grantedroles .checkone')" value="<pg:cell colName="resCode"  />" />
 				</td>             
-	             <td >
-	                <pg:cell colName="resCode" defaultValue="" /> <pg:cell colName="resName" defaultValue="" />
+	             <td  >
+	                <pg:cell colName="resCode"   />
 	             </td>
-	              <td >
-	                 <pg:cell colName="urls" defaultValue="" />
+	              <td  >
+	                  <pg:cell colName="resName"   />
 	             </td>
 	         </tr>
 		</pg:list>
@@ -57,11 +57,11 @@
 <script type="text/javascript">
 		jQuery(document).ready(function() {								
 		
-			$("#button_sys_add_authmenu").bind("click",function(){
+			$("#button_sys_add_authrole").bind("click",function(){
 				ModelDialog.dialog({
- 					title:"选择菜单",
+ 					title:"选择待授予角色",
  					showfooter:false,
- 					url:"${pageContext.request.contextPath}/menu/columnAuthTree.page",
+ 					url:"${pageContext.request.contextPath}/sysmanager/role/rolesetAuthList.page",
  					params:{"roleId":"${roleId}","roleType":"${roleType}","resourceType":"${resourceType}"},
  					width:"600px",
  					height:"500px"
@@ -69,9 +69,9 @@
  	         });
 			});
 			
-			$("#button_sys_delete_authmenu").bind("click",function(){
+			$("#button_sys_delete_authrole").bind("click",function(){
 				var chk_value =""; 
-	            $('.table-grantedcolumns input[name="menuid"]:checked').each(function(){ 
+	            $('.table-grantedroles input[name="roleId"]:checked').each(function(){ 
 	            	if(chk_value == "")
 	            		chk_value = $(this).val(); 
 	            	else
@@ -79,17 +79,17 @@
 	            }); 
 	            if(chk_value == "")
 	            {
-	            	PDP.warn("请选择要删除的菜单!");
+	            	PDP.warn("请选择要删除的角色!");
 		           	 return;
 	            }
-	             PDP.confirm("确定要删除选中的菜单吗?",function(isConfirm){
+	             PDP.confirm("确定要删除选中的角色吗?",function(isConfirm){
 		           	 	if(isConfirm)
 		           	 	{        	 		
 		           	 		
 			           	 	$.ajax({
 			          		   type: "POST",
 			          			url : "${pageContext.request.contextPath}/sysmanager/role/deleteRoleAuthResources.page",
-			          			data :{"opCode":"visible","resCodes":chk_value,"roleId":"${roleId}","roleType":"${roleType}","resourceType":"${resourceType}"},
+			          			data :{"opCode":"roleset","resCodes":chk_value,"roleId":"${roleId}","roleType":"${roleType}","resourceType":"${resourceType}"},
 			          			dataType : 'json',
 			          			async:false,
 			          			error : function(xhr, ajaxOptions,
@@ -103,10 +103,10 @@
 			          				
 			          				if(responseText=="success"){
 			          					
-			          					PDP.success("菜单删除成功!");
+			          					PDP.success("角色删除成功!");
 			          					loadauto_resourcesauthsource();
 			          				}else{
-			          					PDP.warn("菜单删除失败:"+responseText);
+			          					PDP.warn("角色删除失败:"+responseText);
 			          				}
 			          			}
 			          		  });
@@ -116,7 +116,7 @@
 			});
 			
 			var initTable4 = function () {
-		        var table = $('.table-grantedcolumns');
+		        var table = $('.table-grantedroles');
 
 		        var oTable = table.dataTable({
 
@@ -143,7 +143,7 @@
 		             
 
 		            // scroller extension: http://datatables.net/extensions/scroller/
-		            scrollY:        300,
+		            scrollY:        400,
 		            deferRender:    true,
 		            scroller:       true,
 		            deferRender:    true,
@@ -159,15 +159,13 @@
 		                      ],
                      "order": [
                                [1, "asc"]
-                           ], // set first column as a default sort by asc
-		            
+                           ],
 		            "lengthMenu": [
 		                [10, 15, 20, -1],
 		                [10, 15, 20, "All"] // change per page values here
 		            ],
 		            // set the initial value
 		            "pageLength": 10,
-
 		            "dom": "<'row' <'col-md-12'>><'row'<'col-md-6 col-sm-12'l><'col-md-6 col-sm-12'f>r><'table-scrollable't><'row'<'col-md-5 col-sm-12'i><'col-md-7 col-sm-12'p>>", // horizobtal scrollable datatable
 
 		            // Uncomment below line("dom" parameter) to fix the dropdown overflow issue in the datatable cells. The default datatable layout
@@ -175,7 +173,6 @@
 		            // So when dropdowns used the scrollable div should be removed. 
 		            //"dom": "<'row' <'col-md-12'T>><'row'<'col-md-6 col-sm-12'l><'col-md-6 col-sm-12'f>r>t<'row'<'col-md-5 col-sm-12'i><'col-md-7 col-sm-12'p>>",
 		        });
-		        
 			}
 			initTable4();
 		});

@@ -256,6 +256,10 @@
         <column name="AUTHORIZATION_ETIME" type="DATE"/>
         <column name="USE_COUNTED" size="22" type="DECIMAL"/>
     </table>
+    
+    
+    
+    
     <table name="TD_SM_ROLETYPE">
         <column name="TYPE_NAME" size="100" type="VARCHAR"/>
         <column name="TYPE_DESC" size="500" type="VARCHAR"/>
@@ -350,9 +354,7 @@
         <column default="1" name="RESOP_ORIGIN_USERID" size="50" type="VARCHAR"/> 
         <column name="START_DATE" type="DATE"/>
         <column name="END_DATE" type="DATE"/>        
-        <foreign-key foreignTable="TD_SM_ROLE">
-            <reference foreign="ROLE_ID" local="ROLE_ID"/>
-        </foreign-key>
+        
     </table>
     
     

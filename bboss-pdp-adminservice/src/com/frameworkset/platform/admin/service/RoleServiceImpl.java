@@ -33,6 +33,7 @@ import com.frameworkset.platform.admin.entity.AuthOPS;
 import com.frameworkset.platform.admin.entity.ResOpr;
 import com.frameworkset.platform.admin.entity.Role;
 import com.frameworkset.platform.admin.entity.RoleCondition;
+import com.frameworkset.platform.admin.entity.RoleUser;
 import com.frameworkset.platform.admin.entity.UserRole;
 import com.frameworkset.util.ListInfo;
 
@@ -121,6 +122,17 @@ public class RoleServiceImpl implements RoleService {
 	public List<UserRole> getUserRoles(String userId) throws RoleException {
 		try {
 			List<UserRole> beans = executor.queryList(UserRole.class, "getUserRoles", userId);
+			return beans;
+		} catch (Exception e) {
+			throw new RoleException("query Role failed:", e);
+		}
+	}
+	public ListInfo queryRoleUsers(String userAttr, String roleName, long offset, int pagesize)  throws RoleException {
+		try {
+			Map params  = new HashMap();
+			params.put("userAttr", userAttr);
+			params.put("roleName", roleName);
+			ListInfo beans = executor.queryListInfoBean(RoleUser.class, "queryRoleUsers",offset,pagesize,params);
 			return beans;
 		} catch (Exception e) {
 			throw new RoleException("query Role failed:", e);
@@ -229,12 +241,13 @@ public class RoleServiceImpl implements RoleService {
 				HashMap authinfos = new HashMap();
 				authinfos.put("roleId", roleId);
 				authinfos.put("resCode", resOpr.getResCode());
+				authinfos.put("opCode", resOpr.getOp());
 				authinfos.put("resourceType", resourceType);
 				authinfos.put("roleType", roleType);
 				authinfos.put("permissionTable", permissionTable);
 				deleteAuths.add(authinfos);
 			}
-			this.executor.deleteBeans("cleanroleAuths", deleteAuths);
+			this.executor.deleteBeans("deleteRoleAuthResources", deleteAuths);
 			
 			tm.commit();
 		}

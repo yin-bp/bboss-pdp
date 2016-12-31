@@ -141,6 +141,7 @@
 	<!-- 菜单资源 -->
 	<resource id="column" name="菜单资源"  i18n:en_US="Menu Resource"  
 			 source="/menu/grantedcolumns.page" 
+			 permissionTable="TD_SM_COLUMNROLERESOP"
 			auto="true" allowIfNoRequiredRole="false"
 			 system="module">
 		<unprotected resourceid="personuserinfomodify" />
@@ -171,7 +172,7 @@
 	</resource>
 	
 	<!-- 角色资源 -->
-	<resource id="role" name="角色资源"  i18n:en_US="Role Resource"  source="resRoleTree.jsp"  auto="true" system="module">
+	<resource id="role" name="角色资源"  i18n:en_US="Role Resource"  source="/sysmanager/role/grantedroles.page"   auto="true" system="module">
 		<!--定义非未受保护的特殊资源-->
 		<!--
                 定义资源操作组

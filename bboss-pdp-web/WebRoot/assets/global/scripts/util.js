@@ -68,6 +68,16 @@ var PlatformCommonUtils = function(){
 			  confirmButtonText: "确定",
 			},warnfun);
 	}
+	var info = function(msg,infofun){
+		swal({
+			  title: msg,
+			  text: "",
+			  allowOutsideClick: false,
+			  type:"info",
+			  confirmButtonClass: "btn-info",
+			  confirmButtonText: "确定",
+			},infofun);
+	}
 	var success = function(msg,successfun){		
 		if(!successfun)
 			swal({
@@ -191,6 +201,9 @@ var PlatformCommonUtils = function(){
 	return {
 		warn:function(msg,warnfun){
 			warn(msg,warnfun);
+		},
+		info: function(msg,infofun){
+			info(msg,infofun)
 		},
 		confirm:function(msg,confirmfun,extendtext,html)
 		{
@@ -342,7 +355,11 @@ var $_modalcontainer_platform = function(){
 }
 var ModelDialog = function(){
 	
-	
+	var closeDialog = function(){
+		var $modal = getCurrentModal();
+		 
+		$modal.modal('hide');
+	}
 	var $_modalcontainer = window.top.$_modalcontainer;
 	 var getModalContainer = function(){
 		if(!window.top.$_modalcontainer)
@@ -552,6 +569,9 @@ var ModelDialog = function(){
 	return {
 		dialog : function(options){
 			return dialog(options);
+		},
+		close:function(){
+			closeDialog();
 		},
 		modalSize:function(){
 			return modalSize();

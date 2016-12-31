@@ -410,6 +410,44 @@ public class SmUserServiceImpl implements SmUserService {
 			}
 		}
 	}
+	/**
+	 * @param userIds
+	 * @param roleId
+	 */
+	public void saveRoleUsers(String userIds, String roleId)  throws SmUserException{
+		
+		TransactionManager tm = new TransactionManager();
+		try {
+			tm.begin();
+			 
+			List<Map> userRoles = new ArrayList<Map>();
+			int num = 0;
+			if(userIds != null){
+				String[] userIds_ = userIds.split(",");
+				for(String userId:userIds_){
+					num = executor.queryObject(int.class, "existUserRoles", userId,roleId);
+					if(num == 0)
+					{
+						Map data = new HashMap();
+						data.put("userId", userId);
+						data.put("roleId", roleId);
+						userRoles.add(data);
+					}
+				}
+			}
+		 
+			if(userRoles.size() > 0)
+				this.executor.insertBeans("saveUserRoles", userRoles);
+			tm.commit();
+		} catch (Exception e) {
+			throw new SmUserException(e);
+		}
+		finally
+		{
+			tm.release();
+		}
+		
+	}
 	/** (non-Javadoc)
 	 * @see com.frameworkset.platform.admin.service.SmUserService#saveUserRoles(java.lang.String, java.lang.String)
 	 */

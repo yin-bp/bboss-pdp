@@ -134,7 +134,7 @@
 												<pg:list actual="${userroles }">
 													 <tr>
 												  	 	<td><input
-																name="roleId" type="checkbox" class="checkone" onClick="checkOne('.table-selected-roles .checkboxall','.table-selected-roles .checkone')" value="<pg:cell colName="roleId"/>" />
+																name="roleName" type="checkbox" class="checkone" onClick="checkOne('.table-selected-roles .checkboxall','.table-selected-roles .checkone')" value="<pg:cell colName="roleName"/>" />
 														</td>			
 												  	 	
 											            <td> <pg:cell colName="roleName"/> </td>

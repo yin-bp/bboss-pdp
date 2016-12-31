@@ -78,9 +78,25 @@
 		<![CDATA[
 			select r.*,ur.start_date,ur.end_date,
 			rt.TYPE_NAME as typeName from td_sm_role r 
-			inner join TD_SM_USERROLE ur on r.role_id = ur.role_id
+			inner join TD_SM_USERROLE ur on r.ROLE_NAME = ur.role_id
 			left join td_sm_roletype rt on r.role_type=rt.TYPE_ID 			 
 			 where ur.user_id = ?			 
+		]]>
+	</property>
+	
+	<property name="queryRoleUsers">
+		<![CDATA[
+			
+			select u.*,o.org_name as departName from td_sm_user u  
+			join td_sm_userrole ur on u.user_id = ur.user_id 
+			left join td_sm_organization o on u.depart_id = o.org_id 
+			where ur.role_id =#[roleName]
+			#if($userAttr && !$userAttr.equals(""))
+				and (USER_NAME like #[userAttr]	or USER_REALNAME like #[userAttr] or USER_MOBILETEL1 like #[userAttr]	or USER_WORKNUMBER like #[userAttr]	)	
+			#end
+			order by USER_NAME,user_sn 
+			
+
 		]]>
 	</property>
 	
@@ -106,6 +122,16 @@
 			 where  ROLE_ID = #[roleId] and  TYPES =#[roleType] and RESTYPE_ID = #[resourceType]	 
 		]]>
 	</property>
+	
+	<property name="deleteRoleAuthResources">
+		<![CDATA[
+			delete 
+			from ${permissionTable}   
+			 where  ROLE_ID = #[roleId] and  TYPES =#[roleType] and RESTYPE_ID = #[resourceType] and RES_ID=#[resCode] and OP_ID=#[opCode]	 
+		]]>
+	</property>
+	
+	
 	
 	<property name="addAuths">
 		<![CDATA[

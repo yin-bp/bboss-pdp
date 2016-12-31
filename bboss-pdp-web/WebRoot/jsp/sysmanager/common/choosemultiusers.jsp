@@ -1,6 +1,8 @@
 <%@ page session="false" language="java"
 	contentType="text/html; charset=utf-8"%>
-
+<link
+	href="${pageContext.request.contextPath}/assets/global/plugins/jstree/dist/themes/default/style.min.css"
+	rel="stylesheet" type="text/css" />
 <div class="row">
 	<div class="col-md-4">
 		<div class="portlet light bordered">
@@ -144,8 +146,8 @@
 						<div class="actions">
 
 							<a href="javascript:;"
-								class="btn btn-circle blue btn-xs dotempadd_btn"> <i
-								class="fa fa-plus"></i> 添加选中用户到调入清单
+								class="btn btn-circle green-haze btn-xs dotempadd_btn"> <i
+								class="fa fa-plus"></i> 添加选中用户
 							</a>
 
 						</div>
@@ -165,10 +167,8 @@
 
 						</div>
 						<div class="actions">
-							<a href="javascript:;"
-								class="btn btn-circle blue btn-xs btn-submitmoveinusers"> <i
-								class="fa fa-plus"></i> 提交入库
-							</a> <a href="javascript:;"
+							 
+							 <a href="javascript:;"
 								class="btn btn-circle red btn-xs clearselecteduser_btn">
 								<i class="fa fa-times"></i> 移除
 							</a>
@@ -208,12 +208,17 @@
 	</div>
 
 </div>
+<script
+	src="${pageContext.request.contextPath}/assets/sysmanager/choosemultiusers.js" type="text/javascript"></script>
+<script
+	src="${pageContext.request.contextPath}/assets/global/plugins/jstree/dist/jstree.min.js"
+	type="text/javascript"></script>	
 <script type="text/javascript">
 	jQuery(document).ready(
-			function() {
-
-				SysMoveUsers.initMoveUserInAction();
-				PlatformCommonUtils.initSlimScroll('.scroller', ModelDialog
+		function() {
+			SysChoosemultiUsers.init('${pageContext.request.contextPath}');
+			SysChoosemultiUsers.initMoveUserInAction();
+				PDP.initSlimScroll('.scroller', ModelDialog
 						.getCurrentModal(), true);
 			});
 </script>

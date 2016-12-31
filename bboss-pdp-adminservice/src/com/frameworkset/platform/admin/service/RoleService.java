@@ -92,4 +92,12 @@ public interface RoleService {
 	 */
 	public void deleteRoleAuthResources(List<ResOpr> resOprs, String resourceType, String roleId, String roleType,
 			String permissionTable)  throws RoleException ;
+	/**
+	 * @param userAttr
+	 * @param roleName
+	 * @param offset
+	 * @param pagesize
+	 * @return
+	 */
+	public ListInfo queryRoleUsers(String userAttr, String roleName, long offset, int pagesize)  throws RoleException ;
 }

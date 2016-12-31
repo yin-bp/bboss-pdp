@@ -27,7 +27,11 @@
 		<pg:list >
 		  	 <tr>
 		  	 	<td><input
-						name="userId" type="checkbox" class="checkone" onClick="checkOne('.table-moveinuserlist .checkboxall','.table-moveinuserlist .checkone')" value="<pg:cell colName="userId"/>" />
+						name="userId" type="checkbox" class="checkone" onClick="checkOne('.table-moveinuserlist .checkboxall','.table-moveinuserlist .checkone')" 
+						value="<pg:cell colName="userId"/>" 
+						userName="<pg:cell colName="userName"/>"
+						userWorknumber="<pg:cell colName="userWorknumber"/>"
+						userRealname="<pg:cell colName="userRealname"/>"/>
 				</td>
 				<td> <pg:rowid increament="1" /> </td>
 		  	 	

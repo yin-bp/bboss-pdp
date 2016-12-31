@@ -73,4 +73,9 @@ public interface SmUserService {
 	 * @param roleIds
 	 */
 	public void saveUserRoles(String userId, String roleIds) throws SmUserException;
+	/**
+	 * @param userIds
+	 * @param roleId
+	 */
+	public void saveRoleUsers(String userIds, String roleId)  throws SmUserException;
 }

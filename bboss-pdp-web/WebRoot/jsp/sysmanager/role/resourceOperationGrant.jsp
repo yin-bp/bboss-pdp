@@ -89,7 +89,7 @@
 						<div class="caption">
 							<i class="icon-pin font-yellow-crusta"></i> <span
 								class="caption-subject bold font-yellow-crusta tooltips" data-original-title="全局操作是专门为资源类型定义的一组与资源数据无关的全局操作">
-								全局操作列表 -全局资源编码：${globalResourceid }</span>
+								全局操作授权 -全局资源编码：${globalResourceid }</span>
 
 						</div>
 						 

@@ -62,6 +62,21 @@ public class SmUserController {
 		
 		return "path:authmain";
 	}
+	public @ResponseBody String saveRoleUsers(String userIds,String roleId){
+		if(StringUtil.isEmpty(roleId))
+		{
+			return "请选择要设置用户的角色";
+		}
+		if(StringUtil.isEmpty(userIds))
+		{
+			return "请选择要授予角色的用户";
+		}
+		smUserService.saveRoleUsers(userIds,roleId);
+		Event event = new EventImpl(userIds,
+				ACLEventType.USER_ROLE_INFO_CHANGE);
+		EventHandle.sendEvent(event);
+		return "success";
+	}
 	public @ResponseBody String saveUserRoles(String userId,String roleIds){
 		if(StringUtil.isEmpty(userId))
 		{
