@@ -68,6 +68,16 @@ var PlatformCommonUtils = function(){
 			  confirmButtonText: "确定",
 			},warnfun);
 	}
+	var info = function(msg,infofun){
+		swal({
+			  title: msg,
+			  text: "",
+			  allowOutsideClick: false,
+			  type:"info",
+			  confirmButtonClass: "btn-info",
+			  confirmButtonText: "确定",
+			},infofun);
+	}
 	var success = function(msg,successfun){		
 		if(!successfun)
 			swal({
@@ -191,6 +201,9 @@ var PlatformCommonUtils = function(){
 	return {
 		warn:function(msg,warnfun){
 			warn(msg,warnfun);
+		},
+		info: function(msg,infofun){
+			info(msg,infofun)
 		},
 		confirm:function(msg,confirmfun,extendtext,html)
 		{

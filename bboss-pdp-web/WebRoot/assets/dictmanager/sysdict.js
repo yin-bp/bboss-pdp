@@ -287,7 +287,10 @@ var SysDict = function(){
 	                   "orderable": false
 	               }, {
 	                   "orderable": false
-	               }]
+	               }],
+	               "order": [
+                             [1, "asc"]
+                         ]
         	          
     	} );
 	}
