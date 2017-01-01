@@ -50,6 +50,7 @@ import com.frameworkset.platform.admin.service.RoleException;
 import com.frameworkset.platform.admin.service.RoleService;
 import com.frameworkset.platform.admin.service.RoleTypeService;
 import com.frameworkset.platform.admin.service.SmUserService;
+import com.frameworkset.platform.admin.util.AdminUtil;
 import com.frameworkset.util.ListInfo;
 import com.frameworkset.util.StringUtil;
 
@@ -166,6 +167,12 @@ public class RoleController {
 				resourceTypes.add(res);
 
 			}
+		}
+		if(roleType.equals("role")){
+			model.addAttribute("roleNeedGrantResource", AdminUtil.roleNeedGrantResource(roleName));
+			model.addAttribute("roleNeedSetUser", AdminUtil.roleNeedSetUser(roleName));
+			model.addAttribute("roleNeedSetUserMessage", AdminUtil.roleNeedSetUserMessage(roleName));
+			model.addAttribute("roleNeedGrantResourceMessage", AdminUtil.roleNeedGrantResourceMessage(roleName));
 		}
 		model.addAttribute("resourceTypes", resourceTypes);
 		if (resourceTypes.size() > 0) {
@@ -310,6 +317,10 @@ public class RoleController {
 			  role = this.roleService.getRole(roleId);
 				model.addAttribute("isAdministratorRole",
 				AccessControl.isAdministratorRole(role.getRoleName()));
+				model.addAttribute("roleNeedGrantResource", AdminUtil.roleNeedGrantResource(role.getRoleName()));
+				model.addAttribute("roleNeedSetUser", AdminUtil.roleNeedSetUser(role.getRoleName()));	
+				model.addAttribute("roleNeedSetUserMessage", AdminUtil.roleNeedSetUserMessage(role.getRoleName()));
+				model.addAttribute("roleNeedGrantResourceMessage", AdminUtil.roleNeedGrantResourceMessage(role.getRoleName()));
 		}
 
 		ResourceInfo resourceInfo = resourceManager.getResourceInfoByType(resourceType);
@@ -483,6 +494,12 @@ public class RoleController {
 	public String grantedroles(String resourceType,String roleId,String roleType,ModelMap model){
 		if(resourceType == null)
 			resourceType = "role";
+		if(roleType.equals("role")){
+			Role role = null;
+			  role = this.roleService.getRole(roleId);				
+			model.addAttribute("roleNeedGrantResource", AdminUtil.roleNeedGrantResource(role.getRoleName()));
+				
+		}
 		String currentSystem = AccessControl.getAccessControl().getCurrentSystemID();
 		final Framework framework = Framework.getInstance(currentSystem);		
 		model.addAttribute("roleId", roleId);

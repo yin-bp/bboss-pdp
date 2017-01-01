@@ -35,6 +35,7 @@ import com.frameworkset.orm.transaction.TransactionManager;
 import com.frameworkset.platform.admin.entity.MoveinUserCondition;
 import com.frameworkset.platform.admin.entity.SmUser;
 import com.frameworkset.platform.admin.entity.SmUserCondition;
+import com.frameworkset.platform.admin.util.AdminUtil;
 import com.frameworkset.util.ListInfo;
 import com.frameworkset.util.StringUtil;
 
@@ -453,20 +454,12 @@ public class SmUserServiceImpl implements SmUserService {
 	}
 	private boolean filterGrantSpecialRole(String roleId) throws Exception{
 		String roleName = this.executor.queryObject(String.class, "getrolename", roleId);
-		if(roleName.equals("orgmanager") || roleName.equals("orgmanagerroletemplate") || roleName.equals(AccessControl.getEveryonegrantedRoleName())){
-			return true;
-		}
-			
-		return false;
+		return AdminUtil.filterGrantSpecialRole(roleName);
 	}
 	
 	private boolean filterDeleteSpecialRole(String roleId) throws Exception{
 		String roleName = this.executor.queryObject(String.class, "getrolename", roleId);
-		if(roleName.equals("orgmanager") || roleName.equals("orgmanagerroletemplate") ){
-			return true;
-		}
-			
-		return false;
+		return AdminUtil.filterDeleteSpecialRole(roleName);
 	}
 	
 	

@@ -6,7 +6,26 @@
 	href="${pageContext.request.contextPath}/assets/pages/css/profile-2.min.css"
 	rel="stylesheet" type="text/css" />
 
-
+<pg:notempty actual="${roleNeedSetUserMessage }">
+<div class="row">
+	<div class="col-md-12">		 
+		<div class="alert alert-success display  alert-roleauthset">
+			 
+			<span class="msg"> ${roleNeedSetUserMessage } </span>
+		</div>
+	</div>
+</div>
+</pg:notempty>
+<pg:notempty actual="${roleNeedGrantResourceMessage }">
+<div class="row">
+	<div class="col-md-12">		 
+		<div class="alert alert-success display  alert-roleauthset">
+			 
+			<span class="msg"> ${roleNeedGrantResourceMessage } </span>
+		</div>
+	</div>
+</div>
+</pg:notempty>
 <div class="row">
 	<div class="col-md-12">		 
 		<div class="alert alert-danger display-hide  alert-roleauthset">
@@ -100,9 +119,10 @@
 										<div class="caption">
 											<i class="icon-pin font-yellow-crusta"></i> <span
 												class="caption-subject bold font-yellow-crusta uppercase">
-												已授予用户列表 </span>
+												已授予用户列表</span>
 				
 										</div>
+										<pg:true actual="${roleNeedSetUser }">
 										<div class="actions">
 				
 											<a href="javascript:;"
@@ -114,6 +134,7 @@
 												class="fa fa-times"></i> 移除用户
 											</a>
 										</div>
+										</pg:true>
 									</div>
 									<div class="portlet-body portlet_roleusers">
 										
@@ -150,6 +171,7 @@
 		$(".btn-query",ModelDialog.getCurrentModal()).bind("click",function(){
 			queryRoleUsers(true);
 		});
+		<pg:true actual="${roleNeedSetUser }">
 		$(".btn-addroleusers",ModelDialog.getCurrentModal()).bind('click',function(){
 	  		ModelDialog.dialog({
 	  							title:"选择待授予的用户",
@@ -260,6 +282,7 @@
 			        	
 				});
 		});
+		</pg:true>
 		
 		
 		

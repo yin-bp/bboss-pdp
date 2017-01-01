@@ -139,8 +139,10 @@
 			<div class="form-actions">
 				<div class="row">
 					<div class="col-md-offset-3 col-md-9">
+					<pg:true actual="${roleNeedGrantResource }">
 						<button type="button" class="btn green btn-saveroleauths">提交</button>
 						<button type="reset" class="btn default">重置</button>
+					</pg:true>	
 						<button type="button" class="btn default" data-dismiss="modal">关闭</button>
 						 
 					</div>
