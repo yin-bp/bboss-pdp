@@ -415,7 +415,8 @@ public class SmUserServiceImpl implements SmUserService {
 	 * @param roleId
 	 */
 	public void saveRoleUsers(String userIds, String roleId)  throws SmUserException{
-		
+		if(filterGrantSpecialRole(roleId))//特殊角色无需手工授予用户
+			return;
 		TransactionManager tm = new TransactionManager();
 		try {
 			tm.begin();
@@ -448,6 +449,23 @@ public class SmUserServiceImpl implements SmUserService {
 		}
 		
 	}
+	private boolean filterGrantSpecialRole(String roleId){
+		if(roleId.equals("orgmanager") || roleId.equals("orgmanagerroletemplate") || roleId.equals(AccessControl.getEveryonegrantedRoleName())){
+			return true;
+		}
+			
+		return false;
+	}
+	
+	private boolean filterDeleteSpecialRole(String roleId){
+		if(roleId.equals("orgmanager") || roleId.equals("orgmanagerroletemplate") ){
+			return true;
+		}
+			
+		return false;
+	}
+	
+	
 	/** (non-Javadoc)
 	 * @see com.frameworkset.platform.admin.service.SmUserService#saveUserRoles(java.lang.String, java.lang.String)
 	 */
@@ -462,6 +480,8 @@ public class SmUserServiceImpl implements SmUserService {
 //			int num = 0;
 			if(roleIds_ != null){
 				for(String roleId:roleIds_){
+					if(filterGrantSpecialRole(roleId))
+						continue;
 	//				num = executor.queryObject(int.class, "existUserRoles", userId,roleId);
 	//				if(num == 0)
 	//				{
@@ -484,5 +504,42 @@ public class SmUserServiceImpl implements SmUserService {
 			tm.release();
 		}
 		
+	}
+	/**
+	 * @param roleName
+	 * @param userIds
+	 */
+	public void deleteRoleUsers(String roleName, String userIds) throws SmUserException{
+		if(filterDeleteSpecialRole(roleName))//特殊角色不能手工删除
+			return;
+		TransactionManager tm = new TransactionManager();
+		try {
+			tm.begin();
+			String userIds_[] = StringUtil.isEmpty(userIds)?null: userIds.split(",");
+			List<Map> userRoles = new ArrayList<Map>();
+//			int num = 0;
+			if(userIds_ != null){
+				for(String userId:userIds_){
+					
+	//				num = executor.queryObject(int.class, "existUserRoles", userId,roleId);
+	//				if(num == 0)
+	//				{
+						Map data = new HashMap();
+						data.put("userId", userId);
+						data.put("roleName", roleName);
+						userRoles.add(data);
+	//				}
+				}
+			}
+			if(userRoles.size() > 0)
+				this.executor.deleteBeans("deleteRoleUsers", userRoles);
+			tm.commit();
+		} catch (Exception e) {
+			throw new SmUserException(e);
+		}
+		finally
+		{
+			tm.release();
+		}
 	}
 }

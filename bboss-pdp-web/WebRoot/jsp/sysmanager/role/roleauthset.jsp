@@ -235,7 +235,7 @@
 		           	 	$.ajax({
 		          		   type: "POST",
 		          			url : "${pageContext.request.contextPath}/sysmanager/role/deleteRoleUsers.page",
-		          			data :{"users":chk_value,"roleName":"${roleName}"},
+		          			data :{"userIds":chk_value,"roleName":"${roleName}"},
 		          			dataType : 'json',
 		          			async:false,
 		          			error : function(xhr, ajaxOptions,
@@ -250,7 +250,7 @@
 		          				if(responseText=="success"){
 		          					
 		          					PDP.success("用户移除成功!");
-		          					loadauto_resourcesauthsource();
+		          					queryRoleUsers();
 		          				}else{
 		          					PDP.warn("用户移除失败:"+responseText);
 		          				}

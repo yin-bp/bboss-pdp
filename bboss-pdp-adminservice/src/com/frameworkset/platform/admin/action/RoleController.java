@@ -49,6 +49,7 @@ import com.frameworkset.platform.admin.service.ResourceService;
 import com.frameworkset.platform.admin.service.RoleException;
 import com.frameworkset.platform.admin.service.RoleService;
 import com.frameworkset.platform.admin.service.RoleTypeService;
+import com.frameworkset.platform.admin.service.SmUserService;
 import com.frameworkset.util.ListInfo;
 import com.frameworkset.util.StringUtil;
 
@@ -72,6 +73,7 @@ public class RoleController {
 	private static Logger log = Logger.getLogger(RoleController.class);
 	private RoleTypeService roleTypeService;
 	private ResourceService resourceService;
+	private SmUserService userService;
 	private ResourceManager resourceManager = new ResourceManager();
 	private RoleService roleService;
 
@@ -484,5 +486,15 @@ public class RoleController {
 		model.addAttribute("resourceType", resourceType);
 		return "path:rolesetAuthList";
 		
+	}
+	public @ResponseBody String deleteRoleUsers(String roleName,String userIds){
+		if(StringUtil.isEmpty(roleName)){
+			return "没选择角色";
+		}
+		if(StringUtil.isEmpty(userIds)){
+			return "没选择用户";
+		}
+		userService.deleteRoleUsers(  roleName,  userIds);
+		return "success";
 	}
 }
