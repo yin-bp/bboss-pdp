@@ -226,6 +226,8 @@
         <column name="ATTR25" size="200" type="VARCHAR"/>
         <column default="0" name="ATTR26" size="200" type="VARCHAR"/>
         <column name="ATTR27" size="1000" type="VARCHAR"/>
+        <column name="TITLE" size="500" type="VARCHAR"/>
+        
     </table>
     <table name="TD_SM_ROLE">
         <column name="ROLE_ID" primaryKey="true" required="true"
