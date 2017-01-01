@@ -1,4 +1,4 @@
-apply plugin: "war"
+//apply plugin: "war"
 sourceSets {
     main {
         java {
@@ -37,4 +37,4 @@ sourceSets {
 
 
 
-webAppDirName = 'WebRoot'  
+//webAppDirName = 'WebRoot'  
