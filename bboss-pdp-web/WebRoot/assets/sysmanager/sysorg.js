@@ -754,7 +754,7 @@ var SysOrg = function(){
 	 				if(responseText.result=="success"){
 	 					
 	 					PDP.success(responseText.message);
-	 					
+	 					showOrgs();
 	 				}else{
 	 					PDP.warn(responseText.message);
 	 				}
