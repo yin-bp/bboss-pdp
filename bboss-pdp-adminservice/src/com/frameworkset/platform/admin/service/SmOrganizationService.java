@@ -46,4 +46,14 @@ public interface SmOrganizationService {
 	public List<SmOrganization> getAllOrgs() throws SmOrganizationException;
 	public void buildTreeLevel() throws SmOrganizationException;
 	public String getOrgTreeLevel(String orgid) throws SmOrganizationException;
+	/**
+	 * @param org
+	 * @return
+	 */
+	public boolean hasSon(String org) throws SmOrganizationException;
+	/**
+	 * @param org
+	 * @return
+	 */
+	public boolean hasManager(String org) throws SmOrganizationException;
 }

@@ -43,6 +43,29 @@
 			select * from td_sm_organization where parent_id=?  order by org_sn
 		]]>
 	</property>
+	<property name="hasSon">
+		<![CDATA[
+			select count(org_id) from td_sm_organization where parent_id=?  
+		]]>
+	</property>
+	<property name="hasManager">
+		<![CDATA[
+			select count(org_id) from td_sm_orgmanager where org_id=?  
+		]]>
+	</property>
+	
+	<property name="moveUsertoDaigang">
+		<![CDATA[
+			update td_sm_user set depart_id = null where  depart_id = ?
+		]]>
+	</property>
+	<property name="removeOrgManager">
+		<![CDATA[
+			delete from td_sm_orgmanager where  org_id = ?
+		]]>
+	</property>
+	
+	
 	
 	<property name="getOrgTreeLevel">
 		<![CDATA[

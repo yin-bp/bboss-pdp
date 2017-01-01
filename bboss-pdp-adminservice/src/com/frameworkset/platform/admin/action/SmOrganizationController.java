@@ -21,17 +21,22 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.frameworkset.event.Event;
+import org.frameworkset.event.EventHandle;
+import org.frameworkset.event.EventImpl;
 import org.frameworkset.platform.common.DatagridBean;
 import org.frameworkset.platform.common.JSTreeNode;
 import org.frameworkset.platform.common.TreeNodeStage;
-import org.frameworkset.util.annotations.PagerParam;
+import org.frameworkset.platform.security.event.ACLEventType;
 import org.frameworkset.util.annotations.ResponseBody;
 import org.frameworkset.web.servlet.ModelMap;
 
+import com.frameworkset.orm.transaction.TransactionManager;
 import com.frameworkset.platform.admin.entity.SmOrganization;
 import com.frameworkset.platform.admin.entity.SmOrganizationCondition;
 import com.frameworkset.platform.admin.service.SmOrganizationException;
 import com.frameworkset.platform.admin.service.SmOrganizationService;
+import com.frameworkset.platform.admin.util.OpResult;
 import com.frameworkset.util.ListInfo;
 import com.frameworkset.util.StringUtil;
 
@@ -140,13 +145,67 @@ public class SmOrganizationController {
 		}
 
 	}
-	public @ResponseBody String deleteBatchSmOrganization(String... orgIds) {
+	public @ResponseBody OpResult deleteBatchSmOrganization(String orgIds) {
+		OpResult result = new OpResult();
+		if(StringUtil.isEmpty(orgIds)){
+			result.setMessage("没有选择要删除的部门");
+			return result;
+		}
+		TransactionManager tm = new TransactionManager();
+		
 		try {
-			smOrganizationService.deleteBatchSmOrganization(orgIds);
-			return "success";
+			tm.begin();	 
+			
+			String orgIds_[] = orgIds.split(",");
+			StringBuilder hasnosonOrgs = new StringBuilder();
+			StringBuilder hassonOrgs = new StringBuilder();
+			//帅选出可以删除的部门
+			int i = 0;
+			boolean hasManagers = false;
+			for(String org:orgIds_){
+				
+				if(!smOrganizationService.hasSon(org)){
+					if(i == 0)
+						hasnosonOrgs.append(org);
+					else
+						hasnosonOrgs.append(",").append(org);
+					if(!hasManagers){
+						if(smOrganizationService.hasManager(org))
+							hasManagers = true;
+					}
+				}
+				else
+				{
+					if(i == 0)
+						hassonOrgs.append(org);
+					else
+						hassonOrgs.append(",").append(org);
+				}
+				i ++;
+			}
+			if(hasnosonOrgs.length() > 0)
+				smOrganizationService.deleteBatchSmOrganization(hasnosonOrgs.toString().split(","));
+			 
+			result.setResult("success");
+			if(hassonOrgs.length() > 0)
+				result.setMessage("删除部门完毕，忽略删除的部门（有下级的部门）："+hassonOrgs.toString());
+			else
+				result.setMessage("删除部门完毕!");
+			tm.commit();
+			if(hasManagers){
+				Event event = new EventImpl("",
+						ACLEventType.USER_ROLE_INFO_CHANGE);
+				EventHandle.sendEvent(event);
+			}
+			return result;
 		} catch (Throwable e) {
 			log.error("delete Batch orgIds failed:", e);
-			return StringUtil.formatBRException(e);
+			result.setMessage(StringUtil.formatBRException(e));
+			return result;
+		}
+		finally
+		{
+			tm.release();
 		}
 
 	}

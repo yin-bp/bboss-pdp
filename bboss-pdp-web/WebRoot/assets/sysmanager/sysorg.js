@@ -713,9 +713,54 @@ var SysOrg = function(){
 	var init = function(relativepath){
    	 usercontextpath = relativepath;
    	 initAddOrgModalExtend();
+   	 $("#button_sys_delete_org").bind("click",function(){
+   		 
+   		var chk_value =""; 
+        $('input[name="orgId"]:checked').each(function(){ 
+        	if(chk_value == "")
+        		chk_value+= ($(this).val()); 
+        	else
+        		chk_value+= ","+($(this).val()); 
+        }); 
+        if(chk_value == "")
+        {
+       	 	PlatformCommonUtils.warn("请选择要删除的部门!");
+       	 	return;
+        }
+        
+        PDP.confirm("确定要永久删除选中的部门吗?部门删除后，下属用户将变为待岗用户!拥有下级部门的部门不会被删除！",function(isConfirm){
+	       	 	if(isConfirm)
+	       	 	{       	 		 
+	       	 		delorgs(chk_value);
+	       	 	}
+		        	
+			});
+   	 });
    	 //initAddUserModalExtend();
    	 //initDelUsers();
     }
+	var delorgs = function(orgIds){
+		$.ajax({
+	 		   type: "POST",
+	 			url : usercontextpath+"/sysmanager/org/deleteBatchSmOrganization.page",
+	 			data :{"orgIds":orgIds},
+	 			dataType : 'json',
+	 			async:false,
+	 			beforeSend: function(XMLHttpRequest){ 					
+	 				 	
+	 				},
+	 			success : function(responseText){
+	 				
+	 				if(responseText.result=="success"){
+	 					
+	 					PDP.success(responseText.message);
+	 					
+	 				}else{
+	 					PDP.warn(responseText.message);
+	 				}
+	 			}
+	 		  });
+	}
 	var initAddOrg = function(){
    	 initAddOrgButtonAction();
    	 initAddOrgValidateform();

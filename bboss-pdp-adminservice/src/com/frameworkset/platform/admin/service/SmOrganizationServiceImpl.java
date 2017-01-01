@@ -76,6 +76,8 @@ public class SmOrganizationServiceImpl implements SmOrganizationService {
 		TransactionManager tm = new TransactionManager();
 		try {
 			tm.begin();
+			executor.updateByKeys("moveUsertoDaigang", orgIds);
+			executor.deleteByKeys("removeOrgManager", orgIds);
 			executor.deleteByKeys("deleteByKey", orgIds);
 			tm.commit();
 		} catch (Throwable e) {
@@ -85,6 +87,25 @@ public class SmOrganizationServiceImpl implements SmOrganizationService {
 			tm.release();
 		}
 
+	}
+	public boolean hasSon(String org) throws SmOrganizationException{
+		
+		try {
+			int num = this.executor.queryObject(int.class, "hasSon", org);
+			return (num > 0);
+		} catch (Throwable e) {
+			throw new SmOrganizationException("hasSon SmOrganization failed::orgId=" + org, e);
+		}
+			
+	}
+	
+	public boolean hasManager(String org) throws SmOrganizationException{
+		try {
+			int num = this.executor.queryObject(int.class, "hasManager", org);
+			return (num > 0);
+		} catch (Throwable e) {
+			throw new SmOrganizationException("hasManager SmOrganization failed::orgId=" + org, e);
+		}
 	}
 	public void updateSmOrganization(SmOrganization smOrganization) throws SmOrganizationException {
 		try {
