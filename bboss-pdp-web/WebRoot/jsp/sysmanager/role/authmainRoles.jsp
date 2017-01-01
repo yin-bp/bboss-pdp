@@ -31,7 +31,7 @@
 		  	 	<td>
 		  	 	
 		  	 	<input
-						name="roleName" type="checkbox" class="checkone" onClick="checkOne('.table-unselectrole .checkboxall','.table-unselectrole .checkone')" value="<pg:cell colName="roleName"/>" roleName="<pg:cell colName="remark1"/>" />
+						name="roleId" type="checkbox" class="checkone" onClick="checkOne('.table-unselectrole .checkboxall','.table-unselectrole .checkone')" value="<pg:cell colName="roleId"/>" roleName="<pg:cell colName="roleName"/>" remark1="<pg:cell colName="remark1"/>" />
 				</td>			
 		  	 	
 	            <td> <pg:cell colName="roleName"/> </td>

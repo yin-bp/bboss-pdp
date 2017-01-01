@@ -100,4 +100,9 @@ public interface RoleService {
 	 * @return
 	 */
 	public ListInfo queryRoleUsers(String userAttr, String roleName, long offset, int pagesize)  throws RoleException ;
+	/**
+	 * @param rs
+	 * @param string
+	 */
+	public void deleteAllRoleAuthResources(String[] rs, String string)  throws RoleException ;
 }

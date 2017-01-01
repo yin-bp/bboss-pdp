@@ -17,6 +17,7 @@
 package com.frameworkset.platform.admin.service;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -415,30 +416,31 @@ public class SmUserServiceImpl implements SmUserService {
 	 * @param roleId
 	 */
 	public void saveRoleUsers(String userIds, String roleId)  throws SmUserException{
-		if(filterGrantSpecialRole(roleId))//特殊角色无需手工授予用户
-			return;
+		
 		TransactionManager tm = new TransactionManager();
 		try {
 			tm.begin();
-			 
-			List<Map> userRoles = new ArrayList<Map>();
-			int num = 0;
-			if(userIds != null){
-				String[] userIds_ = userIds.split(",");
-				for(String userId:userIds_){
-					num = executor.queryObject(int.class, "existUserRoles", userId,roleId);
-					if(num == 0)
-					{
-						Map data = new HashMap();
-						data.put("userId", userId);
-						data.put("roleId", roleId);
-						userRoles.add(data);
+			if(!filterGrantSpecialRole(roleId)){//特殊角色无需手工授予用户
+				
+				List<Map> userRoles = new ArrayList<Map>();
+				int num = 0;
+				if(userIds != null){
+					String[] userIds_ = userIds.split(",");
+					for(String userId:userIds_){
+						num = executor.queryObject(int.class, "existUserRoles", userId,roleId);
+						if(num == 0)
+						{
+							Map data = new HashMap();
+							data.put("userId", userId);
+							data.put("roleId", roleId);
+							userRoles.add(data);
+						}
 					}
 				}
+			 
+				if(userRoles.size() > 0)
+					this.executor.insertBeans("saveUserRoles", userRoles);
 			}
-		 
-			if(userRoles.size() > 0)
-				this.executor.insertBeans("saveUserRoles", userRoles);
 			tm.commit();
 		} catch (Exception e) {
 			throw new SmUserException(e);
@@ -449,16 +451,18 @@ public class SmUserServiceImpl implements SmUserService {
 		}
 		
 	}
-	private boolean filterGrantSpecialRole(String roleId){
-		if(roleId.equals("orgmanager") || roleId.equals("orgmanagerroletemplate") || roleId.equals(AccessControl.getEveryonegrantedRoleName())){
+	private boolean filterGrantSpecialRole(String roleId) throws Exception{
+		String roleName = this.executor.queryObject(String.class, "getrolename", roleId);
+		if(roleName.equals("orgmanager") || roleName.equals("orgmanagerroletemplate") || roleName.equals(AccessControl.getEveryonegrantedRoleName())){
 			return true;
 		}
 			
 		return false;
 	}
 	
-	private boolean filterDeleteSpecialRole(String roleId){
-		if(roleId.equals("orgmanager") || roleId.equals("orgmanagerroletemplate") ){
+	private boolean filterDeleteSpecialRole(String roleId) throws Exception{
+		String roleName = this.executor.queryObject(String.class, "getrolename", roleId);
+		if(roleName.equals("orgmanager") || roleName.equals("orgmanagerroletemplate") ){
 			return true;
 		}
 			
@@ -509,30 +513,49 @@ public class SmUserServiceImpl implements SmUserService {
 	 * @param roleName
 	 * @param userIds
 	 */
-	public void deleteRoleUsers(String roleName, String userIds) throws SmUserException{
-		if(filterDeleteSpecialRole(roleName))//特殊角色不能手工删除
-			return;
+	public void deleteRoleUsers(String roleId, String userIds) throws SmUserException{
+		
 		TransactionManager tm = new TransactionManager();
 		try {
 			tm.begin();
-			String userIds_[] = StringUtil.isEmpty(userIds)?null: userIds.split(",");
-			List<Map> userRoles = new ArrayList<Map>();
-//			int num = 0;
-			if(userIds_ != null){
-				for(String userId:userIds_){
-					
-	//				num = executor.queryObject(int.class, "existUserRoles", userId,roleId);
-	//				if(num == 0)
-	//				{
-						Map data = new HashMap();
-						data.put("userId", userId);
-						data.put("roleName", roleName);
-						userRoles.add(data);
-	//				}
+			if(!filterDeleteSpecialRole(roleId)){//特殊角色不能手工删除
+					 
+				String userIds_[] = StringUtil.isEmpty(userIds)?null: userIds.split(",");
+				List<Map> userRoles = new ArrayList<Map>();
+	//			int num = 0;
+				if(userIds_ != null){
+					for(String userId:userIds_){
+						
+		//				num = executor.queryObject(int.class, "existUserRoles", userId,roleId);
+		//				if(num == 0)
+		//				{
+							Map data = new HashMap();
+							data.put("userId", userId);
+							data.put("roleId", roleId);
+							userRoles.add(data);
+		//				}
+					}
 				}
+				if(userRoles.size() > 0)
+					this.executor.deleteBeans("deleteRoleUsers", userRoles);
 			}
-			if(userRoles.size() > 0)
-				this.executor.deleteBeans("deleteRoleUsers", userRoles);
+			tm.commit();
+		} catch (Exception e) {
+			throw new SmUserException(e);
+		}
+		finally
+		{
+			tm.release();
+		}
+	}
+	public void deleteRoleUsersOfRoles(String[] roleIds)throws SmUserException{
+		TransactionManager tm = new TransactionManager();
+		try {
+			tm.begin();
+//			String roleIds_[] = StringUtil.isEmpty(roleIds)?null: roleIds.split(",");
+//			
+			if(roleIds != null && roleIds.length > 0)
+				this.executor.deleteByKeys("deleteRoleUsersOfRoles", roleIds);
 			tm.commit();
 		} catch (Exception e) {
 			throw new SmUserException(e);

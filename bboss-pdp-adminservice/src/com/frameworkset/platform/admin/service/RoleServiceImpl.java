@@ -23,6 +23,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.frameworkset.platform.config.model.ResourceInfo;
+import org.frameworkset.platform.resource.ResourceManager;
 
 import com.frameworkset.common.poolman.ConfigSQLExecutor;
 import com.frameworkset.common.poolman.Record;
@@ -47,6 +49,7 @@ public class RoleServiceImpl implements RoleService {
 	private static Logger log = Logger.getLogger(com.frameworkset.platform.admin.service.RoleServiceImpl.class);
 
 	private ConfigSQLExecutor executor;
+	private ResourceManager resourceManager = new ResourceManager();
 	public void addRole(Role role) throws RoleException {
 		// 业务组件
 		try {
@@ -127,11 +130,11 @@ public class RoleServiceImpl implements RoleService {
 			throw new RoleException("query Role failed:", e);
 		}
 	}
-	public ListInfo queryRoleUsers(String userAttr, String roleName, long offset, int pagesize)  throws RoleException {
+	public ListInfo queryRoleUsers(String userAttr, String roleId, long offset, int pagesize)  throws RoleException {
 		try {
 			Map params  = new HashMap();
 			params.put("userAttr", userAttr);
-			params.put("roleName", roleName);
+			params.put("roleName", roleId);
 			ListInfo beans = executor.queryListInfoBean(RoleUser.class, "queryRoleUsers",offset,pagesize,params);
 			return beans;
 		} catch (Exception e) {
@@ -259,6 +262,61 @@ public class RoleServiceImpl implements RoleService {
 		{
 			tm.release();
 		}
+	}
+	/**
+	 * 删除角色时需要删除角色对应的所有资源
+	 * (non-Javadoc)
+	 * @see com.frameworkset.platform.admin.service.RoleService#deleteAllRoleAuthResources(java.lang.String[], java.lang.String)
+	 */
+	public void deleteAllRoleAuthResources(String[] roleIds, String roleType)  throws RoleException {
+		
+		TransactionManager tm = new TransactionManager();
+		try
+		{
+			tm.begin();
+			List<ResourceInfo> resourceInfos = resourceManager.getResourceInfos();
+			List<Map> deleteAuths = new ArrayList<Map>();
+			if(resourceInfos == null || resourceInfos.size() == 0){
+					String permissionTable = resourceManager.DEFAULT_PERMISSION_TABLE;
+					for(String roleId:roleIds){
+						HashMap authinfos = new HashMap();
+						authinfos.put("roleId", roleId);				 
+						authinfos.put("roleType", roleType);
+						authinfos.put("permissionTable", permissionTable);
+						deleteAuths.add(authinfos);
+					}
+					 
+				 
+			}
+			else
+			{
+				for(int i = 0; i < resourceInfos.size(); i ++){
+					ResourceInfo resourceInfo = resourceInfos.get(i);
+					String permissionTable = resourceInfo.getPermissionTable();
+					for(String roleId:roleIds){
+						HashMap authinfos = new HashMap();
+						authinfos.put("roleId", roleId);				 
+						authinfos.put("roleType", roleType);
+						authinfos.put("permissionTable", permissionTable);
+						deleteAuths.add(authinfos);
+					}
+					 
+				}
+			}	
+			
+			this.executor.deleteBeans("deleteAllRoleAuthResources", deleteAuths);
+			tm.commit();
+		}
+		catch(Exception e)
+		{
+			throw new RoleException(e);
+		}
+		finally
+		{
+			tm.release();
+		}
+		
+		
 	}
 	/** (non-Javadoc)
 	 * @see com.frameworkset.platform.admin.service.RoleService#saveRoleAuths(java.lang.String, java.lang.String[], java.util.List, java.lang.String, java.lang.String, java.lang.String)

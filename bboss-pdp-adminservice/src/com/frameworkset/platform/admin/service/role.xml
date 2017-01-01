@@ -78,7 +78,7 @@
 		<![CDATA[
 			select r.*,ur.start_date,ur.end_date,
 			rt.TYPE_NAME as typeName from td_sm_role r 
-			inner join TD_SM_USERROLE ur on r.ROLE_NAME = ur.role_id
+			inner join TD_SM_USERROLE ur on r.role_id = ur.role_id
 			left join td_sm_roletype rt on r.role_type=rt.TYPE_ID 			 
 			 where ur.user_id = ?			 
 		]]>
@@ -132,6 +132,13 @@
 	</property>
 	
 	
+	<property name="deleteAllRoleAuthResources">
+		<![CDATA[
+			delete 
+			from ${permissionTable}   
+			 where  ROLE_ID = #[roleId] and  TYPES =#[roleType] 
+		]]>
+	</property>
 	
 	<property name="addAuths">
 		<![CDATA[

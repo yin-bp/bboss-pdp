@@ -58,7 +58,7 @@
 						
 						<div class="row">
 						<form role="form" class="form-horizontal form-queryroleusers">
-							<input name="roleName" value="${roleName }" type="hidden"/>
+							<input name="roleId" value="${roleId }" type="hidden"/>
 							<div class="form-body">
 								<div class="col-md-8">
 									<div class="form-group form-md-line-input">									
@@ -140,7 +140,7 @@
 			if(!modeldialog )
 				modeldialog = ModelDialog.getCurrentModal();
 			$(".portlet_roleusers",modeldialog).load("${pageContext.request.contextPath}/sysmanager/role/queryRoleUsers.page",
-					doquery?$('.form-queryroleusers',modeldialog).serialize():{roleName:"${roleName}"},
+					doquery?$('.form-queryroleusers',modeldialog).serialize():{roleId:"${roleId}"},
 						function(){
 						
 						});
@@ -188,7 +188,7 @@
 	  									 $.ajax({
 	  							 		   type: "POST",
 	  							 			url : '${pageContext.request.contextPath}/sysmanager/user/saveRoleUsers.page',
-	  							 			data :{"userIds":userIds,"roleId":'${roleName }'},
+	  							 			data :{"userIds":userIds,"roleId":'${roleId }'},
 	  							 			dataType : 'json',
 	  							 			async:false,
 	  							 			beforeSend: function(XMLHttpRequest){ 					
@@ -235,7 +235,7 @@
 		           	 	$.ajax({
 		          		   type: "POST",
 		          			url : "${pageContext.request.contextPath}/sysmanager/role/deleteRoleUsers.page",
-		          			data :{"userIds":chk_value,"roleName":"${roleName}"},
+		          			data :{"userIds":chk_value,"roleId":"${roleId}"},
 		          			dataType : 'json',
 		          			async:false,
 		          			error : function(xhr, ajaxOptions,

@@ -111,8 +111,17 @@ public class RoleController {
 			if (roleIds != null && !roleIds.equals("")) {
 				String[] rs = roleIds.split(",");
 				roleService.deleteBatchRole(rs);
+				
+				this.userService.deleteRoleUsersOfRoles(rs);
+				this.roleService.deleteAllRoleAuthResources(rs, "role");
+				Event event = new EventImpl(new String[] { "role", roleIds },
+						ACLEventType.RESOURCE_ROLE_INFO_CHANGE);
+				EventHandle.sendEvent(event);
+				event = new EventImpl(new String[] { "",roleIds },
+						ACLEventType.USER_ROLE_INFO_CHANGE);
+				EventHandle.sendEvent(event);
 			}
-
+			
 			return "success";
 		} catch (Throwable e) {
 			log.error("delete Batch roleIds failed:", e);
@@ -295,8 +304,13 @@ public class RoleController {
 			model.addAttribute("errorMessage", "没有选择资源类型");
 			return "path:loadResourceOperations";
 		}
-		model.addAttribute("isAdministratorRole",
-				AccessControl.isAdministratorRole(this.roleService.getRole(roleId).getRoleName()));
+		
+		if(roleType.equals("role")){
+			Role role = null;
+			  role = this.roleService.getRole(roleId);
+				model.addAttribute("isAdministratorRole",
+				AccessControl.isAdministratorRole(role.getRoleName()));
+		}
 
 		ResourceInfo resourceInfo = resourceManager.getResourceInfoByType(resourceType);
 		if (resourceInfo != null) {
@@ -429,12 +443,12 @@ public class RoleController {
 	 * @param roleName
 	 * @return
 	 */
-	public String queryRoleUsers(String userAttr,String roleName,			 
+	public String queryRoleUsers(String userAttr,String roleId,			 
 			@PagerParam(name = PagerParam.OFFSET) long offset,
 			@PagerParam(name = PagerParam.PAGE_SIZE, defaultvalue = "10") int pagesize, ModelMap model){
 		if(StringUtil.isNotEmpty(userAttr ))
 			userAttr = "%"+userAttr+"%";
-		ListInfo roleusers = this.roleService.queryRoleUsers( userAttr,  roleName,offset,pagesize);
+		ListInfo roleusers = this.roleService.queryRoleUsers( userAttr,  roleId,offset,pagesize);
 		model.addAttribute("roleusers", roleusers);
 		return "path:queryRoleUsers";
 	}
@@ -487,14 +501,17 @@ public class RoleController {
 		return "path:rolesetAuthList";
 		
 	}
-	public @ResponseBody String deleteRoleUsers(String roleName,String userIds){
-		if(StringUtil.isEmpty(roleName)){
+	public @ResponseBody String deleteRoleUsers(String roleId,String userIds){
+		if(StringUtil.isEmpty(roleId)){
 			return "没选择角色";
 		}
 		if(StringUtil.isEmpty(userIds)){
 			return "没选择用户";
 		}
-		userService.deleteRoleUsers(  roleName,  userIds);
+		userService.deleteRoleUsers(  roleId,  userIds);
+		Event event = new EventImpl(new String[] { userIds},
+				ACLEventType.USER_ROLE_INFO_CHANGE);
+		EventHandle.sendEvent(event);
 		return "success";
 	}
 }

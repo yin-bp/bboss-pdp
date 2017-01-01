@@ -83,4 +83,8 @@ public interface SmUserService {
 	 * @param userIds
 	 */
 	public void deleteRoleUsers(String roleName, String userIds) throws SmUserException;
+	/**
+	 * @param roleIds
+	 */
+	public void deleteRoleUsersOfRoles(String[] roleIds)throws SmUserException;
 }

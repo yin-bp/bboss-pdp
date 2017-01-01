@@ -30,8 +30,8 @@
 				<input type="checkbox" class="checkboxall" onClick="checkAll('.table-grantedroles .checkboxall','.table-grantedroles .checkone')"/>
 			</th>
               
-             <th  > 角色</th>
-             <th > 中文名称</th>
+              
+             <th > 角色</th>
          </tr>
      </thead> 
      <tbody>
@@ -41,10 +41,8 @@
 					name="roleId" type="checkbox" 					
 					class="checkone" onClick="checkOne('.table-grantedroles .checkboxall','.table-grantedroles .checkone')" value="<pg:cell colName="resCode"  />" />
 				</td>             
-	             <td  >
-	                <pg:cell colName="resCode"   />
-	             </td>
-	              <td  >
+	           
+	              <td>
 	                  <pg:cell colName="resName"   />
 	             </td>
 	         </tr>
@@ -153,9 +151,8 @@
 		                        { "width": "5%", 'orderable': false,
 		                             "searchable": false },
 		                        { "width": "25%", 'orderable': true,
-			                             "searchable": true },
-			                    { "width": "70%", 'orderable': true,
-				                             "searchable": true }
+			                             "searchable": true }
+			                  
 		                      ],
                      "order": [
                                [1, "asc"]

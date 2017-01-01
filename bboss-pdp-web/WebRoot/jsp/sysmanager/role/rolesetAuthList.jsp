@@ -96,17 +96,18 @@
 		$(".dotempadd_btn",ModelDialog.getCurrentModal()).bind("click",function(){
 			var selectroles = "";
 			var roleNames = "";
-			 $('input[name="roleName"]:checked',$(".table-unselectrole")).each(function(){ 
+			 $('input[name="roleId"]:checked',$(".table-unselectrole")).each(function(){ 
 				 	var tr = $(this).closest('tr');
 				 	// console.log(tr);
 				 	// console.log($(".selected_users_movein"));
+				 	var roleName = $(this).attr("roleName")+"("+$(this).attr("remark1")+")"
 				 	if(selectroles == ""){
 				 		selectroles = $(this).val();
-				 		roleNames = $(this).attr("roleName");
+				 		roleNames = roleName;
 				 	}
 				 	else{
 				 		selectroles =selectroles+","+ $(this).val();
-				 		roleNames =roleNames+","+ $(this).attr("roleName");
+				 		roleNames =roleNames+","+ roleName;
 				 	}
 				 	 
 			 	});

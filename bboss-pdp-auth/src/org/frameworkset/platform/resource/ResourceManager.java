@@ -20,13 +20,14 @@ import org.frameworkset.platform.config.model.Resources;
  *
  * <p>Copyright: Copyright (c) 2006</p>
  *
- * <p>Company: 三一集团</p>
+ * <p>Company:bboss</p>
  *
  * @author biaoping.yin
  * @version 1.0
  */
 public class ResourceManager {
     private static Logger log = Logger.getLogger(ResourceManager.class);
+    public static final String DEFAULT_PERMISSION_TABLE = "TD_SM_ROLERESOP";
     public ResourceInfo getResourceInfoByTypeOfModule(String module,
             String type) {
 	    	ResourceInfo resInfo = null;
@@ -108,7 +109,7 @@ public class ResourceManager {
         
         }
         
-        public List getResourceInfos() {
+        public List<ResourceInfo> getResourceInfos() {
             return this.getResources().getResourceQueue().getList();
         }
 
