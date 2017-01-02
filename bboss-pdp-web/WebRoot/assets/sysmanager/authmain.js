@@ -91,11 +91,11 @@ var SysAuthmain = function(){
 		 				
 		 				if(responseText=="success"){
 		 					
-		 					PlatformCommonUtils.success("为用户添加角色成功!");
+		 					PlatformCommonUtils.success("为用户设置角色成功!");
 		 					ModelDialog.getCurrentModal().modal('hide');
 		 					SysUser.afterSaveUser();
 		 				}else{
-		 					PlatformCommonUtils.warn("为用户添加角色成功:"+responseText);
+		 					PlatformCommonUtils.warn("为用户设置角色失败:"+responseText);
 		 				}
 		 			}
 		 		  });	 

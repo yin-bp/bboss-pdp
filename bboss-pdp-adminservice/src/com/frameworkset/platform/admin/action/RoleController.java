@@ -525,7 +525,7 @@ public class RoleController {
 		if(StringUtil.isEmpty(userIds)){
 			return "没选择用户";
 		}
-		userService.deleteRoleUsers(  roleId,  userIds);
+		userService.deleteRoleUsers(  roleId,  userIds,true);
 		Event event = new EventImpl(new String[] { userIds},
 				ACLEventType.USER_ROLE_INFO_CHANGE);
 		EventHandle.sendEvent(event);

@@ -11,7 +11,8 @@ import org.frameworkset.platform.security.AccessControl;
  * @Date:2017-01-01 14:39:31
  */
 public class AdminUtil {
-
+	public static final String role_orgmanager = "orgmanager";
+	public static final String role_orgmanagerroletemplate = "orgmanagerroletemplate";
 	/**
 	 * 
 	 */

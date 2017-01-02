@@ -31,12 +31,16 @@ import org.frameworkset.platform.security.event.ACLEventType;
 import org.frameworkset.util.annotations.ResponseBody;
 import org.frameworkset.web.servlet.ModelMap;
 
+import com.frameworkset.orm.transaction.TransactionException;
 import com.frameworkset.orm.transaction.TransactionManager;
 import com.frameworkset.platform.admin.entity.SmOrganization;
 import com.frameworkset.platform.admin.entity.SmOrganizationCondition;
 import com.frameworkset.platform.admin.entity.SmUser;
+import com.frameworkset.platform.admin.service.RoleService;
 import com.frameworkset.platform.admin.service.SmOrganizationException;
 import com.frameworkset.platform.admin.service.SmOrganizationService;
+import com.frameworkset.platform.admin.service.SmUserService;
+import com.frameworkset.platform.admin.util.AdminUtil;
 import com.frameworkset.platform.admin.util.OpResult;
 import com.frameworkset.util.ListInfo;
 import com.frameworkset.util.StringUtil;
@@ -51,7 +55,8 @@ public class SmOrganizationController {
 	private static Logger log = Logger.getLogger(SmOrganizationController.class);
 
 	private SmOrganizationService smOrganizationService;
-	
+	private SmUserService userService;
+	private RoleService roleService;
 	public @ResponseBody List<JSTreeNode> getChildrens(String parent,boolean isuser,boolean chooseuser)
 	{
 		if(StringUtil.isEmpty(parent))
@@ -333,10 +338,25 @@ public class SmOrganizationController {
 			
 		}
 		if(users.length() > 0){
-			this.smOrganizationService.saveorgmanagers(  users.toString().split(","),  orgId);
-			Event event = new EventImpl("",
-					ACLEventType.USER_ROLE_INFO_CHANGE);
-			EventHandle.sendEvent(event);
+			String users_ = users.toString();
+			TransactionManager tm = new TransactionManager();
+			try{
+				tm.begin();
+				this.smOrganizationService.saveorgmanagers(  users_.split(","),  orgId);
+				userService.saveRoleUsers(users_, roleService.getRoleByName(AdminUtil.role_orgmanager).getRoleId(),false);
+				userService.saveRoleUsers(users_, roleService.getRoleByName(AdminUtil.role_orgmanagerroletemplate).getRoleId(),false);
+				tm.commit();
+				Event event = new EventImpl("",
+						ACLEventType.USER_ROLE_INFO_CHANGE);
+				EventHandle.sendEvent(event);
+			} catch (Exception e) {
+				log.debug("设置部门管理失败：",e);
+				return "设置部门管理失败："+e.getMessage();
+			}
+			finally{
+				tm.release();
+			}
+			
 		}
 		return "success";
 	}
@@ -346,10 +366,25 @@ public class SmOrganizationController {
 			return "没有选择部门管理员";
 		if(StringUtil.isEmpty(orgId) )
 			return "没有选择部门";
-		this.smOrganizationService.removeorgmanager( userIds_,  orgId);
-		Event event = new EventImpl("",
-				ACLEventType.USER_ROLE_INFO_CHANGE);
-		EventHandle.sendEvent(event);
+		
+		TransactionManager tm = new TransactionManager();
+		try{
+			tm.begin();
+		 	userService.deleteRoleUsers(roleService.getRoleByName(AdminUtil.role_orgmanager).getRoleId(),userIds,false);
+			userService.deleteRoleUsers( roleService.getRoleByName(AdminUtil.role_orgmanagerroletemplate).getRoleId(),userIds,false);
+			this.smOrganizationService.removeorgmanager( userIds_,  orgId);
+			tm.commit();
+			Event event = new EventImpl("",
+					ACLEventType.USER_ROLE_INFO_CHANGE);
+			EventHandle.sendEvent(event);
+		} catch (Exception e) {
+			log.debug("移除部门管理失败：",e);
+			return "移除部门管理失败："+e.getMessage();
+		}
+		finally{
+			tm.release();
+		}
+		 
 		return "success";
 	}
 	  

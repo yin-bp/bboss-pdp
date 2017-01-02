@@ -98,6 +98,15 @@ public class RoleServiceImpl implements RoleService {
 		}
 
 	}
+	public Role getRoleByName(String roleName) throws RoleException {
+		try {
+			Role bean = executor.queryObject(Role.class, "getRoleByName", roleName);
+			return bean;
+		} catch (Throwable e) {
+			throw new RoleException("get Role failed::roleName=" + roleName, e);
+		}
+
+	}
 	public ListInfo queryListInfoRoles(RoleCondition conditions, long offset, int pagesize) throws RoleException {
 		ListInfo datas = null;
 		try {

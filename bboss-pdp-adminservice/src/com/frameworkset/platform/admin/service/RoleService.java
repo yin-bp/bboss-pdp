@@ -33,6 +33,7 @@ public interface RoleService {
 	public void deleteBatchRole(String... roleIds) throws RoleException;
 	public void updateRole(Role role) throws RoleException;
 	public Role getRole(String roleId) throws RoleException;
+	public Role getRoleByName(String roleName) throws RoleException;
 	public ListInfo queryListInfoRoles(RoleCondition conditions, long offset, int pagesize) throws RoleException;
 	public List<Role> queryListRoles(RoleCondition conditions) throws RoleException;
 	/**

@@ -17,7 +17,6 @@
 package com.frameworkset.platform.admin.service;
 
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -416,14 +415,35 @@ public class SmUserServiceImpl implements SmUserService {
 	 * @param userIds
 	 * @param roleId
 	 */
-	public void saveRoleUsers(String userIds, String roleId)  throws SmUserException{
+	public void saveRoleUsers(String userIds, String roleId,boolean needcheckSpecialRole)  throws SmUserException{
 		
 		TransactionManager tm = new TransactionManager();
 		try {
 			tm.begin();
-			if(!filterGrantSpecialRole(roleId)){//特殊角色无需手工授予用户
+			List<Map> userRoles = new ArrayList<Map>();
+			if(needcheckSpecialRole ){//特殊角色无需手工授予用户
 				
-				List<Map> userRoles = new ArrayList<Map>();
+				if(!filterGrantSpecialRole(roleId)){//特殊角色无需手工授予用户
+					int num = 0;
+					if(userIds != null){
+						String[] userIds_ = userIds.split(",");
+						for(String userId:userIds_){
+							num = executor.queryObject(int.class, "existUserRoles", userId,roleId);
+							if(num == 0)
+							{
+								Map data = new HashMap();
+								data.put("userId", userId);
+								data.put("roleId", roleId);
+								userRoles.add(data);
+							}
+						}
+					}
+				}
+			 
+				
+			}
+			else
+			{
 				int num = 0;
 				if(userIds != null){
 					String[] userIds_ = userIds.split(",");
@@ -438,10 +458,9 @@ public class SmUserServiceImpl implements SmUserService {
 						}
 					}
 				}
-			 
-				if(userRoles.size() > 0)
-					this.executor.insertBeans("saveUserRoles", userRoles);
 			}
+			if(userRoles.size() > 0)
+				this.executor.insertBeans("saveUserRoles", userRoles);
 			tm.commit();
 		} catch (Exception e) {
 			throw new SmUserException(e);
@@ -506,32 +525,39 @@ public class SmUserServiceImpl implements SmUserService {
 	 * @param roleName
 	 * @param userIds
 	 */
-	public void deleteRoleUsers(String roleId, String userIds) throws SmUserException{
+	public void deleteRoleUsers(String roleId, String userIds,boolean needcheckSpecialRole) throws SmUserException{
 		
 		TransactionManager tm = new TransactionManager();
 		try {
 			tm.begin();
-			if(!filterDeleteSpecialRole(roleId)){//特殊角色不能手工删除
-					 
-				String userIds_[] = StringUtil.isEmpty(userIds)?null: userIds.split(",");
-				List<Map> userRoles = new ArrayList<Map>();
-	//			int num = 0;
-				if(userIds_ != null){
-					for(String userId:userIds_){
-						
-		//				num = executor.queryObject(int.class, "existUserRoles", userId,roleId);
-		//				if(num == 0)
-		//				{
+			String userIds_[] = StringUtil.isEmpty(userIds)?null: userIds.split(",");
+			List<Map> userRoles = new ArrayList<Map>();
+			if(needcheckSpecialRole){
+				if(!filterDeleteSpecialRole(roleId)){//特殊角色不能手工删除
+					if(userIds_ != null){
+						for(String userId:userIds_){  
 							Map data = new HashMap();
 							data.put("userId", userId);
 							data.put("roleId", roleId);
 							userRoles.add(data);
-		//				}
+						}
 					}
 				}
-				if(userRoles.size() > 0)
-					this.executor.deleteBeans("deleteRoleUsers", userRoles);
 			}
+			else
+			{
+				if(userIds_ != null){
+					for(String userId:userIds_){  
+						Map data = new HashMap();
+						data.put("userId", userId);
+						data.put("roleId", roleId);
+						userRoles.add(data);
+					}
+				}
+			}
+			
+			if(userRoles.size() > 0)
+				this.executor.deleteBeans("deleteRoleUsers", userRoles);
 			tm.commit();
 		} catch (Exception e) {
 			throw new SmUserException(e);
