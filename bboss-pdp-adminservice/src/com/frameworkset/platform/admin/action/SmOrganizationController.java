@@ -34,6 +34,7 @@ import org.frameworkset.web.servlet.ModelMap;
 import com.frameworkset.orm.transaction.TransactionManager;
 import com.frameworkset.platform.admin.entity.SmOrganization;
 import com.frameworkset.platform.admin.entity.SmOrganizationCondition;
+import com.frameworkset.platform.admin.entity.SmUser;
 import com.frameworkset.platform.admin.service.SmOrganizationException;
 import com.frameworkset.platform.admin.service.SmOrganizationService;
 import com.frameworkset.platform.admin.util.OpResult;
@@ -306,4 +307,50 @@ public class SmOrganizationController {
 		this.smOrganizationService.buildTreeLevel();
 		return "success";
 	}
+	public String orgmanagerset(String orgId,ModelMap model){
+		model.addAttribute("orgId", orgId);
+		return "path:orgmanagerset";
+	}
+	public String orgmanagerlist(String orgId,ModelMap model){
+		List<SmUser> orgmanagers = this.smOrganizationService.getOrgmanagers(orgId);
+		model.addAttribute("orgmanagers", orgmanagers);
+		return "path:orgmanagerlist";
+	}
+	public @ResponseBody String saveorgmanagers(String userIds,String orgId){
+		String[] userIds_ = userIds.split(",");
+		if(StringUtil.isEmpty(userIds) )
+			return "没有选择部门管理员";
+		if(StringUtil.isEmpty(orgId) )
+			return "没有选择部门";
+		StringBuilder users = new StringBuilder();
+		for(int i = 0; i < userIds_.length;i ++){
+			if(smOrganizationService.existManager(userIds_[i],orgId))
+				continue;
+			if(users.length() == 0)
+				users.append(userIds_[i]);
+			else
+				users.append(",").append(userIds_[i]);
+			
+		}
+		if(users.length() > 0){
+			this.smOrganizationService.saveorgmanagers(  users.toString().split(","),  orgId);
+			Event event = new EventImpl("",
+					ACLEventType.USER_ROLE_INFO_CHANGE);
+			EventHandle.sendEvent(event);
+		}
+		return "success";
+	}
+	public @ResponseBody String removeorgmanager(String userIds,String orgId){
+		String[] userIds_ = userIds.split(",");
+		if(StringUtil.isEmpty(userIds) )
+			return "没有选择部门管理员";
+		if(StringUtil.isEmpty(orgId) )
+			return "没有选择部门";
+		this.smOrganizationService.removeorgmanager( userIds_,  orgId);
+		Event event = new EventImpl("",
+				ACLEventType.USER_ROLE_INFO_CHANGE);
+		EventHandle.sendEvent(event);
+		return "success";
+	}
+	  
 }

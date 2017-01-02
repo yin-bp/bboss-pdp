@@ -461,7 +461,7 @@ var SysOrg = function(){
 		                    	 SysOrg.tomodifyOrg(orgId,orgName)
 		                     }
 		                   },
-		                   {
+		                   /** {
 		                     class: 'btn  btn-xs btn-default',
 		                     icon: 'fa fa-pencil',
 		                     label:'授权',
@@ -469,7 +469,7 @@ var SysOrg = function(){
 		                    	 var orgId = $(this).attr("orgId");
 		                    	 SysOrg.toauthOrg(orgId)
 		                     }
-		                   }
+		                   }*/
 		                   ,
 		                   {
 		                     class: 'btn  btn-xs btn-default',
@@ -477,10 +477,11 @@ var SysOrg = function(){
 		                     label:'管理员设置' ,
 		                     onClick: function() {
 		                    	 var orgId = $(this).attr("orgId");
-		                    	 SysOrg.setOrgManager(orgId)
+		                    	 var orgName = $(this).attr("orgName");
+		                    	 orgmanagerset(orgId,orgName);
 			                 }
 		                   },
-		                   {
+		                   /**   {
 			                     class: 'btn  btn-xs btn-default',
 			                     icon: 'fa fa-pencil',
 			                     label:'岗位设置',
@@ -490,7 +491,7 @@ var SysOrg = function(){
 				                 }
 			                     
 			                   },
-		                   {
+		                  {
 			                     class: 'btn btn-xs btn-danger',
 			                     icon: 'fa fa-ban',
 			                     label:'停用' ,
@@ -498,15 +499,27 @@ var SysOrg = function(){
 			                    	 var orgId = $(this).attr("orgId");
 			                    	 SysOrg.stopOrg(orgId)
 				                 }
-			               },
+			               },*/
 		                  
 		                   {
 		                	   class: 'btn  btn-xs btn-default',
 		                	      icon: 'glyphicon glyphicon-remove',
 		                	      cancel: true
-			                   }
+			               }
 		                 ];
 		return content_;
+	}
+	var orgmanagerset = function(orgId,orgName){
+		ModelDialog.dialog({
+			title:"设置部门管理员-<span class=\"label label-sm label-success\">"+orgName+"</span>",
+			showfooter:false,
+			url:usercontextpath+"/sysmanager/org/orgmanagerset.page",
+			params:{
+		     	 "orgId":orgId
+		      },
+			width:"900px"
+
+		});
 	}
 	var getOrgList = function (departId){
 		Sysmanager.setDepartid(departId);

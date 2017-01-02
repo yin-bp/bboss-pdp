@@ -56,4 +56,24 @@ public interface SmOrganizationService {
 	 * @return
 	 */
 	public boolean hasManager(String org) throws SmOrganizationException;
+	/**
+	 * @param orgId
+	 * @return
+	 */
+	public List<SmUser> getOrgmanagers(String orgId) throws SmOrganizationException;
+	/**
+	 * @param userIds_
+	 * @param orgId
+	 */
+	public void saveorgmanagers(String[] userIds_, String orgId) throws SmOrganizationException;
+	/**
+	 * @param string
+	 * @return
+	 */
+	public boolean existManager(String userId,String orgId) throws SmOrganizationException;
+	/**
+	 * @param userIds_
+	 * @param orgId
+	 */
+	public void removeorgmanager(String[] userIds_, String orgId) throws SmOrganizationException;
 }

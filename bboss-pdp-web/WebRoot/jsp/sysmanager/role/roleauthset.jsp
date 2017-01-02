@@ -213,6 +213,10 @@
 	  							 			data :{"userIds":userIds,"roleId":'${roleId }'},
 	  							 			dataType : 'json',
 	  							 			async:false,
+	  							 			error : function(xhr, ajaxOptions,
+	  												thrownError) {
+	  											PDP.warn(thrownError) ;
+	  										},
 	  							 			beforeSend: function(XMLHttpRequest){ 					
 	  							 				 	
 	  							 			},
