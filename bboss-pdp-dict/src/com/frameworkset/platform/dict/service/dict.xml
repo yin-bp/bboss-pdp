@@ -59,6 +59,8 @@
 			#end
 			#if($dictStatus && !$dictStatus.equals("") && !$dictStatus.equals("-1"))
 				and dict_status = #[dictStatus]
+			#else
+				and dict_status = '1'
 			#end
 			order by DICT_code
 			
