@@ -16,7 +16,11 @@
 
 package com.frameworkset.platform.admin.service;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 
@@ -24,6 +28,7 @@ import com.frameworkset.common.poolman.ConfigSQLExecutor;
 import com.frameworkset.orm.transaction.TransactionManager;
 import com.frameworkset.platform.admin.entity.SmOrganization;
 import com.frameworkset.platform.admin.entity.SmOrganizationCondition;
+import com.frameworkset.platform.admin.entity.SmUser;
 import com.frameworkset.util.ListInfo;
 
 /**
@@ -76,6 +81,8 @@ public class SmOrganizationServiceImpl implements SmOrganizationService {
 		TransactionManager tm = new TransactionManager();
 		try {
 			tm.begin();
+			executor.updateByKeys("moveUsertoDaigang", orgIds);
+			executor.deleteByKeys("removeOrgManager", orgIds);
 			executor.deleteByKeys("deleteByKey", orgIds);
 			tm.commit();
 		} catch (Throwable e) {
@@ -85,6 +92,25 @@ public class SmOrganizationServiceImpl implements SmOrganizationService {
 			tm.release();
 		}
 
+	}
+	public boolean hasSon(String org) throws SmOrganizationException{
+		
+		try {
+			int num = this.executor.queryObject(int.class, "hasSon", org);
+			return (num > 0);
+		} catch (Throwable e) {
+			throw new SmOrganizationException("hasSon SmOrganization failed::orgId=" + org, e);
+		}
+			
+	}
+	
+	public boolean hasManager(String org) throws SmOrganizationException{
+		try {
+			int num = this.executor.queryObject(int.class, "hasManager", org);
+			return (num > 0);
+		} catch (Throwable e) {
+			throw new SmOrganizationException("hasManager SmOrganization failed::orgId=" + org, e);
+		}
 	}
 	public void updateSmOrganization(SmOrganization smOrganization) throws SmOrganizationException {
 		try {
@@ -169,6 +195,76 @@ public class SmOrganizationServiceImpl implements SmOrganizationService {
 			throw new SmOrganizationException("getAllOrgs failed:", e);
 		}
 		
+	}
+	/** (non-Javadoc)
+	 * @see com.frameworkset.platform.admin.service.SmOrganizationService#getOrgmanagers(java.lang.String)
+	 */
+	@Override
+	public List<SmUser> getOrgmanagers(String orgId) throws SmOrganizationException {
+		// TODO Auto-generated method stub
+		try {
+			return this.executor.queryList(SmUser.class, "getOrgmanagers", orgId);
+		} catch (SQLException e) {
+			throw new SmOrganizationException("getOrgmanagers failed:", e);
+		}
+	}
+	/** (non-Javadoc)
+	 * @see com.frameworkset.platform.admin.service.SmOrganizationService#saveorgmanagers(java.lang.String[], java.lang.String)
+	 */
+	@Override
+	public void saveorgmanagers(String[] userIds_, String orgId) throws SmOrganizationException {
+		 TransactionManager tm = new TransactionManager();
+		 try {			 
+			 List params = new ArrayList();
+			 for(String userId:userIds_){
+				 Map param = new HashMap();
+				 param.put("userId", userId);
+				 param.put("orgId", orgId); 
+				 params.add(param);
+			 }
+			 tm.begin();
+			 this.executor.insertBeans("saveorgmanagers", params);
+			 tm.commit();
+		} catch (Exception e) {
+			throw new SmOrganizationException("saveorgmanagers failed:", e);
+		}
+		finally{
+			tm.release();
+		}
+		
+	}
+	/** (non-Javadoc)
+	 * @see com.frameworkset.platform.admin.service.SmOrganizationService#existManager(java.lang.String, java.lang.String)
+	 */
+	@Override
+	public boolean existManager(String userId, String orgId) throws SmOrganizationException {
+		 
+		try {
+			int num = this.executor.queryObject(int.class, "existManager", userId,orgId);
+			return num > 0;
+		} catch (SQLException e) {
+			throw new SmOrganizationException("existManager failed:", e);
+		}	
+	}
+	public void removeorgmanager(String[] userIds_, String orgId) throws SmOrganizationException{
+		TransactionManager tm = new TransactionManager();
+		 try {			 
+			 List params = new ArrayList();
+			 for(String userId:userIds_){
+				 Map param = new HashMap();
+				 param.put("userId", userId);
+				 param.put("orgId", orgId); 
+				 params.add(param);
+			 }
+			 tm.begin();
+			 this.executor.insertBeans("removeorgmanager", params);
+			 tm.commit();
+		} catch (Exception e) {
+			throw new SmOrganizationException("removeorgmanager failed:", e);
+		}
+		finally{
+			tm.release();
+		}
 	}
 	
 	

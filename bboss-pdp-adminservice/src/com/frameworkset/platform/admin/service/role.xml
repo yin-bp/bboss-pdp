@@ -42,12 +42,20 @@
 			update td_sm_role set ROLE_ID=#[roleId],OWNER_ID=#[ownerId],REMARK1=#[remark1],REMARK2=#[remark2],REMARK3=#[remark3],ROLE_DESC=#[roleDesc],ROLE_NAME=#[roleName],ROLE_TYPE=#[roleType],ROLE_USAGE=#[roleUsage] where ROLE_ID=#[roleId]
 		]]>
 	</property>
-		<property name="selectById">
+	<property name="selectById">
 		<![CDATA[
 			select r.*,
 				rt.TYPE_NAME as typeName,u.user_name as ownerAccount,u.USER_REALNAME as ownerName from td_sm_role r 
 				left join td_sm_roletype rt on r.ROLE_TYPE=rt.TYPE_ID 
-				left join td_sm_user u on r.OWNER_ID=u.USER_ID where ROLE_ID=?
+				left join td_sm_user u on r.OWNER_ID=u.USER_ID where ROLE_ID=? 
+		]]>
+	</property>
+	<property name="getRoleByName">
+		<![CDATA[
+			select r.*,
+				rt.TYPE_NAME as typeName,u.user_name as ownerAccount,u.USER_REALNAME as ownerName from td_sm_role r 
+				left join td_sm_roletype rt on r.ROLE_TYPE=rt.TYPE_ID 
+				left join td_sm_user u on r.OWNER_ID=u.USER_ID where  role_name=?
 		]]>
 	</property>
 		<property name="queryListRole">
@@ -78,7 +86,7 @@
 		<![CDATA[
 			select r.*,ur.start_date,ur.end_date,
 			rt.TYPE_NAME as typeName from td_sm_role r 
-			inner join TD_SM_USERROLE ur on r.ROLE_NAME = ur.role_id
+			inner join TD_SM_USERROLE ur on r.role_id = ur.role_id
 			left join td_sm_roletype rt on r.role_type=rt.TYPE_ID 			 
 			 where ur.user_id = ?			 
 		]]>
@@ -132,6 +140,13 @@
 	</property>
 	
 	
+	<property name="deleteAllRoleAuthResources">
+		<![CDATA[
+			delete 
+			from ${permissionTable}   
+			 where  ROLE_ID = #[roleId] and  TYPES =#[roleType] 
+		]]>
+	</property>
 	
 	<property name="addAuths">
 		<![CDATA[

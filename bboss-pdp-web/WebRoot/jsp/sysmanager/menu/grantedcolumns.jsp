@@ -10,6 +10,7 @@
 			设置角色菜单权限 </span>
 
 	</div>
+	<pg:true actual="${roleNeedGrantResource }">
 	<div class="actions">
 			<a
 				class="btn btn-xs blue"  
@@ -20,6 +21,7 @@
 				<i class="fa fa-times"></i> 移除选中菜单
 			</a> 
 		</div>
+	</pg:true>	
 </div>
 <div class="portlet-body">
  

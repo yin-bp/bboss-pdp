@@ -71,7 +71,7 @@ public class SmUserController {
 		{
 			return "请选择要授予角色的用户";
 		}
-		smUserService.saveRoleUsers(userIds,roleId);
+		smUserService.saveRoleUsers(userIds,roleId,true);
 		Event event = new EventImpl(userIds,
 				ACLEventType.USER_ROLE_INFO_CHANGE);
 		EventHandle.sendEvent(event);

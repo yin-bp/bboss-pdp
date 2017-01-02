@@ -77,5 +77,14 @@ public interface SmUserService {
 	 * @param userIds
 	 * @param roleId
 	 */
-	public void saveRoleUsers(String userIds, String roleId)  throws SmUserException;
+	public void saveRoleUsers(String userIds, String roleId,boolean needcheckSpecialRole)  throws SmUserException;
+	/**
+	 * @param roleName
+	 * @param userIds
+	 */
+	public void deleteRoleUsers(String roleId, String userIds,boolean needcheckSpecialRole) throws SmUserException;
+	/**
+	 * @param roleIds
+	 */
+	public void deleteRoleUsersOfRoles(String[] roleIds)throws SmUserException;
 }

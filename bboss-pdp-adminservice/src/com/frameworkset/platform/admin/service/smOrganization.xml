@@ -10,7 +10,32 @@
 	* Description: 机构管理管理sql配置文件 * Company:bboss * Copyright (c) 2015 * @Date 
 	2016-11-28 16:33:16 * @author yinbp * @version v1.0 ** -->
 <properties>
-
+	
+	<property name="getOrgmanagers">
+		<![CDATA[
+			select u.*,o.org_name as departName from td_sm_user u inner join td_sm_orgmanager om on u.USER_ID = om.USER_ID
+				left join td_sm_organization o on u.depart_id = o.org_id 
+			 where om.org_id =?
+		]]>
+	</property>
+	<property name="existManager">
+		<![CDATA[
+			select count(org_id) from td_sm_orgmanager om  where om.USER_ID = ? and om.org_id=? 
+		]]>
+	</property>
+	<property name="saveorgmanagers">
+		<![CDATA[
+			INSERT INTO td_sm_orgmanager (USER_ID, ORG_ID) VALUES (#[userId], #[orgId]) 
+		]]>
+	</property>
+	<property name="removeorgmanager">
+		<![CDATA[
+			delete from td_sm_orgmanager where USER_ID = #[userId] and ORG_ID = #[orgId]
+		]]>
+	</property>
+	
+	
+	
 	<property name="addSmOrganization">
 		<![CDATA[
 			insert into td_sm_organization (ORG_ID,CHARGEORGID,CHILDREN,CODE,CREATINGTIME,CREATOR,ISDIRECTGUANHU,ISDIRECTLYPARTY,ISFOREIGNPARTY,ISJICHAPARTY,ISPARTYBUSSINESS,JP,LAYER,ORG_LEVEL,ORG_NAME,ORG_SN,ORG_TREE_LEVEL,ORG_XZQM,ORGDESC,ORGLEADER,ORGNUMBER,PARENT_ID,PATH,QP,REMARK1,REMARK2,REMARK3,REMARK4,REMARK5,SATRAPJOBID) values(#[orgId],#[chargeorgid],#[children],#[code],#[creatingtime],#[creator],#[isdirectguanhu],#[isdirectlyparty],#[isforeignparty],#[isjichaparty],#[ispartybussiness],#[jp],#[layer],#[orgLevel],#[orgName],#[orgSn],#[orgTreeLevel],#[orgXzqm],#[orgdesc],#[orgleader],#[orgnumber],#[parentId],#[path],#[qp],#[remark1],#[remark2],#[remark3],#[remark4],#[remark5],#[satrapjobid])
@@ -43,6 +68,29 @@
 			select * from td_sm_organization where parent_id=?  order by org_sn
 		]]>
 	</property>
+	<property name="hasSon">
+		<![CDATA[
+			select count(org_id) from td_sm_organization where parent_id=?  
+		]]>
+	</property>
+	<property name="hasManager">
+		<![CDATA[
+			select count(org_id) from td_sm_orgmanager where org_id=?  
+		]]>
+	</property>
+	
+	<property name="moveUsertoDaigang">
+		<![CDATA[
+			update td_sm_user set depart_id = null where  depart_id = ?
+		]]>
+	</property>
+	<property name="removeOrgManager">
+		<![CDATA[
+			delete from td_sm_orgmanager where  org_id = ?
+		]]>
+	</property>
+	
+	
 	
 	<property name="getOrgTreeLevel">
 		<![CDATA[

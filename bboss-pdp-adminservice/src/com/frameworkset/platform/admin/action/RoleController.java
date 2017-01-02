@@ -49,6 +49,8 @@ import com.frameworkset.platform.admin.service.ResourceService;
 import com.frameworkset.platform.admin.service.RoleException;
 import com.frameworkset.platform.admin.service.RoleService;
 import com.frameworkset.platform.admin.service.RoleTypeService;
+import com.frameworkset.platform.admin.service.SmUserService;
+import com.frameworkset.platform.admin.util.AdminUtil;
 import com.frameworkset.util.ListInfo;
 import com.frameworkset.util.StringUtil;
 
@@ -72,6 +74,7 @@ public class RoleController {
 	private static Logger log = Logger.getLogger(RoleController.class);
 	private RoleTypeService roleTypeService;
 	private ResourceService resourceService;
+	private SmUserService userService;
 	private ResourceManager resourceManager = new ResourceManager();
 	private RoleService roleService;
 
@@ -109,8 +112,17 @@ public class RoleController {
 			if (roleIds != null && !roleIds.equals("")) {
 				String[] rs = roleIds.split(",");
 				roleService.deleteBatchRole(rs);
+				
+				this.userService.deleteRoleUsersOfRoles(rs);
+				this.roleService.deleteAllRoleAuthResources(rs, "role");
+				Event event = new EventImpl(new String[] { "role", roleIds },
+						ACLEventType.RESOURCE_ROLE_INFO_CHANGE);
+				EventHandle.sendEvent(event);
+				event = new EventImpl(new String[] { "",roleIds },
+						ACLEventType.USER_ROLE_INFO_CHANGE);
+				EventHandle.sendEvent(event);
 			}
-
+			
 			return "success";
 		} catch (Throwable e) {
 			log.error("delete Batch roleIds failed:", e);
@@ -155,6 +167,12 @@ public class RoleController {
 				resourceTypes.add(res);
 
 			}
+		}
+		if(roleType.equals("role")){
+			model.addAttribute("roleNeedGrantResource", AdminUtil.roleNeedGrantResource(roleName));
+			model.addAttribute("roleNeedSetUser", AdminUtil.roleNeedSetUser(roleName));
+			model.addAttribute("roleNeedSetUserMessage", AdminUtil.roleNeedSetUserMessage(roleName));
+			model.addAttribute("roleNeedGrantResourceMessage", AdminUtil.roleNeedGrantResourceMessage(roleName));
 		}
 		model.addAttribute("resourceTypes", resourceTypes);
 		if (resourceTypes.size() > 0) {
@@ -293,8 +311,17 @@ public class RoleController {
 			model.addAttribute("errorMessage", "没有选择资源类型");
 			return "path:loadResourceOperations";
 		}
-		model.addAttribute("isAdministratorRole",
-				AccessControl.isAdministratorRole(this.roleService.getRole(roleId).getRoleName()));
+		
+		if(roleType.equals("role")){
+			Role role = null;
+			  role = this.roleService.getRole(roleId);
+				model.addAttribute("isAdministratorRole",
+				AccessControl.isAdministratorRole(role.getRoleName()));
+				model.addAttribute("roleNeedGrantResource", AdminUtil.roleNeedGrantResource(role.getRoleName()));
+				model.addAttribute("roleNeedSetUser", AdminUtil.roleNeedSetUser(role.getRoleName()));	
+				model.addAttribute("roleNeedSetUserMessage", AdminUtil.roleNeedSetUserMessage(role.getRoleName()));
+				model.addAttribute("roleNeedGrantResourceMessage", AdminUtil.roleNeedGrantResourceMessage(role.getRoleName()));
+		}
 
 		ResourceInfo resourceInfo = resourceManager.getResourceInfoByType(resourceType);
 		if (resourceInfo != null) {
@@ -427,12 +454,12 @@ public class RoleController {
 	 * @param roleName
 	 * @return
 	 */
-	public String queryRoleUsers(String userAttr,String roleName,			 
+	public String queryRoleUsers(String userAttr,String roleId,			 
 			@PagerParam(name = PagerParam.OFFSET) long offset,
 			@PagerParam(name = PagerParam.PAGE_SIZE, defaultvalue = "10") int pagesize, ModelMap model){
 		if(StringUtil.isNotEmpty(userAttr ))
 			userAttr = "%"+userAttr+"%";
-		ListInfo roleusers = this.roleService.queryRoleUsers( userAttr,  roleName,offset,pagesize);
+		ListInfo roleusers = this.roleService.queryRoleUsers( userAttr,  roleId,offset,pagesize);
 		model.addAttribute("roleusers", roleusers);
 		return "path:queryRoleUsers";
 	}
@@ -467,6 +494,12 @@ public class RoleController {
 	public String grantedroles(String resourceType,String roleId,String roleType,ModelMap model){
 		if(resourceType == null)
 			resourceType = "role";
+		if(roleType.equals("role")){
+			Role role = null;
+			  role = this.roleService.getRole(roleId);				
+			model.addAttribute("roleNeedGrantResource", AdminUtil.roleNeedGrantResource(role.getRoleName()));
+				
+		}
 		String currentSystem = AccessControl.getAccessControl().getCurrentSystemID();
 		final Framework framework = Framework.getInstance(currentSystem);		
 		model.addAttribute("roleId", roleId);
@@ -484,5 +517,18 @@ public class RoleController {
 		model.addAttribute("resourceType", resourceType);
 		return "path:rolesetAuthList";
 		
+	}
+	public @ResponseBody String deleteRoleUsers(String roleId,String userIds){
+		if(StringUtil.isEmpty(roleId)){
+			return "没选择角色";
+		}
+		if(StringUtil.isEmpty(userIds)){
+			return "没选择用户";
+		}
+		userService.deleteRoleUsers(  roleId,  userIds,true);
+		Event event = new EventImpl(new String[] { userIds},
+				ACLEventType.USER_ROLE_INFO_CHANGE);
+		EventHandle.sendEvent(event);
+		return "success";
 	}
 }

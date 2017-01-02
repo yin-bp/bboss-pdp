@@ -1,6 +1,7 @@
 <%@ page session="false" language="java"
 	contentType="text/html; charset=utf-8"%>
 <%@ taglib uri="/WEB-INF/tld/pager-taglib.tld" prefix="pg" %>
+<%@ taglib uri="/WEB-INF/tld/dictionary.tld" prefix="dict" %>
 <pg:pager scope="request"  data="users" desc="false" isList="false" containerid=".select_users_movein">
 	<pg:param name="fromDepartId"/>
 	<pg:param name="recursive"/>
@@ -38,9 +39,9 @@
 	            <td> <pg:cell colName="userName"/> <pg:cell colName="userRealname"/></td>
 	            <td> <pg:cell colName="userWorknumber"/> </td>
 	            <td> <pg:cell colName="userMobiletel1"/> </td>
-	            <td> <pg:cell colName="userSex"/> </td>
-	            <td> <pg:cell colName="userType"/> </td>
-	            <td> <pg:cell colName="userIsvalid"/> </td>
+	             <td> <dict:itemname type="sex"  colName="userSex"/> </td>
+	            <td> <dict:itemname type="userType"  colName="userType"/> </td>
+	            <td> <dict:itemname type="userIsvalid"  colName="userIsvalid"/></td>
 	            <td> <pg:cell colName="departName"/> </td>
 	        </tr>
 	    </pg:list>

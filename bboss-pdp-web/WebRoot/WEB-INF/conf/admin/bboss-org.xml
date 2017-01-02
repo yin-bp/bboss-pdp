@@ -15,7 +15,11 @@
 		path:updateSmOrganization="/jsp/sysmanager/org/editorg.jsp"
 		path:addSmOrganization="/jsp/sysmanager/org/addorg.jsp"
 		path:getSmOrganization="/jsp/sysmanager/org/vieworg.jsp"
+		path:orgmanagerset="/jsp/sysmanager/org/orgmanagerset.jsp"
+		path:orgmanagerlist="/jsp/sysmanager/org/orgmanagerlist.jsp"
 		f:smOrganizationService="attr:org.smOrganizationService"
+		f:userService="attr:user.smUserService"
+		f:roleService="attr:role.roleService"
 		class="com.frameworkset.platform.admin.action.SmOrganizationController" >
 	</property>
 		<property name="org.smOrganizationService"

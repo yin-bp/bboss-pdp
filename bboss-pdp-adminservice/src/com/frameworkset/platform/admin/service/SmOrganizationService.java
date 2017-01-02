@@ -46,4 +46,34 @@ public interface SmOrganizationService {
 	public List<SmOrganization> getAllOrgs() throws SmOrganizationException;
 	public void buildTreeLevel() throws SmOrganizationException;
 	public String getOrgTreeLevel(String orgid) throws SmOrganizationException;
+	/**
+	 * @param org
+	 * @return
+	 */
+	public boolean hasSon(String org) throws SmOrganizationException;
+	/**
+	 * @param org
+	 * @return
+	 */
+	public boolean hasManager(String org) throws SmOrganizationException;
+	/**
+	 * @param orgId
+	 * @return
+	 */
+	public List<SmUser> getOrgmanagers(String orgId) throws SmOrganizationException;
+	/**
+	 * @param userIds_
+	 * @param orgId
+	 */
+	public void saveorgmanagers(String[] userIds_, String orgId) throws SmOrganizationException;
+	/**
+	 * @param string
+	 * @return
+	 */
+	public boolean existManager(String userId,String orgId) throws SmOrganizationException;
+	/**
+	 * @param userIds_
+	 * @param orgId
+	 */
+	public void removeorgmanager(String[] userIds_, String orgId) throws SmOrganizationException;
 }

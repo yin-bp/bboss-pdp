@@ -12,7 +12,7 @@
         <column name="CACHE_ENABLE"  required="true" size="1" type="VARCHAR"/>
         <!-- 是否树形字典:0 no 1 yes -->
         <column name="IS_TREE"  required="true" size="1" type="VARCHAR"/>  
-        <column name="DICT_STATUS"  required="true" size="1" type="VARCHAR"/>   
+        <column name="DICT_STATUS" default="1" required="true" size="1" type="VARCHAR"/>   
         <column default="1" name="OWNER_ID" size="50" type="VARCHAR"/> 
         <column name="DICT_DESC" size="2000" type="VARCHAR"/>              
     </table>

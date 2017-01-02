@@ -19,7 +19,7 @@ import org.frameworkset.platform.config.model.ResourceInfo;
  * @version 1.0
  */
 public class ResourceInfoQueue implements java.io.Serializable {
-    private List list = new LinkedList();
+    private List<ResourceInfo> list = new LinkedList<ResourceInfo>();
     public static void main(String[] args) {
         ResourceInfoQueue resourcequeue = new ResourceInfoQueue();
     }
@@ -40,7 +40,7 @@ public class ResourceInfoQueue implements java.io.Serializable {
         return (ResourceInfo)list.get(i);
     }
 
-    public List getList()
+    public List<ResourceInfo> getList()
     {
         return Collections.unmodifiableList(this.list);
     }

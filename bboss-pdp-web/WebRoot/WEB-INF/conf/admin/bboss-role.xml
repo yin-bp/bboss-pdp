@@ -24,6 +24,7 @@
 		f:roleService="attr:role.roleService"
 		f:resourceService="attr:resource.resourceService"
 		f:roleTypeService="attr:roletype.roleTypeService"
+		f:userService="attr:user.smUserService"
 		class="com.frameworkset.platform.admin.action.RoleController" >
 	</property>
 		<property name="role.roleService"

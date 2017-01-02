@@ -6,7 +6,26 @@
 	href="${pageContext.request.contextPath}/assets/pages/css/profile-2.min.css"
 	rel="stylesheet" type="text/css" />
 
-
+<pg:notempty actual="${roleNeedSetUserMessage }">
+<div class="row">
+	<div class="col-md-12">		 
+		<div class="alert alert-success display  alert-roleauthset">
+			 
+			<span class="msg"> ${roleNeedSetUserMessage } </span>
+		</div>
+	</div>
+</div>
+</pg:notempty>
+<pg:notempty actual="${roleNeedGrantResourceMessage }">
+<div class="row">
+	<div class="col-md-12">		 
+		<div class="alert alert-success display  alert-roleauthset">
+			 
+			<span class="msg"> ${roleNeedGrantResourceMessage } </span>
+		</div>
+	</div>
+</div>
+</pg:notempty>
 <div class="row">
 	<div class="col-md-12">		 
 		<div class="alert alert-danger display-hide  alert-roleauthset">
@@ -58,7 +77,7 @@
 						
 						<div class="row">
 						<form role="form" class="form-horizontal form-queryroleusers">
-							<input name="roleName" value="${roleName }" type="hidden"/>
+							<input name="roleId" value="${roleId }" type="hidden"/>
 							<div class="form-body">
 								<div class="col-md-8">
 									<div class="form-group form-md-line-input">									
@@ -100,9 +119,10 @@
 										<div class="caption">
 											<i class="icon-pin font-yellow-crusta"></i> <span
 												class="caption-subject bold font-yellow-crusta uppercase">
-												已授予用户列表 </span>
+												已授予用户列表</span>
 				
 										</div>
+										<pg:true actual="${roleNeedSetUser }">
 										<div class="actions">
 				
 											<a href="javascript:;"
@@ -114,6 +134,7 @@
 												class="fa fa-times"></i> 移除用户
 											</a>
 										</div>
+										</pg:true>
 									</div>
 									<div class="portlet-body portlet_roleusers">
 										
@@ -140,7 +161,7 @@
 			if(!modeldialog )
 				modeldialog = ModelDialog.getCurrentModal();
 			$(".portlet_roleusers",modeldialog).load("${pageContext.request.contextPath}/sysmanager/role/queryRoleUsers.page",
-					doquery?$('.form-queryroleusers',modeldialog).serialize():{roleName:"${roleName}"},
+					doquery?$('.form-queryroleusers',modeldialog).serialize():{roleId:"${roleId}"},
 						function(){
 						
 						});
@@ -150,6 +171,7 @@
 		$(".btn-query",ModelDialog.getCurrentModal()).bind("click",function(){
 			queryRoleUsers(true);
 		});
+		<pg:true actual="${roleNeedSetUser }">
 		$(".btn-addroleusers",ModelDialog.getCurrentModal()).bind('click',function(){
 	  		ModelDialog.dialog({
 	  							title:"选择待授予的用户",
@@ -188,9 +210,13 @@
 	  									 $.ajax({
 	  							 		   type: "POST",
 	  							 			url : '${pageContext.request.contextPath}/sysmanager/user/saveRoleUsers.page',
-	  							 			data :{"userIds":userIds,"roleId":'${roleName }'},
+	  							 			data :{"userIds":userIds,"roleId":'${roleId }'},
 	  							 			dataType : 'json',
 	  							 			async:false,
+	  							 			error : function(xhr, ajaxOptions,
+	  												thrownError) {
+	  											PDP.warn(thrownError) ;
+	  										},
 	  							 			beforeSend: function(XMLHttpRequest){ 					
 	  							 				 	
 	  							 			},
@@ -235,7 +261,7 @@
 		           	 	$.ajax({
 		          		   type: "POST",
 		          			url : "${pageContext.request.contextPath}/sysmanager/role/deleteRoleUsers.page",
-		          			data :{"users":chk_value,"roleName":"${roleName}"},
+		          			data :{"userIds":chk_value,"roleId":"${roleId}"},
 		          			dataType : 'json',
 		          			async:false,
 		          			error : function(xhr, ajaxOptions,
@@ -250,7 +276,7 @@
 		          				if(responseText=="success"){
 		          					
 		          					PDP.success("用户移除成功!");
-		          					loadauto_resourcesauthsource();
+		          					queryRoleUsers();
 		          				}else{
 		          					PDP.warn("用户移除失败:"+responseText);
 		          				}
@@ -260,6 +286,7 @@
 			        	
 				});
 		});
+		</pg:true>
 		
 		
 		

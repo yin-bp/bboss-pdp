@@ -15,7 +15,7 @@ var SysAuthmain = function(){
 	
 	var initAuthmainAction = function(userId){
 		$(".dotempadd_btn",ModelDialog.getCurrentModal()).bind("click",function(){
-			 $('input[name="roleName"]:checked',$(".table-unselectrole")).each(function(){ 
+			 $('input[name="roleId"]:checked',$(".table-unselectrole")).each(function(){ 
 				 	var tr = $(this).closest('tr');
 				 	// console.log(tr);
 				 	// console.log($(".selected_users_movein"));
@@ -25,7 +25,7 @@ var SysAuthmain = function(){
 				 		
 				 		
 				 		tr.clone().insertAfter(".table-selected-roles tr:last");// 插入到已选表格的最后一行
-				 		$(".table-selected-roles").find('input[name="roleName"]').each(function(){
+				 		$(".table-selected-roles").find('input[name="roleId"]').each(function(){
 				 			$(this).bind('click',function(){
 					 			checkOne('.table-selected-roles .checkboxall','.table-selected-roles .checkone');
 					 		});
@@ -41,7 +41,7 @@ var SysAuthmain = function(){
 			 getSelectRoles(true);
 	     }); 
 		 $(".clearselectedrole_btn",ModelDialog.getCurrentModal()).bind("click",function(){
-			 $('input[name="roleName"]:checked',$(".table-selected-roles")).each(function(){ 
+			 $('input[name="roleId"]:checked',$(".table-selected-roles")).each(function(){ 
 				 	var tr = $(this).closest('tr');
 				 	// console.log(tr);
 				 	// console.log($(".selected_users_movein"));
@@ -50,7 +50,7 @@ var SysAuthmain = function(){
 				 	if(selectedtr.length == 0){
 				 		
 				 		tr.clone().insertAfter(".table-unselectrole tr:last");// 插入到已选表格的最后一行
-				 		$(".table-unselectrole").find('input[name="roleName"]').each(function(){
+				 		$(".table-unselectrole").find('input[name="roleId"]').each(function(){
 				 			$(this).bind('click',function(){
 					 			checkOne('.table-unselectrolet .checkboxall','.table-unselectrole .checkone');
 					 		});
@@ -64,7 +64,7 @@ var SysAuthmain = function(){
 		 $(".btn-submituserroles",ModelDialog.getCurrentModal()).bind("click",function(){
 			 
 			 var roleIds = "";
-			 $('input[name="roleName"]:checked',$(".table-selected-roles")).each(function(){ 
+			 $('input[name="roleId"]:checked',$(".table-selected-roles")).each(function(){ 
 				  	if(roleIds == "")
 				  		roleIds += $(this).val();
 				  	else
@@ -91,11 +91,11 @@ var SysAuthmain = function(){
 		 				
 		 				if(responseText=="success"){
 		 					
-		 					PlatformCommonUtils.success("为用户添加角色成功!");
+		 					PlatformCommonUtils.success("为用户设置角色成功!");
 		 					ModelDialog.getCurrentModal().modal('hide');
 		 					SysUser.afterSaveUser();
 		 				}else{
-		 					PlatformCommonUtils.warn("为用户添加角色成功:"+responseText);
+		 					PlatformCommonUtils.warn("为用户设置角色失败:"+responseText);
 		 				}
 		 			}
 		 		  });	 
