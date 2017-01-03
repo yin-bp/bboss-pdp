@@ -29,21 +29,26 @@ public abstract class PermissionRoleMap implements Listener {
     private static Logger log = Logger.getLogger(PermissionRoleMap.class);
     public static AuthRole NO_REQUIRED_ROLES[] = new AuthRole[0];
     public static AuthRole EMPTY_REQUIRED_ROLES[] = new AuthRole[0];
-    /**资源许可与角色关系缓冲器*/
-    Map prMap;
-    
+   
+//    /**资源许可与角色关系缓冲器*/
+//    Map prMap;
     /**
-     * 保存资源是否受过权
+     * 根据资源类型对资源角色关系进行分区缓存
      */
-    Map resourceMap;
-    /**角色资源许可关系缓冲器*/
-//    Map role_resourceMap;
+    Map permissionRoleMap = new HashMap();
     
-    
-    /**
-     * 保存资源是否受过权
-     */
-    Map resourceRoleMaps ;
+//    /**
+//     * 保存资源是否受过权
+//     */
+//    Map resourceMap;
+//    /**角色资源许可关系缓冲器*/
+////    Map role_resourceMap;
+//    
+//    
+//    /**
+//     * 保存资源是否受过权
+//     */
+//    Map resourceRoleMaps ;
 
     protected AccessContext context;
 
@@ -71,10 +76,11 @@ public abstract class PermissionRoleMap implements Listener {
         try {
             if(this.permissionRoleMapInfo.isCachable())
             {
-            	resourceMap = Collections.synchronizedMap(new HashMap());
-                prMap = Collections.synchronizedMap(new HashMap());
+            	
+//            	resourceMap = Collections.synchronizedMap(new HashMap());
+//                prMap = Collections.synchronizedMap(new HashMap());
 //                role_resourceMap = Collections.synchronizedMap(new HashMap());
-                resourceRoleMaps  = Collections.synchronizedMap(new HashMap());
+//                resourceRoleMaps  = Collections.synchronizedMap(new HashMap());
                 
                 List eventType = new ArrayList();              
             	eventType.add(ACLEventType.PERMISSION_CHANGE);
@@ -122,71 +128,88 @@ public abstract class PermissionRoleMap implements Listener {
     	AuthRole asecurityroles[] = null;
         if(this.permissionRoleMapInfo.isCachable())
         {
-            String cachKey = accesspermission.getResourceType() 
-            				 + ":" + accesspermission.getResource() 
+            String cachKey = accesspermission.getResource() 
             				 + ":" + accesspermission.getAction();
             //定义缓冲资源所有操作都没有授权的信息            
-            
+            Map prMap = (Map)permissionRoleMap.get(accesspermission.getResourceType());
+            if(prMap == null)
+            {
+            	synchronized(permissionRoleMap){
+            		prMap = (Map)permissionRoleMap.get(accesspermission.getResourceType());
+            		if(prMap == null){
+            			prMap = new HashMap();
+            			permissionRoleMap.put(accesspermission.getResourceType(), prMap);
+            		}
+            	}
+            }
             asecurityroles = (AuthRole[]) prMap.get(cachKey);
             
 	        if (asecurityroles == null) {
-	        	//update 20080721 gao.tang 增加SecurityException异常处理
-	        	try
-	        	{
-		        	AuthRole newasecurityroles[] = null;
-		        	try
-		        	{
-		        		newasecurityroles = getRequiredRoles(accesspermission.getResource(),
-		                accesspermission.getAction(),
-		                accesspermission.getResourceType());
-		        	}
-		        	catch(SecurityException e)
-		        	{
-		        		return NO_REQUIRED_ROLES;
-		        	}
-		            StringBuffer log_str = new StringBuffer("Get roles of ").append(accesspermission).append(":");
-		            //如果资源的角色为null，则表示获取资源角色出现异常，不需要缓冲accesspermission的角色
-		            if (newasecurityroles == null) {
-		            	if(hasGrantedAnyRole(accesspermission.getResource(),accesspermission.getResourceType()))
-		            	{
-			                asecurityroles = EMPTY_REQUIRED_ROLES;
-		            	}
-		            	else
-		            	{
-		            		asecurityroles = NO_REQUIRED_ROLES;
-		            		log_str.append("no role assigned.NO_REQUIRED_ROLES will be used.");
-		            	}
-		                
-		            } else {
-		                //prMap.put(accesspermission, newasecurityroles);
-		                asecurityroles = newasecurityroles;
-		                boolean flag = false;
-		                for(int i = 0; i < asecurityroles.length; i ++)
-		                {
-		                    if(!flag)
-		                    {
-		                        log_str.append(asecurityroles[i]);
-		                        flag = true;
-		                    }
-		                    else
-		                    {
-		                        log_str.append(",").append(asecurityroles[i]);
-		                        
-		                    }
-		                }	                
-		                log.debug(log_str.toString());
-		            }
+	        	synchronized(prMap){
+	        		 asecurityroles = (AuthRole[]) prMap.get(cachKey);
+	                 
+	     	        if (asecurityroles == null) {
+	     	        	try
+			        	{
+				        	AuthRole newasecurityroles[] = null;
+				        	try
+				        	{
+				        		newasecurityroles = getRequiredRoles(accesspermission.getResource(),
+				                accesspermission.getAction(),
+				                accesspermission.getResourceType());
+				        	}
+				        	catch(SecurityException e)
+				        	{
+				        		return NO_REQUIRED_ROLES;
+				        	}
+				            StringBuffer log_str = new StringBuffer("Get roles of ").append(accesspermission).append(":");
+				            //如果资源的角色为null，则表示获取资源角色出现异常，不需要缓冲accesspermission的角色
+				            if (newasecurityroles == null) {
+				            	if(hasGrantedRoles(accesspermission.getResource(),accesspermission.getResourceType()))
+				            	{
+					                asecurityroles = EMPTY_REQUIRED_ROLES;
+				            	}
+				            	else
+				            	{
+				            		asecurityroles = NO_REQUIRED_ROLES;
+				            		log_str.append("no role assigned.NO_REQUIRED_ROLES will be used.");
+				            	}
+				                
+				            } else {
+				                //prMap.put(accesspermission, newasecurityroles);
+				                asecurityroles = newasecurityroles;
+				                boolean flag = false;
+				                for(int i = 0; i < asecurityroles.length; i ++)
+				                {
+				                    if(!flag)
+				                    {
+				                        log_str.append(asecurityroles[i]);
+				                        flag = true;
+				                    }
+				                    else
+				                    {
+				                        log_str.append(",").append(asecurityroles[i]);
+				                        
+				                    }
+				                }	                
+				                log.debug(log_str.toString());
+				            }
+			        	}
+			        	catch(Exception e)
+			        	{
+			        		
+			        	}
+			            
+			            prMap.put(cachKey, asecurityroles); 
+	     	        }
+	        		  
 	        	}
-	        	catch(Exception e)
-	        	{
-	        		
-	        	}
-	            
-	            prMap.put(cachKey, asecurityroles);            
-	            //缓冲角色与资源的关系
-	            if (asecurityroles != NO_REQUIRED_ROLES &&  asecurityroles != EMPTY_REQUIRED_ROLES) {
-	                cachResourceToRole(asecurityroles, accesspermission);
-	            }
+	        	 
+	        	         
+//	            //缓冲角色与资源的关系
+//	            if (asecurityroles != NO_REQUIRED_ROLES &&  asecurityroles != EMPTY_REQUIRED_ROLES) {
+//	                cachResourceToRole(asecurityroles, accesspermission);
+//	            }
 	        }
         }
         else
@@ -241,36 +264,37 @@ public abstract class PermissionRoleMap implements Listener {
      * @param accesspermission
      * void
      */
-    protected void removeResourceToRole(AccessPermission accesspermission) {
-//        String asecurityroles[] = (String[]) prMap.get(accesspermission);
-//        for (int i = 0; asecurityroles != null && i < asecurityroles.length;
-//                     i++) {
-//            role_resourceMap.remove(asecurityroles[i]);
-//        }
-        
-//        role_resourceMap.clear();
-
-    }
-
-
-    /**
-     * 清楚角色与资源的关系
-     * Description:
-     * @param accesspermission
-     * void
-     */
-    protected void removeRoleToResource(String roleName) {
-//        Set permissions = (Set)this.role_resourceMap.get(roleName);
-//        if (permissions != null) {
-//            Iterator temp = permissions.iterator();
-//            while (temp.hasNext()) {
-//                prMap.remove(temp.next());
-//            }
+//    protected void removeResourceToRole(AccessPermission accesspermission) {
+////        String asecurityroles[] = (String[]) prMap.get(accesspermission);
+////        for (int i = 0; asecurityroles != null && i < asecurityroles.length;
+////                     i++) {
+////            role_resourceMap.remove(asecurityroles[i]);
+////        }
+//        
+////        role_resourceMap.clear();
 //
-//        }
-        prMap.clear();
-        this.resourceMap.clear();
-    }
+//    }
+
+
+//    /**
+//     * 清楚角色与资源的关系
+//     * Description:
+//     * @param accesspermission
+//     * void
+//     */
+//    protected void removeRoleToResource(String roleName) {
+////        Set permissions = (Set)this.role_resourceMap.get(roleName);
+////        if (permissions != null) {
+////            Iterator temp = permissions.iterator();
+////            while (temp.hasNext()) {
+////                prMap.remove(temp.next());
+////            }
+////
+////        }
+////        prMap.clear();
+//    	this.permissionRoleMap.clear();
+////        this.resourceMap.clear();
+//    }
 
     /**
      * 抽象方法，从资源角色表中获取资源所属角色，由具体的应用来实现
@@ -308,8 +332,26 @@ public abstract class PermissionRoleMap implements Listener {
     public void handle(Event e) {
 
         //许可改变以后，必需要清除原有资源得资源角色关系缓冲
-        if (e.getType() .equals( ACLEventType.PERMISSION_CHANGE)
-            || e.getType() .equals( ACLEventType.RESOURCE_ROLE_INFO_CHANGE) 
+    	 if(e.getType() .equals( ACLEventType.RESOURCE_ROLE_INFO_CHANGE) ){
+    		Object source = e.getSource();
+    		 if(source != null && source instanceof String[]){
+    			 String[] source_ = (String[])source;
+    			 if(source_.length == 3)
+    			 {
+    				 Map pr = (Map) permissionRoleMap.get(source_[2]);
+    				 pr.clear();
+    			 }
+    			 else
+        		 {
+        			 this.permissionRoleMap.clear();
+        		 }
+    		 }
+    		 else
+    		 {
+    			 this.permissionRoleMap.clear();
+    		 }
+    	 }
+    	 else if (e.getType() .equals( ACLEventType.PERMISSION_CHANGE)            
             || e.getType() .equals( ACLEventType.RESOURCE_INFO_CHANGE) || (e.getType() instanceof ResourceChangeEventType)) {
 //            String permission = (String) e.getSource();            
 //            StringTokenizer token = new StringTokenizer(permission, "||", false);
@@ -324,12 +366,13 @@ public abstract class PermissionRoleMap implements Listener {
 //            synchronized (prMap) {
 //                prMap.remove(appPermission);
 //            }
-            removeResourceToRole(null);
+//            removeResourceToRole(null);
 //            removeRoleToResource("");
-            prMap.clear();
-            this.resourceMap.clear();
-            resourceRoleMaps.clear();
+            this.permissionRoleMap.clear();
+//            this.resourceMap.clear();
+//            resourceRoleMaps.clear();
         }
+       
 
         //资源名称改变后必须及时清除缓冲中原有资源角色之间的关系
         if (e.getType() .equals( ACLEventType.RESOURCE_INFO_CHANGE)) {
@@ -360,9 +403,10 @@ public abstract class PermissionRoleMap implements Listener {
 //            String roleName = (String) e.getSource();
 //            removeRoleToResource(roleName);
 //            role_resourceMap.remove(roleName);
-            removeRoleToResource("");
+//            removeRoleToResource("");
+        	this.permissionRoleMap.clear();
 //            role_resourceMap.clear();
-            resourceRoleMaps.clear();
+//            resourceRoleMaps.clear();
         }
     }
 
@@ -374,7 +418,9 @@ public abstract class PermissionRoleMap implements Listener {
                                          permissionRoleMapInfo) {
         this.permissionRoleMapInfo = permissionRoleMapInfo;
     }
-    
+//    public boolean hasGrantedAnyRole(String resource,String resourceType){
+//    	return false;
+//    }
     /**
      * 判断特定类型的资源是否授过权
      * true:标识已授过权限
@@ -385,52 +431,29 @@ public abstract class PermissionRoleMap implements Listener {
      */
     public boolean hasGrantedAnyRole(String resource,String resourceType)
     {
-    	String rescachKey = resourceType
-		 + ":" + resource ;
-    	Boolean hasGranted = (Boolean)this.resourceMap.get(rescachKey);
-    	if(this.permissionRoleMapInfo.isCachable())
-    	{
-	    	if(hasGranted == null )
-	    	{
-	    		//update 20080721 gao.tang 如果抛出SecurityException异常返回false
-	    		try
-	    		{
-		    		boolean granted = hasGrantedRoles( resource,resourceType);
-		    		hasGranted = new Boolean(granted);
-		    		resourceMap.put(rescachKey,hasGranted);
-		    		return granted;
-	    		}
-	    		catch(SecurityException e)
-	    		{
-	    			return false;
-	    		}
-	    	}
-	    	else
-	    		return hasGranted.booleanValue();
-    	}
-    	else
-    	{
-    		//update 20080721 gao.tang 如果抛出SecurityException异常返回false
+    	 
     		try
     		{
-    			return  hasGrantedRoles( resource,resourceType);
+	    		boolean granted = hasGrantedRoles( resource,resourceType);
+	    		 
+	    		return granted;
     		}
     		catch(SecurityException e)
     		{
     			return false;
     		}
-    	}
+	    	 
     		
     }
     
-    /**
-     * 
-     * @param resource
-     * @param resourceType
-     * @return
-     * @throws SecurityException
-     * add by 20080721 gao.tang 抽象方法抛出SecurityException异常
-     */
+//    /**
+//     * 
+//     * @param resource
+//     * @param resourceType
+//     * @return
+//     * @throws SecurityException
+//     * add by 20080721 gao.tang 抽象方法抛出SecurityException异常
+//     */
     public abstract boolean hasGrantedRoles(String resource,String resourceType) throws SecurityException;
     
 
@@ -441,33 +464,33 @@ public abstract class PermissionRoleMap implements Listener {
     
     public boolean grantRole(AuthRole role, String resource, String resourceType)
     {
-    	 if(this.permissionRoleMapInfo.isCachable())
-         {
-    		//update 20080721 gao.tang 如果抛出SecurityException异常返回false
-    		 try{
-	             String cachKey = resourceType 
-	             				 + ":" + resource 
-	             				 ;
-	             
-	             Boolean has = (Boolean)this.resourceRoleMaps.get(cachKey);
-	             if(has == null)
-	             {
-	            	 boolean has_b = hasGrantRole( role,  resource,  resourceType);
-	            	 resourceRoleMaps.put(cachKey,new Boolean(has_b));
-	            	 return has_b;
-	             }
-	             else
-	            	 return has.booleanValue();
-    		 }catch(SecurityException e){
-    			 return false;
-    		 }
-             
-            
- 	           
- 	       
-         }
-         else
-         {
+//    	 if(this.permissionRoleMapInfo.isCachable())
+//         {
+//    		//update 20080721 gao.tang 如果抛出SecurityException异常返回false
+//    		 try{
+//	             String cachKey = resourceType 
+//	             				 + ":" + resource 
+//	             				 ;
+//	             
+//	             Boolean has = (Boolean)this.resourceRoleMaps.get(cachKey);
+//	             if(has == null)
+//	             {
+//	            	 boolean has_b = hasGrantRole( role,  resource,  resourceType);
+//	            	 resourceRoleMaps.put(cachKey,new Boolean(has_b));
+//	            	 return has_b;
+//	             }
+//	             else
+//	            	 return has.booleanValue();
+//    		 }catch(SecurityException e){
+//    			 return false;
+//    		 }
+//             
+//            
+// 	           
+// 	       
+//         }
+//         else
+//         {
         	//update 20080721 gao.tang 如果抛出SecurityException异常返回false
         	 try{
 	        	 boolean has_b = hasGrantRole( role,  resource,  resourceType);
@@ -475,7 +498,7 @@ public abstract class PermissionRoleMap implements Listener {
         	 }catch(SecurityException e){
         		 return false;
         	 }
-         }
+//         }
     }
     
     /**
@@ -493,22 +516,25 @@ public abstract class PermissionRoleMap implements Listener {
      * 重新加载
      */
     public void reset(){
-    	resourceMap.clear();
-        prMap.clear();
+//    	resourceMap.clear();
+//        prMap.clear();
 //        role_resourceMap.clear();
-        resourceRoleMaps.clear();
+//        resourceRoleMaps.clear();
+    	this.permissionRoleMap.clear();
     }
     
     public void destroy()
     {
-    	resourceMap.clear();
-        prMap.clear();
-//        role_resourceMap.clear();
-        resourceRoleMaps.clear();
-        resourceMap = null;
-        prMap = null;
-//        role_resourceMap.clear();
-        resourceRoleMaps = null;
+//    	resourceMap.clear();
+//        prMap.clear();
+////        role_resourceMap.clear();
+//        resourceRoleMaps.clear();
+//        resourceMap = null;
+//        prMap = null;
+////        role_resourceMap.clear();
+//        resourceRoleMaps = null;
+    	this.permissionRoleMap.clear();
+    	
         this.inited = false;
         this.context = null;
     }

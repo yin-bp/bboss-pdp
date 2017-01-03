@@ -22,6 +22,8 @@ import com.frameworkset.util.ListInfo;
 import java.util.List;
 import java.util.Map;
 
+import org.frameworkset.platform.security.authorization.AuthRole;
+
 /**
  * <p>Title: RoleService</p> <p>Description: 角色管理管理服务接口 </p> <p>bboss</p>
  * <p>Copyright (c) 2015</p> @Date 2016-12-15 17:06:09 @author yinbp @version
@@ -106,4 +108,25 @@ public interface RoleService {
 	 * @param string
 	 */
 	public void deleteAllRoleAuthResources(String[] rs, String string)  throws RoleException ;
+	/**
+	 * @param resource
+	 * @param action
+	 * @param resourceType
+	 * @return
+	 */
+	public AuthRole[] getRequiredRoles(String resource, String action, String resourceType)  throws RoleException ;
+	public String getSimpleRoleName(String roleId)  throws RoleException;
+	/**
+	 * @param resource
+	 * @param resourceType
+	 * @return
+	 */
+	public boolean hasGrantedRoles(String resource, String resourceType)  throws RoleException ;
+	/**
+	 * @param role
+	 * @param resource
+	 * @param resourceType
+	 * @return
+	 */
+	public boolean hasGrantRole(AuthRole role, String resource, String resourceType)  throws RoleException ;
 }

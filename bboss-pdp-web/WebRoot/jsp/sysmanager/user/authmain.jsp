@@ -110,8 +110,8 @@
 												class="btn btn-circle blue btn-xs btn-submituserroles"> <i
 												class="fa fa-plus"></i> 保存
 											</a> <a href="javascript:;"
-												class="btn btn-circle default btn-xs clearselectedrole_btn">
-												<i class="fa fa-plus"></i> 移除
+												class="btn btn-circle red btn-xs clearselectedrole_btn">
+												<i class="fa fa-times"></i> 移除
 											</a>
 				
 										</div>

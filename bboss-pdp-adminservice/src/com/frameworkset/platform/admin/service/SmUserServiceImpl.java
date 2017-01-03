@@ -180,6 +180,14 @@ public class SmUserServiceImpl implements SmUserService {
 
 	}
 	
+	public SmUser getSmUserByName(String userName) throws SmUserException{
+		try {
+			SmUser bean = executor.queryObject(SmUser.class, "getSmUserByName", userName);
+			return bean;
+		} catch (Throwable e) {
+			throw new SmUserException("get SmUser failed::userName=" + userName, e);
+		}
+	}
 	public ListInfo queryListInfoSmUsers(SmUserCondition conditions, long offset, int pagesize) throws SmUserException {
 		ListInfo datas = null;
 		try {
