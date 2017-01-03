@@ -13,9 +13,9 @@
 	
 	
 	<property name="security.authorization.authorizationTable"		
-		class="org.frameworkset.platform.security.authorization.AppAuthorizationTable" />
+		class="org.frameworkset.platform.security.authoration.ConfigAppAuthorizationTable" />
 	<property name="security.authorization.permissionRoleMap"		
-		class="org.frameworkset.platform.security.authorization.AppPermissionRoleMap" />
+		class="org.frameworkset.platform.security.authoration.ConfigAppPermissionRoleMap" />
 	
 	<property name="security.appPermissionModule"		
 		class="org.frameworkset.platform.security.AppPermissionModule" />	
