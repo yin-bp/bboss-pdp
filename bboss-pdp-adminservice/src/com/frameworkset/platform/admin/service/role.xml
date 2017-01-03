@@ -50,6 +50,21 @@
 				left join td_sm_user u on r.OWNER_ID=u.USER_ID where ROLE_ID=? 
 		]]>
 	</property>
+	<property name="getSimpleRoleName">
+		<![CDATA[
+			select role_name
+				 from td_sm_role 
+				 where ROLE_ID=? 
+		]]>
+	</property>
+	<property name="getSimpleUserAccount">
+		<![CDATA[
+			select user_name
+				 from td_sm_user 
+				 where user_id=? 
+		]]>
+	</property>
+	
 	<property name="getRoleByName">
 		<![CDATA[
 			select r.*,
@@ -155,7 +170,23 @@
 	</property>
 	<property name="hasgranted">
 		<![CDATA[
-			select count(1) from ${permissionTable} where OP_ID = #[opCode] and  RES_ID = #[resCode] and  RESTYPE_ID = #[resourceType]  and ROLE_ID = #[roleId] and TYPES = #[roleType]
+			select count(RES_ID) from ${permissionTable} where OP_ID = #[opCode] and  RES_ID = #[resCode] and  RESTYPE_ID = #[resourceType]  and ROLE_ID = #[roleId] and TYPES = #[roleType]
+		]]>
+	</property>
+	<property name="getRequiredRoles">
+		<![CDATA[
+			select * from ${permissionTable} where OP_ID = #[action] and  RES_ID = #[resource] and  RESTYPE_ID = #[resourceType]
+		]]>
+	</property>
+	
+	<property name="hasGrantedRoles">
+		<![CDATA[
+			select count(RES_ID) from ${permissionTable} where RES_ID = #[resource] and  RESTYPE_ID = #[resourceType]
+		]]>
+	</property>
+	<property name="hasGrantRole">
+		<![CDATA[
+			select count(RES_ID) from ${permissionTable} where RES_ID = #[resource] and  RESTYPE_ID = #[resourceType]  and ROLE_ID = #[roleId] and TYPES = #[roleType]
 		]]>
 	</property>
 	

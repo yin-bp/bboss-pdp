@@ -14,6 +14,8 @@ import org.frameworkset.platform.framework.Module;
 import org.frameworkset.platform.resource.ResourceManager;
 import org.frameworkset.platform.security.AccessControl;
 import org.frameworkset.platform.security.AuthorResource;
+import org.frameworkset.platform.security.authorization.AuthRole;
+import org.frameworkset.platform.util.AdminUtil;
 import org.frameworkset.util.annotations.ResponseBody;
 import org.frameworkset.web.servlet.ModelMap;
 
@@ -22,7 +24,6 @@ import com.frameworkset.common.poolman.handle.RowHandler;
 import com.frameworkset.platform.admin.entity.MenuOPS;
 import com.frameworkset.platform.admin.entity.Role;
 import com.frameworkset.platform.admin.service.RoleService;
-import com.frameworkset.platform.admin.util.AdminUtil;
 
 public class MenuController{
 	private ResourceManager resourceManager = new ResourceManager();
@@ -36,11 +37,15 @@ public class MenuController{
 		model.addAttribute("roleType", roleType);
 		model.addAttribute("resourceType", resourceType);
 		ResourceInfo resourceInfo = resourceManager.getResourceInfoByType(resourceType);
-		if(roleType.equals("role")){
+		if(roleType.equals(AuthRole.TYPE_ROLE)){
 			Role role = null;
 			  role = this.roleService.getRole(roleId);				
 			model.addAttribute("roleNeedGrantResource", AdminUtil.roleNeedGrantResource(role.getRoleName()));
 				
+		}
+		else
+		{
+			model.addAttribute("roleNeedGrantResource", true);
 		}
 		@SuppressWarnings("unchecked")
 		List<MenuOPS> grantedcolumns = this.roleService.getGrantedOperations("visible",resourceType, roleId, roleType, resourceInfo.getPermissionTable(), new RowHandler<MenuOPS>(){

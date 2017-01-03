@@ -25,6 +25,5 @@ The BBoss Framework is released under version 2.0 of the [Apache License][].
 
 [Apache License]: http://www.apache.org/licenses/LICENSE-2.0
 
-权限管理开发及控制实现：
 
-监控管理功能中，要可以支持url关联的操作资源查询功能，一边实现关联权限查询
+

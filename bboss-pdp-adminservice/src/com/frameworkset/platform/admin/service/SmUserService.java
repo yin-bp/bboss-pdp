@@ -35,6 +35,8 @@ public interface SmUserService {
 	public void updateSmUser(SmUser smUser) throws SmUserException;
 	public SmUser getSmUser(String userId) throws SmUserException;
 	public SmUser getSmUserByIDNAMECNName(String userId) throws SmUserException;
+	public SmUser getSmUserByName(String userName) throws SmUserException;
+	
 	public ListInfo queryListInfoSmUsers(SmUserCondition conditions, long offset, int pagesize) throws SmUserException;
 	public List<SmUser> queryListSmUsers(SmUserCondition conditions) throws SmUserException;
 	public ListInfo getDepartUsers(SmUserCondition conditions, long offset, int pagesize) throws SmUserException ;

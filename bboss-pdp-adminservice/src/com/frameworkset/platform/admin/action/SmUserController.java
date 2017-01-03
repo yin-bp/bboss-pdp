@@ -25,7 +25,11 @@ import org.frameworkset.event.Event;
 import org.frameworkset.event.EventHandle;
 import org.frameworkset.event.EventImpl;
 import org.frameworkset.platform.common.DatagridBean;
+import org.frameworkset.platform.config.ResourceInfoQueue;
+import org.frameworkset.platform.config.model.ResourceInfo;
+import org.frameworkset.platform.resource.ResourceManager;
 import org.frameworkset.platform.security.AccessControl;
+import org.frameworkset.platform.security.authorization.AuthRole;
 import org.frameworkset.platform.security.event.ACLEventType;
 import org.frameworkset.util.annotations.PagerParam;
 import org.frameworkset.util.annotations.ResponseBody;
@@ -52,6 +56,7 @@ public class SmUserController {
 
 	private SmUserService smUserService;
 	private RoleService roleService;
+	private ResourceManager resourceManager = new ResourceManager();
 	public String authmain(String userId,ModelMap model){
 		if(StringUtil.isEmpty(userId) ){
 			model.addAttribute("errorMessage", "请选择需要设置角色的用户!");
@@ -59,6 +64,38 @@ public class SmUserController {
 		List<UserRole> userroles = roleService.getUserRoles(userId);
 		model.addAttribute("userroles", userroles);
 		model.addAttribute("userId", userId);
+		
+		//资源授权配置开始
+		String curSystem = AccessControl.getAccessControl().getCurrentSystemID();
+		ResourceInfoQueue resQueue = resourceManager.getResourceInfoQueue();
+		List<ResourceInfo> resourceTypes = new ArrayList<ResourceInfo>();
+		for (int i = 0; resQueue != null && i < resQueue.size(); i++) {
+			ResourceInfo res = resQueue.getResourceInfo(i);
+			// System.out.println("res.isAuto() = " + res.isAuto());
+			// 判断当前系统模块；
+			if (res.isUsed() && res.containSystem(curSystem)) {
+				resourceTypes.add(res);
+
+			}
+		}
+//		if(roleType.equals("role")){
+			model.addAttribute("roleNeedGrantResource", true);
+//			model.addAttribute("roleNeedSetUser", AdminUtil.roleNeedSetUser(roleName));
+//			model.addAttribute("roleNeedSetUserMessage", AdminUtil.roleNeedSetUserMessage(roleName));
+//			model.addAttribute("roleNeedGrantResourceMessage", AdminUtil.roleNeedGrantResourceMessage(roleName));
+//		}
+		model.addAttribute("resourceTypes", resourceTypes);
+		if (resourceTypes.size() > 0) {
+			model.addAttribute("resourceType", resourceTypes.get(0).getId());
+			model.addAttribute("resourceName", resourceTypes.get(0).getName());
+		}
+		SmUser user = this.smUserService.getSmUser(userId);
+		model.addAttribute("roleId", userId);
+		model.addAttribute("roleName", user.getUserName());
+		model.addAttribute("roleType", AuthRole.TYPE_USER);
+		model.addAttribute("roleCName", user.getUserRealname());
+		
+		//资源授权配置结束
 		
 		return "path:authmain";
 	}

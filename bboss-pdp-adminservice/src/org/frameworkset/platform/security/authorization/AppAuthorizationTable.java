@@ -2,9 +2,16 @@
 
 package org.frameworkset.platform.security.authorization;
 
+import java.util.List;
+
 import org.apache.log4j.Logger;
+import org.frameworkset.platform.security.AdminServiceUtil;
 import org.frameworkset.platform.security.authorization.impl.BaseAuthorizationTable;
-import org.frameworkset.spi.SPIException;
+
+import com.frameworkset.orm.transaction.TransactionManager;
+import com.frameworkset.platform.admin.entity.Role;
+import com.frameworkset.platform.admin.entity.SmUser;
+import com.frameworkset.platform.admin.entity.UserRole;
 
 /**
  * 
@@ -16,79 +23,74 @@ import org.frameworkset.spi.SPIException;
 public class AppAuthorizationTable extends BaseAuthorizationTable{
 	private static final Logger log = Logger
 			.getLogger(AppAuthorizationTable.class);
-	private String[][] roles = new String[][]{
-		{"1","administrator",AuthRole.TYPE_ROLE},
-		{"3","manager",AuthRole.TYPE_ROLE},
-		{"5","leader",AuthRole.TYPE_ROLE}
-	};
-
-	public AuthRole[] getAllRoleOfPrincipal(String userName)
-			throws SecurityException {
-		try {
-		 
-			AuthRole[] roles = new AuthRole[2];
-			if(userName.equals("zhangsan"))
-        	{
-	        	AuthRole r = new AuthRole();
-	        	r.setRoleId("3");
-	        	r.setRoleName("manager");
-	        	r.setRoleType(AuthRole.TYPE_ROLE);
-	        	roles[0] = r;
-	        	r = new AuthRole();
-	        	r.setRoleId("4");
-	        	r.setRoleName("zhangsan");
-	        	r.setRoleType(AuthRole.TYPE_USER);
-	        	roles[1] = r;
-        	}
-			else if(userName.equals("admin"))
-        	{
-	        	AuthRole r = new AuthRole();
-	        	r.setRoleId("1");
-	        	r.setRoleName("administrator");
-	        	r.setRoleType(AuthRole.TYPE_ROLE);
-	        	roles[0] = r;
-	        	r = new AuthRole();
-	        	r.setRoleId("2");
-	        	r.setRoleName("admin");
-	        	r.setRoleType(AuthRole.TYPE_USER);
-	        	roles[1] = r;
-        	}
-        	else
-        	{
-        		AuthRole r = new AuthRole();
-	        	r.setRoleId("5");
-	        	r.setRoleName("leader");
-	        	r.setRoleType(AuthRole.TYPE_ROLE);
-	        	roles[0] = r;
-	        	r = new AuthRole();
-	        	r.setRoleId("6");
-	        	r.setRoleName("lisi");
-	        	r.setRoleType(AuthRole.TYPE_USER);
-	        	roles[1] = r;
-        	}
-			
-			 
+//	private String[][] roles = new String[][]{
+//		{"1","administrator",AuthRole.TYPE_ROLE},
+//		{"3","manager",AuthRole.TYPE_ROLE},
+//		{"5","leader",AuthRole.TYPE_ROLE}
+//	};
+	public AuthRole[] getAllRoleOfPrincipal(String userName){
+		
+		
+//		boolean enableuserrole = ConfigManager.getInstance()
+//				.getConfigBooleanValue("enableuserrole", true);
+		TransactionManager tm = new TransactionManager();
+		try{
+			tm.begin();
+			SmUser user = AdminServiceUtil.getUserService().getSmUserByName(userName);
+			if (user == null) {
+				log.debug(userName + " not exist");
+				throw new SecurityException("Error: user[userAccount=" + userName + "] not exist.");
+			}
+			List<UserRole> userroles = AdminServiceUtil.getRoleService().getUserRoles(user.getUserId());
+			AuthRole[] roles = null;
+			if(userroles == null || userroles.size() == 0){
+			 		
+				roles = new AuthRole[1];		
+				AuthRole authrole = new AuthRole();
+				authrole.setRoleName(userName);
+				authrole.setRoleId(user.getUserId() + "");
+				authrole.setRoleType(AuthRole.TYPE_USER);
+				roles[0] = authrole;
+			}
+			else
+			{
+				AuthRole authrole = null;
+				 
+				int size = userroles.size() + 1;
+				roles = new AuthRole[size];
+				authrole = new AuthRole();
+				authrole.setRoleName(userName);
+				authrole.setRoleId(user.getUserId() + "");
+				authrole.setRoleType(AuthRole.TYPE_USER);
+				roles[0] = authrole;
+				for (int i = 0; i < userroles.size() ; i++) {
+					Role role =   userroles.get(i);
+					authrole = new AuthRole();
+					authrole.setRoleName(role.getRoleName());
+					authrole.setRoleId(role.getRoleId());
+					authrole.setRoleType(AuthRole.TYPE_ROLE);
+					roles[i+1] = authrole;
+				}
+				 
+			}
+			tm.commit();
 			return roles;
-
-		} catch (SecurityException e) {
-			 
-			log.error("", e);
-			 
+		}
+		catch(SecurityException e){
 			throw e;
-		} catch (SPIException e) {
-			throw new SecurityException("Get AllRoleOfPrincipal error:"
-					+ e.getMessage());
-		} 
-	 
+		}
 		catch(Exception e){
 			log.error("", e);
 			throw new SecurityException(e);
 		}
 		finally
 		{
-//			tm.releasenolog();
+			tm.releasenolog();
 		}
+			
+		 
 	}
+	
 
 	public AuthUser[] getAllPermissionUsersOfResource(String resourceid, String operation, String resourceType) throws SecurityException {		
 //		try {

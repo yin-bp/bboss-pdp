@@ -32,7 +32,9 @@ import org.frameworkset.platform.config.model.ResourceInfo;
 import org.frameworkset.platform.framework.Framework;
 import org.frameworkset.platform.resource.ResourceManager;
 import org.frameworkset.platform.security.AccessControl;
+import org.frameworkset.platform.security.authorization.AuthRole;
 import org.frameworkset.platform.security.event.ACLEventType;
+import org.frameworkset.platform.util.AdminUtil;
 import org.frameworkset.util.annotations.PagerParam;
 import org.frameworkset.util.annotations.ResponseBody;
 import org.frameworkset.web.servlet.ModelMap;
@@ -50,7 +52,6 @@ import com.frameworkset.platform.admin.service.RoleException;
 import com.frameworkset.platform.admin.service.RoleService;
 import com.frameworkset.platform.admin.service.RoleTypeService;
 import com.frameworkset.platform.admin.service.SmUserService;
-import com.frameworkset.platform.admin.util.AdminUtil;
 import com.frameworkset.util.ListInfo;
 import com.frameworkset.util.StringUtil;
 
@@ -168,7 +169,7 @@ public class RoleController {
 
 			}
 		}
-		if(roleType.equals("role")){
+		if(roleType.equals(AuthRole.TYPE_ROLE)){
 			model.addAttribute("roleNeedGrantResource", AdminUtil.roleNeedGrantResource(roleName));
 			model.addAttribute("roleNeedSetUser", AdminUtil.roleNeedSetUser(roleName));
 			model.addAttribute("roleNeedSetUserMessage", AdminUtil.roleNeedSetUserMessage(roleName));
@@ -312,7 +313,7 @@ public class RoleController {
 			return "path:loadResourceOperations";
 		}
 		
-		if(roleType.equals("role")){
+		if(roleType.equals(AuthRole.TYPE_ROLE)){
 			Role role = null;
 			  role = this.roleService.getRole(roleId);
 				model.addAttribute("isAdministratorRole",
@@ -321,6 +322,11 @@ public class RoleController {
 				model.addAttribute("roleNeedSetUser", AdminUtil.roleNeedSetUser(role.getRoleName()));	
 				model.addAttribute("roleNeedSetUserMessage", AdminUtil.roleNeedSetUserMessage(role.getRoleName()));
 				model.addAttribute("roleNeedGrantResourceMessage", AdminUtil.roleNeedGrantResourceMessage(role.getRoleName()));
+		}
+		else
+		{
+			model.addAttribute("roleNeedGrantResource", true);
+			
 		}
 
 		ResourceInfo resourceInfo = resourceManager.getResourceInfoByType(resourceType);
@@ -494,11 +500,16 @@ public class RoleController {
 	public String grantedroles(String resourceType,String roleId,String roleType,ModelMap model){
 		if(resourceType == null)
 			resourceType = "role";
-		if(roleType.equals("role")){
+		if(roleType.equals(AuthRole.TYPE_ROLE)){
 			Role role = null;
 			  role = this.roleService.getRole(roleId);				
 			model.addAttribute("roleNeedGrantResource", AdminUtil.roleNeedGrantResource(role.getRoleName()));
 				
+		}
+		else
+		{
+			model.addAttribute("roleNeedGrantResource", true);
+			
 		}
 		String currentSystem = AccessControl.getAccessControl().getCurrentSystemID();
 		final Framework framework = Framework.getInstance(currentSystem);		

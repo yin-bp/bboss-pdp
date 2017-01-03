@@ -27,6 +27,7 @@ import org.apache.log4j.Logger;
 import org.frameworkset.platform.common.Constants;
 import org.frameworkset.platform.security.AccessControl;
 import org.frameworkset.platform.security.authentication.EncrpyPwd;
+import org.frameworkset.platform.util.AdminUtil;
 
 import com.frameworkset.common.poolman.ConfigSQLExecutor;
 import com.frameworkset.common.poolman.handle.ResultSetNullRowHandler;
@@ -34,7 +35,6 @@ import com.frameworkset.orm.transaction.TransactionManager;
 import com.frameworkset.platform.admin.entity.MoveinUserCondition;
 import com.frameworkset.platform.admin.entity.SmUser;
 import com.frameworkset.platform.admin.entity.SmUserCondition;
-import com.frameworkset.platform.admin.util.AdminUtil;
 import com.frameworkset.util.ListInfo;
 import com.frameworkset.util.StringUtil;
 
@@ -180,6 +180,14 @@ public class SmUserServiceImpl implements SmUserService {
 
 	}
 	
+	public SmUser getSmUserByName(String userName) throws SmUserException{
+		try {
+			SmUser bean = executor.queryObject(SmUser.class, "getSmUserByName", userName);
+			return bean;
+		} catch (Throwable e) {
+			throw new SmUserException("get SmUser failed::userName=" + userName, e);
+		}
+	}
 	public ListInfo queryListInfoSmUsers(SmUserCondition conditions, long offset, int pagesize) throws SmUserException {
 		ListInfo datas = null;
 		try {

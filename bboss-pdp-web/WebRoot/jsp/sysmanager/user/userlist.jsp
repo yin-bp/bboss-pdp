@@ -23,10 +23,14 @@
 			</a>
 			 <a class="btn btn-xs red" id="button_sys_delete_user">
 				<i class="fa fa-times"></i> 删除
-			</a> <a href="javascript:;" class="btn btn-xs green"> 批量授权 <i
+			</a> 
+			<!-- 
+			<a href="javascript:;" class="btn btn-xs green"> 批量授权 <i
 				class="fa fa-font"></i>
-			</a> <a href="javascript:;" class="btn btn-xs yellow"> 批量角色设置 <i
-				class="fa fa-search"></i>
+			</a> 
+			<a href="javascript:;" class="btn btn-xs yellow"> 批量角色设置 <i
+				class="fa fa-search"></i> -->
+			
 			</a> <a href="javascript:;" class="btn btn-xs purple" id="button_sys_order_user"> <i
 				class="fa fa-file-o"></i> 用户排序
 			</a> <a href="javascript:;" class="btn btn-xs green" id="button_sys_moveout_user"> 用户调出 <i

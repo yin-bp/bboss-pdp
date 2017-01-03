@@ -85,7 +85,7 @@ var SysUser = function(){
 			params:{
 				"userId":userId
 		      },
-			width:"1000px",
+			width:"1124px",
 			height:"600px"
 
 	 });

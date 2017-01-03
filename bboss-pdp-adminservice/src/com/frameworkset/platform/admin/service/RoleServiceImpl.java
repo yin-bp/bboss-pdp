@@ -16,6 +16,7 @@
 
 package com.frameworkset.platform.admin.service;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -25,6 +26,7 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.frameworkset.platform.config.model.ResourceInfo;
 import org.frameworkset.platform.resource.ResourceManager;
+import org.frameworkset.platform.security.authorization.AuthRole;
 
 import com.frameworkset.common.poolman.ConfigSQLExecutor;
 import com.frameworkset.common.poolman.Record;
@@ -36,6 +38,7 @@ import com.frameworkset.platform.admin.entity.ResOpr;
 import com.frameworkset.platform.admin.entity.Role;
 import com.frameworkset.platform.admin.entity.RoleCondition;
 import com.frameworkset.platform.admin.entity.RoleUser;
+import com.frameworkset.platform.admin.entity.SmUser;
 import com.frameworkset.platform.admin.entity.UserRole;
 import com.frameworkset.util.ListInfo;
 
@@ -444,4 +447,138 @@ public class RoleServiceImpl implements RoleService {
 			tm.release();
 		}
 	}
+	/** (non-Javadoc)
+	 * @see com.frameworkset.platform.admin.service.RoleService#getRequiredRoles(java.lang.String, java.lang.String, java.lang.String)
+	 */
+	@Override
+	public AuthRole[] getRequiredRoles(String resource, String action, String resourceType) throws RoleException {
+ 
+		
+		final List<AuthRole> authRoles = new ArrayList<AuthRole>();
+		TransactionManager tm = new TransactionManager();
+		AuthRole[] temp = null;
+		try {
+			tm.begin();
+			ResourceInfo resourceInfo = this.resourceManager.getResourceInfoByType(resourceType);
+			if(resourceInfo == null)
+				throw new RoleException("getRequiredRoles failed:resource="+resource+",action="+  action+",resourceType="+  resourceType+",没有定义资源类型！");
+			Map params = new HashMap();
+			params.put("permissionTable", resourceInfo.getPermissionTable());
+			params.put("resource", resource);
+			params.put("action", action);
+			params.put("resourceType", resourceType);
+			executor.queryBeanByNullRowHandler(new NullRowHandler(){
+
+				@Override
+				public void handleRow(Record origine) throws Exception {
+					String types= origine.getString("types");
+					String role_id= origine.getString("role_id");	
+					AuthRole role = new AuthRole();
+					role.setRoleId(role_id);
+					role.setRoleType(types);
+					authRoles.add(role);
+					 
+				}
+				
+			}, "getRequiredRoles", params);
+			if(authRoles.size() > 0)
+			{
+				temp = new AuthRole[authRoles.size()];
+				for(int i =0; i < authRoles.size(); i++){
+					AuthRole role = authRoles.get(i);
+					if(role.getRoleType().equals(AuthRole.TYPE_ROLE)){//设置角色名称
+						String roleName = this.getSimpleRoleName(role.getRoleId());
+						role.setRoleName(roleName);
+					}
+					else if(role.getRoleType().equals(AuthRole.TYPE_USER)){//设置用户名称						
+						String userAccount = this.getSimpleUserAccount(role.getRoleId());
+						role.setRoleName(userAccount);
+					}
+					temp[i] = role;
+						
+				}
+				 
+			}
+			tm.commit();
+			return temp;
+		} 
+		catch(RoleException e){
+			throw e;
+		}
+		catch (Exception e) {
+			throw new RoleException("getRequiredRoles failed:resource="+resource+",action="+  action+",resourceType="+  resourceType,e);
+		}
+		finally
+		{
+			tm.releasenolog();
+		}
+		
+	}
+	/**
+	 * @param roleId
+	 * @return
+	 */
+	public String getSimpleUserAccount(String roleId) throws   RoleException{
+		try {
+			return this.executor.queryObject(String.class, "getSimpleUserAccount", roleId);
+		} catch (SQLException e) {
+			throw new RoleException("getSimpleUserAccount failed:"+roleId,e);
+		}
+	}
+	/**
+	 * @param roleId
+	 * @return
+	 * @throws SQLException 
+	 */
+	public String getSimpleRoleName(String roleId) throws   RoleException {		 
+		try {
+			return this.executor.queryObject(String.class, "getSimpleRoleName", roleId);
+		} catch (SQLException e) {
+			throw new RoleException("getSimpleRole failed:"+roleId,e);
+		}
+	}
+	public boolean hasGrantedRoles(String resource, String resourceType)  throws RoleException{
+		try {
+			ResourceInfo resourceInfo = this.resourceManager.getResourceInfoByType(resourceType);
+			if(resourceInfo == null)
+				throw new RoleException("hasGrantedRoles failed:resource="+resource +",resourceType="+  resourceType+",没有定义资源类型！");
+			Map params = new HashMap();
+			params.put("permissionTable", resourceInfo.getPermissionTable());
+			params.put("resource", resource);			 
+			params.put("resourceType", resourceType);
+			int num = this.executor.queryObjectBean(int.class, "hasGrantedRoles", params);
+			return num > 0;
+		}
+		catch(RoleException e){
+			throw e;
+		}
+		catch (SQLException e) {
+			throw new RoleException("hasGrantedRoles failed:resourceType="+resourceType+",resource="+resource,e);
+		}
+	}
+	
+	public boolean hasGrantRole(AuthRole role, String resource, String resourceType)  throws RoleException {
+		try {
+			ResourceInfo resourceInfo = this.resourceManager.getResourceInfoByType(resourceType);
+			if(role == null)
+				throw new RoleException("hasGrantedRoles failed:resource="+resource +",resourceType="+  resourceType+",没有设置要判断的角色！");
+			if(resourceInfo == null)
+				throw new RoleException("hasGrantedRoles failed:resource="+resource +",resourceType="+  resourceType+",没有定义资源类型！");
+			Map params = new HashMap();
+			params.put("permissionTable", resourceInfo.getPermissionTable());
+			params.put("resource", resource);			 
+			params.put("resourceType", resourceType);
+			params.put("roleId", role.getRoleId());
+			params.put("roleType", role.getRoleType());
+			int num = this.executor.queryObjectBean(int.class, "hasGrantRole", params);
+			return num > 0;
+		}
+		catch(RoleException e){
+			throw e;
+		}
+		catch (Exception e) {
+			throw new RoleException("hasGrantRole failed:resourceType="+resourceType+",resource="+resource+role.toString(),e);
+		}
+	}
+	
 }

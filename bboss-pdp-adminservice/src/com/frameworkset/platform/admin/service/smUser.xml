@@ -99,6 +99,15 @@
 			  where u.USER_NAME =? or u.USER_WORKNUMBER = ? or u.user_email = ? or u.USER_MOBILETEL1 = ?
 		]]>
 	</property>
+	
+	<property name="getSmUserByName">
+		<![CDATA[
+			select u.*,o.org_name as departName,bu.user_id as leaderid,bu.user_name as leaderaccount,bu.user_realname as leadername from td_sm_user u 
+			 left join td_sm_organization o on u.depart_Id = o.org_id 
+			 left join td_sm_user bu on bu.user_id = o.orgleader
+			  where u.USER_NAME =? 
+		]]>
+	</property>
 	<property name="selectMaxSNofdepart">
 		<![CDATA[
 			select max(USER_SN)+1 from td_sm_user where DEPART_ID=?

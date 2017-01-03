@@ -28,10 +28,10 @@ import org.frameworkset.platform.common.DatagridBean;
 import org.frameworkset.platform.common.JSTreeNode;
 import org.frameworkset.platform.common.TreeNodeStage;
 import org.frameworkset.platform.security.event.ACLEventType;
+import org.frameworkset.platform.util.AdminUtil;
 import org.frameworkset.util.annotations.ResponseBody;
 import org.frameworkset.web.servlet.ModelMap;
 
-import com.frameworkset.orm.transaction.TransactionException;
 import com.frameworkset.orm.transaction.TransactionManager;
 import com.frameworkset.platform.admin.entity.SmOrganization;
 import com.frameworkset.platform.admin.entity.SmOrganizationCondition;
@@ -40,7 +40,6 @@ import com.frameworkset.platform.admin.service.RoleService;
 import com.frameworkset.platform.admin.service.SmOrganizationException;
 import com.frameworkset.platform.admin.service.SmOrganizationService;
 import com.frameworkset.platform.admin.service.SmUserService;
-import com.frameworkset.platform.admin.util.AdminUtil;
 import com.frameworkset.platform.admin.util.OpResult;
 import com.frameworkset.util.ListInfo;
 import com.frameworkset.util.StringUtil;
@@ -355,8 +354,7 @@ public class SmOrganizationController {
 			}
 			finally{
 				tm.release();
-			}
-			
+			}			
 		}
 		return "success";
 	}
