@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.frameworkset.platform.admin.util;
+package org.frameworkset.platform.util;
 
 import org.frameworkset.platform.security.AccessControl;
 

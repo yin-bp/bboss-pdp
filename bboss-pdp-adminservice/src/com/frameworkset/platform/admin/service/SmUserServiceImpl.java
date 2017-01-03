@@ -27,6 +27,7 @@ import org.apache.log4j.Logger;
 import org.frameworkset.platform.common.Constants;
 import org.frameworkset.platform.security.AccessControl;
 import org.frameworkset.platform.security.authentication.EncrpyPwd;
+import org.frameworkset.platform.util.AdminUtil;
 
 import com.frameworkset.common.poolman.ConfigSQLExecutor;
 import com.frameworkset.common.poolman.handle.ResultSetNullRowHandler;
@@ -34,7 +35,6 @@ import com.frameworkset.orm.transaction.TransactionManager;
 import com.frameworkset.platform.admin.entity.MoveinUserCondition;
 import com.frameworkset.platform.admin.entity.SmUser;
 import com.frameworkset.platform.admin.entity.SmUserCondition;
-import com.frameworkset.platform.admin.util.AdminUtil;
 import com.frameworkset.util.ListInfo;
 import com.frameworkset.util.StringUtil;
 
