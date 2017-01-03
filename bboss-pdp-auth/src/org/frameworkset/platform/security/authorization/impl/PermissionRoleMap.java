@@ -339,7 +339,8 @@ public abstract class PermissionRoleMap implements Listener {
     			 if(source_.length == 3)
     			 {
     				 Map pr = (Map) permissionRoleMap.get(source_[2]);
-    				 pr.clear();
+    				 if(pr != null)
+    					 pr.clear();
     			 }
     			 else
         		 {
