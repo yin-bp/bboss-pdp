@@ -1603,6 +1603,8 @@ public class Framework implements ResourceInitial,MessageSource {
 				this.initSubSystems();
 			}
 		} else {
+			if(subsystemFrameworks == null)
+				subsystemFrameworks = new HashMap();
 			// 如果先前加载的子系统模块已经从系统中删除，则卸载这些子系统模块
 			if (temp_sys == null || temp_sys.isEmpty() ) {
 				this.subsystems.clear();
@@ -2052,7 +2054,7 @@ public class Framework implements ResourceInitial,MessageSource {
 		return root;
 	}
 
-	public Map getSubsystems() {
+	public Map<String,SubSystem> getSubsystems() {
 		return subsystems;
 	}
 
