@@ -33,7 +33,8 @@ import com.frameworkset.platform.admin.service.RoleService;
 public class MenuController{
 	private ResourceManager resourceManager = new ResourceManager();
 	private RoleService roleService;
-	public String main(){
+	public String index(ModelMap model){
+		 
 		return "path:main";
 	}
 	public String grantedcolumns(String resourceType,String roleId,String roleType,ModelMap model){
@@ -117,6 +118,7 @@ public class MenuController{
 				Map<String,SubSystem> systems = Framework.getInstance().getSubsystems();
 				List<JSTreeNode> treeNodes = new ArrayList<JSTreeNode>();
 				Framework framework = Framework.getInstance(currentSystem);
+				
 				JSTreeNode JSTreeNode = new JSTreeNode();
 				JSTreeNode.setId("system:"+framework.getSystemid());
 				 

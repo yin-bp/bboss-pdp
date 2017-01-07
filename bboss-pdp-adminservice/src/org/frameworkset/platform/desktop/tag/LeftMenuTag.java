@@ -323,14 +323,8 @@ public class LeftMenuTag extends BaseTag{
 		 for(int i = 0; i < iq.size(); i ++)
 		 {
 			 Item subitem = iq.getItem(i);
-			 String area = subitem.getArea();
 			String url = null;
-			if(area != null && area.equals("main"))
-			{
-				url = MenuHelper.getMainUrl(contextpath, subitem,
-						(java.util.Map) null);
-			}
-			else
+			 
 			{
 				url = MenuHelper.getRealUrl(contextpath, Framework.getWorkspaceContent(subitem,control),MenuHelper.menupath_menuid,subitem.getId());
 			}

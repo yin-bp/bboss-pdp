@@ -50,18 +50,11 @@ import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.PageContext;
 
 import org.apache.log4j.Logger;
-import org.frameworkset.security.AccessControlInf;
-import org.frameworkset.security.DESCipher;
-import org.frameworkset.spi.SPIException;
-import org.frameworkset.web.token.TokenHelper;
-import org.frameworkset.web.token.TokenStore;
-
 import org.frameworkset.platform.config.ConfigManager;
 import org.frameworkset.platform.config.model.Operation;
 import org.frameworkset.platform.config.model.OperationQueue;
 import org.frameworkset.platform.config.model.ResourceInfo;
 import org.frameworkset.platform.framework.Framework;
-import org.frameworkset.platform.framework.FrameworkServlet;
 import org.frameworkset.platform.framework.Item;
 import org.frameworkset.platform.framework.MenuHelper;
 import org.frameworkset.platform.framework.MenuItem;
@@ -81,7 +74,6 @@ import org.frameworkset.platform.security.authentication.UsernamePasswordCallbac
 import org.frameworkset.platform.security.authorization.AccessException;
 import org.frameworkset.platform.security.authorization.AuthPrincipal;
 import org.frameworkset.platform.security.authorization.AuthRole;
-import org.frameworkset.platform.security.authorization.AuthUser;
 import org.frameworkset.platform.security.authorization.impl.AppSecurityCollaborator;
 import org.frameworkset.platform.security.authorization.impl.BaseAuthorizationTable;
 import org.frameworkset.platform.security.authorization.impl.P;
@@ -90,6 +82,12 @@ import org.frameworkset.platform.security.context.AppAccessContext;
 import org.frameworkset.platform.security.menu.MenuItemU;
 import org.frameworkset.platform.security.util.CookieUtil;
 import org.frameworkset.platform.util.LogManagerInf;
+import org.frameworkset.security.AccessControlInf;
+import org.frameworkset.security.DESCipher;
+import org.frameworkset.spi.SPIException;
+import org.frameworkset.web.token.TokenHelper;
+import org.frameworkset.web.token.TokenStore;
+
 import com.frameworkset.util.StringUtil;
 
 /**
@@ -1154,6 +1152,18 @@ public class AccessControl implements AccessControlInf{
 		}
 		return loginstyle;
 	}
+	public static void setSubSystemToCookie(HttpServletResponse resp,
+			String userName, String subsystem)
+	{
+		if (resp == null)
+			return;
+		String name = AccessControl.SUBSYSTEM_COOKIE + "_" + userName;
+
+		Cookie co = new Cookie(name, subsystem);
+		co.setMaxAge(86400);
+		resp.addCookie(co);
+
+	}
 	private void innerlogon(UsernamePasswordCallbackHandler callbackHandler,
 			String userName,
 			boolean enablelog,boolean recordonlineuser) throws LoginException
@@ -1329,7 +1339,7 @@ public class AccessControl implements AccessControlInf{
 			
 		}
 		//记录登录子系统的subsystemid到cookie中
-		FrameworkServlet.setSubSystemToCookie(response, userName, subsystem_id);
+		setSubSystemToCookie(response, userName, subsystem_id);
 //		Cookie subsystemCookie = new Cookie(SUBSYSTEM_COOKIE + "_"
 //				+ userName, subsystem_id);
 //		subsystemCookie.setMaxAge(86400);
@@ -3361,8 +3371,7 @@ public class AccessControl implements AccessControlInf{
 	 * @see use getCurrentSystemID()
 	 */
 	public String getCurrentSystem() {
-		return FrameworkServlet.getSubSystem(this.request, this.response, this
-				.getUserAccount());
+		return getCurrentSystemID();
 	}
 
 	/**
@@ -3811,7 +3820,7 @@ passwordUpdateTime
                     session.setAttribute(Framework.SUBSYSTEM, subsystem_id);
             }
 			
-			FrameworkServlet.setSubSystemToCookie(response, getUserAccount(), subsystem_id);
+			setSubSystemToCookie(response, getUserAccount(), subsystem_id);
 		}
 		
 	}
@@ -4000,12 +4009,7 @@ passwordUpdateTime
 				
 				String url = null;
 				String area = item.getArea();
-				if(area != null && area.equals("main"))
-				{
-					url = MenuHelper.getMainUrl(contextpath, item,
-							(java.util.Map) null);
-				}
-				else
+				
 				{
 					url = MenuHelper.getRealUrl(contextpath, Framework.getWorkspaceContent(item,accesscontroler),MenuHelper.menupath_menuid,item.getId());
 				}

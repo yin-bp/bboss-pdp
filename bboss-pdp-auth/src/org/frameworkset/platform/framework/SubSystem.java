@@ -80,7 +80,7 @@ public class SubSystem implements java.io.Serializable {
 		if(framework != null)
 		{
 			framework.setTemplate(this.getTemplate());
-			framework.refactorTemplatePaths();
+			 
 		}
 	}
 	public SubSystem getParent() {

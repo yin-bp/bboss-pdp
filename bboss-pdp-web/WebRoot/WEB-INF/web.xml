@@ -140,7 +140,7 @@
 		
 		<init-param>
 			<param-name>authorfailedurl</param-name>
-			<param-value>/common/jsp/authorfail.jsp</param-value>
+			<param-value>/jsp/common/authorfail.jsp</param-value>
 		</init-param>
 		<init-param>
 			<param-name>failedback</param-name>
