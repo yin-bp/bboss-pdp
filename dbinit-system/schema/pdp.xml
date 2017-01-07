@@ -78,7 +78,7 @@
     </table>
     <table name="TD_SM_LOGMODULE">
         <column name="LOGMODULE" size="50" type="VARCHAR"/>
-        <column name="STATUS" size="22" type="DECIMAL"/>
+        <column name="STATUS" size="2" type="DECIMAL"/>
         <column name="MODULE_DESC" size="50" type="VARCHAR"/>
         <column name="ID" primaryKey="true" required="true" size="50" type="VARCHAR"/>
     </table>
