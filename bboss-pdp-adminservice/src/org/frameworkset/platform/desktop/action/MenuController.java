@@ -11,6 +11,7 @@ import org.frameworkset.platform.common.TreeNodeStage;
 import org.frameworkset.platform.common.ZKTreeNode;
 import org.frameworkset.platform.config.model.ResourceInfo;
 import org.frameworkset.platform.framework.Framework;
+import org.frameworkset.platform.framework.Item;
 import org.frameworkset.platform.framework.MenuItem;
 import org.frameworkset.platform.framework.MenuQueue;
 import org.frameworkset.platform.framework.Module;
@@ -94,6 +95,10 @@ public class MenuController{
 		JSTreeNode.setId(systemid+":"+menu.getId());
 //		JSTreeNode.setText(new StringBuilder().append("<a href=\"#\" onclick=\"javascript:Sysmanager.showOrgUsers('").append(org.getOrgId()).append("');\">").append(org.getOrgName()).append("</a>").toString());
 		JSTreeNode.setText(menu.getName());
+		if(menu instanceof Item)
+			JSTreeNode.setType("item");
+		else
+			JSTreeNode.setType("module");
 		JSTreeNode.setIcon(null);
 		TreeNodeStage state = new TreeNodeStage();
 		state.setDisabled(false);
@@ -121,7 +126,7 @@ public class MenuController{
 				JSTreeNode.setType("system");
 				TreeNodeStage state = new TreeNodeStage();
 				state.setDisabled(false);
-				state.setOpened(false);
+				state.setOpened(true);
 				state.setSelected(false);
 				JSTreeNode.setState(state);
 				JSTreeNode.setChildren(true);
@@ -270,6 +275,38 @@ public class MenuController{
 		model.addAttribute("roleId", roleId);
 		model.addAttribute("roleType", roleType);
 		return "path:columnAuthTree";
+	}
+	
+	public String system(String systemid,ModelMap model){
+		Framework framework = Framework.getInstance(systemid);
+		model.addAttribute("systemid", systemid);
+		model.addAttribute("systemname", framework.getDescription());
+		model.addAttribute("framework", framework);
+		model.addAttribute("publicItem", framework.getPublicItem());
+		model.addAttribute("subSystems", framework.getSubsystems());
+		if(framework.getRootsystem() != null)
+			model.addAttribute("rootsystem", framework.getRootsystem());
+		else
+			model.addAttribute("rootsystem", framework.getFrameworkmeta());
+		
+		return "path:system";
+	}
+	public String menuitem(String systemid,String menuid,ModelMap model){
+		Framework framework = Framework.getInstance(systemid);
+		model.addAttribute("systemid", systemid);
+		model.addAttribute("systemname", framework.getDescription());
+		model.addAttribute("menuid", menuid);
+		
+		model.addAttribute("framework", framework);
+		MenuItem menu = framework.getMenuByID(menuid); 
+		model.addAttribute("menu",   menu);
+		model.addAttribute("menuname", menu.getName());
+		if (menu instanceof Item) {
+			model.addAttribute("menuType", "item");
+		} else if (menu instanceof Module) {
+			model.addAttribute("menuType", "module");
+		}
+		return "path:menuitem";
 	}
 
 

@@ -21,6 +21,7 @@ public interface MenuItem  {
     public String getParentPath();
     public String getId() ;
     public MenuItem getParent();
+    public String getUrl();
 
     public String getName(HttpServletRequest pageContext) ;
     public String getName();

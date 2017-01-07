@@ -1937,7 +1937,9 @@ public class MenuHelper  {
 
     class AuthorItem extends Item {
         Item item;
-
+        public String getUrl(){
+        	return this.getWorkspaceContent();
+        }
         public AuthorItem(Item item) {
             this.item = item;
         }

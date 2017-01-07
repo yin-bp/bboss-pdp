@@ -613,6 +613,8 @@ public class Framework implements ResourceInitial,MessageSource {
 				this.rootsystem = new SubSystem();
 				rootsystem.setSuccessRedirect(config.getSuccessRedirect());
 				rootsystem.setLogoutredirect(config.getLogoutredirect());
+				rootsystem.setId("module");
+				rootsystem.setModule("module.xml");
 			}
 			Map temp_sys = config.getSubsystems();
 			this.subsystemList = config.getSubsystemList();
@@ -672,6 +674,8 @@ public class Framework implements ResourceInitial,MessageSource {
 				this.rootsystem = new SubSystem();
 				rootsystem.setSuccessRedirect(config.getSuccessRedirect());
 				rootsystem.setLogoutredirect(config.getLogoutredirect());
+				rootsystem.setId("module");
+				rootsystem.setModule("module.xml");
 				this.subsystems = config.getSubsystems();
 				
 				
@@ -2252,6 +2256,14 @@ public class Framework implements ResourceInitial,MessageSource {
 
 	public List<SubSystem> getSubsystemList() {
 		return subsystemList;
+	}
+
+	public SubSystem getRootsystem() {
+		return rootsystem;
+	}
+
+	public SubSystem getFrameworkmeta() {
+		return frameworkmeta;
 	}
 
 	
