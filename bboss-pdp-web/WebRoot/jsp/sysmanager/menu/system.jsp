@@ -17,7 +17,7 @@
 	<div class="portlet-body  ">
 		<div class="clearfix">
                                             
-                                            <div class="panel panel-default">
+                                            <div class="panel panel-primary">
                                                 <div class="panel-heading">
                                                     <h3 class="panel-title">系统基本信息</h3>
                                                 </div>
@@ -141,7 +141,7 @@
                                                         
                                                     </form> </div>
                                             </div>
-                                            <div class="panel panel-primary">
+                                            <div class="panel panel-info">
                                                 <div class="panel-heading">
                                                     <h3 class="panel-title">系统首页</h3>
                                                 </div>
