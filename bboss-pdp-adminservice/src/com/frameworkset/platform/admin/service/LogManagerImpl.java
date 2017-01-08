@@ -17,6 +17,7 @@ import com.frameworkset.platform.admin.entity.Log;
 import com.frameworkset.platform.admin.entity.LogCondition;
 import com.frameworkset.platform.admin.entity.LogModule;
 import com.frameworkset.platform.admin.entity.LogSetting;
+import com.frameworkset.platform.admin.entity.LogStatic;
 import com.frameworkset.util.ListInfo;
 
 /**
@@ -283,7 +284,21 @@ public class LogManagerImpl  implements LogManager {
 		}
 	}
 	
+	public List<LogStatic> logstatic()throws LogException{
+		try {
+			return this.executor.queryList(LogStatic.class, "logstatic");
+		} catch (SQLException e) {
+			throw new LogException(e);
+		}
+	}
 	
+	public List<LogStatic> hislogstatic()throws LogException{
+		try {
+			return this.executor.queryList(LogStatic.class, "hislogstatic");
+		} catch (SQLException e) {
+			throw new LogException(e);
+		}
+	}
 
 	/**
 	 * <p>

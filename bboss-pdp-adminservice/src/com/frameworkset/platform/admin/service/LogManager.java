@@ -10,6 +10,7 @@ import com.frameworkset.platform.admin.entity.LogCondition;
 import com.frameworkset.platform.admin.entity.LogDetail;
 import com.frameworkset.platform.admin.entity.LogModule;
 import com.frameworkset.platform.admin.entity.LogSetting;
+import com.frameworkset.platform.admin.entity.LogStatic;
 import com.frameworkset.util.ListInfo;
 
 
@@ -154,5 +155,10 @@ public interface LogManager extends Serializable {
 	 * @param logSetting
 	 */
 	public void logsetting(List<LogSetting> logSetting) throws LogException;
+	/**
+	 * @return
+	 */
+	public List<LogStatic> logstatic()throws LogException;
+	public List<LogStatic> hislogstatic()throws LogException;
 	
 }

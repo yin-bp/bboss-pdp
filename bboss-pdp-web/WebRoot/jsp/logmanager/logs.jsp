@@ -151,7 +151,17 @@
 			querylog(true);
 		})
 		$(".btn-logstatic").bind("click",function(){
-			querylog(true);
+			ModelDialog.dialog({
+				title:"在线日志统计",
+				showfooter:false,
+				url:"${pageContext.request.contextPath}/logmanager/logstatic.page",
+				params:{
+					 
+			      },
+				width:"900px",
+				height:"400px"
+
+         	});
 		})
 		$(".btn-backuplog").bind("click",function(){
 			PDP.confirm('确定要归档日志数据吗?',function(){

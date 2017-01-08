@@ -71,6 +71,16 @@
 			insert into td_sm_log (LOG_ID,LOG_CONTENT,LOG_OPERTIME,LOG_OPERUSER,LOG_VISITORIAL,OP_ORGID,OPER_MODULE,OPER_TYPE,REMARK1) values(#[logId],#[logContent],#[logOpertime],#[logOperuser],#[logVisitorial],#[opOrgid],#[operModule],#[operType],#[remark1])
 		]]>
 	</property>
+	<property name="logstatic">
+		<![CDATA[
+			select OPER_MODULE as logmodule ,count(LOG_ID) as totalcount from td_sm_log  group by OPER_MODULE order by totalcount desc
+		]]>
+	</property>
+	<property name="hislogstatic">
+		<![CDATA[
+			select OPER_MODULE as logmodule ,count(LOG_ID) as totalcount from td_sm_log_his  group by OPER_MODULE order by totalcount desc
+		]]>
+	</property>
 		<property name="deleteByKey">
 		<![CDATA[
 			delete from td_sm_log where LOG_ID=?

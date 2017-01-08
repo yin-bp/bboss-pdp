@@ -152,7 +152,17 @@
 			querylog(true);
 		})
 		$(".btn-hislogstatic").bind("click",function(){
-			querylog(true);
+			ModelDialog.dialog({
+				title:"历史日志统计",
+				showfooter:false,
+				url:"${pageContext.request.contextPath}/logmanager/hislogstatic.page",
+				params:{
+					 
+			      },
+				width:"900px",
+				height:"400px"
+
+         	});
 		})
 		$(".btn-batchdelhislog").bind("click",function(){
 			PDP.confirm('确定要清除历史日志数据吗?',function(){

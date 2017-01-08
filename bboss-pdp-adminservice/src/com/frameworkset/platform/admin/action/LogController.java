@@ -20,6 +20,7 @@ import com.frameworkset.platform.admin.entity.Log;
 import com.frameworkset.platform.admin.entity.LogCondition;
 import com.frameworkset.platform.admin.entity.LogModule;
 import com.frameworkset.platform.admin.entity.LogSetting;
+import com.frameworkset.platform.admin.entity.LogStatic;
 import com.frameworkset.platform.admin.service.LogException;
 import com.frameworkset.platform.admin.service.LogManager;
 import com.frameworkset.util.ListInfo;
@@ -133,6 +134,18 @@ public class LogController {
 		logManager.logsetting( logSetting);
 		return "success";
 		
+	}
+	
+	public String logstatic(ModelMap model){
+		List<LogStatic> logstatics =  this.logManager.logstatic();
+		model.addAttribute("logstatics", logstatics);
+		return "path:logstatic";
+	}
+	
+	public String hislogstatic(ModelMap model){
+		List<LogStatic> logstatics =  this.logManager.hislogstatic();
+		model.addAttribute("hislogstatic", logstatics);
+		return "path:hislogstatic";
 	}
 
 }
