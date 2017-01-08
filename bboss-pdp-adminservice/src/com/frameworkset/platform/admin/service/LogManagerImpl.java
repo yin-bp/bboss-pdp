@@ -3,6 +3,7 @@ package com.frameworkset.platform.admin.service;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -11,8 +12,11 @@ import org.frameworkset.platform.security.AccessControl;
 
 import com.frameworkset.common.poolman.ConfigSQLExecutor;
 import com.frameworkset.common.poolman.PreparedDBUtil;
+import com.frameworkset.orm.transaction.TransactionManager;
 import com.frameworkset.platform.admin.entity.Log;
+import com.frameworkset.platform.admin.entity.LogCondition;
 import com.frameworkset.platform.admin.entity.LogModule;
+import com.frameworkset.util.ListInfo;
 
 /**
  * <p>
@@ -235,6 +239,25 @@ public class LogManagerImpl  implements LogManager {
 				operContent, "", Log.INSERT_OPER_TYPE);
 
 	}
+	public List<LogModule> getLogModules() throws LogException{
+		try {
+			List<LogModule> logModules = this.executor.queryList(LogModule.class, "getLogModules");
+			return logModules;
+		} catch (SQLException e) {
+			throw new LogException(e);
+		}
+	}
+	
+	public ListInfo queryListInfoLogs(LogCondition conditions, long offset, int pagesize) throws LogException {
+		ListInfo datas = null;
+		try {
+			datas = executor.queryListInfoBean(Log.class, "queryListLog", offset, pagesize, conditions);
+		} catch (Exception e) {
+			throw new LogException("pagine query Log failed:", e);
+		}
+		return datas;
+
+	}
 
 	/**
 	 * <p>
@@ -374,7 +397,27 @@ public class LogManagerImpl  implements LogManager {
 	//			
 	// log(operUser,operContent,operType,operSource,operSource,Desc);
 	// }
-
+	
+	public void backuplog() throws LogException{
+		TransactionManager tm = new TransactionManager();
+		try {
+			tm.begin();
+			this.executor.insert("backuplog");
+			this.executor.delete("deletealllog");
+			tm.commit();
+		} catch (Exception e) {
+			throw new LogException("backuplog failed:",e);
+		}
+		finally
+		{
+			tm.release();
+		}
+	}
+	/**
+	 * 更新日志模块状态
+	 * status：0 启用，1禁用
+	 * @see com.frameworkset.platform.admin.service.LogManager#updatelogModuleStatus(java.lang.String, java.lang.String)
+	 */
 	public boolean updatelogModuleStatus(String status, String moduleId)
 			throws LogException {
 		boolean b = false;

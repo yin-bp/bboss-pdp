@@ -26,12 +26,28 @@
  **
  -->
 <properties>
+	<property name="backuplog">
+		<![CDATA[
+			insert into td_sm_log_his select * from td_sm_log
+		]]>
+	</property>
 	
+	<property name="deletealllog">
+		<![CDATA[
+			delete from td_sm_log
+		]]>
+	</property>
 		<property name="getmodule">
 		<![CDATA[
 			select * from td_sm_logmodule where logmodule=?
 		]]>
 	</property>
+	<property name="getLogModules">
+		<![CDATA[
+			select * from td_sm_logmodule
+		]]>
+	</property>
+	
 		<property name="addlogModule">
 		<![CDATA[
 			insert into td_sm_logmodule (ID,LOGMODULE,MODULE_DESC,STATUS) values(#[id],#[logmodule],#[moduleDesc],#[status])
@@ -80,7 +96,7 @@
 								#if($logVisitorial && !$logVisitorial.equals(""))
 				and LOG_VISITORIAL like #[logVisitorial]		
 			#end
-								#if($operModule && !$operModule.equals(""))
+			#if($operModule && !$operModule.equals("") && !$operModule.equals("-1"))
 				and OPER_MODULE =#[operModule]		
 			#end
 			

@@ -323,7 +323,8 @@ public class Framework implements ResourceInitial,MessageSource {
 			return;
 		}
 		String temp = subsystem.getModule();
-		configFile = getRealpath(temp);
+//		configFile = getRealpath(temp);
+		configFile = temp;
 		log.debug("Load subsystem[" + configFile + "]");
 		boolean isFile = false;
 		if(!menu_folder.equals(""))

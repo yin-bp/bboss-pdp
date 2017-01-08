@@ -16,9 +16,13 @@
 
 package com.frameworkset.platform.admin.entity;
 
-import com.frameworkset.orm.annotation.PrimaryKey;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.frameworkset.util.annotations.RequestParam;
+
+import com.frameworkset.orm.annotation.PrimaryKey;
 /**
  * <p>Title: Log</p> <p>Description: 日志管理管理服务实体类 </p> <p>bboss</p> <p>Copyright
  * (c) 2007</p> @Date 2017-01-07 23:53:22 @author yinbp @version v1.0
@@ -34,6 +38,14 @@ public class Log implements java.io.Serializable {
 	public static final int DELETE_OPER_TYPE = 3 ;
 	//操作类型：其他
 	public static final int OTHER_OPER_TYPE = 4 ;
+	public static Map<Integer,String> optypeMap = new HashMap<Integer,String>();
+	static{
+		optypeMap.put(NULL_OPER_TYPE, "无操作");
+		optypeMap.put(INSERT_OPER_TYPE, "新增");
+		optypeMap.put(UPDATE_OPER_TYPE, "更新");
+		optypeMap.put(DELETE_OPER_TYPE, "删除");
+		optypeMap.put(OTHER_OPER_TYPE, "其他");
+	}
 	@PrimaryKey
 	private String logId;
 	private String logContent;

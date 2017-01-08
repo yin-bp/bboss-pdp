@@ -246,7 +246,7 @@ public class ConfigManager implements ResourceInitial {
 
     }
 
-   
+    private String _logmanager;
     private void parseXML(String configFile) throws Exception {
         /* CHANGED TO USE JAXP */
        
@@ -309,16 +309,16 @@ public class ConfigManager implements ResourceInitial {
 
 
 
-    	  String logmanager = handler.getLogmanager();
-    	  if(StringUtil.isNotEmpty(logmanager))
-          {
-          	Class cl = Class.forName(logmanager);
-          	try {
-  				this.logManager = (LogManagerInf) cl.newInstance();
-  			} catch (Exception e) {
-  				logManager = new DefaultLogManager();
-  			}
-          }
+        _logmanager = handler.getLogmanager();
+//    	  if(StringUtil.isNotEmpty(logmanager))
+//          {
+//          	Class cl = Class.forName(logmanager);
+//          	try {
+//  				this.logManager = (LogManagerInf) cl.newInstance();
+//  			} catch (Exception e) {
+//  				logManager = new DefaultLogManager();
+//  			}
+//          }
           String _config = handler.getConfig();
           if(StringUtil.isNotEmpty(_config))
           {
@@ -337,6 +337,38 @@ public class ConfigManager implements ResourceInitial {
         buildPermissionTokenMap();
 
     }
+    
+    public LogManagerInf getLogManager() {
+		if(logManager != null)
+			return logManager;
+		synchronized(this)
+		{
+			if(logManager != null)
+				return logManager;
+			try {
+	        	if(StringUtil.isNotEmpty(_logmanager) && !_logmanager.startsWith("mvc:"))
+	        	{
+	        		 
+		          	Class cl = Class.forName(_logmanager);
+		          	try {
+		  				this.logManager = (LogManagerInf) cl.newInstance();
+		  			} catch (Exception e) {
+		  				logManager = new DefaultLogManager();
+		  			}
+        	           
+					
+	        	}
+	        	else
+	        	{
+	        		BaseApplicationContext ioc = WebApplicationContextUtils.getWebApplicationContext();
+	        		logManager = ioc.getTBeanObject(_logmanager.substring(4), LogManagerInf.class);
+	        	}
+	    	} catch (Exception e) {
+	    		logManager = new DefaultLogManager();
+			}
+		}
+		return logManager;
+	}
    
     
     private void  buildResourcePermissionTokenMap(String appName,String moduleName,ResourceInfo resource )
@@ -1283,9 +1315,7 @@ public class ConfigManager implements ResourceInitial {
 	}
 
 
-	public LogManagerInf getLogManager() {
-		return logManager;
-	}
+	
 
 	
 }

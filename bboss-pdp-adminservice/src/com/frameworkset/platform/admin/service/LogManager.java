@@ -6,7 +6,10 @@ import java.util.List;
 import org.frameworkset.spi.Provider;
 
 import com.frameworkset.platform.admin.entity.Log;
+import com.frameworkset.platform.admin.entity.LogCondition;
 import com.frameworkset.platform.admin.entity.LogDetail;
+import com.frameworkset.platform.admin.entity.LogModule;
+import com.frameworkset.util.ListInfo;
 
 
 /**
@@ -14,9 +17,10 @@ import com.frameworkset.platform.admin.entity.LogDetail;
  * 描述：日志管理接口 <br>
  * 版本：1.0 <br>
  * 
- * @author 李峰高
+ * @author yinbp
  */
 public interface LogManager extends Serializable {
+	public void backuplog() throws LogException;
 	/**
 	 * 存储日志对象实例
 	 * 
@@ -28,7 +32,7 @@ public interface LogManager extends Serializable {
 	 */
 	//public boolean storeLog(Log log) throws LogException;
 
-	
+	public ListInfo queryListInfoLogs(LogCondition conditions, long offset, int pagesize) throws LogException ;
 	
 	  
 
@@ -135,5 +139,14 @@ public interface LogManager extends Serializable {
 	 * @throws LogException
 	 */	
 	public String log(String operContent, String operModle) throws LogException;
+
+
+
+
+
+	/**
+	 * @return
+	 */
+	public List<LogModule> getLogModules() throws LogException;
 	
 }

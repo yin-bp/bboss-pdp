@@ -8,34 +8,27 @@
 	    Date: 2016-12-15 17:06:09
 	-->
 
-	<property name="/sysmanager/role/*.page"
-		path:index="/jsp/sysmanager/role/main.jsp"
-		path:queryListInfoRoles="/jsp/sysmanager/role/roleListInfo.jsp"
-		path:queryListRoles="/jsp/sysmanager/role/roleList.jsp"
-		path:updateRole="/jsp/sysmanager/role/roleEdit.jsp"
-		path:addRole="/jsp/sysmanager/role/roleAdd.jsp"
-		path:getRole="/jsp/sysmanager/role/roleView.jsp"
-		path:authmainRoles="/jsp/sysmanager/role/authmainRoles.jsp"
-		path:toroleauthset="/jsp/sysmanager/role/roleauthset.jsp"
-		path:loadResourceOperations="/jsp/sysmanager/role/resourceOperationGrant.jsp"	
-		path:grantedroles="/jsp/sysmanager/role/grantedroles.jsp"
-		path:rolesetAuthList="/jsp/sysmanager/role/rolesetAuthList.jsp"
-		path:queryRoleUsers="/jsp/sysmanager/role/queryRoleUsers.jsp"		
-		f:roleService="attr:role.roleService"
-		f:resourceService="attr:resource.resourceService"
-		f:roleTypeService="attr:roletype.roleTypeService"
-		f:userService="attr:user.smUserService"
-		class="com.frameworkset.platform.admin.action.RoleController" >
+	<property name="/logmanager/*.page"
+		path:index="/jsp/logmanager/main.jsp"
+		path:queryListInfoLogs="/jsp/logmanager/logListInfo.jsp"		
+		f:logManager="attr:log.logService"
+		 
+		class="com.frameworkset.platform.admin.action.LogController" >
 	</property>
-		<property name="role.roleService"
-		f:executor="attr:role.configsqlexecutor"
-		class="com.frameworkset.platform.admin.service.RoleServiceImpl"
+		<property name="log.logService"
+		f:executor="attr:log.configsqlexecutor"
+		class="com.frameworkset.platform.admin.service.LogManagerImpl"
 		/>
-	<property name="role.configsqlexecutor"		
+	<property name="log.configsqlexecutor"		
 		class="com.frameworkset.common.poolman.ConfigSQLExecutor" >
 		<construction>
-			<property value="com/frameworkset/platform/admin/service/role.xml"/>
+			<property value="com/frameworkset/platform/admin/service/log.xml"/>
 		</construction>
 	</property>
+	<property name="org.frameworkset.platform.log.AppLogManager"
+		f:logManager="attr:log.logService"
+		class="org.frameworkset.platform.log.AppLogManager"
+		/>
+	
 	
 </properties>
