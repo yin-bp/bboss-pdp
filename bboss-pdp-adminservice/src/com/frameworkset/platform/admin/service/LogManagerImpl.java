@@ -16,6 +16,7 @@ import com.frameworkset.orm.transaction.TransactionManager;
 import com.frameworkset.platform.admin.entity.Log;
 import com.frameworkset.platform.admin.entity.LogCondition;
 import com.frameworkset.platform.admin.entity.LogModule;
+import com.frameworkset.platform.admin.entity.LogSetting;
 import com.frameworkset.util.ListInfo;
 
 /**
@@ -258,6 +259,31 @@ public class LogManagerImpl  implements LogManager {
 		return datas;
 
 	}
+	public ListInfo queryhisListInfoLogs(LogCondition conditions, long offset, int pagesize) throws LogException {
+		ListInfo datas = null;
+		try {
+			datas = executor.queryListInfoBean(Log.class, "queryhisListInfoLogs", offset, pagesize, conditions);
+		} catch (Exception e) {
+			throw new LogException("pagine query his Log failed:", e);
+		}
+		return datas;
+
+	}
+	
+	public void logsetting(List<LogSetting> logSettings) throws LogException{
+		for(LogSetting logsetting:logSettings){
+			if(logsetting.getStatus() == null){
+				logsetting.setStatus(1);
+			}
+		}
+		try {
+			this.executor.updateBeans("logsetting", logSettings);
+		} catch (SQLException e) {
+			throw new LogException(e);
+		}
+	}
+	
+	
 
 	/**
 	 * <p>
@@ -402,7 +428,7 @@ public class LogManagerImpl  implements LogManager {
 		TransactionManager tm = new TransactionManager();
 		try {
 			tm.begin();
-			this.executor.insert("backuplog");
+			this.executor.insert("backuplog",new Date());
 			this.executor.delete("deletealllog");
 			tm.commit();
 		} catch (Exception e) {
@@ -470,5 +496,7 @@ public class LogManagerImpl  implements LogManager {
 		}
 
 	}
+	
+	 
 
 }

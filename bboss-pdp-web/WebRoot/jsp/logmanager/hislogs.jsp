@@ -5,7 +5,7 @@
 		<div class="row">
 			<div class="col-md-12">
 				
-						<form role="form" class="form-horizontal form-querylog">
+						<form role="form" class="form-horizontal form-queryhislog">
 						 
 							<div class="form-body">
 								<div class="row">
@@ -90,7 +90,7 @@
 													<span class="input-group-btn btn-left">
 
 														<button type="button"
-															class="btn btn-xs green-haze btn-querylog "
+															class="btn btn-xs green-haze btn-queryhislog "
 															aria-expanded="false">查询</button>
 														<button type="reset" class="btn btn-xs default reset"
 															aria-expanded="false">重置</button>
@@ -118,13 +118,14 @@
 
 						</div>
 						<div class="actions roleactions">
-							<a class="btn btn-xs green-haze btn-backuplog"  > 归档日志 <i class="fa fa-edit"></i></a>
-							<a class="btn btn-xs blue btn-logstatic"  > 日志统计 <i class="fa fa-edit"></i></a>
+							<a class="btn btn-xs blue btn-hislogstatic"  > 日志统计 <i class="fa fa-edit"></i></a>
 							
-							 
+							 <a class="btn btn-xs red btn-batchdelhislog" >
+								<i class="fa fa-times"></i> 清空日志
+							</a> 
 						</div>
 					</div>
-					<div class="portlet-body portlet-loglist"></div>
+					<div class="portlet-body portlet-hisloglist"></div>
 				</div>
 			</div>
 		</div>
@@ -140,24 +141,24 @@
 	        });
 		 
 		 var querylog = function(doquery){
-			 $(".portlet-loglist").load("${pageContext.request.contextPath}/logmanager/queryListInfoLogs.page",
-						doquery?$('.form-querylog').serialize():{},
+			 $(".portlet-hisloglist").load("${pageContext.request.contextPath}/logmanager/queryhisListInfoLogs.page",
+						doquery?$('.form-queryhislog').serialize():{},
 								function(){
 								
 								});
 		 }
-		 querylog();
-		$(".btn-querylog").bind("click",function(){
+		
+		$(".btn-queryhislog").bind("click",function(){
 			querylog(true);
 		})
-		$(".btn-logstatic").bind("click",function(){
+		$(".btn-hislogstatic").bind("click",function(){
 			querylog(true);
 		})
-		$(".btn-backuplog").bind("click",function(){
-			PDP.confirm('确定要归档日志数据吗?',function(){
+		$(".btn-batchdelhislog").bind("click",function(){
+			PDP.confirm('确定要清除历史日志数据吗?',function(){
 				$.ajax({
 			 		   type: "POST",
-			 			url : "${pageContext.request.contextPath}/logmanager/backuplog.page",
+			 			url : "${pageContext.request.contextPath}/logmanager/batchdelhislog.page",
 			 			data :{},
 			 			dataType : 'json',
 			 			async:false,
@@ -172,12 +173,12 @@
 			 				
 			 				if(responseText=="success"){
 			 					
-			 					PDP.success("日志归档成功!");
-			 					querylog();
+			 					PDP.success("清除历史日志成功!");
+			 					
 			 				}else{
-			 					PDP.warn("日志归档失败:"+responseText.substring(0,100));
+			 					PDP.warn("清除历史日志失败:"+responseText);
 			 				}
-			 				
+			 				querylog();
 			 			}
 			 			
 			 		  });

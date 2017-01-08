@@ -9,6 +9,7 @@ import com.frameworkset.platform.admin.entity.Log;
 import com.frameworkset.platform.admin.entity.LogCondition;
 import com.frameworkset.platform.admin.entity.LogDetail;
 import com.frameworkset.platform.admin.entity.LogModule;
+import com.frameworkset.platform.admin.entity.LogSetting;
 import com.frameworkset.util.ListInfo;
 
 
@@ -33,6 +34,7 @@ public interface LogManager extends Serializable {
 	//public boolean storeLog(Log log) throws LogException;
 
 	public ListInfo queryListInfoLogs(LogCondition conditions, long offset, int pagesize) throws LogException ;
+	public ListInfo queryhisListInfoLogs(LogCondition conditions, long offset, int pagesize) throws LogException ;
 	
 	  
 
@@ -148,5 +150,9 @@ public interface LogManager extends Serializable {
 	 * @return
 	 */
 	public List<LogModule> getLogModules() throws LogException;
+	/**
+	 * @param logSetting
+	 */
+	public void logsetting(List<LogSetting> logSetting) throws LogException;
 	
 }

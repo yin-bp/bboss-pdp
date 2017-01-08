@@ -10,7 +10,8 @@
 
 	<property name="/logmanager/*.page"
 		path:index="/jsp/logmanager/main.jsp"
-		path:queryListInfoLogs="/jsp/logmanager/logListInfo.jsp"		
+		path:queryListInfoLogs="/jsp/logmanager/logListInfo.jsp"	
+		path:queryhisListInfoLogs="/jsp/logmanager/hislogListInfo.jsp"	
 		f:logManager="attr:log.logService"
 		 
 		class="com.frameworkset.platform.admin.action.LogController" >

@@ -10,24 +10,25 @@
 	日期:2016-12-15 17:06:09
 -->
 
-<pg:pager scope="request"  data="logs" desc="false" isList="false" containerid=".portlet-loglist">	
+<pg:pager scope="request"  data="logs" desc="false" isList="false" containerid=".portlet-hisloglist">	
 	<pg:param name="logOperuser"/>
 	<pg:param name="logVisitorial"/>
 	<pg:param name="logOpertime_start"/>
 	<pg:param name="logOpertime_end"/>
 	<pg:param name="operModule"/>
-<table	class="table table-bordered table-striped table-condensed table-loglist" >
+<table	class="table table-bordered table-striped table-condensed table-hisloglist" >
 	<thead >
 		<tr>
-			<th width="6%">
+			<th width="4%">
 					序号
 			</th>				
-			<th width="15%">模块</th> 
+			<th width="10%">模块</th> 
 			<th width="10%">操作人</th>      		
-	       	<th width="35%">内容</th>
+	       	<th width="25%">内容</th>
 	       	<th width="15%">操作时间</th>
+	       	<th width="15%">归档时间</th>
 			<th width="10%">来源</th>
-			<th width="5%">类型</th>
+			<th width="6%">类型</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -36,15 +37,16 @@
 		  	  
 				 
 	               <td width="6%"><pg:rowid increament="1" offset="false"/></td>  
-	               <td  width="15%"><pg:cell colName="operModule"  /></td>  
+	               <td  width="10%"><pg:cell colName="operModule"  /></td>  
 	               <td width="10%"><pg:cell colName="logOperuser"  /></td>
 	                
-	                <td  width="35%"><pg:cell colName="logContent" htmlEncode="true" /></td>
+	                <td  width="25%"><pg:cell colName="logContent" htmlEncode="true" /></td>
 	                <td width="15%"><pg:cell colName="logOpertime"  dateformat="yyyy-MM-dd HH:mm:ss"  /></td>
+	                <td width="15%"><pg:cell colName="logArchtime"  dateformat="yyyy-MM-dd HH:mm:ss"  /></td>
 	                
 	                <td width="10%"><pg:cell colName="logVisitorial"  /></td>
 	                 
-	                <td  width="5%">
+	                <td  width="6%">
 	                <pg:convert convertData="${optypeMap }" colName="operType"/>
 	                </td>
 	                </tr>

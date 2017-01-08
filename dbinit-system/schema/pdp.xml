@@ -89,10 +89,11 @@
         <column name="OP_ORGID" size="50" type="VARCHAR"/>
         <column name="OPER_MODULE" size="200" type="VARCHAR"/>
         <column name="LOG_VISITORIAL" size="200" type="VARCHAR"/>
-        <column name="LOG_OPERTIME" type="DATE"/>
+        <column name="LOG_OPERTIME" type="DATE"/>        
         <column name="LOG_CONTENT" type="CLOB"/>
         <column name="REMARK1" size="100" type="VARCHAR"/>
         <column name="OPER_TYPE" size="1" type="DECIMAL"/>
+        <column name="LOG_ARCHTIME" type="DATE"/>
     </table>
     <table name="TD_SM_ORGANIZATION">
         <column name="ORG_ID" primaryKey="true" required="true"

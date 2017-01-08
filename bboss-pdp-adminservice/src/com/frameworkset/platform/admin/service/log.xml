@@ -26,11 +26,14 @@
  **
  -->
 <properties>
+	<!-- 归档日志mysql sql -->
+	 
 	<property name="backuplog">
 		<![CDATA[
-			insert into td_sm_log_his select * from td_sm_log
+			insert into td_sm_log_his select *,? as LOG_ARCHTIME from td_sm_log
 		]]>
 	</property>
+	
 	
 	<property name="deletealllog">
 		<![CDATA[
@@ -58,6 +61,11 @@
 			update TD_SM_LOGMODULE set status=? where id=?
 		]]>
 	</property>
+	<property name="logsetting">
+		<![CDATA[
+			update TD_SM_LOGMODULE set status=#[status] where id=#[id]
+		]]>
+	</property>
 	<property name="addLog">
 		<![CDATA[
 			insert into td_sm_log (LOG_ID,LOG_CONTENT,LOG_OPERTIME,LOG_OPERUSER,LOG_VISITORIAL,OP_ORGID,OPER_MODULE,OPER_TYPE,REMARK1) values(#[logId],#[logContent],#[logOpertime],#[logOperuser],#[logVisitorial],#[opOrgid],#[operModule],#[operType],#[remark1])
@@ -76,6 +84,33 @@
 		<property name="selectById">
 		<![CDATA[
 			select * from td_sm_log where LOG_ID=?
+		]]>
+	</property>
+	
+	
+	<property name="queryhisListInfoLogs">
+		<![CDATA[
+			select * from td_sm_log_his where 1=1
+						#if($logContent && !$logContent.equals(""))
+				and LOG_CONTENT =#[logContent]		
+			#end
+												#if($logOpertime_start )
+					and LOG_OPERTIME>=#[logOpertime_start]
+				#end
+				#if($logOpertime_end )
+					and LOG_OPERTIME<=#[logOpertime_end]
+				#end
+											#if($logOperuser && !$logOperuser.equals(""))
+				and LOG_OPERUSER like #[logOperuser]		
+			#end
+								#if($logVisitorial && !$logVisitorial.equals(""))
+				and LOG_VISITORIAL like #[logVisitorial]		
+			#end
+			#if($operModule && !$operModule.equals("") && !$operModule.equals("-1"))
+				and OPER_MODULE =#[operModule]		
+			#end
+			order by LOG_OPERTIME desc
+			
 		]]>
 	</property>
 		<property name="queryListLog">
@@ -99,6 +134,7 @@
 			#if($operModule && !$operModule.equals("") && !$operModule.equals("-1"))
 				and OPER_MODULE =#[operModule]		
 			#end
+			order by LOG_OPERTIME desc
 			
 		]]>
 	</property>

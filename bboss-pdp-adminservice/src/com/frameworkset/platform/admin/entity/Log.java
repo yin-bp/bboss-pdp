@@ -51,6 +51,7 @@ public class Log implements java.io.Serializable {
 	private String logContent;
 	@RequestParam(dateformat = "yyyy-MM-dd")
 	private Date logOpertime;
+	private Date logArchtime;
 	private String logOperuser;
 	private String logVisitorial;
 	private String opOrgid;
@@ -129,6 +130,12 @@ public class Log implements java.io.Serializable {
 
 	public String getRemark1() {
 		return remark1;
+	}
+	public Date getLogArchtime() {
+		return logArchtime;
+	}
+	public void setLogArchtime(Date logArchtime) {
+		this.logArchtime = logArchtime;
 	}
 
 }
