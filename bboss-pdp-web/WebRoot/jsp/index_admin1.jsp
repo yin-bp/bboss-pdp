@@ -1472,9 +1472,7 @@ License: You must have a valid license purchased only from themeforest(the above
         <script src="${pageContext.request.contextPath}/assets/layouts/layout/scripts/demo.min.js" type="text/javascript"></script>
         <script src="${pageContext.request.contextPath}/assets/layouts/global/scripts/quick-sidebar.min.js" type="text/javascript"></script>
         <script src="${pageContext.request.contextPath}/assets/global/scripts/pager.js" type="text/javascript"></script>
-       <script
-	src="${pageContext.request.contextPath}/assets/sysmanager/sysuser.js" type="text/javascript"></script>
-       
+        
         <!-- END THEME LAYOUT SCRIPTS -->
         <script   type="text/javascript"> 
         jQuery(document).ready(function() {

@@ -78,7 +78,14 @@ public class RoleController {
 	private SmUserService userService;
 	private ResourceManager resourceManager = new ResourceManager();
 	private RoleService roleService;
-
+	public @ResponseBody String checkroleexist(String roleName){
+		boolean exist = this.roleService.checkroleexist(  roleName);
+		if(exist){
+			return "exist";
+			
+		}
+		return "notexist";
+	}
 	public @ResponseBody String addRole(Role role) {
 		// 控制器
 		try {

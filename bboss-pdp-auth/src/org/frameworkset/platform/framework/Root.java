@@ -128,4 +128,13 @@ public class Root extends BaseMenuItem{
 		this.showleftmenu = showleftmenu;
 	}
 
+	/** (non-Javadoc)
+	 * @see org.frameworkset.platform.framework.MenuItem#getUrl()
+	 */
+	@Override
+	public String getUrl() {
+		// TODO Auto-generated method stub
+		return "";
+	}
+
 }

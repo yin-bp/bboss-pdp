@@ -1,10 +1,26 @@
 <%@ page session="false" language="java"
 	contentType="text/html; charset=utf-8"%>
 <%@ taglib uri="/WEB-INF/tld/pager-taglib.tld" prefix="pg" %>
+<div class="row">
+	<div class="col-md-12">		 
+		<div class="alert alert-danger display-hide  alert-adduserexist">
+			<button class="close close-adduserexist" data-close="alert"></button>
+			<span class="msg"> 提示信息区 </span>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-12">		 
+		<div class="alert alert-success display-hide  alert-addusernotexist">
+			<button class="close close-addusernotexist" data-close="alert"></button>
+			<span class="msg"> 提示信息区 </span>
+		</div>
+	</div>
+</div>
 <pg:beaninfo actual="${smUser }">		
 
 	<!-- BEGIN FORM-->
-	<form action="#" class="form-horizontal" id="form_sys_modifyuser">
+	<form action="#" class="form-horizontal form_sys_modifyuser" id="form_sys_modifyuser">
 		<div class="form-body">
 		<input type="hidden" class="form-control" name="departId"  id="departId" value="<pg:cell colName="departId"/>">
 		<input type="hidden" class="form-control" name="userSn"   value="<pg:cell colName="userSn"/>">
@@ -139,13 +155,14 @@
 					<div class="col-md-9">
 						<div class="input-group">
 							<div class="input-group-control">
+								<input type="hidden" name="olduserWorknumber"  value="<pg:cell colName="userWorknumber"/>">
 								<input type="text" class="form-control" name="userWorknumber"  value="<pg:cell colName="userWorknumber"/>"
 									placeholder=""  autocomplete="off">
 								<div class="form-control-focus"></div>
 								<span class="help-block">请输入工号</span>	
 							</div>
 							<span class="input-group-btn btn-right">
-								<button type="button" class="btn btn-xs green-haze  "
+								<button type="button" class="btn btn-xs green-haze  btn-checkworknumberexist"
 									  aria-expanded="false">
 									检查工号
 								</button>
@@ -237,7 +254,45 @@
 	jQuery(document).ready(function() {
 		SysUser.initModifyUser();
 		PlatformCommonUtils.initPickers();
-		
+		$(".btn-checkworknumberexist").bind("click",function(){
+			var userWorknumber = $(".form_sys_modifyuser input[name='userWorknumber']").val()
+			 var olduserWorknumber = $(".form_sys_modifyuser input[name='olduserWorknumber']").val()
+			 if(userWorknumber == (olduserWorknumber))
+				 return;
+			if(userWorknumber == "")
+				return;
+			var userId = $(".form_sys_modifyuser input[name='userId']").val()
+			$.ajax({
+		 		   type: "POST",
+		 			url : "${pageContext.request.contextPath}/sysmanager/user/checkworknumberexist.page",
+		 			data :{"userWorknumber":userWorknumber,"userId":userId},
+		 			dataType : 'json',
+		 			async:false,
+		 			beforeSend: function(XMLHttpRequest){ 					
+		 				 	
+		 				},
+		 			success : function(responseText){
+		 				
+		 				if(responseText.result=="exist"){
+		 					
+		 					 PDP.showError(".alert-adduserexist","工号"+userWorknumber+"已被占用!可以使用工号："+responseText.message);
+		 					$(".form_sys_modifyuser input[name='userWorknumber']").val(responseText.message);
+		 					$(".close-addusernotexist").trigger("click");
+		 				}
+		 				else if(responseText.result=="notexist")
+		 				{
+		 					 
+		 					PDP.showError(".alert-addusernotexist","工号"+userWorknumber+"不存在，可以使用!");
+		 					$(".close-adduserexist").trigger("click");
+		 				}
+		 				else
+		 				{
+		 					PDP.showError(".alert-adduserexist","系统故障："+responseText.message);
+		 					$(".close-addusernotexist").trigger("click");
+		 				}
+		 			}
+		 		  });
+		});
 	});
 </script>
 </pg:beaninfo> 

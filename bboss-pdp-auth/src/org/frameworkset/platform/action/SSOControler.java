@@ -607,8 +607,7 @@ public class SSOControler {
      * 随机取颜色
      *
      * @return
-     * @author huxin
-     * @create 2016/10/31
+   
      * @version V1.0.0
      */
     private Color getRandColor(int fc, int bc) {

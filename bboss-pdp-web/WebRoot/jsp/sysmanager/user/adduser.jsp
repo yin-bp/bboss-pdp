@@ -1,8 +1,23 @@
 <%@ page session="false" language="java"
 	contentType="text/html; charset=utf-8"%>
-
+<div class="row">
+	<div class="col-md-12">		 
+		<div class="alert alert-danger display-hide  alert-adduserexist">
+			<button class="close close-adduserexist" data-close="alert"></button>
+			<span class="msg"> 提示信息区 </span>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-12">		 
+		<div class="alert alert-success display-hide  alert-addusernotexist">
+			<button class="close close-addusernotexist" data-close="alert"></button>
+			<span class="msg"> 提示信息区 </span>
+		</div>
+	</div>
+</div>
 	<!-- BEGIN FORM-->
-	<form action="#" class="form-horizontal" id="form_sys_adduser">
+	<form action="#" class="form-horizontal form_sys_adduser" id="form_sys_adduser">
 		<div class="form-body">
 		<input type="hidden" class="form-control" name="departId"  id="departId" value="${departId }">
 		
@@ -22,7 +37,7 @@
 								<span class="help-block">请输入账号</span>	
 							</div>
 							<span class="input-group-btn btn-right">
-								<button type="button" class="btn btn-xs green-haze  "
+								<button type="button" class="btn btn-xs green-haze  btn-checkuserexist"
 									  aria-expanded="false">
 									检查账号
 								</button>
@@ -174,7 +189,7 @@
 								<span class="help-block">请输入工号</span>	
 							</div>
 							<span class="input-group-btn btn-right">
-								<button type="button" class="btn btn-xs green-haze  "
+								<button type="button" class="btn btn-xs green-haze  btn-checkworknumberexist"
 									  aria-expanded="false">
 									检查工号
 								</button>
@@ -259,6 +274,68 @@
 	jQuery(document).ready(function() {
 		SysUser.initAddUser();
 		PlatformCommonUtils.initPickers();
+		$(".btn-checkuserexist").bind("click",function(){
+			var userName = $(".form_sys_adduser input[name='userName']").val()
+			if(userName != ""){
+				$.ajax({
+			 		   type: "POST",
+			 			url : "${pageContext.request.contextPath}/sysmanager/user/checkuserexist.page",
+			 			data :{"userAccount":userName},
+			 			dataType : 'json',
+			 			async:false,
+			 			beforeSend: function(XMLHttpRequest){ 					
+			 				 	
+			 				},
+			 			success : function(responseText){
+			 				
+			 				if(responseText=="exist"){
+			 					
+			 					 PDP.showError(".alert-adduserexist","用户"+userName+"已被占用!");
+			 					$(".close-addusernotexist").trigger("click");
+			 				}else{
+			 					PDP.showError(".alert-addusernotexist","用户"+userName+"没有被占用，可以使用!");
+			 					$(".close-adduserexist").trigger("click");
+			 				}
+			 			}
+			 		  });
+			}
+			
+		});
+		$(".btn-checkworknumberexist").bind("click",function(){
+			var userWorknumber = $(".form_sys_adduser input[name='userWorknumber']").val()
+			if(userWorknumber != ""){
+				$.ajax({
+			 		   type: "POST",
+			 			url : "${pageContext.request.contextPath}/sysmanager/user/checkworknumberexist.page",
+			 			data :{"userWorknumber":userWorknumber},
+			 			dataType : 'json',
+			 			async:false,
+			 			beforeSend: function(XMLHttpRequest){ 					
+			 				 	
+			 				},
+			 			success : function(responseText){
+			 				
+			 				if(responseText.result=="exist"){
+			 					
+			 					 PDP.showError(".alert-adduserexist","工号"+userWorknumber+"已被占用!可以使用工号："+responseText.message);
+			 					$(".form_sys_adduser input[name='userWorknumber']").val(responseText.message);
+			 					$(".close-addusernotexist").trigger("click");
+			 				}
+			 				else if(responseText.result=="notexist")
+			 				{
+			 					PDP.showError(".alert-addusernotexist","工号"+userWorknumber+"不存在，可以使用!");
+			 					$(".close-adduserexist").trigger("click");
+			 				}
+			 				else
+			 				{
+			 					PDP.showError(".alert-adduserexist","系统故障："+responseText.message);
+			 					$(".close-addusernotexist").trigger("click");
+			 				}
+			 			}
+			 		  });
+			}
+			
+		});
 		
 	});
 </script>

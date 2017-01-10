@@ -5,6 +5,7 @@
 <pg:pager scope="request"  data="users" desc="false" isList="false" containerid=".select_users_movein">
 	<pg:param name="fromDepartId"/>
 	<pg:param name="recursive"/>
+	<pg:param name="userIsvalid"/>
 	<pg:param name="userAttr"/>
 	
 <table	class="table table-bordered table-striped table-condensed table-moveinuserlist scroller" style="height:50px;">

@@ -2,15 +2,20 @@ package org.frameworkset.platform.desktop.action;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import org.frameworkset.platform.common.JSTreeNode;
 import org.frameworkset.platform.common.TreeNodeStage;
 import org.frameworkset.platform.common.ZKTreeNode;
 import org.frameworkset.platform.config.model.ResourceInfo;
 import org.frameworkset.platform.framework.Framework;
+import org.frameworkset.platform.framework.Item;
 import org.frameworkset.platform.framework.MenuItem;
 import org.frameworkset.platform.framework.MenuQueue;
 import org.frameworkset.platform.framework.Module;
+import org.frameworkset.platform.framework.SubSystem;
 import org.frameworkset.platform.resource.ResourceManager;
 import org.frameworkset.platform.security.AccessControl;
 import org.frameworkset.platform.security.AuthorResource;
@@ -28,6 +33,10 @@ import com.frameworkset.platform.admin.service.RoleService;
 public class MenuController{
 	private ResourceManager resourceManager = new ResourceManager();
 	private RoleService roleService;
+	public String index(ModelMap model){
+		 
+		return "path:main";
+	}
 	public String grantedcolumns(String resourceType,String roleId,String roleType,ModelMap model){
 		if(resourceType == null)
 			resourceType = "column";
@@ -81,12 +90,16 @@ public class MenuController{
 		JSTreeNode.setIsParent(true);
 		return JSTreeNode;
 	}
-	private JSTreeNode buildJSTreeNode(MenuItem menu)
+	private JSTreeNode buildJSTreeNode(String systemid,MenuItem menu)
 	{
 		JSTreeNode JSTreeNode = new JSTreeNode();
-		JSTreeNode.setId(menu.getId());
+		JSTreeNode.setId(systemid+":"+menu.getId());
 //		JSTreeNode.setText(new StringBuilder().append("<a href=\"#\" onclick=\"javascript:Sysmanager.showOrgUsers('").append(org.getOrgId()).append("');\">").append(org.getOrgName()).append("</a>").toString());
 		JSTreeNode.setText(menu.getName());
+		if(menu instanceof Item)
+			JSTreeNode.setType("item");
+		else
+			JSTreeNode.setType("module");
 		JSTreeNode.setIcon(null);
 		TreeNodeStage state = new TreeNodeStage();
 		state.setDisabled(false);
@@ -96,38 +109,123 @@ public class MenuController{
 		JSTreeNode.setChildren(true);
 		return JSTreeNode;
 	}
-	public @ResponseBody List<JSTreeNode> getChildrens(String parent,String roleId,String roleType){
+	public @ResponseBody List<JSTreeNode> getChildrens(String parent){
 		String currentSystem = AccessControl.getAccessControl().getCurrentSystemID();
-		Framework framework = Framework.getInstance(currentSystem);
-		if(parent == null || parent.equals("#")){
-			MenuQueue menus = framework.getMenus();
-			if(menus != null && menus.size() > 0){
+		
+		if(currentSystem.equals("module")){
+			
+			if(parent == null || parent.equals("#")){		
+				Map<String,SubSystem> systems = Framework.getInstance().getSubsystems();
 				List<JSTreeNode> treeNodes = new ArrayList<JSTreeNode>();
-				for(MenuItem menu:menus.getList())
-				{
-					treeNodes.add(this.buildJSTreeNode(menu));
+				Framework framework = Framework.getInstance(currentSystem);
+				
+				JSTreeNode JSTreeNode = new JSTreeNode();
+				JSTreeNode.setId("system:"+framework.getSystemid());
+				 
+//				JSTreeNode.setText(new StringBuilder().append("<a href=\"#\" onclick=\"javascript:Sysmanager.showOrgUsers('").append(org.getOrgId()).append("');\">").append(org.getOrgName()).append("</a>").toString());
+				JSTreeNode.setText(framework.getDescription());
+				
+				JSTreeNode.setType("system");
+				TreeNodeStage state = new TreeNodeStage();
+				state.setDisabled(false);
+				state.setOpened(true);
+				state.setSelected(false);
+				JSTreeNode.setState(state);
+				JSTreeNode.setChildren(true);
+				treeNodes.add(JSTreeNode);
+				if(systems != null && systems.size() > 0){
+					Set<Entry<String, SubSystem>> entries = systems.entrySet();
+					for(Entry<String, SubSystem> entry:entries){
+						SubSystem sys = entry.getValue();
+						JSTreeNode = new JSTreeNode();
+						JSTreeNode.setId("system:"+sys.getId());
+						 
+//						JSTreeNode.setText(new StringBuilder().append("<a href=\"#\" onclick=\"javascript:Sysmanager.showOrgUsers('").append(org.getOrgId()).append("');\">").append(org.getOrgName()).append("</a>").toString());
+						JSTreeNode.setText(sys.getName());
+						JSTreeNode.setType("system");
+						 state = new TreeNodeStage();
+						state.setDisabled(false);
+						state.setOpened(false);
+						state.setSelected(false);
+						JSTreeNode.setState(state);
+						JSTreeNode.setChildren(true);
+						treeNodes.add(JSTreeNode);
+					}
 				}
 				return treeNodes;
 			}
-				
+			else
+			{
+				String[] idinfos = parent.split(":");
+				if(idinfos[0].equals("system")){
+					Framework framework = Framework.getInstance(idinfos[1]);
+					MenuQueue menus = framework.getMenus();
+					if(menus != null && menus.size() > 0){
+						List<JSTreeNode> treeNodes = new ArrayList<JSTreeNode>();
+						for(MenuItem menu:menus.getList())
+						{
+							treeNodes.add(this.buildJSTreeNode(idinfos[1],menu));
+						}
+						return treeNodes;
+					}
+				}
+				else
+				{
+					Framework framework = Framework.getInstance(idinfos[0]);
+					MenuItem menuItem = framework.getMenuByID(idinfos[1]);
+					if(menuItem instanceof Module){
+						MenuQueue menus = ((Module)menuItem).getMenus();
+						if(menus != null && menus.size() > 0){
+							List<JSTreeNode> treeNodes = new ArrayList<JSTreeNode>();
+							for(MenuItem menu:menus.getList())
+							{
+								treeNodes.add(this.buildJSTreeNode(idinfos[0],menu));
+							}
+							return treeNodes;
+						}
+					}
+				}
+					
 			
+				
+			}
 		}
 		else
 		{
-			MenuItem menuItem = framework.getMenuByID(parent);
-			if(menuItem instanceof Module){
-				MenuQueue menus = ((Module)menuItem).getMenus();
+			Framework framework = Framework.getInstance(currentSystem);
+			if(parent == null || parent.equals("#")){
+				
+				MenuQueue menus = framework.getMenus();
 				if(menus != null && menus.size() > 0){
 					List<JSTreeNode> treeNodes = new ArrayList<JSTreeNode>();
 					for(MenuItem menu:menus.getList())
 					{
-						treeNodes.add(this.buildJSTreeNode(menu));
+						treeNodes.add(this.buildJSTreeNode(currentSystem,menu));
 					}
 					return treeNodes;
 				}
+					
+				
 			}
-			
+			else
+			{
+				String[] idinfos = parent.split(":");
+				MenuItem menuItem = framework.getMenuByID(idinfos[1]);
+				if(menuItem instanceof Module){
+					MenuQueue menus = ((Module)menuItem).getMenus();
+					if(menus != null && menus.size() > 0){
+						List<JSTreeNode> treeNodes = new ArrayList<JSTreeNode>();
+						for(MenuItem menu:menus.getList())
+						{
+							treeNodes.add(this.buildJSTreeNode(currentSystem,menu));
+						}
+						return treeNodes;
+					}
+				}
+				
+			}
 		}
+		
 		 
 		return null;
 		 
@@ -179,6 +277,38 @@ public class MenuController{
 		model.addAttribute("roleId", roleId);
 		model.addAttribute("roleType", roleType);
 		return "path:columnAuthTree";
+	}
+	
+	public String system(String systemid,ModelMap model){
+		Framework framework = Framework.getInstance(systemid);
+		model.addAttribute("systemid", systemid);
+		model.addAttribute("systemname", framework.getDescription());
+		model.addAttribute("framework", framework);
+		model.addAttribute("publicItem", framework.getPublicItem());
+		model.addAttribute("subSystems", framework.getSubsystems());
+		if(framework.getRootsystem() != null)
+			model.addAttribute("rootsystem", framework.getRootsystem());
+		else
+			model.addAttribute("rootsystem", framework.getFrameworkmeta());
+		
+		return "path:system";
+	}
+	public String menuitem(String systemid,String menuid,ModelMap model){
+		Framework framework = Framework.getInstance(systemid);
+		model.addAttribute("systemid", systemid);
+		model.addAttribute("systemname", framework.getDescription());
+		model.addAttribute("menuid", menuid);
+		
+		model.addAttribute("framework", framework);
+		MenuItem menu = framework.getMenuByID(menuid); 
+		model.addAttribute("menu",   menu);
+		model.addAttribute("menuname", menu.getName());
+		if (menu instanceof Item) {
+			model.addAttribute("menuType", "item");
+		} else if (menu instanceof Module) {
+			model.addAttribute("menuType", "module");
+		}
+		return "path:menuitem";
 	}
 
 

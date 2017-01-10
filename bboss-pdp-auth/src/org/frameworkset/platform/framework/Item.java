@@ -118,7 +118,9 @@ public class Item extends BaseMenuItem {
 	public String getTop() {
 		return top;
 	}
-	
+	public String getUrl(){
+		return this.getWorkspaceContent();
+	}
 	public boolean hasTopVaribale(){
 		return this.topItemUrlStruction != null;
 	}

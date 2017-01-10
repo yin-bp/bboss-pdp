@@ -192,7 +192,34 @@ var SysRole = function()
 		});
 		
 		$(".btn-roleaddsave",ModelDialog.getCurrentModal()).bind("click",function(){
-			$("form",ModelDialog.getCurrentModal()).submit();
+			var roleName = $(".form_sys_addrole input[name='roleName']").val()
+			
+			if(roleName != ""){
+				$.ajax({
+			 		   type: "POST",
+			 			url : usercontextpath+"/sysmanager/role/checkroleexist.page",
+			 			data :{"roleName":roleName},
+			 			dataType : 'json',
+			 			async:false,
+			 			beforeSend: function(XMLHttpRequest){ 					
+			 				 	
+			 				},
+			 			success : function(responseText){
+			 				
+			 				if(responseText=="exist"){		 					
+			 					 PDP.showError(".alert-addroleexist","角色"+roleName+"已被占用!");
+			 					$(".close-addrolenotexist").trigger("click");
+			 				}else{
+			 					$(".close-addroleexist").trigger("click");
+			 					$("form",ModelDialog.getCurrentModal()).submit();
+			 				}
+			 			}
+			 		  });
+			}
+			else{
+				$("form",ModelDialog.getCurrentModal()).submit();
+			}
+			
 		});
 	}
 	//新增修改角色操作，刷新角色列表

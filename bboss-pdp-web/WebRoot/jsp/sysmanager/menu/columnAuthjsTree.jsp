@@ -35,10 +35,10 @@ jQuery(document).ready(function() {
                 "check_callback" : true,
                 'data' : {
                     'url' : function (node) {
-                      return '${pageContext.request.contextPath}/menu/getzkChildrens.page';
+                      return '${pageContext.request.contextPath}/menu/getChildrens.page';
                     },
                     'data' : function (node) {
-                      return { 'parent' : node.id ,roleId:'${roleId}',roleType:'${roleType}'};
+                      return { 'parent' : node.id };
                     }
                 }
             },
@@ -47,20 +47,10 @@ jQuery(document).ready(function() {
                     "icon" : "fa fa-folder icon-state-warning icon-lg"
                 }
             },            
-            "plugins" : [   "types","checkbox" ],
-            "checkbox" : {
-                "cascade " : "undetermined",
-                "three_state":false
-              },
+            "plugins" : [   "types" ],
+           
         });
-	 	$(".btn-savecolumnauths",ModelDialog.getCurrentModal()).bind("click",function(){
-	 		
-	 		$("#xxxxxxmenuid",ModelDialog.getParentModal()).val("ddddd");
-	 		ModelDialog.getCurrentModal().modal('hide');
-	 		console.log($("#xxxxxxmenuid",ModelDialog.getParentModal()).val())
-	 		loadauto_resourcesauthsource();
-
-	 	});
+	 	 
 		PDP.initSlimScroll('.scroller',ModelDialog.getCurrentModal(),true);
 	});
 </script>	

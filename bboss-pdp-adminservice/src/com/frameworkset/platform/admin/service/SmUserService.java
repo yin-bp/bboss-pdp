@@ -19,6 +19,7 @@ package com.frameworkset.platform.admin.service;
 import java.util.List;
 
 import com.frameworkset.platform.admin.entity.MoveinUserCondition;
+import com.frameworkset.platform.admin.entity.QueryUserCondition;
 import com.frameworkset.platform.admin.entity.SmUser;
 import com.frameworkset.platform.admin.entity.SmUserCondition;
 import com.frameworkset.util.ListInfo;
@@ -89,4 +90,26 @@ public interface SmUserService {
 	 * @param roleIds
 	 */
 	public void deleteRoleUsersOfRoles(String[] roleIds)throws SmUserException;
+	/**
+	 * @param userWorknumber
+	 * @return
+	 */
+	public boolean checkworknumberexist(String userWorknumber,String userId)throws SmUserException;
+	/**
+	 * @return
+	 */
+	public String genworknumber(String userId)throws SmUserException;
+	public String getWorknumber(String userId) throws SmUserException ;
+	/**
+	 * @param userAccount
+	 * @return
+	 */
+	public boolean checkuserexist(String userAccount)throws SmUserException;
+	/**
+	 * @param condition
+	 * @param offset
+	 * @param pagesize
+	 * @return
+	 */
+	public ListInfo queryUsers(QueryUserCondition condition, long offset, int pagesize)throws SmUserException;
 }

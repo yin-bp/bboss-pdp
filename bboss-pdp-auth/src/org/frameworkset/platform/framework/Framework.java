@@ -17,18 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
-import org.frameworkset.security.AccessControlInf;
-import org.frameworkset.spi.BaseApplicationContext;
-import org.frameworkset.spi.BaseSPIManager;
-import org.frameworkset.spi.support.MessageSource;
-import org.frameworkset.spi.support.MessageSourceResolvable;
-import org.frameworkset.spi.support.NoSuchMessageException;
-import org.frameworkset.web.servlet.i18n.WebMessageSourceUtil;
-import org.frameworkset.web.servlet.support.RequestContextUtils;
-
-import bboss.org.apache.velocity.Template;
-import bboss.org.apache.velocity.VelocityContext;
-
 import org.frameworkset.platform.config.ConfigManager;
 import org.frameworkset.platform.framework.Item.ItemUrlStruction;
 import org.frameworkset.platform.framework.Item.Variable;
@@ -37,11 +25,23 @@ import org.frameworkset.platform.security.authorization.impl.AppSecurityCollabor
 import org.frameworkset.platform.security.authorization.impl.PermissionToken;
 import org.frameworkset.platform.security.authorization.impl.PermissionTokenMap;
 import org.frameworkset.platform.security.authorization.impl.ResourceToken;
+import org.frameworkset.security.AccessControlInf;
+import org.frameworkset.spi.BaseApplicationContext;
+import org.frameworkset.spi.BaseSPIManager2;
+import org.frameworkset.spi.support.MessageSource;
+import org.frameworkset.spi.support.MessageSourceResolvable;
+import org.frameworkset.spi.support.NoSuchMessageException;
+import org.frameworkset.web.servlet.i18n.WebMessageSourceUtil;
+import org.frameworkset.web.servlet.support.RequestContextUtils;
+
 import com.frameworkset.util.DaemonThread;
 import com.frameworkset.util.FileUtil;
 import com.frameworkset.util.ResourceInitial;
 import com.frameworkset.util.StringUtil;
 import com.frameworkset.util.VelocityUtil;
+
+import bboss.org.apache.velocity.Template;
+import bboss.org.apache.velocity.VelocityContext;
 
 /**
  * <p>
@@ -119,42 +119,15 @@ public class Framework implements ResourceInitial,MessageSource {
 	public static final int PROPERTIES_TOOLBAR = 11;
 	public static final int STATUS_CONTENT = 12;
 	public static final int STATUS_TOOLBAR = 13;
-	public static  String menu_folder = BaseSPIManager.getProperty("menu.folder","");
-	public static boolean menu_monitor = BaseSPIManager.getBooleanProperty("menu_monitor",true);
+	public static  String menu_folder = BaseSPIManager2.getProperty("menu.folder","");
+	public static boolean menu_monitor = BaseSPIManager2.getBooleanProperty("menu_monitor",true);
 
 	/**
 	 * 存储每个贞属性
 	 */
 	public Map framesetAttributeOfItem;
 
-	// FramesetAttribute framesetAttribute;
-	public static final String ROOT_CONTAINER_VM_ = "framework.vm";
-	public static final String MAIN_CONTAINER_VM_ = "perspective_main.vm";
-	public static final String MAIN_CONTAINER_URL = "perspective_main.frame";
-	public static final String MAIN_CONTAINER_MENU_VM_ = "perspective_main_menu.vm";
-	public static final String CONTENT_CONTAINER_VM_ = "perspective_content.vm";
-	public static final String CONTENT_CONTAINER_URL = "perspective_content.frame";
-	public static final String NAVIGATOR_CONTAINER_VM_ = "navigator_container.vm";
-	public static final String NAVIGATOR_CONTAINER_URL = "navigator_container.frame";
-	public static final String ACTION_CONTAINER_VM_ = "actions_container.vm";
-	public static final String ACTION_CONTAINER_URL = "actions_container.frame";
-	public static final String PROPERTIES_CONTAINER_VM_ = "properties_container.vm";
-	public static final String PROPERTIES_CONTAINER_URL = "properties_container.frame";
-	public static final String STATUS_CONTAINER_VM_ = "status_container.vm";
-	public static final String STATUS_CONTAINER_URL = "status_container.frame";
-	public static final String LeftSIDE_CONTAINER_URL = "perspective_leftside.jsp";
-	public static final String OUTLOOKBAR_CONTAINER_URL = "perspective_outlookbar.jsp";
-	public static final String SHOWHIDDEN_CONTAINER_URL = "/sysmanager/hidden_frame.jsp";
-	
-	
-	private String ROOT_CONTAINER_VM = "framework.vm";
-	private String MAIN_CONTAINER_VM = "perspective_main.vm";
-	private String MAIN_CONTAINER_MENU_VM = "perspective_main_menu.vm";
-	private String CONTENT_CONTAINER_VM = "perspective_content.vm";
-	private  String NAVIGATOR_CONTAINER_VM = "navigator_container.vm";
-	private  String ACTION_CONTAINER_VM = "actions_container.vm";
-	private  String PROPERTIES_CONTAINER_VM = "properties_container.vm";
-	private  String STATUS_CONTAINER_VM = "status_container.vm";
+	 
 
 
 	// public static final String SUPER_MENU = "module::menu://sysmenu$root";
@@ -350,7 +323,8 @@ public class Framework implements ResourceInitial,MessageSource {
 			return;
 		}
 		String temp = subsystem.getModule();
-		configFile = getRealpath(temp);
+//		configFile = getRealpath(temp);
+		configFile = temp;
 		log.debug("Load subsystem[" + configFile + "]");
 		boolean isFile = false;
 		if(!menu_folder.equals(""))
@@ -613,6 +587,8 @@ public class Framework implements ResourceInitial,MessageSource {
 				this.rootsystem = new SubSystem();
 				rootsystem.setSuccessRedirect(config.getSuccessRedirect());
 				rootsystem.setLogoutredirect(config.getLogoutredirect());
+				rootsystem.setId("module");
+				rootsystem.setModule("module.xml");
 			}
 			Map temp_sys = config.getSubsystems();
 			this.subsystemList = config.getSubsystemList();
@@ -672,6 +648,8 @@ public class Framework implements ResourceInitial,MessageSource {
 				this.rootsystem = new SubSystem();
 				rootsystem.setSuccessRedirect(config.getSuccessRedirect());
 				rootsystem.setLogoutredirect(config.getLogoutredirect());
+				rootsystem.setId("module");
+				rootsystem.setModule(this.configFile);
 				this.subsystems = config.getSubsystems();
 				
 				
@@ -772,145 +750,9 @@ public class Framework implements ResourceInitial,MessageSource {
 		return this.defaultItem;
 	}
 
-	/**
-	 * 计算生成的帧框架
-	 * 
-	 * @param item
-	 * @param type
-	 * @param out
-	 */
-	public void evaluateFrameWork(HttpServletRequest request, Item item,
-			int type, PrintWriter out,AccessControl control) {
-		evaluateFrameWork(request, item, type, out, null, control);
-	}
+	 
 
-	public FramesetAttribute getFramesetAttribute(String path) {
-		FramesetAttribute framesetAttribute = new FramesetAttribute();
-		if (path != null)
-			framesetAttribute = (FramesetAttribute) framesetAttributeOfItem
-					.get(path);
-		return framesetAttribute != null ? framesetAttribute
-				: new FramesetAttribute();
-
-		// if (framesetAttribute == null) {
-		// framesetAttribute = new FramesetAttribute();
-		// itemlocal.set(framesetAttribute);
-		// }
-
-		// return (FramesetAttribute) itemlocal.get();
-	}
-
-	/**
-	 * 构建栏目的帧结构属性
-	 * 
-	 * @param item
-	 * @return
-	 */
-	private FramesetAttribute createFramesetAttribute(Item item) {
-		FramesetAttribute framesetAttribute = new FramesetAttribute();
-
-		// 设置framesetrows
-		String framesetrows = FRAMEWORKSET_ROWS;
-
-		/**
-		 * 设置top的地址和相关属性例如：高度
-		 */
-		if ((item.getTop() != null) && !item.getTop().trim().equals("")) {
-			if (item.getTop_height() != null
-					&& !item.getTop_height().equals(""))
-				framesetrows = "0," + item.getTop_height() + ",*";
-			else if ((this.top_height != null)
-					&& !this.top_height.trim().equals("")) {
-				framesetrows = "0," + this.top_height + ",*";
-			}
-		} else {
-			framesetrows = "0,0,100%";
-		}
-
-		framesetAttribute.setFRAMEWORKSET_ROWS(framesetrows);
-
-		// 设置framesetcols
-		if ((item.getLeft() != null) && !item.getLeft().trim().equals("")) {
-			if ((item.getLeft_cols() != null)
-					&& !item.getLeft_cols().trim().equals("")) {
-
-				if (showhidden.equals("true"))
-					framesetAttribute.setFRAMEWORKSET_COLS(item.getLeft_cols()
-							+ "," + showhidden_width + ",*");
-				else
-					framesetAttribute.setFRAMEWORKSET_COLS(item.getLeft_cols()
-							+ ",0,*");
-			} else {
-				String frameset_cols = FRAMEWORKSET_COLS;
-
-				if (this.left_width != null) {
-					// System.out.println("left_width:" + left_width);
-					if (showhidden.equals("true"))
-						frameset_cols = left_width + "," + showhidden_width
-								+ ",*";
-					else
-						frameset_cols = left_width + ",0,*";
-				}
-				framesetAttribute.setFRAMEWORKSET_COLS(frameset_cols);
-			}
-		} else {
-			if (showhidden.equals("true"))
-				framesetAttribute.setFRAMEWORKSET_COLS("0," + showhidden_width
-						+ ",100%");
-			else
-				framesetAttribute.setFRAMEWORKSET_COLS("0,0,100%");
-		}
-
-		// 设置perspectivecontent_cols
-		if ((item.getNavigatorContent() == null)
-				|| item.getNavigatorContent().trim().equals("")) {
-			framesetAttribute.setPERSPECTIVE_CONTENT_COLS("0,100%");
-		} else {
-			String perspectiver_content_cols = PERSPECTIVE_CONTENT_COLS;
-			if ((item.getNavigator_width() != null)
-					&& !item.getNavigator_width().trim().equals("")) {
-				perspectiver_content_cols = item.getNavigator_width() + ",*";
-			} else if (this.navigator_width != null) {
-				perspectiver_content_cols = navigator_width + ",*";
-			}
-			framesetAttribute
-					.setPERSPECTIVE_CONTENT_COLS(perspectiver_content_cols);
-		}
-
-		// 设置navigator_contentrows
-		if ((item.getNavigatorToolbar() == null)
-				|| item.getNavigatorToolbar().equals("")) {
-			framesetAttribute.setNAVIGATOR_CONTAINER_ROWS("0,100%");
-		}
-
-		if ((item.getStatusContent() == null)
-				|| item.getStatusContent().trim().equals("")) {
-			framesetAttribute.setACTIONS_CONTAINER_ROWS("100%,0");
-		} else {
-			String actions_container_rows = ACTIONS_CONTAINER_ROWS;
-			if ((item.getWorkspace_height() != null)
-					&& !item.getWorkspace_height().trim().equals("")) {
-				actions_container_rows = item.getWorkspace_height() + ",*";
-			} else if (this.workspace_height != null) {
-				actions_container_rows = workspace_height + ",*";
-
-			}
-			framesetAttribute.setACTIONS_CONTAINER_ROWS(actions_container_rows);
-		}
-
-		// 设置PROPERTIES_CONTAINER_ROWS
-		if ((item.getWorkspaceToolbar() == null)
-				|| item.getWorkspaceToolbar().trim().equals("")) {
-			framesetAttribute.setPROPERTIES_CONTAINER_ROWS("0,100%");
-		}
-
-		if ((item.getStatusToolbar() == null)
-				|| item.getStatusToolbar().trim().equals("")) {
-			framesetAttribute.setSTATUS_CONTAINER_ROWS("0,100%");
-		}
-
-		return framesetAttribute;
-	}
+	 
 	
 	
 	public static String getNavigatorToolbar(Item item,AccessControl control){
@@ -1007,542 +849,7 @@ public class Framework implements ResourceInitial,MessageSource {
 			return combinationItemUrlStruction(item.getTopItemUrlStruction(), control);
 		}
 	}
-	/**
-	 * getFrameWork
-	 * 
-	 * @param item
-	 *            Item
-	 * @return String
-	 */
-	public void evaluateFrameWork(HttpServletRequest request, Item item,
-			int type, PrintWriter out, String external_params,AccessControl control) {
-		String subsystem = this.frameworkmeta == null ? "" : this.frameworkmeta
-				.getId();
-//		String directitem = request.getParameter("__directitem");
-//		boolean direct = directitem != null;
-		// 获取栏目对应的帧框架属性
-		FramesetAttribute framesetAttribute_t = (FramesetAttribute) framesetAttributeOfItem
-				.get(item.getPath());
-
-		if (framesetAttribute_t == null) {
-			framesetAttribute_t = createFramesetAttribute(item);
-			framesetAttributeOfItem.put(item.getPath(), framesetAttribute_t);
-		}
-		HttpSession session = request.getSession(false);
-		String contextpath = request.getContextPath();
-		String sessionid = null;
-		if(session != null)
-			sessionid = session.getId();
-		
-
-		// 设置栏目对应的帧框架属性到本地线程中
-		// itemlocal.set(framesetAttribute_t);
-
-		switch (type) {
-		case Framework.ROOT_CONTAINER:
-
-			try {
-				Template template = VelocityUtil
-						.getTemplate(ROOT_CONTAINER_VM);
-
-				VelocityContext context = new VelocityContext();
-				String server = request.getServerName();
-				context.put("title", description + "--" + server);
-				context.put("perspective_toolbar_title", item.getName(request));
-				context.put("perspective_workarea_title", item.getName(request));
-
-				// context.put("perspective_content_title",item.getName());
-				context.put("perspective_main_title", item.getName(request));
-
-				if ((item.getTop() != null) && !item.getTop().trim().equals("")) {
-					// String url =
-					// getUrl(StringUtil.getRealPath(request,item.getTop())) +
-					// Framework.MENU_PATH +
-					// "=" + StringUtil.encode(item.getPath(), null) + "&" +
-					// Framework.MENU_TYPE + "=" + TOPSIDE_CONTAINER;
-					//
-					// if ((external_params != null) &&
-					// !external_params.trim().equals("")) {
-					// url += ("&" + external_params);
-					// }
-					StringBuffer url = new StringBuffer();
-//					System.out.println(StringUtil.getRealPath(request, item
-//		                                                                        .getTop()));
-					String top = null;
-					if(!item.hasTopVaribale()){
-						top = item.getTop();
-					}else{
-						top = getTop(item, control);
-					}
-					url.append(
-							getUrl(StringUtil.getRealPath(request, top,true),sessionid)).append(Framework.MENU_PATH)
-							.append("=").append(
-									StringUtil.encode(item.getPath(), null))
-							.append("&").append(Framework.MENU_TYPE)
-							.append("=").append(TOPSIDE_CONTAINER);
-
-					if ((external_params != null)
-							&& !external_params.trim().equals("")) {
-						url.append("&").append(external_params);
-					}
-
-					url.append("&__directitem=true");
-					context.put("perspective_toolbar_url", url.toString());
-				} else {
-					context.put("perspective_toolbar_url", "");
-				}
-
-				context.put("frameset_rows", framesetAttribute_t
-						.getFRAMEWORKSET_ROWS());
-
-				String url = MenuHelper.getMainUrl(contextpath, item.getPath(),
-						external_params, subsystem,sessionid);
-				url += "&__directitem=true";
-				context.put("perspective_main_url", url);
-				template.merge(context, out);
-
-				break;
-			} catch (Exception ex) {
-				ex.printStackTrace();
-				log.error("请检查velocity.properties文件中的模板路径是否正确。", ex);
-
-				break;
-			}
-
-		case Framework.MAIN_CONTAINER: {
-			try {
-				Template template = VelocityUtil
-						.getTemplate(MAIN_CONTAINER_VM);
-
-				VelocityContext context = new VelocityContext();
-				context.put("perspective_toolbar_title", item.getName(request));
-				context.put("perspective_content_title", item.getName(request));
-
-				// 设置左菜单
-				if ((item.getLeft() != null)
-						&& !item.getLeft().trim().equals("")) {
-//					String perspective_toolbar_leftsideurl = getUrl(StringUtil
-//							.getRealPath(request, item.getLeft()))
-//							+ Framework.MENU_PATH
-//							+ "="
-//							+ StringUtil.encode(item.getPath(), null)
-//							+ "&"
-//							+ Framework.MENU_TYPE + "=" + LEFTSIDE_CONTAINER;
-//
-//					if ((external_params != null)
-//							&& !external_params.trim().equals("")) {
-//						perspective_toolbar_leftsideurl += ("&" + external_params);
-//					}
-					
-					StringBuffer  perspective_toolbar_leftsideurl = new StringBuffer();
-					String left = null;
-					if(!item.hasLeftVaribale()){
-						left = item.getLeft();
-					}else{
-						left = getLeft(item, control);
-					}
-					perspective_toolbar_leftsideurl.append(getUrl(StringUtil
-							.getRealPath(request, left,true),sessionid))
-							.append( Framework.MENU_PATH)
-							.append( "=")
-							.append( StringUtil.encode(item.getPath(), null))
-							.append( "&")
-							.append( Framework.MENU_TYPE )
-							.append(  "=" )
-							.append(  LEFTSIDE_CONTAINER);
-
-					if ((external_params != null)
-							&& !external_params.trim().equals("")) {
-						perspective_toolbar_leftsideurl .append( "&" )
-								.append(  external_params);
-					}
-					perspective_toolbar_leftsideurl.append("&__directitem=true");
-					context.put("perspective_toolbar_leftside",
-							perspective_toolbar_leftsideurl.toString());
-
-					String perspective_content_url = MenuHelper
-							.getPerspectiveContentUrl(contextpath, item.getPath(),
-									external_params, subsystem);
-					perspective_content_url += "&__directitem=true";
-					context.put("perspective_content_url",
-							perspective_content_url);
-					context.put("frameset_cols", framesetAttribute_t
-							.getFRAMEWORKSET_COLS());
-					context.put("noresize", "");
-				} else {
-					context.put("perspective_toolbar_leftside", "");
-					String perspective_content_url = MenuHelper
-							.getPerspectiveContentUrl(contextpath, item.getPath(),
-									external_params, subsystem);
-					perspective_content_url += "&__directitem=true";
-					context.put("perspective_content_url",
-							perspective_content_url);
-					context.put("frameset_cols", framesetAttribute_t
-							.getFRAMEWORKSET_COLS());
-
-					context.put("noresize", "noresize");
-				}
-				StringBuffer url = new StringBuffer();
-				url .append(StringUtil.getRealPath(request,
-						SHOWHIDDEN_CONTAINER_URL))
-					.append("?")
-					.append(Framework.MENU_PATH)
-					.append("=")
-					.append(StringUtil.encode(item.getPath(), null));
-				url.append("&__directitem=true");
-				context.put("hidden_frame_url",url.toString());
-//				context.put("hidden_frame_url", StringUtil.getRealPath(request,
-//						SHOWHIDDEN_CONTAINER_URL)
-//						+ "?"
-//						+ Framework.MENU_PATH
-//						+ "="
-//						+ StringUtil.encode(item.getPath(), null));
-				template.merge(context, out);
-
-				break;
-			} catch (Exception ex) {
-				log.error("请检查velocity.properties文件中的模板路径是否正确。", ex);
-
-				break;
-			}
-		}
-
-		case Framework.CONTENT_CONTAINER:
-
-			try {
-				Template template = VelocityUtil
-						.getTemplate(CONTENT_CONTAINER_VM);
-				VelocityContext context = new VelocityContext();
-				context.put("title", item.getName(request));
-
-				// 如果没有配置导航区，隐藏导航区的显示
-				if ((item.getNavigatorContent() == null)
-						|| item.getNavigatorContent().trim().equals("")) {
-					context.put("perspective_content_cols", framesetAttribute_t
-							.getPERSPECTIVE_CONTENT_COLS());
-					context.put("noresize", "noresize");
-					context.put("base_navigator_container_url", "");
-				} else {
-					String base_navigator_container_url = MenuHelper
-							.getNavigatorContainerUrl(contextpath, item.getPath(),
-									external_params, subsystem);
-					base_navigator_container_url += "&__directitem=true";
-					context.put("base_navigator_container_url",
-							base_navigator_container_url);
-					context.put("perspective_content_cols", framesetAttribute_t
-							.getPERSPECTIVE_CONTENT_COLS());
-					context.put("noresize", "");
-				}
-
-				String base_actions_container_url = MenuHelper
-						.getActionContainerUrl(contextpath, item.getPath(),
-								external_params, subsystem);
-				base_actions_container_url += "&__directitem=true";
-				context.put("base_actions_container_url",
-						base_actions_container_url);
-				template.merge(context, out);
-
-				break;
-			} catch (Exception ex) {
-				log.error("请检查velocity.properties文件中的模板路径是否正确。", ex);
-
-				break;
-			}
-
-		case Framework.NAVIGATOR_CONTAINER:
-
-			try {
-				Template template = VelocityUtil
-						.getTemplate(NAVIGATOR_CONTAINER_VM);
-				VelocityContext context = new VelocityContext();
-
-				if ((item.getNavigatorToolbar() != null)
-						&& !item.getNavigatorToolbar().equals("")) {
-//					String base_navigator_toolbar_url = getUrl(StringUtil
-//							.getRealPath(request, item.getNavigatorToolbar()))
-//							+ Framework.MENU_PATH
-//							+ "="
-//							+ StringUtil.encode(item.getPath(), null)
-//							+ "&"
-//							+ Framework.MENU_TYPE
-//							+ "="
-//							+ Framework.NAVIGATOR_TOOLBAR;
-//
-//					if ((external_params != null)
-//							&& !external_params.trim().equals("")) {
-//						base_navigator_toolbar_url += ("&" + external_params);
-//					}
-					
-					StringBuffer base_navigator_toolbar_url = new StringBuffer();
-					String NavigatorToolbar = null;
-					if(!item.hasNavigatorToolbarVariables())
-					{
-						NavigatorToolbar = item.getNavigatorToolbar();
-					}
-					else
-					{
-						NavigatorToolbar = getNavigatorToolbar(item, control);
-					}
-					
-					base_navigator_toolbar_url.append(getUrl(StringUtil
-							.getRealPath(request, NavigatorToolbar,true),sessionid))
-							.append( Framework.MENU_PATH)
-							.append( "=")
-							.append(StringUtil.encode(item.getPath(), null))
-							.append("&")
-							.append(Framework.MENU_TYPE)
-							.append( "=")
-							.append( Framework.NAVIGATOR_TOOLBAR);
-
-					if ((external_params != null)
-							&& !external_params.trim().equals("")) {
-						base_navigator_toolbar_url .append("&")
-						.append(external_params);
-					}
-					base_navigator_toolbar_url.append("&__directitem=true");
-					context.put("base_navigator_toolbar_url",
-							base_navigator_toolbar_url.toString());
-					context.put("navigator_container_rows", framesetAttribute_t
-							.getNAVIGATOR_CONTAINER_ROWS());
-					context.put("noresize", "");
-				} else {
-					context.put("navigator_container_rows", framesetAttribute_t
-							.getNAVIGATOR_CONTAINER_ROWS());
-					context.put("noresize", "noresize");
-					context.put("base_navigator_toolbar_url", "");
-				}
-
-				StringBuffer base_navigator_content_url = new StringBuffer();
-				String navigatorContent = null;
-				if(!item.hasNavigatorContentVariables()){
-					navigatorContent = item.getNavigatorContent();
-				}else{
-					navigatorContent = getNavigatorContent(item, control);
-				}
-				base_navigator_content_url.append(getUrl(StringUtil
-						.getRealPath(request, navigatorContent,true),sessionid))
-						.append(Framework.MENU_PATH)
-						.append("=")
-						.append(StringUtil.encode(item.getPath(), null))
-						.append( "&")
-						.append( Framework.MENU_TYPE)
-						.append( "=")
-						.append( Framework.NAVIGATOR_CONTENT);
-
-				if ((external_params != null)
-						&& !external_params.trim().equals("")) {
-					base_navigator_content_url .append( "&" + external_params);
-				}
-				base_navigator_content_url.append("&__directitem=true");
-				context.put("base_navigator_content_url",
-						base_navigator_content_url.toString());
-				template.merge(context, out);
-
-				break;
-			} catch (Exception ex) {
-				log.error("请检查velocity.properties文件中的模板路径是否正确。", ex);
-
-				break;
-			}
-
-		case Framework.ACTION_CONTAINER:
-
-			try {
-				Template template = VelocityUtil
-						.getTemplate(ACTION_CONTAINER_VM);
-				VelocityContext context = new VelocityContext();
-				String base_properties_container_url = MenuHelper
-						.getWorkspaceUrl(contextpath, item.getPath(), external_params,
-								subsystem);
-				base_properties_container_url += "&__directitem=true";
-				context.put("base_properties_container_url",
-						base_properties_container_url);
-
-				if ((item.getStatusContent() == null)
-						|| item.getStatusContent().trim().equals("")) {
-					context.put("actioner_container_rows", framesetAttribute_t
-							.getACTIONS_CONTAINER_ROWS());
-					context.put("noresize", "noresize");
-					context.put("base_status_container_url", "");
-					context.put("base_status_container_url", "");
-				} else {
-					String base_status_container_url = MenuHelper.getStatusUrl(
-							contextpath, item.getPath(), external_params, subsystem,sessionid);
-					base_status_container_url += "&__directitem=true";
-					context.put("base_status_container_url",
-							base_status_container_url);
-
-					context.put("actioner_container_rows", framesetAttribute_t
-							.getACTIONS_CONTAINER_ROWS());
-
-					context.put("noresize", "");
-				}
-
-				template.merge(context, out);
-
-				break;
-			} catch (Exception ex) {
-				log.error("请检查velocity.properties文件中的模板路径是否正确。", ex);
-
-				break;
-			}
-
-		case Framework.PROPERTIES_CONTAINER:
-
-			try {
-				Template template = VelocityUtil
-						.getTemplate(PROPERTIES_CONTAINER_VM);
-				VelocityContext context = new VelocityContext();
-
-				if ((item.getWorkspaceToolbar() == null)
-						|| item.getWorkspaceToolbar().trim().equals("")) {
-					context.put("properties_container_rows",
-							framesetAttribute_t.getPROPERTIES_CONTAINER_ROWS());
-					context.put("noresize", "noresize");
-					context.put("base_properties_toolbar_url", "");
-				} else {
-					StringBuffer base_properties_toolbar_url = new StringBuffer();
-					
-					String workspaceToolbar = null;
-					if(!item.hasWorkspaceToolbarVariables()){
-						workspaceToolbar = item.getWorkspaceToolbar();
-					}else{
-						workspaceToolbar =getWorkspaceToolbar(item, control);
-					}
-					base_properties_toolbar_url.append(getUrl(StringUtil
-							.getRealPath(request, workspaceToolbar,true),sessionid))
-							.append(Framework.MENU_PATH)
-							.append( "=")
-							.append(StringUtil.encode(item.getPath(), null))
-							.append( "&")
-							.append( Framework.MENU_TYPE)
-							.append( "=")
-							.append( Framework.PROPERTIES_TOOLBAR);
-
-					if ((external_params != null)
-							&& !external_params.trim().equals("")) {
-						base_properties_toolbar_url .append("&" )
-						.append( external_params);
-					}
-					base_properties_toolbar_url.append("&__directitem=true");
-					context.put("base_properties_toolbar_url",
-							base_properties_toolbar_url.toString());
-					context.put("properties_container_rows",
-							framesetAttribute_t.getPROPERTIES_CONTAINER_ROWS());
-					context.put("noresize", "");
-				}
-
-				StringBuffer base_properties_content_url = new StringBuffer();
-//				System.out.println(getUrl(StringUtil
-//		                                                .getRealPath(request, item.getWorkspaceContent())));
-				String workspaceContent = null;
-	            if(!item.hasWorkspaceContentVariables()){
-	            	workspaceContent = item.getWorkspaceContent();
-	            }else{
-	            	workspaceContent = Framework.getWorkspaceContent(item,control);
-	            }
-				base_properties_content_url.append(getUrl(StringUtil
-						.getRealPath(request, workspaceContent,true),sessionid))
-						.append( Framework.MENU_PATH)
-						.append("=")
-						.append( StringUtil.encode(item.getPath(), null))
-						.append("&")
-						.append( Framework.MENU_TYPE)
-						.append( "=")
-						.append(Framework.PROPERTIES_CONTENT);
-
-				if ((external_params != null)
-						&& !external_params.trim().equals("")) {
-					base_properties_content_url.append("&" )
-							.append( external_params);
-				}
-				base_properties_content_url.append("&__directitem=true");
-				context.put("base_properties_content_url",
-						base_properties_content_url.toString());
-				template.merge(context, out);
-
-				break;
-			} catch (Exception ex) {
-				log.error("请检查velocity.properties文件中的模板路径是否正确。", ex);
-
-				break;
-			}
-
-		case Framework.STATUS_CONTAINER:
-
-			try {
-				Template template = VelocityUtil
-						.getTemplate(STATUS_CONTAINER_VM);
-				VelocityContext context = new VelocityContext();
-
-				if ((item.getStatusToolbar() == null)
-						|| item.getStatusToolbar().trim().equals("")) {
-					context.put("status_container_rows", framesetAttribute_t
-							.getSTATUS_CONTAINER_ROWS());
-					context.put("noresize", "noresize");
-					context.put("base_status_toolbar_url", "");
-				} else {
-					StringBuffer base_status_toolbar_url = new StringBuffer();
-					String statusToolbar = null;
-					if(!item.hasStatusToolbarVariables()){
-						statusToolbar = item.getStatusToolbar();
-					}else{
-						statusToolbar = getStatusToolbar(item, control);
-					}
-					base_status_toolbar_url.append(getUrl(StringUtil
-							.getRealPath(request, statusToolbar,true),sessionid))
-							.append( Framework.MENU_PATH)
-							.append( "=")
-							.append(StringUtil.encode(item.getPath(), null))
-							.append( "&")
-							.append( Framework.MENU_TYPE)
-							.append( "=")
-							.append( Framework.STATUS_TOOLBAR);
-
-					if ((external_params != null)
-							&& !external_params.trim().equals("")) {
-						base_status_toolbar_url.append("&" ).append( external_params);
-					}
-					base_status_toolbar_url.append("&__directitem=true");
-					context.put("base_status_toolbar_url",
-							base_status_toolbar_url.toString());
-					context.put("status_container_rows", STATUS_CONTAINER_ROWS);
-					context.put("noresize", "noresize");
-				}
-
-				StringBuffer base_status_content_url = new StringBuffer();
-				String statusContent = null;
-				if(!item.hasStatusContentVariables()){
-					statusContent = item.getStatusContent();
-				}else{
-					statusContent = getStatusContent(item, control);
-				}
-				base_status_content_url.append(getUrl(StringUtil.getRealPath(
-						request, statusContent,true),sessionid))
-						.append(Framework.MENU_PATH)
-						.append("=")
-						.append(StringUtil.encode(item.getPath(), null))
-						.append("&")
-						.append(Framework.MENU_TYPE )
-						.append( "=" )
-						.append( Framework.STATUS_CONTENT);
-
-				if ((external_params != null)
-						&& !external_params.trim().equals("")) {
-					base_status_content_url .append("&")
-					.append( external_params);
-				}
-				base_status_content_url.append("&__directitem=true");
-				context.put("base_status_content_url", base_status_content_url.toString());
-				template.merge(context, out);
-				break;
-			} catch (Exception ex) {
-				log.error("请检查velocity.properties文件中的模板路径是否正确。", ex);
-
-				break;
-			}
-		}
-	}
+	 
 
 	/**
 	 * ;jsessionid=397BB3656E2A12A96CE3F16E0A89C607
@@ -1603,6 +910,8 @@ public class Framework implements ResourceInitial,MessageSource {
 				this.initSubSystems();
 			}
 		} else {
+			if(subsystemFrameworks == null)
+				subsystemFrameworks = new HashMap();
 			// 如果先前加载的子系统模块已经从系统中删除，则卸载这些子系统模块
 			if (temp_sys == null || temp_sys.isEmpty() ) {
 				this.subsystems.clear();
@@ -1820,179 +1129,7 @@ public class Framework implements ResourceInitial,MessageSource {
 		}
 	}
 
-	/**
-	 * 获取菜单的链接地址
-	 * 
-	 * @param context
-	 *            请求上下文
-	 * @param menuItem
-	 *            栏目菜单
-	 * @param params
-	 *            页面参数
-	 * @return
-	 */
-	public static String getMainNodeLink(String context, MenuItem menuItem,
-			Map params) {
-		String s_param = null;
-
-		if (params != null) {
-			Set keys = params.keySet();
-			Iterator it = keys.iterator();
-			boolean flag = false;
-
-			while (it.hasNext()) {
-				String key = (String) it.next();
-
-				if (flag) {
-					s_param = "&" + key + "=" + params.get(key);
-				} else {
-					s_param = key + "=" + params.get(key);
-				}
-			}
-		}
-
-		String nodeLink = context + "/"
-				+ Framework.getUrl(CONTENT_CONTAINER_URL,null)
-				+ Framework.MENU_PATH + "="
-				+ StringUtil.encode(menuItem.getPath(), null) + "&"
-				+ Framework.MENU_TYPE + "=" + // Framework.CONTENT_CONTAINER +
-												// "&ancestor=1";
-				Framework.CONTENT_CONTAINER;
-
-		return nodeLink;
-	}
-
-	public static class FramesetAttribute {
-		public String FRAMEWORKSET_ROWS = "0,38,*";
-		public String FRAMEWORKSET_COLS = "30,12,*";
-		public String PERSPECTIVE_MAIN_ROWS = "20%,*";
-		public String PERSPECTIVE_CONTENT_COLS = "20%,*";
-		public String NAVIGATOR_CONTAINER_ROWS = "30,*";
-		public String ACTIONS_CONTAINER_ROWS = "75%,*";
-		public String PROPERTIES_CONTAINER_ROWS = "30,*";
-		public String STATUS_CONTAINER_ROWS = "30,*";
-
-		/**
-		 * @return Returns the fRAMEWORKSET_COLS.
-		 */
-		public String getFRAMEWORKSET_COLS() {
-			return FRAMEWORKSET_COLS;
-		}
-
-		/**
-		 * @param frameworkset_cols
-		 *            The fRAMEWORKSET_COLS to set.
-		 */
-		public void setFRAMEWORKSET_COLS(String frameworkset_cols) {
-			FRAMEWORKSET_COLS = frameworkset_cols;
-		}
-
-		/**
-		 * @return Returns the nAVIGATOR_CONTAINER_ROWS.
-		 */
-		public String getNAVIGATOR_CONTAINER_ROWS() {
-			return NAVIGATOR_CONTAINER_ROWS;
-		}
-
-		/**
-		 * @param navigator_container_rows
-		 *            The nAVIGATOR_CONTAINER_ROWS to set.
-		 */
-		public void setNAVIGATOR_CONTAINER_ROWS(String navigator_container_rows) {
-			NAVIGATOR_CONTAINER_ROWS = navigator_container_rows;
-		}
-
-		/**
-		 * @return Returns the pERSPECTIVE_CONTENT_COLS.
-		 */
-		public String getPERSPECTIVE_CONTENT_COLS() {
-			return PERSPECTIVE_CONTENT_COLS;
-		}
-
-		/**
-		 * @param perspective_content_cols
-		 *            The pERSPECTIVE_CONTENT_COLS to set.
-		 */
-		public void setPERSPECTIVE_CONTENT_COLS(String perspective_content_cols) {
-			PERSPECTIVE_CONTENT_COLS = perspective_content_cols;
-		}
-
-		/**
-		 * @return Returns the pERSPECTIVE_MAIN_ROWS.
-		 */
-		public String getPERSPECTIVE_MAIN_ROWS() {
-			return PERSPECTIVE_MAIN_ROWS;
-		}
-
-		/**
-		 * @param perspective_main_rows
-		 *            The pERSPECTIVE_MAIN_ROWS to set.
-		 */
-		public void setPERSPECTIVE_MAIN_ROWS(String perspective_main_rows) {
-			PERSPECTIVE_MAIN_ROWS = perspective_main_rows;
-		}
-
-		/**
-		 * @return Returns the pROPERTIES_CONTAINER_ROWS.
-		 */
-		public String getPROPERTIES_CONTAINER_ROWS() {
-			return PROPERTIES_CONTAINER_ROWS;
-		}
-
-		/**
-		 * @param properties_container_rows
-		 *            The pROPERTIES_CONTAINER_ROWS to set.
-		 */
-		public void setPROPERTIES_CONTAINER_ROWS(
-				String properties_container_rows) {
-			PROPERTIES_CONTAINER_ROWS = properties_container_rows;
-		}
-
-		/**
-		 * @return Returns the sTATUS_CONTAINER_ROWS.
-		 */
-		public String getSTATUS_CONTAINER_ROWS() {
-			return STATUS_CONTAINER_ROWS;
-		}
-
-		/**
-		 * @param status_container_rows
-		 *            The sTATUS_CONTAINER_ROWS to set.
-		 */
-		public void setSTATUS_CONTAINER_ROWS(String status_container_rows) {
-			STATUS_CONTAINER_ROWS = status_container_rows;
-		}
-
-		/**
-		 * @return Returns the aCTIONS_CONTAINER_ROWS.
-		 */
-		public String getACTIONS_CONTAINER_ROWS() {
-			return ACTIONS_CONTAINER_ROWS;
-		}
-
-		/**
-		 * @param actions_container_rows
-		 *            The aCTIONS_CONTAINER_ROWS to set.
-		 */
-		public void setACTIONS_CONTAINER_ROWS(String actions_container_rows) {
-			ACTIONS_CONTAINER_ROWS = actions_container_rows;
-		}
-
-		/**
-		 * @return Returns the fRAMEWORKSET_ROWS.
-		 */
-		public String getFRAMEWORKSET_ROWS() {
-			return FRAMEWORKSET_ROWS;
-		}
-
-		/**
-		 * @param frameworkset_rows
-		 *            The fRAMEWORKSET_ROWS to set.
-		 */
-		public void setFRAMEWORKSET_ROWS(String frameworkset_rows) {
-			FRAMEWORKSET_ROWS = frameworkset_rows;
-		}
-	}
+	  
 
 	public String getDescription() {
 		return description;
@@ -2052,7 +1189,7 @@ public class Framework implements ResourceInitial,MessageSource {
 		return root;
 	}
 
-	public Map getSubsystems() {
+	public Map<String,SubSystem> getSubsystems() {
 		return subsystems;
 	}
 
@@ -2085,36 +1222,7 @@ public class Framework implements ResourceInitial,MessageSource {
 		else
 			this.template = template;
 	}
-	
-	public void refactorTemplatePaths()
-	{
-		if(isExistTemplatePath())
-		{
-			 ROOT_CONTAINER_VM = this.template + "/framework.vm";
-			 MAIN_CONTAINER_VM = this.template + "/perspective_main.vm";
-			 MAIN_CONTAINER_MENU_VM = this.template + "/perspective_main_menu.vm";
-			 CONTENT_CONTAINER_VM = this.template + "/perspective_content.vm";
-			 NAVIGATOR_CONTAINER_VM = this.template + "/navigator_container.vm";
-			 ACTION_CONTAINER_VM = this.template + "/actions_container.vm";
-			 PROPERTIES_CONTAINER_VM = this.template + "/properties_container.vm";
-			 STATUS_CONTAINER_VM = this.template + "/status_container.vm";
-		}
-	}
-	
-	private boolean isExistTemplatePath(){
-		if(VelocityUtil.OLDVERSION()){
-		String path = FileUtil.apppath + "/WEB-INF/templates/" + this.template;
-		File f = new File(path);
-		return f.exists();
-		}else{
-			URL tmp = Framework.class.getResource("/templates/" + this.template);
-			if(tmp == null)
-				return false;
-			else
-				return true;			
-		}
-			
-	}
+  
 
 	public MessageSource getMessagesource() {
 		return messagesource;
@@ -2250,6 +1358,14 @@ public class Framework implements ResourceInitial,MessageSource {
 
 	public List<SubSystem> getSubsystemList() {
 		return subsystemList;
+	}
+
+	public SubSystem getRootsystem() {
+		return rootsystem;
+	}
+
+	public SubSystem getFrameworkmeta() {
+		return frameworkmeta;
 	}
 
 	

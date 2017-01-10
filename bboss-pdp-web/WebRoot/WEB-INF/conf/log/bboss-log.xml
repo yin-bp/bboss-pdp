@@ -1,0 +1,36 @@
+<properties>
+
+	<!-- 
+		描述:初始化角色管理管理控制器RoleController，并将所有关联的角色管理管理service注入到此控制器中。并以别名的形式定义好跳转页面。
+	    author:yinbp
+		CopyRight:bboss
+		版本:v1.0 
+	    Date: 2016-12-15 17:06:09
+	-->
+
+	<property name="/logmanager/*.page"
+		path:index="/jsp/logmanager/main.jsp"
+		path:queryListInfoLogs="/jsp/logmanager/logListInfo.jsp"	
+		path:queryhisListInfoLogs="/jsp/logmanager/hislogListInfo.jsp"	
+		path:hislogstatic="/jsp/logmanager/hislogstatic.jsp"	
+		path:logstatic="/jsp/logmanager/logstatic.jsp"	
+		f:logManager="attr:log.logService"		 
+		class="com.frameworkset.platform.admin.action.LogController" >
+	</property>
+		<property name="log.logService"
+		f:executor="attr:log.configsqlexecutor"
+		class="com.frameworkset.platform.admin.service.LogManagerImpl"
+		/>
+	<property name="log.configsqlexecutor"		
+		class="com.frameworkset.common.poolman.ConfigSQLExecutor" >
+		<construction>
+			<property value="com/frameworkset/platform/admin/service/log.xml"/>
+		</construction>
+	</property>
+	<property name="org.frameworkset.platform.log.AppLogManager"
+		f:logManager="attr:log.logService"
+		class="org.frameworkset.platform.log.AppLogManager"
+		/>
+	
+	
+</properties>
