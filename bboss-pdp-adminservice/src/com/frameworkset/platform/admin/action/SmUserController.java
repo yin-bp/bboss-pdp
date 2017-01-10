@@ -35,6 +35,7 @@ import org.frameworkset.util.annotations.PagerParam;
 import org.frameworkset.util.annotations.ResponseBody;
 import org.frameworkset.web.servlet.ModelMap;
 
+import com.frameworkset.platform.admin.entity.HandleResult;
 import com.frameworkset.platform.admin.entity.MoveinUserCondition;
 import com.frameworkset.platform.admin.entity.SmUser;
 import com.frameworkset.platform.admin.entity.SmUserCondition;
@@ -361,6 +362,42 @@ public class SmUserController {
 			return StringUtil.formatBRException(e);
 		}
 		
+	}
+	public @ResponseBody HandleResult checkworknumberexist(String userWorknumber,String userId){
+		HandleResult result = new HandleResult();
+		try {
+			boolean exist = smUserService.checkworknumberexist(userWorknumber,  userId);
+			if(exist){
+				 result.setResult("exist");
+				 userWorknumber = smUserService.genworknumber(userId);
+				 result.setMessage(userWorknumber);
+			}
+			else
+			{
+				result.setResult("notexist");
+			}
+		} catch (Throwable e) {
+			log.error("checkworknumberexist failed:", e);
+			result.setResult("failed");
+			result.setMessage(StringUtil.exceptionToString(e));
+		}
+		return result;
+	}
+	public @ResponseBody String checkuserexist(String userAccount){
+		try {
+			boolean exist = smUserService.checkuserexist(userAccount);
+			if(exist){
+				 return "exist";
+			}
+			else
+			{
+				 return "notexist";
+			}
+		} catch (Throwable e) {
+			log.error("checkuserexist failed:", e);
+			return (StringUtil.exceptionToString(e));
+		}
+		 
 	}
 	public String tomodifyPassword(String userId,boolean frompersonal, ModelMap model){
 		try {

@@ -48,6 +48,14 @@ var PlatformCommonUtils = function(){
 					}
 				});
 	}
+	var addErrorClass = function(element){
+		$(element)
+        .closest('.form-group').addClass('has-error'); // set error class to the control group
+	}
+	var removeErrorClass = function(element){
+		 $(element)
+         .closest('.form-group').removeClass('has-error'); // set error class to the control group
+	}
 	//初始化日期控件
 	var initPickers = function() {
         //init date pickers
@@ -227,6 +235,12 @@ var PlatformCommonUtils = function(){
 		},
 		showError :function(id,message){
 			showError(id,message);
+		},
+		addErrorClass:function(element){
+			addErrorClass(element);
+		},
+		removeErrorClass:function(element){
+			removeErrorClass(element);
 		}
 	}
 }();

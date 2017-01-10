@@ -89,4 +89,19 @@ public interface SmUserService {
 	 * @param roleIds
 	 */
 	public void deleteRoleUsersOfRoles(String[] roleIds)throws SmUserException;
+	/**
+	 * @param userWorknumber
+	 * @return
+	 */
+	public boolean checkworknumberexist(String userWorknumber,String userId)throws SmUserException;
+	/**
+	 * @return
+	 */
+	public String genworknumber(String userId)throws SmUserException;
+	public String getWorknumber(String userId) throws SmUserException ;
+	/**
+	 * @param userAccount
+	 * @return
+	 */
+	public boolean checkuserexist(String userAccount)throws SmUserException;
 }

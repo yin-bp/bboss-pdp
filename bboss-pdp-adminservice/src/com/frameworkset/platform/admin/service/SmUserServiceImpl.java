@@ -17,6 +17,7 @@
 package com.frameworkset.platform.admin.service;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -590,6 +591,61 @@ public class SmUserServiceImpl implements SmUserService {
 		finally
 		{
 			tm.release();
+		}
+	}
+	/** (non-Javadoc)
+	 * @see com.frameworkset.platform.admin.service.SmUserService#checkworknumberexist(java.lang.String)
+	 */
+	@Override
+	public boolean checkworknumberexist(String userWorknumber,String userId) throws SmUserException {
+		try {
+			if(StringUtil.isEmpty(userId)){
+				int num = this.executor.queryObject(int.class, "checkworknumberexist", userWorknumber);
+				return num > 0;
+			}
+			else
+			{
+				int num = this.executor.queryObject(int.class, "checkworknumberexistofuser", userWorknumber,userId);
+				return num > 0;
+			}
+		} catch (SQLException e) {
+			throw new SmUserException(e);
+		}
+		
+	}
+	public String getWorknumber(String userId) throws SmUserException {
+		try {
+			return this.executor.queryObject(String.class, "getWorknumber", userId);
+		} catch (SQLException e) {
+			throw new SmUserException(e);
+		}
+	}
+	/** (non-Javadoc)
+	 * @see com.frameworkset.platform.admin.service.SmUserService#genworknumber()
+	 */
+	@Override
+	public String genworknumber(String userId) throws SmUserException {
+		
+		try {
+			if(StringUtil.isNotEmpty(userId)){
+				String worknumber = getWorknumber(  userId);
+				if(StringUtil.isNotEmpty(userId)){
+					return worknumber;
+				}
+			}
+			String num = this.executor.queryObject(String.class, "genworknumber");
+			int _num = Integer.parseInt(num)+1;
+			return _num + "";
+		} catch (SQLException e) {
+			throw new SmUserException(e);
+		}
+	}
+	public boolean checkuserexist(String userAccount)throws SmUserException{
+		try {
+			int num = this.executor.queryObject(int.class, "checkuserexist", userAccount);
+			return num > 0;
+		} catch (SQLException e) {
+			throw new SmUserException(e);
 		}
 	}
 }
