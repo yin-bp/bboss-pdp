@@ -53,6 +53,15 @@ public class RoleServiceImpl implements RoleService {
 
 	private ConfigSQLExecutor executor;
 	private ResourceManager resourceManager = new ResourceManager();
+	public boolean checkroleexist(String roleName) throws RoleException {
+		// 业务组件
+		try {
+			int num = executor.queryObject(int.class,"checkroleexist", roleName);
+			return num > 0;
+		} catch (Throwable e) {
+			throw new RoleException("check rolerexist failed:", e);
+		}
+	}
 	public void addRole(Role role) throws RoleException {
 		// 业务组件
 		try {

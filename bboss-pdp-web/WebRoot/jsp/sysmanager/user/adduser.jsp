@@ -276,59 +276,65 @@
 		PlatformCommonUtils.initPickers();
 		$(".btn-checkuserexist").bind("click",function(){
 			var userName = $(".form_sys_adduser input[name='userName']").val()
-			$.ajax({
-		 		   type: "POST",
-		 			url : "${pageContext.request.contextPath}/sysmanager/user/checkuserexist.page",
-		 			data :{"userAccount":userName},
-		 			dataType : 'json',
-		 			async:false,
-		 			beforeSend: function(XMLHttpRequest){ 					
-		 				 	
-		 				},
-		 			success : function(responseText){
-		 				
-		 				if(responseText=="exist"){
-		 					
-		 					 PDP.showError(".alert-adduserexist","用户"+userName+"已被占用!");
-		 					$(".close-addusernotexist").trigger("click");
-		 				}else{
-		 					PDP.showError(".alert-addusernotexist","用户"+userName+"没有被占用，可以使用!");
-		 					$(".close-adduserexist").trigger("click");
-		 				}
-		 			}
-		 		  });
+			if(userName != ""){
+				$.ajax({
+			 		   type: "POST",
+			 			url : "${pageContext.request.contextPath}/sysmanager/user/checkuserexist.page",
+			 			data :{"userAccount":userName},
+			 			dataType : 'json',
+			 			async:false,
+			 			beforeSend: function(XMLHttpRequest){ 					
+			 				 	
+			 				},
+			 			success : function(responseText){
+			 				
+			 				if(responseText=="exist"){
+			 					
+			 					 PDP.showError(".alert-adduserexist","用户"+userName+"已被占用!");
+			 					$(".close-addusernotexist").trigger("click");
+			 				}else{
+			 					PDP.showError(".alert-addusernotexist","用户"+userName+"没有被占用，可以使用!");
+			 					$(".close-adduserexist").trigger("click");
+			 				}
+			 			}
+			 		  });
+			}
+			
 		});
 		$(".btn-checkworknumberexist").bind("click",function(){
 			var userWorknumber = $(".form_sys_adduser input[name='userWorknumber']").val()
-			$.ajax({
-		 		   type: "POST",
-		 			url : "${pageContext.request.contextPath}/sysmanager/user/checkworknumberexist.page",
-		 			data :{"userWorknumber":userWorknumber},
-		 			dataType : 'json',
-		 			async:false,
-		 			beforeSend: function(XMLHttpRequest){ 					
-		 				 	
-		 				},
-		 			success : function(responseText){
-		 				
-		 				if(responseText.result=="exist"){
-		 					
-		 					 PDP.showError(".alert-adduserexist","工号"+userWorknumber+"已被占用!可以使用工号："+responseText.message);
-		 					$(".form_sys_adduser input[name='userWorknumber']").val(responseText.message);
-		 					$(".close-addusernotexist").trigger("click");
-		 				}
-		 				else if(responseText.result=="notexist")
-		 				{
-		 					PDP.showError(".alert-addusernotexist","工号"+userWorknumber+"不存在，可以使用!");
-		 					$(".close-adduserexist").trigger("click");
-		 				}
-		 				else
-		 				{
-		 					PDP.showError(".alert-adduserexist","系统故障："+responseText.message);
-		 					$(".close-addusernotexist").trigger("click");
-		 				}
-		 			}
-		 		  });
+			if(userWorknumber != ""){
+				$.ajax({
+			 		   type: "POST",
+			 			url : "${pageContext.request.contextPath}/sysmanager/user/checkworknumberexist.page",
+			 			data :{"userWorknumber":userWorknumber},
+			 			dataType : 'json',
+			 			async:false,
+			 			beforeSend: function(XMLHttpRequest){ 					
+			 				 	
+			 				},
+			 			success : function(responseText){
+			 				
+			 				if(responseText.result=="exist"){
+			 					
+			 					 PDP.showError(".alert-adduserexist","工号"+userWorknumber+"已被占用!可以使用工号："+responseText.message);
+			 					$(".form_sys_adduser input[name='userWorknumber']").val(responseText.message);
+			 					$(".close-addusernotexist").trigger("click");
+			 				}
+			 				else if(responseText.result=="notexist")
+			 				{
+			 					PDP.showError(".alert-addusernotexist","工号"+userWorknumber+"不存在，可以使用!");
+			 					$(".close-adduserexist").trigger("click");
+			 				}
+			 				else
+			 				{
+			 					PDP.showError(".alert-adduserexist","系统故障："+responseText.message);
+			 					$(".close-addusernotexist").trigger("click");
+			 				}
+			 			}
+			 		  });
+			}
+			
 		});
 		
 	});

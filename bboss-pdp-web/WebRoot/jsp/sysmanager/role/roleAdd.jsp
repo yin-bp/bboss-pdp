@@ -2,9 +2,24 @@
 <%@ taglib uri="/WEB-INF/tld/admin-taglib.tld" prefix="admin"%>
 	<%@ page session="false" language="java"
 	contentType="text/html; charset=utf-8"%>
-
+<div class="row">
+	<div class="col-md-12">		 
+		<div class="alert alert-danger display-hide  alert-addroleexist">
+			<button class="close close-addroleexist" data-close="alert"></button>
+			<span class="msg"> 提示信息区 </span>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-12">		 
+		<div class="alert alert-success display-hide  alert-addrolenotexist">
+			<button class="close close-addrolenotexist" data-close="alert"></button>
+			<span class="msg"> 提示信息区 </span>
+		</div>
+	</div>
+</div>
 	<!-- BEGIN FORM-->
-	<form action="#" class="form-horizontal" >
+	<form action="#" class="form-horizontal form_sys_addrole" >
 		<input type="hidden" name="ownerId"  value="<admin:accesscontrol userattribute="userID"/>">
 		<div class="form-body">
 		
@@ -25,7 +40,7 @@
 									<span class="help-block">请输入角色名称</span>	
 								</div>
 								<span class="input-group-btn btn-right">
-									<button type="button" class="btn btn-xs green-haze  "
+									<button type="button" class="btn btn-xs green-haze btn-checkrolerexist "
 										  aria-expanded="false">
 										检查角色名称
 									</button>
@@ -116,6 +131,32 @@
 <script type="text/javascript">
 	jQuery(document).ready(function() {
 		SysRole.initAddRole();
+		$(".btn-checkrolerexist").bind("click",function(){
+			var roleName = $(".form_sys_addrole input[name='roleName']").val()
+			if(roleName != ""){
+				$.ajax({
+			 		   type: "POST",
+			 			url : "${pageContext.request.contextPath}/sysmanager/role/checkroleexist.page",
+			 			data :{"roleName":roleName},
+			 			dataType : 'json',
+			 			async:false,
+			 			beforeSend: function(XMLHttpRequest){ 					
+			 				 	
+			 				},
+			 			success : function(responseText){
+			 				
+			 				if(responseText=="exist"){		 					
+			 					 PDP.showError(".alert-addroleexist","角色"+roleName+"已被占用!");
+			 					$(".close-addrolenotexist").trigger("click");
+			 				}else{
+			 					PDP.showError(".alert-addrolenotexist","角色"+roleName+"没有被占用，可以使用!");
+			 					$(".close-addroleexist").trigger("click");
+			 				}
+			 			}
+			 		  });
+			}
+			
+		});
 		
 	});
 </script>

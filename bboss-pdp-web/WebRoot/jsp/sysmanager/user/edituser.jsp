@@ -259,6 +259,8 @@
 			 var olduserWorknumber = $(".form_sys_modifyuser input[name='olduserWorknumber']").val()
 			 if(userWorknumber == (olduserWorknumber))
 				 return;
+			if(userWorknumber == "")
+				return;
 			var userId = $(".form_sys_modifyuser input[name='userId']").val()
 			$.ajax({
 		 		   type: "POST",

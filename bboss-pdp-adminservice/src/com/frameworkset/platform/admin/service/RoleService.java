@@ -129,4 +129,9 @@ public interface RoleService {
 	 * @return
 	 */
 	public boolean hasGrantRole(AuthRole role, String resource, String resourceType)  throws RoleException ;
+	/**
+	 * @param roleName
+	 * @return
+	 */
+	public boolean checkroleexist(String roleName) throws RoleException ;
 }

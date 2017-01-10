@@ -69,7 +69,9 @@
 	src="${pageContext.request.contextPath}/assets/sysmanager/sysmanager.js"
 	type="text/javascript"></script>	
 <!-- END PAGE LEVEL PLUGINS -->
-
+<script
+	src="${pageContext.request.contextPath}/assets/sysmanager/sysuser.js" type="text/javascript"></script>
+     
 <script type="text/javascript">
 	
 	jQuery(document).ready(function() {

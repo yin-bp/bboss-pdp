@@ -27,6 +27,11 @@
  -->
 <properties>
 	
+	<property name="checkroleexist">
+		<![CDATA[
+			select count(role_id) from td_sm_role where ROLE_NAME = ?
+		]]>
+	</property>
 		<property name="addRole">
 		<![CDATA[
 			insert into td_sm_role (ROLE_ID,OWNER_ID,REMARK1,REMARK2,REMARK3,ROLE_DESC,ROLE_NAME,ROLE_TYPE,ROLE_USAGE) values(#[roleId],#[ownerId],#[remark1],#[remark2],#[remark3],#[roleDesc],#[roleName],#[roleType],#[roleUsage])
