@@ -13,8 +13,11 @@
 			 
 			<div class="form-body">
 				<div class="col-md-4">
-					<div class="form-group form-md-line-input">									
-						<div class="col-md-12">
+					<div class="form-group form-md-line-input">		
+						<label class="col-md-3 control-label" for="form_control_1">输入条件
+
+						</label>							
+						<div class="col-md-9">
 							<div class="input-icon right">
 								<input type="text" class="form-control  input-xs"
 									placeholder="" name="userAttr" >
