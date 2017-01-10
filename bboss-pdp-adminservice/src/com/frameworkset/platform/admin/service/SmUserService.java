@@ -19,6 +19,7 @@ package com.frameworkset.platform.admin.service;
 import java.util.List;
 
 import com.frameworkset.platform.admin.entity.MoveinUserCondition;
+import com.frameworkset.platform.admin.entity.QueryUserCondition;
 import com.frameworkset.platform.admin.entity.SmUser;
 import com.frameworkset.platform.admin.entity.SmUserCondition;
 import com.frameworkset.util.ListInfo;
@@ -104,4 +105,11 @@ public interface SmUserService {
 	 * @return
 	 */
 	public boolean checkuserexist(String userAccount)throws SmUserException;
+	/**
+	 * @param condition
+	 * @param offset
+	 * @param pagesize
+	 * @return
+	 */
+	public ListInfo queryUsers(QueryUserCondition condition, long offset, int pagesize)throws SmUserException;
 }

@@ -34,6 +34,7 @@ import com.frameworkset.common.poolman.ConfigSQLExecutor;
 import com.frameworkset.common.poolman.handle.ResultSetNullRowHandler;
 import com.frameworkset.orm.transaction.TransactionManager;
 import com.frameworkset.platform.admin.entity.MoveinUserCondition;
+import com.frameworkset.platform.admin.entity.QueryUserCondition;
 import com.frameworkset.platform.admin.entity.SmUser;
 import com.frameworkset.platform.admin.entity.SmUserCondition;
 import com.frameworkset.util.ListInfo;
@@ -644,6 +645,18 @@ public class SmUserServiceImpl implements SmUserService {
 		try {
 			int num = this.executor.queryObject(int.class, "checkuserexist", userAccount);
 			return num > 0;
+		} catch (SQLException e) {
+			throw new SmUserException(e);
+		}
+	}
+	
+	public ListInfo queryUsers(QueryUserCondition condition, long offset, int pagesize)throws SmUserException{
+		
+		
+		try {
+			ListInfo _users = this.executor.queryListInfoBean(SmUser.class, "queryUsers", offset, pagesize, condition);
+//			users = _users.getDatas();
+			return _users;
 		} catch (SQLException e) {
 			throw new SmUserException(e);
 		}

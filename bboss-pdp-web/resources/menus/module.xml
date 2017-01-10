@@ -174,16 +174,12 @@
 			</item>
 
 			<item name="用户查询" id="userquery"   i18n:en_US="User Query">
-					<mouseclickimg>html/images/jixiao.jpg</mouseclickimg>
-				<top>header.page</top>
-				<!-- <top>perspective_toolbar.jsp</top> -->
-				<!-- <left>perspective_outlookbar.jsp</left> -->
-				<navigator></navigator>
+				  
 				<workspace>
-					<content>sysmanager/user/userquery_content_tab.jsp</content>
+					<content>/sysmanager/userquery/index.page</content>
 				</workspace>
 				<authoration>				 
-				 	<url>/sysmanager/user/*.jsp</url>
+				 	<url>/sysmanager/userquery/*.page,/jsp/sysmanager/userquery/*.jsp</url>
 				</authoration>
 				
 			</item>

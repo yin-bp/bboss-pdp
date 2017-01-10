@@ -284,4 +284,21 @@
 		]]>
 	</property>
 	
+	<property name="queryUsers">
+		<![CDATA[
+			
+			select u.*,o.org_name as departName from td_sm_user u left join td_sm_organization o on u.depart_id = o.org_id where 1=1 
+			
+			#if($userIsvalid && $userIsvalid != -1)
+					and USER_ISVALID=#[userIsvalid]
+			#end
+			#if($userAttr && !$userAttr.equals(""))
+				and (USER_NAME like #[userAttr]	or USER_REALNAME like #[userAttr] or USER_MOBILETEL1 like #[userAttr]	or USER_WORKNUMBER like #[userAttr]	)	
+			#end
+			order by USER_NAME,user_sn 
+			
+
+		]]>
+	</property>
+	
 </properties>

@@ -2,18 +2,15 @@
 	contentType="text/html; charset=utf-8"%>
 <%@ taglib uri="/WEB-INF/tld/pager-taglib.tld" prefix="pg" %>
 <%@ taglib uri="/WEB-INF/tld/dictionary.tld" prefix="dict" %>
-<pg:pager scope="request"  data="users" desc="false" isList="false" containerid=".select_users_movein">
-	<pg:param name="fromDepartId"/>
-	<pg:param name="recursive"/>
+<pg:pager scope="request"  data="users" desc="false" isList="false" containerid=".portlet_userlists">
+
 	<pg:param name="userIsvalid"/>
 	<pg:param name="userAttr"/>
 	
-<table	class="table table-bordered table-striped table-condensed table-moveinuserlist scroller" style="height:50px;">
+<table	class="table table-bordered table-striped table-condensed " style="height:50px;">
 	<thead >
 		<tr>
-			<th width="2%">
-					<input type="checkbox" class="checkboxall" onClick="checkAll('.table-moveinuserlist .checkboxall','.table-moveinuserlist .checkone')"
-					/></th>
+			 
 			<th width="6%">序号</th>
 			<th width="20%">账号名称</th>
 			 
@@ -28,13 +25,7 @@
 	<tbody>
 		<pg:list >
 		  	 <tr>
-		  	 	<td><input
-						name="userId" type="checkbox" class="checkone" onClick="checkOne('.table-moveinuserlist .checkboxall','.table-moveinuserlist .checkone')" 
-						value="<pg:cell colName="userId"/>" 
-						userName="<pg:cell colName="userName"/>"
-						userWorknumber="<pg:cell colName="userWorknumber"/>"
-						userRealname="<pg:cell colName="userRealname"/>"/>
-				</td>
+		  	 	 
 				<td> <pg:rowid increament="1" /> </td>
 		  	 	
 	            <td> <pg:cell colName="userName"/> <pg:cell colName="userRealname"/></td>
@@ -43,7 +34,7 @@
 	             <td> <dict:itemname type="sex"  colName="userSex"/> </td>
 	            <td> <dict:itemname type="userType"  colName="userType"/> </td>
 	            <td> <dict:itemname type="userIsvalid"  colName="userIsvalid"/></td>
-	            <td> <pg:cell colName="departName"/> </td>
+	            <td><pg:empty colName="departName" evalbody="true"><pg:yes>待岗用户</pg:yes><pg:no> <pg:cell colName="departName"/></pg:no></pg:empty> </td>
 	        </tr>
 	    </pg:list>
 		
