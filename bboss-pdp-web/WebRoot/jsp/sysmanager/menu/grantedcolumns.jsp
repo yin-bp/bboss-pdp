@@ -2,7 +2,7 @@
 	contentType="text/html; charset=utf-8"%>
 <%@ taglib uri="/WEB-INF/tld/pager-taglib.tld" prefix="pg"%>
 <%@ taglib uri="/WEB-INF/tld/admin-taglib.tld" prefix="admin"%>
-
+<div class="portlet light bordered">
 <div class="portlet-title">
 	<div class="caption">
 		<i class="icon-pin font-yellow-crusta"></i> <span
@@ -12,6 +12,7 @@
 	</div>
 	<pg:true actual="${roleNeedGrantResource }">
 	<div class="actions">
+			<admin:haspermission resource="globalrole" opcode="roleresauth" resourceType="role">
 			<a
 				class="btn btn-xs blue"  
 				id="button_sys_add_authmenu"> 添加菜单 <i class="fa fa-edit"></i>
@@ -20,6 +21,7 @@
 			 <a class="btn btn-xs red" id="button_sys_delete_authmenu">
 				<i class="fa fa-times"></i> 移除选中菜单
 			</a> 
+			</admin:haspermission>
 		</div>
 	</pg:true>	
 </div>
@@ -55,6 +57,7 @@
      </tbody>
  </table>
  
+</div>
 </div>
 <script type="text/javascript">
 		jQuery(document).ready(function() {								
@@ -179,6 +182,8 @@
 		        });
 		        
 			}
+			<pg:notempty actual="${grantedcolumns}">
 			initTable4();
+			</pg:notempty>
 		});
 </script>

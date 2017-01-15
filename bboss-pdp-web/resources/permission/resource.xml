@@ -9,12 +9,13 @@
 			角色管理操作组
 		-->
 		<group id="roleoperation" name="角色管理操作组" i18n:en_US="Grant Roles">
-			<operation id="roleset" priority="30" name="角色授予" i18n:en_US="Grant Roles">
+			<operation id="roleuserauthor" priority="30" name="角色授予" i18n:en_US="Grant user Roles">
 			  <description i18n:en_US="Grant Roles,You can grant some role to other users since that role's grant authoriation be granted to you.">
 				<![CDATA[
 					角色授予，用户拥有角色的角色授予权限就可以将该角色赋给其他用户，用户自己创建的角色缺省拥有该权限
 				]]>
 			  </description>
+			  
 			</operation>
 			
 			
@@ -26,10 +27,52 @@
 			<operation id="rolemanager" priority="20" name="角色管理" i18n:en_US="Role Manager">
 			  <description i18n:en_US="Role Manager:Add,Delete,Edit,Query Role or RoleType,These operations Only for the owner of Roles.">
 				<![CDATA[
-					新增角色，删除角色只能删除自己创建的角色，角色修改，角色类型添加，角色类型删除，角色查询，角色信息查看，用户只能对自己创建的角色进行角色管理
+					新增角色，删除角色，角色修改，角色类型添加，角色类型删除，角色查询，角色信息查看，用户只能对自己创建的角色进行角色管理
 				]]>
 			  </description>
+			  <authoration>		 	
+				 	<url>/sysmanager/role/addRole.page,
+				 	/sysmanager/role/deleteRole.page,
+				 	/sysmanager/role/deleteBatchRole.page,
+				 	/sysmanager/role/updateRole.page,
+				 	/sysmanager/role/toAddRole.page,
+				 	/sysmanager/role/toUpdateRole.page</url>
+				 	<url>/jsp/sysmanager/role/roleAdd.jsp,
+				 	/jsp/sysmanager/role/roleEdit.jsp
+				 	</url>				 	
+				</authoration>
 			</operation>
+			<operation id="roleresauth" priority="20" name="角色授权" i18n:en_US="Role resource Auth">
+			  <description i18n:en_US="Role resource authorization.">
+				<![CDATA[
+					角色资源授权和用户设置
+				]]>
+			  </description>
+			  <authoration>		 	
+				 	
+				 	<url>/sysmanager/role/deleteRoleAuthResources.page,/sysmanager/role/saveRoleResourceAuths.page,/sysmanager/role/saveRoleAuths.page</url>		 	
+				</authoration>
+			  <!-- <authoration>		 	
+				 	<url>/sysmanager/role/deleteRoleAuthResources.page,/sysmanager/role/saveRoleResourceAuths.page,/sysmanager/role/saveRoleAuths.page</url>
+				 	
+				</authoration> -->
+			</operation>
+			
+			<operation id="roleuserset" priority="20" name="设置角色用户" i18n:en_US="Role resource Auth">
+			  <description i18n:en_US="Role resource authorization.">
+				<![CDATA[
+					角色资源授权和用户设置
+				]]>
+			  </description>
+			  <authoration>		 	
+				 	<url>/sysmanager/user/saveRoleUsers.page,/sysmanager/user/saveUserRoles.page</url>						 			 	
+				</authoration>
+			  <!-- <authoration>		 	
+				 	<url>/sysmanager/role/deleteRoleAuthResources.page,/sysmanager/role/saveRoleResourceAuths.page,/sysmanager/role/saveRoleAuths.page</url>
+				 	
+				</authoration> -->
+			</operation>
+			 
     	</group>
 		
 	 <!--
@@ -115,26 +158,6 @@
 	<!--  
 		权限资源授予配置start
 	-->
-	<!-- 机构资源 -->
-	<resource id="orgunit" name="部门资源"  i18n:en_US="Organization Resource"  class="resOrgTree.jsp" default="true" allowIfNoRequiredRole="false" auto="true" system="module,cms,mbp,esb,autodeploy,dp">
-		<!--定义非未受保护的特殊资源-->	
-		<!--<exclude resourceid="*"/>
-		<operation id="userorgset"/>
-		</exclude>-->
-			
-        <!--
-			定义资源操作组
-			name:指定资源操作组的名称，具体的操作定义在操作组中
-        -->
-        <operationgroup groupid="orgoperations"/>
-                
-        <!-- 
-        	机构资源全局操作
-       		globalresourceid:全局操作对应的资源标识id
-        	groupid:全局操作对应的操作组
-        -->
-        <globaloperationgroup globalresourceid="orgunit" groupid="gloabelorgunit"/>
-	</resource>
 	<group id="group23" name="组23">
 		<operation id="visible" priority="10" name="可点击" />
     </group>	
@@ -146,8 +169,7 @@
 			 system="module">
 		<unprotected resourceid="personuserinfomodify" />
 		<unprotected resourceid="personsecretpassword" />
-		<unprotected resourceid="appManager" />
-		<unprotected resourceid="appManageItem" />
+	 
 					
 		<!--<unprotected resourceid="contentManageItem" />-->
 		<!--<unprotected resourceid="templetmanager" />-->
@@ -170,6 +192,27 @@
 		<!--定义资源操作组-->
 		<operationgroup groupid="group23"/>
 	</resource>
+	<!-- 机构资源 -->
+	<resource id="orgunit" name="部门资源"  i18n:en_US="Organization Resource"  default="true" allowIfNoRequiredRole="false" auto="true" system="module">
+		<!--定义非未受保护的特殊资源-->	
+		<!--<exclude resourceid="*"/>
+		<operation id="userorgset"/>
+		</exclude>-->
+			
+        <!--
+			定义资源操作组
+			name:指定资源操作组的名称，具体的操作定义在操作组中
+        -->
+        <operationgroup groupid="orgoperations"/>
+                
+        <!-- 
+        	机构资源全局操作
+       		globalresourceid:全局操作对应的资源标识id
+        	groupid:全局操作对应的操作组
+        -->
+        <globaloperationgroup globalresourceid="orgunit" groupid="gloabelorgunit"/>
+	</resource>
+	
 	
 	<!-- 角色资源 -->
 	<resource id="role" name="角色资源"  i18n:en_US="Role Resource"  source="/sysmanager/role/grantedroles.page"   auto="true" system="module">

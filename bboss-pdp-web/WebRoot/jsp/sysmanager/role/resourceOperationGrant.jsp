@@ -1,12 +1,13 @@
 <%@ page session="false" language="java"
 	contentType="text/html; charset=utf-8"%>
 <%@ taglib uri="/WEB-INF/tld/pager-taglib.tld" prefix="pg"%>
+<%@ taglib uri="/WEB-INF/tld/admin-taglib.tld" prefix="admin"%>
 
 <div class=" col-md-12">
 	<pg:notempty actual="${resourceSource }">
 		<div class="row">
-			<div class="col-md-12">
-				<div class="portlet light bordered auto-resourcesauthsource">
+			<div class="col-md-12 auto-resourcesauthsource">
+				 
 					<script type="text/javascript">
 							jQuery(document).ready(function() {								
 								loadauto_resourcesauthsource();
@@ -18,7 +19,7 @@
 								});
 							}
 					</script>
-				</div>
+				 
 			</div>
 		</div>
 	</pg:notempty>
@@ -140,8 +141,10 @@
 				<div class="row">
 					<div class="col-md-offset-3 col-md-9">
 					<pg:true actual="${roleNeedGrantResource }">
+						<admin:haspermission resource="globalrole" opcode="roleresauth" resourceType="role">
 						<button type="button" class="btn green btn-saveroleauths">提交</button>
 						<button type="reset" class="btn default">重置</button>
+						</admin:haspermission>
 					</pg:true>	
 						<button type="button" class="btn default" data-dismiss="modal">关闭</button>
 						 

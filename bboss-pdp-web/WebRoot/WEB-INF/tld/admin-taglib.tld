@@ -16,6 +16,23 @@
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
     </tag>
+    <tag>
+        <name>haspermission</name>
+        <tagclass>org.frameworkset.platform.security.CheckPermissionTag</tagclass>
+        <bodycontent>JSP</bodycontent>
+ 		<attribute>
+			<name>resource</name>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>opcode</name>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>resourceType</name>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+    </tag>
   
     <tag>
         <name>menu</name>
