@@ -62,9 +62,11 @@ public class SmOrganizationController {
 			return null;
 		boolean choosenormalorg = isuser || chooseuser;
 		List<SmOrganization> orgs = smOrganizationService.getChildren(parent,  choosenormalorg);
+		if(!isuser){
+			if(orgs == null || orgs.size() == 0)
+				return null;
+		}
 		
-		if(orgs == null || orgs.size() == 0)
-			return null;
 		List<JSTreeNode> treeNodes = new ArrayList<JSTreeNode>();
 		for(SmOrganization org:orgs)
 		{
