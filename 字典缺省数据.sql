@@ -1,0 +1,3 @@
+INSERT INTO td_sm_dict (DICT_ID, HANDLER, DICT_CODE, DICT_NAME, CACHE_ENABLE, IS_TREE, OWNER_ID, DICT_DESC, DICT_STATUS) VALUES ('8ce34d257e93477ab29435d5d629a224', 'default', 'userType', '用户类别', '1', '0', '1', '用户类别', '1');
+INSERT INTO td_sm_dict (DICT_ID, HANDLER, DICT_CODE, DICT_NAME, CACHE_ENABLE, IS_TREE, OWNER_ID, DICT_DESC, DICT_STATUS) VALUES ('c7b06495bce34779b1b20a70ddb03a68', 'default', 'sex', '性别', '0', '1', '1', '用户性别', '1');
+INSERT INTO td_sm_dict (DICT_ID, HANDLER, DICT_CODE, DICT_NAME, CACHE_ENABLE, IS_TREE, OWNER_ID, DICT_DESC, DICT_STATUS) VALUES ('c8a5641788724925a98f21d1cda4ddab', 'default', 'userIsvalid', '用户状态', '1', '0', '1', '用户状态', '1');
