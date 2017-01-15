@@ -86,73 +86,22 @@
 			机构全局资源操作组 
 		-->
 	    <group id="gloabelorgunit" name="机构全局资源操作组">
-			<operation id="tranorg" priority="30" name="机构转移" >
-			  <description>
-				<![CDATA[
-					转移机构，不能转移自己所属机构，只能转移其管理的下级机构
-				]]>
-			   </description>
-		    </operation>
-		    <operation id="newdelorg" priority="30" name="机构新增删除">
+			 
+		    <operation id="orgmanager" priority="30" name="部门管理">
 			  <description>
 			     <![CDATA[
-			         建子机构，删除机构
+			         建子机构，删除机构，修改机构,机构管理员设置
 			     ]]>
 			 </description>
 			</operation>
-			<operation id="changeorgadmin" priority="30" name="机构管理员设置" >
-			  <description>
-				<![CDATA[
-					不能设置自己所属机构的部门管理员
-				]]>
-			  </description>
-			</operation>
-			<operation id="orgupdate" priority="30" name="机构信息修改">
-			  <description>
-				<![CDATA[
-					机构基本信息修改，一般只有超级管理员才能进行机构管理
-				]]>
-			  </description>
-			</operation>
-			<operation id="purset" priority="30" name="权限设置管理" >
-			  <description>
-				<![CDATA[
-					用户批量权限回收（授权）,用户批量权限授予（授权）,用户权限授予（授权）,
-					用户权限复制（授权）,用户权限回收（授权）,机构权限回收（授权）
-				]]>
-			  </description>
-			</operation>
-			<operation id="usermanager" priority="30" name="用户调入调出" >
+			<operation id="usermanager" priority="30" name="用户管理" >
 			  <description>
 				<![CDATA[
 					用户调入，用户调出，内容管理中的用户状态修改，包括开通、停用、删除、离散管理
 				]]>
 			  </description>
 			</operation>
-			<operation id="newdeluser" priority="30" name="用户新增删除" >
-			  <description>
-				<![CDATA[
-					新增用户，删除用户
-				]]>
-			  </description>
-			</operation>
-			<operation id="userupdate" priority="30" name="用户信息修改" >
-			  <description>
-				<![CDATA[
-					用户基本信息修改
-				]]>
-			  </description>
-			</operation>
-			
-			
-			 
-<!--			<operation id="userupduuu" priority="30" name="我的测试操作" >-->
-<!--			  <description>-->
-<!--				<![CDATA[-->
-<!--					我的测试冗余操作-->
-<!--				]]>-->
-<!--			  </description>-->
-<!--			</operation>-->
+		 
 			 
 		</group>
 	<!--  

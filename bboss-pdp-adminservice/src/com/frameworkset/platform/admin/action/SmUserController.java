@@ -228,24 +228,13 @@ public class SmUserController {
 				conditions.setSortKey(sortKey);
 				conditions.setSortDesc(desc);
 			}
-			String userMobiletel1 = conditions.getUserMobiletel1();
-			if (userMobiletel1 != null && !userMobiletel1.equals("")) {
-				conditions.setUserMobiletel1("%" + userMobiletel1 + "%");
+			if(conditions.getUserAttr() != null && !conditions.getUserAttr().equals(""))
+			{
+				conditions.setUserAttr("%" + conditions.getUserAttr()+"%" );
 			}
-			String userName = conditions.getUserName();
-			if (userName != null && !userName.equals("")) {
-				conditions.setUserName("%" + userName + "%");
-			}
-			String userRealname = conditions.getUserRealname();
-			if (userRealname != null && !userRealname.equals("")) {
-				conditions.setUserRealname("%" + userRealname + "%");
-			}
-			String userWorknumber = conditions.getUserWorknumber();
-			if (userWorknumber != null && !userWorknumber.equals("")) {
-				conditions.setUserWorknumber("%" + userWorknumber + "%");
-			}
+			
 
-			ListInfo smUsers = smUserService.queryListInfoSmUsers(conditions, offset, pagesize);
+			ListInfo smUsers = smUserService.queryListInfoSmUsers(conditions, offset , pagesize);
 			model.addAttribute("smUsers", smUsers);
 			return "path:queryListInfoSmUsers";
 		} catch (SmUserException e) {

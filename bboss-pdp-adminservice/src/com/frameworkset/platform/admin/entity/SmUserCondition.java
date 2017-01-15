@@ -42,6 +42,7 @@ public class SmUserCondition implements java.io.Serializable {
 	 * 中文名
 	 */
 	private String userRealname;
+	private String userAttr;
 	/**
 	 * 用户性别
 	 */
@@ -175,6 +176,12 @@ public class SmUserCondition implements java.io.Serializable {
 	}
 	public String getOrgtreelevelLike() {
 		return orgtreelevelLike;
+	}
+	public String getUserAttr() {
+		return userAttr;
+	}
+	public void setUserAttr(String userAttr) {
+		this.userAttr = userAttr;
 	}
 
 }

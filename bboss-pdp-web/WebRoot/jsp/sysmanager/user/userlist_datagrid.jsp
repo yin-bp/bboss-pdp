@@ -80,7 +80,7 @@
                           <td>
                             <input type="text" class="form-control form-filter input-xs" name="userMobiletel1"> </td>
                          <td>
-                         		<dict:select  type="sex" name="userSex" textValue="全部" textNAN="-1" extend="class=\"form-control form-filter input-xs\"" />
+                         		<dict:select  type="sex" name="userSex" textValue="全部" textNAN="" extend="class=\"form-control form-filter input-xs\"" />
                             
                             </td>
                           <td>
