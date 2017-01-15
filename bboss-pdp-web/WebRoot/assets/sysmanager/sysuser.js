@@ -1147,7 +1147,7 @@ var SysUser = function(){
 					"userId":userId
 			      },
 				width:"900px",
-				height:"400px"
+				height:"500px"
 
          });
     }
@@ -1362,6 +1362,9 @@ var SysUser = function(){
 		 },
 		 queryUserList:function(departId,doquery){
 			 queryUserList(departId,doquery);
+		 },
+		 toauthUser : function(userId,userName,userAccount){
+			 toauthUser (userId,userName,userAccount);
 		 }
 		
     	

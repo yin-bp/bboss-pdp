@@ -118,7 +118,7 @@
 			                    	 var userAccount = $(this).attr("userAccount");
 			                    	 if(defaultAdmin == 'false')
 			                    	 {
-			                    		 toauthUser(userId,userName,userAccount)
+			                    		 SysUser.toauthUser(userId,userName,userAccount)
 			                    	 }
 			                    	 else
 		                    		 {
