@@ -1,6 +1,7 @@
 var Sysmanager = new function(){
 	var departid;
 	var departName;
+	var org_tree;
 	var setDepartName = function (name){
 		departName = name;
 	}
@@ -13,10 +14,16 @@ var Sysmanager = new function(){
 	var getDepartId = function(){
 		return departid;
 	}
+	var refreshOrgTree = function(orgId){
+		var tree = jQuery.jstree.reference("#org_tree");
+		tree.refresh("#" + orgId);
+		//org_tree.refresh("#" + orgId); 
+	}
+	  
 	//初始化组织机构树
 	var initorg_tree = function(isuser){
 		
-		 $("#org_tree").jstree({
+		org_tree = $("#org_tree").jstree({
 	            "core" : {
 	                "themes" : {
 	                    "responsive": false
@@ -112,6 +119,9 @@ var Sysmanager = new function(){
 		},
 		setDepartName : function (name){
 			setDepartName (name);
+		},
+		refreshOrgTree:function(orgid){
+			refreshOrgTree(orgid);
 		}
 		
 		
