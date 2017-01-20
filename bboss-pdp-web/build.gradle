@@ -29,12 +29,17 @@ sourceSets {
 	  compile 'io.jsonwebtoken:jjwt:0.7.0' 
       compile (
 		  [group: 'mysql', name: 'mysql-connector-java', version: '5.1.39', transitive: false],
+		   fileTree(dir: '../lib', include: '**/*.jar'),    
 		)
 	    
 	   
 	}
  
 
-
+task releaseArchives(type: Zip,dependsOn:"war") {
+    //appendix = 'wrapper'
+   baseName='dbinit-system'
+   from '../dbinit-system'   
+}
 
 //webAppDirName = 'WebRoot'  
