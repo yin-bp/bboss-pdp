@@ -110,27 +110,18 @@
 					<content>/sysmanager/user/index.page</content>
 				</workspace>
 				<authoration>				 
-				 	<url>/purviewmanager/userorgmanager/org/*.jsp</url>	
-				 	<url>/purviewmanager/userorgmanager/user/*.jsp</url>
-				 	<url>/purviewmanager/rolemanager/*.jsp</url>
-				 	<url>/purviewmanager/jobmanager/*.jsp</url>
-				 	<url>/purviewmanager/groupmanager/*.jsp</url>
-				 	<url>/purviewmanager/resmanager/*.jsp</url>					 			 
+				 	<url>/jsp/sysmanager/user/main.jsp</url>	
+				 	 		 			 
 				</authoration>
 			</item>
 			
-			<item name="部门管理" id="orgmanager"  i18n:en_US="orgmanager Manage" >
-				
+			<item name="部门管理" id="orgmanager"  i18n:en_US="orgmanager Manage" >				
 				<workspace>
 					<content>/sysmanager/org/index.page</content>
 				</workspace>
 				<authoration>				 
-				 	<url>/purviewmanager/userorgmanager/org/*.jsp</url>	
-				 	<url>/purviewmanager/userorgmanager/user/*.jsp</url>
-				 	<url>/purviewmanager/rolemanager/*.jsp</url>
-				 	<url>/purviewmanager/jobmanager/*.jsp</url>
-				 	<url>/purviewmanager/groupmanager/*.jsp</url>
-				 	<url>/purviewmanager/resmanager/*.jsp</url>					 			 
+				 	<url>/jsp/sysmanager/org/main.jsp</url>	
+				 	 			 			 
 				</authoration>
 			</item>
 			
@@ -140,12 +131,8 @@
 					<content>/sysmanager/role/index.page</content>
 				</workspace>
 				<authoration>				 
-				 	<url>/purviewmanager/userorgmanager/org/*.jsp</url>	
-				 	<url>/purviewmanager/userorgmanager/user/*.jsp</url>
-				 	<url>/purviewmanager/rolemanager/*.jsp</url>
-				 	<url>/purviewmanager/jobmanager/*.jsp</url>
-				 	<url>/purviewmanager/groupmanager/*.jsp</url>
-				 	<url>/purviewmanager/resmanager/*.jsp</url>					 			 
+				 		<url>/jsp/sysmanager/role/main.jsp</url>
+				 				 			 
 				</authoration>
 			</item>
 			<item name="资源管理" id="resquery"   i18n:en_US="Resource Query">
@@ -158,7 +145,7 @@
 					<content>sysmanager/resource/index.page</content>
 				</workspace>
 				<authoration>				 
-				 	<url>/sysmanager/resmanager/*.jsp</url>
+				 	<url>/jsp/sysmanager/resource/main.jsp</url>
 				</authoration>
 			</item>
 			
@@ -167,8 +154,7 @@
 				<workspace>
 					<content>/menu/index.page</content>
 				</workspace>
-				<authoration>				 
-				 	<url>/menu/*.page</url>
+				<authoration>
 				 	<url>/jsp/sysmanager/menu/*.jsp</url>
 				</authoration>
 			</item>

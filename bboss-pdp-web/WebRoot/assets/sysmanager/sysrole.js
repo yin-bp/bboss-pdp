@@ -97,7 +97,8 @@ var SysRole = function()
 		$(".portlet-rolelist").load(usercontextpath+"/sysmanager/role/queryListInfoRoles.page",
 									doquery?$('.form-queryrole').serialize():{},
 									function(){
-										PlatformCommonUtils.popconfirmation({selector:'[data-toggle=role_ops_confirmation]',buttons:SysRole.roleButtonMethods()});
+										//PlatformCommonUtils.popconfirmation({selector:'[data-toggle=role_ops_confirmation]',buttons:SysRole.roleButtonMethods()});
+										//罗到界面上
 										
 									});	
 	}

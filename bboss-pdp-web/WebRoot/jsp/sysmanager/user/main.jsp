@@ -54,7 +54,7 @@
 			<div class="col-md-12">
 
 				<!-- Begin: UserList Datatable  -->
-				<%@ include file="/jsp/sysmanager/user/userlist.jsp"%>
+				<%@ include file="/jsp/sysmanager/user/usermain.jsp"%>
 				<!-- End: UserList Datatable  -->
 
 			</div>
@@ -79,7 +79,7 @@
 	jQuery(document).ready(function() {
 		Sysmanager.initorg_tree(true); //  initorg_tree core componets
 
-		SysUser.getUserList('0');
+		SysUser.queryUserList('0',false);
 
 		PlatformCommonUtils.initSlimScroll('.scroller', null, true);
 

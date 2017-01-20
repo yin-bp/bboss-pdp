@@ -1,7 +1,6 @@
 package org.frameworkset.platform.config.model;
 
 import org.apache.log4j.Logger;
-import org.frameworkset.platform.security.PermissionModule;
 import org.frameworkset.platform.security.authorization.AuthRole;
 import org.frameworkset.platform.security.authorization.impl.BaseAuthorizationTable;
 import org.frameworkset.spi.BaseApplicationContext;
@@ -14,7 +13,7 @@ import org.frameworkset.web.servlet.support.WebApplicationContextUtils;
  *
  * <p>Copyright: Copyright (c) 2006</p>
  *
- * <p>Company: 三一集团</p>
+ * <p>Company: bboss</p>
  *
  * @author biaoping.yin
  * @version 1.0
@@ -33,7 +32,8 @@ public class AuthorTableInfo implements java.io.Serializable {
     /**
      * 定义每个人都授予的角色
      */
-    private AuthRole everyonegrantedrole; 
+    private static  AuthRole everyonegrantedrole; 
+    private static AuthRole guestrole; 
     public static void main(String[] args) {
         AuthorTableInfo authortableinfo = new AuthorTableInfo();
     }
@@ -164,8 +164,11 @@ public class AuthorTableInfo implements java.io.Serializable {
     /**
      * @return Returns the everyonegrantedrole.
      */
-    public AuthRole getEveryonegrantedrole() {
+    public static AuthRole getEveryonegrantedrole() {
         return everyonegrantedrole;
+    }
+    public static  AuthRole getGuestRole() {
+        return guestrole;
     }
     /**
      * @param everyonegrantedrole The everyonegrantedrole to set.
@@ -175,5 +178,8 @@ public class AuthorTableInfo implements java.io.Serializable {
     	role.setRoleName(everyonegrantedrole);
     	role.setRoleType(AuthRole.TYPE_ROLE);
         this.everyonegrantedrole = role;
+        guestrole   = new AuthRole();
+        guestrole.setRoleName("guest");
+        guestrole.setRoleType(AuthRole.TYPE_ROLE);
     }
 }

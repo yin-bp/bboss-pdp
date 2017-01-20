@@ -121,7 +121,7 @@
         <column name="SATRAPJOBID" size="50" type="VARCHAR"/>
         <column default="1" name="ORG_LEVEL" size="1" type="VARCHAR"/>
         <column name="ORG_XZQM" size="10" type="VARCHAR"/>
-        <column name="ORG_TREE_LEVEL" size="100" type="VARCHAR"/>
+        <column name="ORG_TREE_LEVEL" size="500" type="VARCHAR"/>
         <column default="0" name="ISDIRECTLYPARTY" size="1" type="DECIMAL"/>
         <column default="0" name="ISFOREIGNPARTY" size="1" type="DECIMAL"/>
         <column default="0" name="ISJICHAPARTY" size="1" type="DECIMAL"/>

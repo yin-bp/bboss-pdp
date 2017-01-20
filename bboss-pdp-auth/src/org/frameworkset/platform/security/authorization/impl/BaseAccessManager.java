@@ -8,14 +8,12 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
-
 import org.frameworkset.platform.config.ConfigManager;
 import org.frameworkset.platform.config.model.ResourceInfo;
 import org.frameworkset.platform.resource.ResourceManager;
 import org.frameworkset.platform.security.authorization.AccessException;
 import org.frameworkset.platform.security.authorization.AccessManager;
 import org.frameworkset.platform.security.authorization.AuthRole;
-import org.frameworkset.platform.security.authorization.AuthUser;
 import org.frameworkset.platform.security.authorization.AuthorizationTable;
 import org.frameworkset.platform.security.context.AccessContext;
 
@@ -68,13 +66,13 @@ public abstract class BaseAccessManager implements AccessManager {
     /**
      *
      *  Description:判断pricipal是否具有对资源resource的访问权限，如果没有则抛出
-     *  com.ibm.ws.security.core.AccessException
+     *  AccessException
      * @param accesscontext
      * @param resource
      * @param method：参数暂不使用
      * @param principal
-     * @throws com.ibm.ws.security.core.AccessException
-     * @see com.ibm.ws.security.core.AccessManager#checkAccess(com.ibm.ws.security.core.AccessContext, java.lang.Object, java.lang.Object, java.security.Principal)
+     * @throws AccessException
+     * @see AccessManager#checkAccess(com.ibm.ws.security.core.AccessContext, java.lang.Object, java.lang.Object, java.security.Principal)
      */
 
     public void checkAccess(AccessContext accesscontext,
@@ -117,7 +115,8 @@ public abstract class BaseAccessManager implements AccessManager {
         if (isGrantedAnyRole(accesscontext, requiredRoles, principal)) {
             return;
         }
-        StringBuffer stringbuffer = new StringBuffer(128);
+        
+        StringBuilder stringbuffer = new StringBuilder();
         stringbuffer.append(principal.toString());
         stringbuffer.append(" is not granted any of the required roles: ");
         int k = requiredRoles.length;

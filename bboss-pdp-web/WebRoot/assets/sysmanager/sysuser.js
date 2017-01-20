@@ -277,6 +277,13 @@ var SysUser = function(){
 			});
 		});
 	}
+	var queryUserList = function(departId,doquery){
+		if(!doquery){
+			$(".form-queryusers .reset").click();
+		}
+			
+		$(".portlet_userlists").load(usercontextpath+"/sysmanager/user/queryListInfoSmUsers.page",doquery?$(".form-queryusers").serialize():{"departId":departId});
+	}
 	//初始化用户列表
 	var getUserList = function (departId) {
 		Sysmanager.setDepartid(departId);
@@ -1140,7 +1147,7 @@ var SysUser = function(){
 					"userId":userId
 			      },
 				width:"900px",
-				height:"400px"
+				height:"500px"
 
          });
     }
@@ -1297,11 +1304,12 @@ var SysUser = function(){
 			 Sysmanager.setDepartid(departId);
 		 else
 			 departId = Sysmanager.getDepartId();
-		 var table = $( "#datatable_userlist" ).DataTable()
-	   	   $("#datatable_userlist tr.filter .form-control").each(function() {
+		 //var table = $( "#datatable_userlist" ).DataTable()
+	   	  // $("#datatable_userlist tr.filter .form-control").each(function() {
 	             $(this).val('');
-	      });
-	   	   table.ajax.url( "../sysmanager/user/getDepartUsers.page?departId="+departId ).load();
+	      //});
+	   	  // table.ajax.url( "../sysmanager/user/getDepartUsers.page?departId="+departId ).load();
+	      queryUserList(departId,false);
      }
     return {
     	init:function(usercontextpath){
@@ -1351,6 +1359,12 @@ var SysUser = function(){
 		 },
 		 initusercontextpath:function(path){
 			 initusercontextpath(path);
+		 },
+		 queryUserList:function(departId,doquery){
+			 queryUserList(departId,doquery);
+		 },
+		 toauthUser : function(userId,userName,userAccount){
+			 toauthUser (userId,userName,userAccount);
 		 }
 		
     	

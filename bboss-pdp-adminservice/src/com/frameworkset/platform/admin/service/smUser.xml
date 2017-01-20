@@ -141,6 +141,46 @@
 			select max(USER_SN)+1 from td_sm_user where DEPART_ID=?
 		]]>
 	</property>
+	<property name="queryListInfoSmUsers">
+		<![CDATA[
+			select u.*,o.org_name as departName from td_sm_user u left join td_sm_organization o on u.depart_id = o.org_id where 1=1 
+			#if( !($recursive  && $recursive.equals("3")) )			
+				#if(!$departId.equals("lisan"))
+					#if( !$recursive  || $recursive.equals("0") || $recursive.equals("") )
+						and depart_id=#[departId]
+					#elseif($recursive.equals("1"))
+						and (o.ORG_TREE_LEVEL like #[orgtreelevelLike] or o.ORG_TREE_LEVEL=#[orgtreelevel])
+					#end
+				#else
+					and (depart_id is null or depart_id ='')
+				#end	
+			#end
+			#if($userAttr && !$userAttr.equals(""))
+				and (USER_NAME like #[userAttr]	or USER_REALNAME like #[userAttr] or USER_MOBILETEL1 like #[userAttr]	or USER_WORKNUMBER like #[userAttr] or USER_IDCARD like #[userIdcard]	)	
+			#end
+			 
+			#if($chooseuser)
+				and USER_ISVALID = 2
+			#elseif($userIsvalid )
+					and USER_ISVALID=#[userIsvalid]
+			#end
+			 
+			 
+			#if($userSex && !$userSex.equals(""))
+				and USER_SEX =#[userSex]		
+			#end
+			#if($userType && !$userType.equals(""))
+				and USER_TYPE =#[userType]		
+			#end
+			 
+			#if($sortKey && !$sortKey.equals(""))
+				order by $sortKey #if($sortDesc)desc#else asc#end
+			#else
+			 	order by user_sn
+			#end
+
+		]]>
+	</property>
 	<property name="getDepartUsers">
 		<![CDATA[
 			select u.*,o.org_name as departName from td_sm_user u left join td_sm_organization o on u.depart_id = o.org_id where 1=1 

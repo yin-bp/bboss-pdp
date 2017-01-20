@@ -1,0 +1,10 @@
+INSERT INTO td_sm_parameters (PAEAM_ID, NAME, RN, VALUE, DICT_ID, data_order) VALUES ('0787e7ccc1224066a1bb0f34f87aa644', '第三方用户', 0, '2', '8ce34d257e93477ab29435d5d629a224', 2);
+INSERT INTO td_sm_parameters (PAEAM_ID, NAME, RN, VALUE, DICT_ID, data_order) VALUES ('0900329ec961462d9a169ad506aff537', '系统用户', 0, '0', '8ce34d257e93477ab29435d5d629a224', 0);
+INSERT INTO td_sm_parameters (PAEAM_ID, NAME, RN, VALUE, DICT_ID, data_order) VALUES ('3ba34a202cc24bce946b24be3606acb8', '女', 0, 'F', 'c7b06495bce34779b1b20a70ddb03a68', 1);
+INSERT INTO td_sm_parameters (PAEAM_ID, NAME, RN, VALUE, DICT_ID, data_order) VALUES ('3d8c7cbd0a1247c487ee3b6742a9dcca', '男', 0, 'M', 'c7b06495bce34779b1b20a70ddb03a68', 0);
+INSERT INTO td_sm_parameters (PAEAM_ID, NAME, RN, VALUE, DICT_ID, data_order) VALUES ('44e51509b27f46dd88edd347f5ebca8c', '未知', 0, '-1', 'c7b06495bce34779b1b20a70ddb03a68', 3);
+INSERT INTO td_sm_parameters (PAEAM_ID, NAME, RN, VALUE, DICT_ID, data_order) VALUES ('aee8a36f00f648e7b42168b36db18c6f', '开通', 0, '2', 'c8a5641788724925a98f21d1cda4ddab', 0);
+INSERT INTO td_sm_parameters (PAEAM_ID, NAME, RN, VALUE, DICT_ID, data_order) VALUES ('b22ff451aa4f4da98545d7d8c6fb8e7a', '申请', 0, '1', 'c8a5641788724925a98f21d1cda4ddab', 3);
+INSERT INTO td_sm_parameters (PAEAM_ID, NAME, RN, VALUE, DICT_ID, data_order) VALUES ('e28457861a0846f9b47c2fcd7e14e029', '停用', 0, '3', 'c8a5641788724925a98f21d1cda4ddab', 1);
+INSERT INTO td_sm_parameters (PAEAM_ID, NAME, RN, VALUE, DICT_ID, data_order) VALUES ('e507539e36df4c978896b52ba22a746d', '删除', 0, '0', 'c8a5641788724925a98f21d1cda4ddab', 2);
+INSERT INTO td_sm_parameters (PAEAM_ID, NAME, RN, VALUE, DICT_ID, data_order) VALUES ('f80192892881439680f96033525de1db', '域用户', 0, '1', '8ce34d257e93477ab29435d5d629a224', 1);

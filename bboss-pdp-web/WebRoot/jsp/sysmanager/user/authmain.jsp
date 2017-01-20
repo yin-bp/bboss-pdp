@@ -77,11 +77,13 @@
 				
 										</div>
 										<div class="actions">
-				
+										<admin:haspermission resource="globalrole" opcode="roleuserset" resourceType="role">
+											
 											<a href="javascript:;"
 												class="btn btn-circle blue btn-xs dotempadd_btn"> <i
 												class="fa fa-plus"></i> 添加选中角色
 											</a>
+										</admin:haspermission>	
 				
 										</div>
 									</div>
@@ -105,7 +107,8 @@
 				
 										</div>
 										<div class="actions">
-											
+											<admin:haspermission resource="globalrole" opcode="roleuserset" resourceType="role">
+										
 											<a href="javascript:;"
 												class="btn btn-circle blue btn-xs btn-submituserroles"> <i
 												class="fa fa-plus"></i> 保存
@@ -113,7 +116,7 @@
 												class="btn btn-circle red btn-xs clearselectedrole_btn">
 												<i class="fa fa-times"></i> 移除
 											</a>
-				
+											</admin:haspermission>	
 										</div>
 									</div>
 									<div class="portlet-body ">

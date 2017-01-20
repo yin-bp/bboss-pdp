@@ -12,8 +12,7 @@
 		<tr>
 			 
 			<th width="6%">序号</th>
-			<th width="20%">账号名称</th>
-			 
+			<th width="20%">账号名称</th>			 
 			<th width="10%">工号</th>
 			<th width="10%">电话</th>
 			<th width="10%">性别</th>

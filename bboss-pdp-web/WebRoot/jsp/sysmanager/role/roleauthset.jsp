@@ -124,7 +124,7 @@
 										</div>
 										<pg:true actual="${roleNeedSetUser }">
 										<div class="actions">
-				
+											<admin:haspermission resource="globalrole" opcode="roleuserset" resourceType="role">
 											<a href="javascript:;"
 												class="btn btn-circle blue btn-xs btn-addroleusers"> <i
 												class="fa fa-plus"></i> 添加用户
@@ -133,6 +133,7 @@
 												class="btn btn-circle red btn-xs btn-removeroleusers"> <i
 												class="fa fa-times"></i> 移除用户
 											</a>
+											</admin:haspermission>
 										</div>
 										</pg:true>
 									</div>

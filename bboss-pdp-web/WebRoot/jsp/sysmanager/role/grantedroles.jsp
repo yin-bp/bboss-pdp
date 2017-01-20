@@ -2,7 +2,7 @@
 	contentType="text/html; charset=utf-8"%>
 <%@ taglib uri="/WEB-INF/tld/pager-taglib.tld" prefix="pg"%>
 <%@ taglib uri="/WEB-INF/tld/admin-taglib.tld" prefix="admin"%>
-
+<div class="portlet light bordered">
 <div class="portlet-title">
 	<div class="caption">
 		<i class="icon-pin font-yellow-crusta"></i> <span
@@ -12,6 +12,7 @@
 	</div>
 	<pg:true actual="${roleNeedGrantResource }">
 	<div class="actions">
+			<admin:haspermission resource="globalrole" opcode="roleresauth" resourceType="role">
 			<a
 				class="btn btn-xs blue"  
 				id="button_sys_add_authrole"> 添加角色 <i class="fa fa-edit"></i>
@@ -20,6 +21,7 @@
 			 <a class="btn btn-xs red" id="button_sys_delete_authrole">
 				<i class="fa fa-times"></i> 移除选中角色
 			</a> 
+			</admin:haspermission>
 		</div>
 	</pg:true>	
 </div>
@@ -53,6 +55,7 @@
      </tbody>
  </table>
  
+</div>
 </div>
 <script type="text/javascript">
 		jQuery(document).ready(function() {								
@@ -173,6 +176,8 @@
 		            //"dom": "<'row' <'col-md-12'T>><'row'<'col-md-6 col-sm-12'l><'col-md-6 col-sm-12'f>r>t<'row'<'col-md-5 col-sm-12'i><'col-md-7 col-sm-12'p>>",
 		        });
 			}
+			<pg:notempty actual="${grantedroles}">
 			initTable4();
+			</pg:notempty>
 		});
 </script>

@@ -75,9 +75,10 @@
 						<table class="table table-striped table-hover table-bordered table-dictitemlist">
 					      <thead>
 					          <tr>
-					              <th> 操作编码 </th>
-					              <th> 操作名称</th>
-					              <th> <span class="tooltips" data-original-title="当url与操作关联，则url的访问权限自动与对应的操作权限一致"> 关联url</span></th>
+					              <th width="10%"> 操作编码 </th>
+					              <th width="10%"> 操作名称</th>
+					              <th width="60%"> <span class="tooltips" data-original-title="当url与操作关联，则url的访问权限自动与对应的操作权限一致"> 关联url</span></th>
+					              <th width="20%"> 说明</th>
 					          </tr>
 					      </thead> 
 					      <tbody>
@@ -85,13 +86,17 @@
 								
 	     
 					          <tr>
-					              <td> <pg:cell colName="id" defaultValue="" />  </td>
+					              <td width="10%"> <pg:cell colName="id"  />  </td>
 					              
-					              <td>
-					                  <pg:cell colName="name" defaultValue="" />
+					              <td width="10%">
+					                  <pg:cell colName="name"  />
 					              </td>
-					               <td>
-					                  <pg:cell colName="authoresouresList" defaultValue="" />
+					              
+					               <td width="60%">
+					                  <pg:cell colName="authoresouresList"  />
+					              </td>
+					               <td width="20%">
+					                  <pg:cell colName="description"   />
 					              </td>
 					          </tr>
 	      
@@ -120,9 +125,10 @@
 					<table class="table table-striped table-hover table-bordered table-dictitemlist">
 					      <thead>
 					          <tr>
-					              <th> 操作编码 </th>
-					              <th> 操作名称</th>
-					              <th ><span class="tooltips" data-original-title="当url与操作关联，则url的访问权限自动与对应的操作权限一致"> 关联url</span></th>
+					               <th width="10%"> 操作编码 </th>
+					              <th width="10%"> 操作名称</th>
+					              <th width="60%"> <span class="tooltips" data-original-title="当url与操作关联，则url的访问权限自动与对应的操作权限一致"> 关联url</span></th>
+					              <th width="20%"> 说明</th>
 					          </tr>
 					      </thead> 
 					      <tbody>
@@ -130,13 +136,17 @@
 								
 	     
 					          <tr>
-					              <td> <pg:cell colName="id" defaultValue="" />  </td>
+					              <td width="10%"> <pg:cell colName="id"  />  </td>
 					              
-					              <td>
-					                  <pg:cell colName="name" defaultValue="" />
+					              <td width="10%">
+					                  <pg:cell colName="name"  />
 					              </td>
-					               <td>
-					                  <pg:cell colName="authoresouresList" defaultValue="" />
+					              
+					               <td width="60%">
+					                  <pg:cell colName="authoresouresList"  />
+					              </td>
+					               <td width="20%">
+					                  <pg:cell colName="description"   />
 					              </td>
 					          </tr>
 	      

@@ -62,9 +62,11 @@ public class SmOrganizationController {
 			return null;
 		boolean choosenormalorg = isuser || chooseuser;
 		List<SmOrganization> orgs = smOrganizationService.getChildren(parent,  choosenormalorg);
+		if(!isuser){
+			if(orgs == null || orgs.size() == 0)
+				return null;
+		}
 		
-		if(orgs == null || orgs.size() == 0)
-			return null;
 		List<JSTreeNode> treeNodes = new ArrayList<JSTreeNode>();
 		for(SmOrganization org:orgs)
 		{
@@ -236,7 +238,7 @@ public class SmOrganizationController {
 		}
 
 	}
-	public @ResponseBody DatagridBean getDeparts(SmOrganizationCondition conditions,int draw,int start,int length,Map<String,String> datas) 
+	public @ResponseBody DatagridBean getDeparts(SmOrganizationCondition conditions,int draw,int start,int length) 
 					throws SmOrganizationException {
 		// Constant.component_type_actionimpl
 		try {

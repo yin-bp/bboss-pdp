@@ -191,13 +191,41 @@ public class SmUserServiceImpl implements SmUserService {
 		}
 	}
 	public ListInfo queryListInfoSmUsers(SmUserCondition conditions, long offset, int pagesize) throws SmUserException {
-		ListInfo datas = null;
+		 
 		try {
-			datas = executor.queryListInfoBean(SmUser.class, "queryListSmUser", offset, pagesize, conditions);
+			String departid = conditions.getDepartId();
+			
+			
+			final List<SmUser> users = new ArrayList<SmUser>();
+			if(departid != null && departid.equals(Constants.LISAN_ID)){
+				
+			}
+			else if(conditions.getRecursive() != null)
+			{
+				if(conditions.getRecursive().equals("1")){//含子机构查询
+					String orgtreelevel = smOrganizationService.getOrgTreeLevel(conditions.getDepartId());
+					conditions.setOrgtreelevel(orgtreelevel);
+				}
+					
+			}
+			
+			ListInfo datas = executor.queryListInfoBeanByNullRowHandler(new ResultSetNullRowHandler(){
+
+				@Override
+				public void handleRow( ResultSet record) throws Exception {
+					SmUser rowValue = (SmUser) buildValueObject(record, SmUser.class);
+					users.add(rowValue);
+					rowValue.setDefaultAdmin(AccessControl.isDefaultAdmin(rowValue.getUserId()));
+					
+				}
+				
+			},"queryListInfoSmUsers", offset, pagesize, conditions);
+			datas.setDatas(users);
+			return datas;
 		} catch (Exception e) {
 			throw new SmUserException("pagine query SmUser failed:", e);
 		}
-		return datas;
+	 
 
 	}
 

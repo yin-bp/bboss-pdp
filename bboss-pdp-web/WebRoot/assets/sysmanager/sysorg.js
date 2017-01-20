@@ -299,6 +299,7 @@ var SysOrg = function(){
 						}
 						PlatformCommonUtils.success(msg,function(){
 							closeOrgActionModel();
+							Sysmanager.refreshOrgTree(Sysmanager.getDepartId());  
 						}) ;
 						/**swal({
 							  title: title,

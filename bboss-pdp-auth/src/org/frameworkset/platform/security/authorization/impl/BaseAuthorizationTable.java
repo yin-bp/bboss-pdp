@@ -283,8 +283,7 @@ public abstract class BaseAuthorizationTable implements AuthorizationTable,
 
 
         boolean everyOneGranted = false;
-        String temp = null;
-
+        
         for (int i = 0; i < requireRoles.length; i++) {
             //cachKey = application + ":"
 //            if(this.authorTableInfo.isCachable())
@@ -307,10 +306,11 @@ public abstract class BaseAuthorizationTable implements AuthorizationTable,
 //            }
 //            else
             {
-                everyOneGranted = isEveryoneGranted(requireRoles[i]);
+                everyOneGranted = isEveryoneGranted(requireRoles[i]) || isGuestGranted(requireRoles[i]);
                 if (everyOneGranted) {
                     break;
                 }
+                
             }
         }
         return everyOneGranted;
@@ -342,21 +342,21 @@ public abstract class BaseAuthorizationTable implements AuthorizationTable,
         {
 	        String cachKey = userName;
 	        if ((roles = (AuthRole[]) authorizationTable.get(cachKey)) == null) {
-	        	//update 20080721 gao.tang 如果抛出SecurityException异常返回false
+	        	
 	        	try
 	        	{
 	        		if(!userName.equals(guest))
 	        		{
 	        			roles = this.getAllRoleOfPrincipal(userName);
 	        		}
-	        		else
-	        		{	 
-	        			AuthRole authrole = new AuthRole();
-						authrole.setRoleName("guest");
-						authrole.setRoleId("99");
-						authrole.setRoleType(AuthRole.TYPE_ROLE);
-						roles = new AuthRole[]{authrole};						
-	        		}
+//	        		else
+//	        		{	 
+////	        			AuthRole authrole = new AuthRole();
+////						authrole.setRoleName("guest");
+////						authrole.setRoleId("99");
+////						authrole.setRoleType(AuthRole.TYPE_ROLE);
+//						roles = new AuthRole[]{AuthorTableInfo.getGuestRole()};						
+//	        		}
 	        	}
 	        	catch(Exception se)
 	        	{
@@ -367,7 +367,8 @@ public abstract class BaseAuthorizationTable implements AuthorizationTable,
 	        	}
 	            if (roles == null || roles.length <= 0) {
 	                roles = EMPTY_ROLES;
-	                log.debug("Get all roles of "
+	                if(log.isDebugEnabled())
+	                	log.debug("Get all roles of "
 	                        + userName + ": no role assign to this user!");
 //	                
 //	                throw new SecurityException("Get all roles of "
@@ -375,7 +376,70 @@ public abstract class BaseAuthorizationTable implements AuthorizationTable,
 	            }
 	            else
 	            {
-	                StringBuffer log_str = new StringBuffer("Get all roles of " + userName + ":" );
+	            	if(log.isDebugEnabled()){
+	            		StringBuilder log_str = new StringBuilder("Get all roles of " + userName + ":" );
+		                boolean flag = false;
+		                for(int i = 0; i < roles.length; i ++)
+		                {
+		                    if(!flag)
+		                    {
+		                        log_str.append(roles[i]);
+		                        flag = true;	   
+		                    }
+		                    else
+		                    {
+		                        log_str.append(",")
+		                        	   .append(roles[i]);
+		                    }
+		                        
+		                }
+		                log.debug(log_str.toString());
+	            	}
+	                	
+	                
+	            }
+	            authorizationTable.put(cachKey, roles);
+	        }
+        }
+        else
+        {
+        	//update 20080721 gao.tang 如果抛出SecurityException异常返回false
+        	try
+        	{
+        		
+        		
+        		if(!userName.equals(guest))
+        		{
+        			roles = this.getAllRoleOfPrincipal(userName);
+        		}
+//        		else
+//        		{	 
+//        			AuthRole authrole = new AuthRole();
+//					authrole.setRoleName("guest");
+//					authrole.setRoleId("99");
+//					authrole.setRoleType(AuthRole.TYPE_ROLE);
+//					roles = new AuthRole[]{authrole};						
+//        		}
+        	}
+        	catch(Exception se)
+        	{
+        		log.debug("Get all roles of "
+                        + userName + " error: " + se.getMessage());
+        		return false;
+        	}
+            if (roles == null) {
+                roles = EMPTY_ROLES;
+                if(log.isDebugEnabled()){
+            		log.debug("Get all roles of "
+                        + userName + ": no role assign to this user!");
+                }
+//                throw new SecurityException("Get all roles of "
+//                        + userName + " error: no role assign to this user!");
+            }
+            else
+            {
+            	if(log.isDebugEnabled()){
+            		StringBuilder log_str = new StringBuilder("Get all roles of " + userName + ":" );
 	                boolean flag = false;
 	                for(int i = 0; i < roles.length; i ++)
 	                {
@@ -392,62 +456,7 @@ public abstract class BaseAuthorizationTable implements AuthorizationTable,
 	                        
 	                }
 	                log.debug(log_str.toString());
-	            }
-	            authorizationTable.put(cachKey, roles);
-	        }
-        }
-        else
-        {
-        	//update 20080721 gao.tang 如果抛出SecurityException异常返回false
-        	try
-        	{
-        		
-        		
-        		if(!userName.equals(guest))
-        		{
-        			roles = this.getAllRoleOfPrincipal(userName);
-        		}
-        		else
-        		{	 
-        			AuthRole authrole = new AuthRole();
-					authrole.setRoleName("guest");
-					authrole.setRoleId("99");
-					authrole.setRoleType(AuthRole.TYPE_ROLE);
-					roles = new AuthRole[]{authrole};						
-        		}
-        	}
-        	catch(Exception se)
-        	{
-        		log.debug("Get all roles of "
-                        + userName + " error: " + se.getMessage());
-        		return false;
-        	}
-            if (roles == null) {
-                roles = EMPTY_ROLES;
-                log.debug("Get all roles of "
-                        + userName + ": no role assign to this user!");
-//                throw new SecurityException("Get all roles of "
-//                        + userName + " error: no role assign to this user!");
-            }
-            else
-            {
-                StringBuffer log_str = new StringBuffer("Get all roles of " + userName + ":" );
-                boolean flag = false;
-                for(int i = 0; i < roles.length; i ++)
-                {
-                    if(!flag)
-                    {
-                        log_str.append(roles[i]);
-                        flag = true;	   
-                    }
-                    else
-                    {
-                        log_str.append(",")
-                        	   .append(roles[i]);
-                    }
-                        
-                }
-                log.debug(log_str.toString());
+            	}
             }
         }
         
@@ -487,6 +496,24 @@ public abstract class BaseAuthorizationTable implements AuthorizationTable,
         if(roleName == null)
             throw new SecurityException("Check Everyone Granted Role error: [RoleName=" + roleName + "]");
         return roleName.equals(authorTableInfo.getEveryonegrantedrole());
+    }
+    
+    /**
+     * Description:访问安全底层service判断
+     * @param getAppName()
+     * @param cell
+     * @param node
+     * @param roles
+     * @return
+     * @throws SecurityProviderException
+     * boolean
+     */
+    public boolean isGuestGranted(AuthRole roleName) throws
+            SecurityException
+    {
+        if(roleName == null)
+            throw new SecurityException("Check Everyone Granted Role error: [RoleName=" + roleName + "]");
+        return roleName.equals(authorTableInfo.getGuestRole());
     }
 
     /**
