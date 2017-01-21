@@ -71,7 +71,7 @@ var Sysmanager = new function(){
 			    if(isuser)
 			    	SysUser.showUsers(departid);
 			    else
-			    	SysOrg.showOrgs(departid);
+			    	SysOrg.queryOrgList(departid,false);
 			    //alert('处理代码');
 			});
 	}

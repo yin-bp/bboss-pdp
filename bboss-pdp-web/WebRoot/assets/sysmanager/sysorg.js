@@ -662,7 +662,22 @@ var SysOrg = function(){
 	     });
 	}
 	
-	
+	var queryOrgList = function(departId,doquery){
+		 if(departId)
+			 Sysmanager.setDepartid(departId);
+		 else
+			 departId = Sysmanager.getDepartId();
+		if(!doquery){
+			$(".form-queryorgs .reset").click();
+			$(".form-queryorgs input[name='departId']").val(departId);
+		}
+		else
+		{
+			
+		}
+	 
+		$(".portlet_orglists").load(usercontextpath+"/sysmanager/org/queryListSmOrganizations.page",doquery?$(".form-queryorgs").serialize():{"departId":departId})
+	}
 
 	 var showOrgs = function(departId){
 		 if(departId)
@@ -722,7 +737,7 @@ var SysOrg = function(){
 		//var $modal = $('#ajax-user-add').modal('hide');
 		$currentmodal.modal('hide');
 		 //$('#ajax-org-action-extend').modal('hide');
-		showOrgs();
+		queryOrgList();
 	}
 	var init = function(relativepath){
    	 usercontextpath = relativepath;
@@ -768,7 +783,7 @@ var SysOrg = function(){
 	 				if(responseText.result=="success"){
 	 					
 	 					PDP.success(responseText.message);
-	 					showOrgs();
+	 					queryOrgList();
 	 				}else{
 	 					PDP.warn(responseText.message);
 	 				}
@@ -813,6 +828,12 @@ var SysOrg = function(){
 	      },
 	      buildTreeLevel:function(){
 	    	  buildTreeLevel();
+	      },
+	      queryOrgList:function(departId,doquery){
+	    	  queryOrgList(departId,doquery);
+	      },
+	      orgmanagerset:function(orgId,orgName){
+	    	  orgmanagerset(orgId,orgName);
 	      }
 	}
 }();
