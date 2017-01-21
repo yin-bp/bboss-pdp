@@ -52,7 +52,7 @@
 						 <div class="col-md-12">
                              
                              <!-- Begin: UserList Datatable  -->
-                             	<%@ include file="/jsp/sysmanager/org/orglist.jsp"%>
+                             	<%@ include file="/jsp/sysmanager/org/orglistmain.jsp"%>
                              <!-- End: UserList Datatable  -->
                              
                          		</div>
@@ -71,14 +71,20 @@
  <script
 	src="${pageContext.request.contextPath}/assets/sysmanager/sysmanager.js"
 	type="text/javascript"></script>	
+<script	src="${pageContext.request.contextPath}/assets/sysmanager/sysorg.js" type="text/javascript"></script>	
 <!-- END PAGE LEVEL PLUGINS -->
 
 <script type="text/javascript">
 	jQuery(document).ready(function() {
 		Sysmanager.initorg_tree(false); //  initorg_tree core componets
+		SysOrg.init('${pageContext.request.contextPath}');
+		SysOrg.queryOrgList('0',false);
 		
-		SysOrg.getOrgList('0');
-		PlatformCommonUtils.initSlimScroll('.scroller',null,true);
+		$(".btn-queryorgs").bind("click",function(){			
+			SysOrg.queryOrgList(Sysmanager.getDepartId(),true);
+		});
+		//SysOrg.getOrgList('0');
+		PDP.initSlimScroll('.scroller',null,true);
 		
 	});
 </script>

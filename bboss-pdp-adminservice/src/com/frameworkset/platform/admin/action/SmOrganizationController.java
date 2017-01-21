@@ -18,7 +18,6 @@ package com.frameworkset.platform.admin.action;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.frameworkset.event.Event;
@@ -29,6 +28,7 @@ import org.frameworkset.platform.common.JSTreeNode;
 import org.frameworkset.platform.common.TreeNodeStage;
 import org.frameworkset.platform.security.event.ACLEventType;
 import org.frameworkset.platform.util.AdminUtil;
+import org.frameworkset.util.annotations.PagerParam;
 import org.frameworkset.util.annotations.ResponseBody;
 import org.frameworkset.web.servlet.ModelMap;
 
@@ -270,14 +270,17 @@ public class SmOrganizationController {
 		}
 
 	}
-	public String queryListSmOrganizations(SmOrganizationCondition conditions, ModelMap model)
+	public String queryListSmOrganizations(SmOrganizationCondition conditions, @PagerParam(name = PagerParam.SORT, defaultvalue = "org_name") String sortKey,
+			@PagerParam(name = PagerParam.DESC, defaultvalue = "false") boolean desc,
+			@PagerParam(name = PagerParam.OFFSET) long offset,
+			@PagerParam(name = PagerParam.PAGE_SIZE, defaultvalue = "10") int pagesize,ModelMap model)
 			throws SmOrganizationException {
 		try {
 			String orgName = conditions.getOrgName();
 			if (orgName != null && !orgName.equals("")) {
 				conditions.setOrgName("%" + orgName + "%");
 			}
-			List<SmOrganization> smOrganizations = smOrganizationService.queryListSmOrganizations(conditions);
+			ListInfo smOrganizations = smOrganizationService.queryListInfoSmOrganizations(conditions,offset,pagesize);
 			model.addAttribute("smOrganizations", smOrganizations);
 			return "path:queryListSmOrganizations";
 		} catch (SmOrganizationException e) {

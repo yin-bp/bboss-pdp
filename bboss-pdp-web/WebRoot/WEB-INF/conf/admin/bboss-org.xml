@@ -10,8 +10,7 @@
 
 	<property name="/sysmanager/org/*.page"
 		path:index="/jsp/sysmanager/org/main.jsp"
-		path:queryListInfoSmOrganizations="/jsp/sysmanager/org/smOrganizationListInfo.jsp"
-		path:queryListSmOrganizations="/jsp/sysmanager/org/smOrganizationList.jsp"
+		path:queryListSmOrganizations="/jsp/sysmanager/org/orglistinfo.jsp"
 		path:updateSmOrganization="/jsp/sysmanager/org/editorg.jsp"
 		path:addSmOrganization="/jsp/sysmanager/org/addorg.jsp"
 		path:getSmOrganization="/jsp/sysmanager/org/vieworg.jsp"
