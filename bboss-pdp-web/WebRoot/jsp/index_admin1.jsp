@@ -1476,6 +1476,7 @@ License: You must have a valid license purchased only from themeforest(the above
         <!-- END THEME LAYOUT SCRIPTS -->
         <script   type="text/javascript"> 
         jQuery(document).ready(function() {
+        
         	App.setAssetsPath('${pageContext.request.contextPath}/assets/'); // init metronic core componets
         	DesktopMenus.gotoworkspace('','${workspaceurl}','${menupath_menuid}',true); // init metronic core componets
         	
