@@ -15,15 +15,15 @@ var Sysmanager = new function(){
 		return departid;
 	}
 	var refreshOrgTree = function(orgId){
-		var tree = jQuery.jstree.reference("#org_tree");
-		tree.refresh("#" + orgId);
+		//var tree = jQuery.jstree.reference("#org_tree");
+		//tree.refresh("#" + orgId);
 		//org_tree.refresh("#" + orgId); 
 	}
 	  
 	//初始化组织机构树
 	var initorg_tree = function(isuser){
-		
-		org_tree = $("#org_tree").jstree({
+		var treeid = isuser ?"#userorg_tree":"#org_tree"
+		org_tree = $(treeid).jstree({
 	            "core" : {
 	                "themes" : {
 	                    "responsive": false
@@ -52,7 +52,7 @@ var Sysmanager = new function(){
 	            "plugins" : [   "types" ]
 	        });
 		 
-		 $('#org_tree').bind("activate_node.jstree", function (obj, e) {
+		 $(treeid).bind("activate_node.jstree", function (obj, e) {
 			    // 处理代码
 			    // 获取当前节点
 			    var currentNode = e.node;

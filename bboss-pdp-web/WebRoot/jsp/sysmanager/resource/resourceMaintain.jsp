@@ -93,7 +93,7 @@
 					              </td>
 					              
 					               <td width="60%">
-					                  <pg:cell colName="authoresouresList"  />
+					                  <pg:list colName="authoresouresList"  ><pg:cell/><br/></pg:list>
 					              </td>
 					               <td width="20%">
 					                  <pg:cell colName="description"   />
@@ -143,7 +143,7 @@
 					              </td>
 					              
 					               <td width="60%">
-					                  <pg:cell colName="authoresouresList"  />
+					                  <pg:list colName="authoresouresList"  ><pg:cell/><br/></pg:list>
 					              </td>
 					               <td width="20%">
 					                  <pg:cell colName="description"   />

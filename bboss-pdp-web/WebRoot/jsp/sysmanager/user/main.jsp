@@ -41,7 +41,7 @@
 			</div>
 			<div class="portlet-body">
 				<div class="scroller" style="height: 450px">
-					<div id="org_tree"></div>
+					<div id="userorg_tree"></div>
 					<p></p>
 				</div>
 

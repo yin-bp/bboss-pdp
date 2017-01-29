@@ -259,8 +259,12 @@ var ModelDialog_Modal = function(options){
 					},options);
 	var $iframe;
 	var $modal;
+	var $closingByHiddenEvent = true;
 	var isIframe = function(){
 		return $setting.iframe;
+	}
+	var setClosingByHiddenEvent = function(closingByHiddenEvent){
+		$closingByHiddenEvent=closingByHiddenEvent;
 	}
 	
 	return {
@@ -293,6 +297,18 @@ var ModelDialog_Modal = function(options){
 		 },
 		 hide:function(){
 			 $modal.modal('hide');
+		 },
+		 close:function(){
+			 if($setting.closeCallBack)
+				 $setting.closeCallBack($modal);			    			
+			 $modal.remove();
+				
+		 },
+		 setClosingByHiddenEvent:function(closingByHiddenEvent){
+			 setClosingByHiddenEvent(closingByHiddenEvent);
+		 },
+		 closingByHiddenEvent:function(){
+			 return $closingByHiddenEvent;
 		 }
 		
 	}
@@ -370,9 +386,10 @@ var $_modalcontainer_platform = function(){
 var ModelDialog = function(){
 	
 	var closeDialog = function(){
-		var $modal = getCurrentModal();
-		 
-		$modal.modal('hide');
+		var $modal = getCurrentModalDialog();
+		$modal.setClosingByHiddenEvent(false); 
+		$modal.hide();
+		closeCurrentDialog();
 	}
 	var $_modalcontainer = window.top.$_modalcontainer;
 	 var getModalContainer = function(){
@@ -409,7 +426,7 @@ var ModelDialog = function(){
 		
 		
 		var fatherBody = $(window.top.document.body); 
-		var  $modal = $("<div  class=\"modal container  fade draggable-modal  modal-scroll \" tabindex=\"-1\"> </div>");
+		var  $modal = $("<div  class=\"modal container  draggable-modal  modal-scroll \" tabindex=\"-1\"> </div>");
 		$modal.appendTo(fatherBody);
 		
 			 //$modal = $('#ajax-dialogmodal-extend');
@@ -541,7 +558,7 @@ var ModelDialog = function(){
 				
 				
 		  })  
-		$modal.on('hidden.bs.modal', function (e) {
+		/**$modal.on('hidden.bs.modal', function (e) {
 			if(setting.closeCallBack)
 				setting.closeCallBack($modal);
 			removeCurrentModal();
@@ -555,6 +572,14 @@ var ModelDialog = function(){
 	                $('html').removeClass("modal-open");
 	            }
 			}
+			//$modal = null;
+			//$iframe = null;
+			//setting = null;
+		  });*/
+		 $modal.on('hidden.bs.modal', function (e) {
+			 var modal = getCurrentModalDialog();			 
+			 if(modal.closingByHiddenEvent())
+				 closeCurrentDialog();
 			//$modal = null;
 			//$iframe = null;
 			//setting = null;
@@ -572,10 +597,23 @@ var ModelDialog = function(){
        
 		
 	}
-	var closeCurrentDialog = function(){
-		var modal = getCurrentModalDialog();
+	
+	var closeCurrentDialog = function( ){
+		
+		var modal = getCurrentModalDialog();		
 		if(modal){
-			modal.hide();
+			modal.close();
+			removeCurrentModal();
+			if(modalSize() <= 0 )
+				$('body').removeClass("modal-open-noscroll");
+			else
+			{
+				var $modal = modal.getModal();
+				if ($modal.hasClass("modal-scroll")) {
+	                $('body').addClass("modal-open-noscroll");
+	                $('html').removeClass("modal-open");
+	            }
+			}
 		}
 			
 	}
@@ -636,6 +674,9 @@ var ModelDialog = function(){
 		 
 		  getParentModelDialog:function(){
 			  return getParentModelDialog();
+		  },
+		  removeCurrentModal:function(){
+			  removeCurrentModal();
 		  }
 	}
 }();
