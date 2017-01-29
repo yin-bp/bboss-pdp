@@ -706,7 +706,7 @@ var SysUser = function(){
 	
 	var closeUserActionModel = function(){
 		//var $modal = $('#ajax-user-add').modal('hide');
-		ModelDialog.getCurrentModal().modal('hide');
+		ModelDialog.close();//ModelDialog.getCurrentModal().modal('hide');
 		 //$('#ajax-user-action-extend').modal('hide');
 		
 	}
