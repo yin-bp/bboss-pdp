@@ -114,16 +114,7 @@
 				 	 		 			 
 				</authoration>
 			</item>
-			<item name="用户管理1" id="usermanager1"  i18n:en_US="usermanager1 Manage" fullpageload="false">
-				
-				<workspace>
-					<content>/sysmanager/user/index.page?aa=bb</content>
-				</workspace>
-				<authoration>				 
-				 	<url>/jsp/sysmanager/user/main.jsp</url>	
-				 	 		 			 
-				</authoration>
-			</item>
+			 
 			
 			<item name="部门管理" id="orgmanager"  i18n:en_US="orgmanager Manage" >				
 				<workspace>

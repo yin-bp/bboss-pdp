@@ -199,7 +199,10 @@ public abstract class ACLLoginModule implements LoginModule {
         principal = new AuthPrincipal(username, loginModuleName);
         subject.setLoginPrincipal(principal);
         //往subject中添加用户身份
-        principal = new AuthPrincipal((String)checkCallBack.getUserAttribute("userAccount"), loginModuleName);
+        
+        String userAccount = (String)checkCallBack.getUserAttribute("userAccount");
+        if(userAccount != null && !userAccount.equals(""))
+        	principal = new AuthPrincipal(userAccount, loginModuleName);
         subject.addAuthPrincipal(principal);
         
         
