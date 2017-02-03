@@ -109,6 +109,8 @@ public class AccessControl implements AccessControlInf{
 	public static final String SERVER_PORT_KEY = "SERVER_PORT_KEY";
 
 	public static final String PRINCIPAL_INDEXS = "PRINCIPAL_INDEXS";
+	public static final String LOGIN_PRINCIPAL_INDEXS = "LOGIN_PRINCIPAL_INDEXS";
+	
 
 	public static final String PRINCIPALS_COOKIE = "PRINCIPALS_COOKIE";
 
@@ -536,6 +538,7 @@ public class AccessControl implements AccessControlInf{
 	protected Credential credential;
 
 	protected Principal principal;
+	protected Principal loginPrincipal;
 
 	protected String roles[];
 
@@ -1105,6 +1108,7 @@ public class AccessControl implements AccessControlInf{
 			 
 				AuthPrincipal principal = (AuthPrincipal)subject.getPrincipal();
 				this.principal = principal;
+				this.loginPrincipal = subject.getLoginPrincipal();
 		
 			 
 		} catch (LoginException e) {
@@ -1214,6 +1218,7 @@ public class AccessControl implements AccessControlInf{
 		
 			  credential = (Credential) subject.getCredential();
 			  principal = (AuthPrincipal)subject.getPrincipal();
+			  this.loginPrincipal = subject.getLoginPrincipal();
 			  /**
 				 * 1 other
 				 * 2 other
@@ -1249,6 +1254,7 @@ public class AccessControl implements AccessControlInf{
 				
 				// 添加用户的所有身份索引到session中
 						session.setAttribute(PRINCIPAL_INDEXS, this.principal);
+						 session.setAttribute(LOGIN_PRINCIPAL_INDEXS,loginPrincipal);
 						// 添加用户的所有属性到session中
 						session.setAttribute(CREDENTIAL_INDEXS, this.credential);
 //				CheckCallBack.AttributeQueue attributeQueue = credential
@@ -1563,6 +1569,7 @@ public class AccessControl implements AccessControlInf{
 			// 添加用户的所有属性到session中
 			 
 			this.principal = c.principal;
+			this.loginPrincipal = c.loginPrincipal;
 			this.credential = c.credential;
 			if(this.principal != null)
 			{
@@ -1570,6 +1577,7 @@ public class AccessControl implements AccessControlInf{
 				
 				this.subject.setCredential(credential);
 				this.subject.setPrincipal(principal);
+				this.subject.setLoginPrincipal(loginPrincipal);
 			}
 			return true;
 		}
@@ -1784,9 +1792,10 @@ public class AccessControl implements AccessControlInf{
 		try
 		{
 			this.principal = (Principal) session.getAttribute(PRINCIPAL_INDEXS);
+			this.loginPrincipal = (Principal) session.getAttribute(LOGIN_PRINCIPAL_INDEXS);
 			// 添加用户的所有属性到session中
 			this.credential = (Credential) session.getAttribute(CREDENTIAL_INDEXS);
-	
+			
 			if (this.principal != null) {
 				current.set(this);
 				 
@@ -1985,7 +1994,7 @@ public class AccessControl implements AccessControlInf{
 					subject = new Subject();
 					subject.setCredential(credential);
 					subject.setPrincipal(principal);
-					
+					subject.setLoginPrincipal(loginPrincipal);
 					// 添加用户的所有身份索引到session中
 					session.setAttribute(PRINCIPAL_INDEXS, principal);
 					// 添加用户的所有属性到session中
@@ -2125,6 +2134,7 @@ public class AccessControl implements AccessControlInf{
 			
 		}
 		principal = (Principal) session.getAttribute(PRINCIPAL_INDEXS);
+		this.loginPrincipal = (Principal) session.getAttribute(LOGIN_PRINCIPAL_INDEXS);
 		// 添加用户的所有属性到session中
 		credential = (Credential) session.getAttribute(CREDENTIAL_INDEXS);
 		if (principal == null ) // 如果没有当前用户的会话信息，则判断cookie中是否有当前用户的登录信息
@@ -2178,6 +2188,7 @@ public class AccessControl implements AccessControlInf{
 			
 			this.subject.setCredential(credential);
 			this.subject.setPrincipal(principal);
+			this.subject.setLoginPrincipal(loginPrincipal);
 		}
 		{
 			
@@ -2420,6 +2431,7 @@ public class AccessControl implements AccessControlInf{
 		// onlineUser =
 		// (OnLineUser)session.getServletContext().getAttribute("onlineUser");
 		principal  = (Principal) session.getAttribute(PRINCIPAL_INDEXS);
+		this.loginPrincipal = (Principal) session.getAttribute(LOGIN_PRINCIPAL_INDEXS);
 		// 添加用户的所有属性到session中
 		credential  = (Credential) session.getAttribute(CREDENTIAL_INDEXS);
 
@@ -2461,6 +2473,7 @@ public class AccessControl implements AccessControlInf{
 				return false;
 			}
 			this.principal  = (Principal) session.getAttribute(PRINCIPAL_INDEXS);
+			this.loginPrincipal = (Principal) session.getAttribute(LOGIN_PRINCIPAL_INDEXS);
 			this.credential  = (Credential) session
 					.getAttribute(CREDENTIAL_INDEXS);
 			String resourceType = ConfigManager.getInstance().getResourceInfo()
@@ -3167,6 +3180,7 @@ public class AccessControl implements AccessControlInf{
 				subject = new Subject();
 				subject.setCredential(credential);
 				subject.setPrincipal(principal);
+				subject.setLoginPrincipal(loginPrincipal);
 			}
 			
 			LogoutCallbackHandler callbackHandler = new LogoutCallbackHandler(
@@ -3357,6 +3371,9 @@ public class AccessControl implements AccessControlInf{
 	// }
 	public Principal getPrincipal() {
 		return principal;
+	}
+	public Principal getLoginPrincipal() {
+		return loginPrincipal != null?loginPrincipal:principal;
 	}
 
 	public Credential getCredential() {
@@ -4121,10 +4138,22 @@ passwordUpdateTime
 
 	@Override
 	public String getChargeOrgId() {
-		if(ConfigManager.getInstance().getPermissionModule() != null)
-			return ConfigManager.getInstance().getPermissionModule().getChargeOrgId(this.getUserAccount());
-		return null;
+		return this.getUserAttribute("departId");
 	}
+	public String getChargeOrgName() {
+
+		return this.getUserAttribute("depart");
+	}
+	public String getDirectLeaderid() {
+		return this.getUserAttribute("userLeaderid");
+	}
+	public String getDirectLeaderName() {
+		return this.getUserAttribute("userLeaderName");
+	}
+	public String getDirectLeaderAccount() {
+		return this.getUserAttribute("userLeaderAccount");
+	}
+	
 	
 	public String getOrgLeader(String org) {
 		if(ConfigManager.getInstance().getPermissionModule() != null)

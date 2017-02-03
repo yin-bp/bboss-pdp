@@ -61,7 +61,7 @@
 
 			</workspace>
 			<authoration>				 
-				 	<url>/sysmanager/user/tomodifyPassword.page?frompersonal=true</url>				 					 	
+				 	 					 	
 			</authoration>
 		</publicitem>
 		<module name="一级菜单" 
@@ -216,7 +216,9 @@
 		<module name="字典管理" id="dictmanager" used="true" showleftmenu="false" url="/dictmanager/index.page"  i18n:en_US="System Manage">
 		
 			<description>字典管理</description>		
-			
+			<authoration>				 
+			 	<url>/dictmanager/*.page</url>
+			</authoration>
 		</module>	
 
 		<item name="个人信息修改" id="personuserinfomodify" i18n:en_US="User Infomation Modification">

@@ -44,6 +44,10 @@ var SysOrg = function(){
   	 $("#sys_addOrg_button").bind('click',function(){
   		saveOrg("#form_sys_addorg");
   	 });
+  	$("#sys_addOrg_clearleader_button").bind('click',function(){
+   		$('input[name="orgleaderName"]',$currentmodal ).val("");
+		$('input[name="orgleader"]',$currentmodal ).val("");
+   	});
   	 $("#sys_addOrg_setleader_button").bind('click',function(){
   		ModelDialog.dialog({
   							title:"选择部门主管",
@@ -84,7 +88,10 @@ var SysOrg = function(){
 	   	 $("#sys_modifyOrg_button").bind('click',function(){
 	   		saveOrg("#form_sys_modifyorg");
 	   	 });
-	   	 
+	   	$("#sys_modifyOrg_clearleader_button").bind('click',function(){
+	   		$('input[name="orgleaderName"]',$currentmodal ).val("");
+			$('input[name="orgleader"]',$currentmodal ).val("");
+	   	});
 	   	$("#sys_modifyOrg_setleader_button").bind('click',function(){
 	  		ModelDialog.dialog({
 	  							title:"选择部门主管",

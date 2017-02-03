@@ -38,6 +38,7 @@ public class SmUser implements java.io.Serializable {
 	 */
 	private String departId;
 	private String departName;
+	private String departTreeLevel;
 	
 	private String leaderid;
 	private String leaderaccount;
@@ -568,6 +569,16 @@ public class SmUser implements java.io.Serializable {
 	}
 	public void setLeadername(String leadername) {
 		this.leadername = leadername;
+	}
+
+
+	public String getDepartTreeLevel() {
+		return departTreeLevel;
+	}
+
+
+	public void setDepartTreeLevel(String departTreeLevel) {
+		this.departTreeLevel = departTreeLevel;
 	}
 
 }

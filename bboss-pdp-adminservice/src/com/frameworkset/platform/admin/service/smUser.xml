@@ -121,7 +121,7 @@
 	
 	<property name="getSmUserByNAMECNName">
 		<![CDATA[
-			select u.*,o.org_name as departName,bu.user_id as leaderid,bu.user_name as leaderaccount,bu.user_realname as leadername from td_sm_user u 
+			select u.*,o.org_tree_level as departTreeLevel,o.org_name as departName,bu.user_id as leaderid,bu.user_name as leaderaccount,bu.user_realname as leadername from td_sm_user u 
 			 left join td_sm_organization o on u.depart_Id = o.org_id 
 			 left join td_sm_user bu on bu.user_id = o.orgleader
 			  where u.USER_NAME =? or u.USER_WORKNUMBER = ? or u.user_email = ? or u.USER_MOBILETEL1 = ?
@@ -130,10 +130,16 @@
 	
 	<property name="getSmUserByName">
 		<![CDATA[
-			select u.*,o.org_name as departName,bu.user_id as leaderid,bu.user_name as leaderaccount,bu.user_realname as leadername from td_sm_user u 
+			select u.*,o.org_tree_level as departTreeLevel,o.org_name as departName,bu.user_id as leaderid,bu.user_name as leaderaccount,bu.user_realname as leadername from td_sm_user u 
 			 left join td_sm_organization o on u.depart_Id = o.org_id 
 			 left join td_sm_user bu on bu.user_id = o.orgleader
 			  where u.USER_NAME =? 
+		]]>
+	</property>
+	<property name="getOrgLeader">
+		<![CDATA[
+			select bu.user_id as leaderid,bu.user_name as leaderaccount,bu.user_realname as leadername from td_sm_organization o,td_sm_user bu 			 
+			  where bu.user_id = o.ORGLEADER  and o.org_id=?
 		]]>
 	</property>
 	<property name="selectMaxSNofdepart">
@@ -299,6 +305,12 @@
 			update td_sm_user set depart_id=null where  user_id=?
 		]]>
 	</property>
+	<property name="getChargeOrgId">
+		<![CDATA[
+			select depart_id from td_sm_user  where  USER_NAME=?
+		]]>
+	</property>
+	
 	<property name="getMoveinUsers">
 		<![CDATA[
 			
@@ -340,5 +352,7 @@
 
 		]]>
 	</property>
+	
+	
 	
 </properties>

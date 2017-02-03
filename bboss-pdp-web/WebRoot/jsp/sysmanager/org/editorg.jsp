@@ -76,7 +76,10 @@
 									  aria-expanded="false">
 									选择
 								</button>
-								 
+								  <button type="button" id="sys_modifyOrg_clearleader_button" data-toggle="modal" class="btn btn-xs default  "  
+									  aria-expanded="false">
+									清除
+								</button>
 							</span>
 						</div>
 					</div>

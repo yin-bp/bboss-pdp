@@ -4,8 +4,12 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.frameworkset.platform.security.authorization.AccessException;
 
-public class AppPermissionModule extends DefaultPermissionModule {
+import com.frameworkset.platform.admin.service.SmOrganizationService;
+import com.frameworkset.platform.admin.service.SmUserService;
 
+public class AppPermissionModule extends DefaultPermissionModule {
+	private SmOrganizationService organizationService;
+	private SmUserService userService;
 	public AppPermissionModule() {
 		// TODO Auto-generated constructor stub
 	}
@@ -35,6 +39,36 @@ public class AppPermissionModule extends DefaultPermissionModule {
             throw new AccessException("验证码错误!");
         }
         return true;
+	}
+
+	@Override
+	public boolean isOrgManager(String userAccount) {
+		// TODO Auto-generated method stub
+		return organizationService.isOrgManager(userAccount);
+	}
+
+	@Override
+	public boolean isOrganizationManager(String userAccount, String orgId) {
+		// TODO Auto-generated method stub
+		return organizationService.isOrganizationManager(userAccount, orgId);
+	}
+
+	@Override
+	public boolean isSubOrgManager(String userAccount, String orgId) {
+		// TODO Auto-generated method stub
+		return organizationService.isSubOrgManager(userAccount, orgId);
+	}
+
+	@Override
+	public String getChargeOrgId(String userAccount) {
+		// TODO Auto-generated method stub
+		return userService.getChargeOrgId(userAccount);
+	}
+
+	@Override
+	public String getOrgLeader(String org) {
+		// TODO Auto-generated method stub
+		return organizationService.getOrgLeader(org);
 	}
 
 }

@@ -2,6 +2,7 @@ package org.frameworkset.platform.security.authenticate;
 
 import org.apache.log4j.Logger;
 import org.frameworkset.platform.common.Constants;
+import org.frameworkset.platform.entity.Leader;
 import org.frameworkset.platform.security.authentication.ACLLoginModule;
 import org.frameworkset.platform.security.authentication.CheckCallBackWrapper;
 import org.frameworkset.platform.security.authentication.EncrpyPwd;
@@ -10,6 +11,7 @@ import org.frameworkset.spi.BaseApplicationContext;
 import org.frameworkset.spi.SPIException;
 import org.frameworkset.web.servlet.support.WebApplicationContextUtils;
 
+import com.frameworkset.orm.transaction.TransactionManager;
 import com.frameworkset.platform.admin.entity.SmUser;
 import com.frameworkset.platform.admin.service.SmUserException;
 import com.frameworkset.platform.admin.service.SmUserService;
@@ -50,20 +52,40 @@ public class UserPasswordLoginModule extends ACLLoginModule
             LoginException
     {
     	
-    	
+    	TransactionManager tm = new TransactionManager();
         try {
+        	tm.begin();
         	SmUserService smUserService = this.getSmUserService();
            SmUser user = smUserService.getSmUserByIDNAMECNName(userName);
           if(user == null)
           {
+        	  tm.commit();
         	  throw new LoginException("用户["+userName+"]不存在!");
           }
           if(user.getUserIsvalid() != Constants.USER_STATUS_NORMAL)
           {
+        	  tm.commit();
         	  throw new LoginException("用户["+userName+"]无效,请联系系统管理员!");
           }
             if(user.getUserPassword().equals(EncrpyPwd.encodePassword(password)))
             {
+            	if(user.getLeaderid() == null || user.getLeaderid().equals("")){
+            		if(user.getDepartId() != null){
+            			Leader leader = smUserService.getLeader(user.getDepartTreeLevel());
+            			if(leader != null){
+            				checkCallBack.setUserAttribute("userLeaderid", leader.getLeaderId());
+            		        checkCallBack.setUserAttribute("userLeaderName", leader.getLeaderName());
+            		        checkCallBack.setUserAttribute("userLeaderAccount", leader.getLeaderAccount());
+            			}
+            		}
+            		
+            	}
+            	else
+            	{
+            		 checkCallBack.setUserAttribute("userLeaderid", user.getLeaderid());
+            	     checkCallBack.setUserAttribute("userLeaderName", user.getLeadername());
+            	     checkCallBack.setUserAttribute("userLeaderAccount", user.getLeaderaccount());
+            	}
                  buildCallback( checkCallBack,user);
                  String theme = checkCallBack.getRequest().getParameter("theme");
                  if(StringUtil.isEmpty(theme))
@@ -79,15 +101,16 @@ public class UserPasswordLoginModule extends ACLLoginModule
                 	 checkCallBack.setUserAttribute("theme_style", theme_style);
                  }
                
-                	 
+                 tm.commit();	 
                  return true;
             }
-            
+            tm.commit();
             return false;
 
         }
         catch(LoginException e)
         {
+        	
         	throw e;
         }
         catch (SPIException ex) {
@@ -109,7 +132,8 @@ public class UserPasswordLoginModule extends ACLLoginModule
         }
         finally
         {
-//        	tm.releasenolog();
+        	
+        	tm.releasenolog();
         }
     }
 
@@ -119,15 +143,14 @@ public class UserPasswordLoginModule extends ACLLoginModule
     	checkCallBack.setUserAttribute("userAccount", user.getUserName());
         checkCallBack.setUserAttribute("userID", user.getUserId().toString());
         checkCallBack.setUserAttribute("depart", user.getDepartName());
+        checkCallBack.setUserAttribute("departId", user.getDepartId());
         checkCallBack.setUserAttribute("job", "架构师");
         
         checkCallBack.setUserAttribute("title", user.getUserRealname()+"("+user.getUserName()+")");
         checkCallBack.setUserAttribute("userName", user.getUserRealname());
         checkCallBack.setUserAttribute("userSex", user.getUserSex());
          
-        checkCallBack.setUserAttribute("userLeaderid", user.getLeaderid());
-        checkCallBack.setUserAttribute("userLeaderName", user.getLeadername());
-        checkCallBack.setUserAttribute("userLeaderAccount", user.getLeaderaccount());
+       
         
         
     }

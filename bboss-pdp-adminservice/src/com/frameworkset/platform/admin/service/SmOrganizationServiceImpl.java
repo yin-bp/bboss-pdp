@@ -266,6 +266,39 @@ public class SmOrganizationServiceImpl implements SmOrganizationService {
 			tm.release();
 		}
 	}
+	/** (non-Javadoc)
+	 * @see com.frameworkset.platform.admin.service.SmOrganizationService#getOrgLeader(java.lang.String)
+	 */
+	@Override
+	public String getOrgLeader(String org) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	/** (non-Javadoc)
+	 * @see com.frameworkset.platform.admin.service.SmOrganizationService#isOrganizationManager(java.lang.String, java.lang.String)
+	 */
+	@Override
+	public boolean isOrganizationManager(String userAccount, String orgId) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	/** (non-Javadoc)
+	 * @see com.frameworkset.platform.admin.service.SmOrganizationService#isOrgManager(java.lang.String)
+	 */
+	@Override
+	public boolean isOrgManager(String userAccount) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	/** (non-Javadoc)
+	 * @see com.frameworkset.platform.admin.service.SmOrganizationService#isSubOrgManager(java.lang.String, java.lang.String)
+	 */
+	@Override
+	public boolean isSubOrgManager(String userAccount, String orgId) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
 	
 	
 }

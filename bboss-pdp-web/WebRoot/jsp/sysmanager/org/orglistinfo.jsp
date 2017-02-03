@@ -2,6 +2,7 @@
 	contentType="text/html; charset=utf-8"%>
 <%@ taglib uri="/WEB-INF/tld/pager-taglib.tld" prefix="pg" %>
 <%@ taglib uri="/WEB-INF/tld/dictionary.tld" prefix="dict" %>
+<%@ taglib uri="/WEB-INF/tld/admin-taglib.tld" prefix="admin"%>
 <pg:pager scope="request"  data="smOrganizations" desc="false" isList="false" containerid=".portlet_orglists">
 	<pg:param name="orgName"/>
 	<pg:param name="code"/>
@@ -70,7 +71,9 @@
                    	 var orgName = $(this).attr("orgName");
                    	 SysOrg.viewOrg(orgId,orgName)
                     }
-                  },
+                  }];
+		<admin:haspermission resource="orgunit" opcode="orgmanager" resourceType="orgunit">
+			content_.push(
                   {
                     class: 'btn  btn-xs btn-default',
                     icon: 'fa fa-pencil',
@@ -81,7 +84,7 @@
                    	 var orgName = $(this).attr("orgName");
                    	 SysOrg.tomodifyOrg(orgId,orgName)
                     }
-                  },
+                  });
                   /** {
                     class: 'btn  btn-xs btn-default',
                     icon: 'fa fa-pencil',
@@ -91,7 +94,7 @@
                    	 SysOrg.toauthOrg(orgId)
                     }
                   }*/
-                  ,
+                  content_.push(
                   {
                     class: 'btn  btn-xs btn-default',
                     icon: 'fa fa-pencil',
@@ -101,7 +104,8 @@
                    	 var orgName = $(this).attr("orgName");
                    	SysOrg.orgmanagerset(orgId,orgName);
 	                 }
-                  },
+                  });
+			</admin:haspermission>
                   /**   {
 	                     class: 'btn  btn-xs btn-default',
 	                     icon: 'fa fa-pencil',
@@ -121,13 +125,13 @@
 	                    	 SysOrg.stopOrg(orgId)
 		                 }
 	               },*/
-                 
-                  {
-               	   class: 'btn  btn-xs btn-default',
-               	      icon: 'glyphicon glyphicon-remove',
-               	      cancel: true
-	               }
-                ];
+	               content_.push(
+	                  {
+	               	   class: 'btn  btn-xs btn-default',
+	               	      icon: 'glyphicon glyphicon-remove',
+	               	      cancel: true
+		               }
+	                );
 				return content_;
 		}
 		PDP.popconfirmation({selector:'[data-toggle=org_ops_confirmation]',buttons:orgButtonMethods()});
