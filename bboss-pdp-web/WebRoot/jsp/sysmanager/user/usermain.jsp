@@ -134,6 +134,7 @@
 
 						</div>
 						<div class="actions">
+						<admin:haspermission resource="orgunit" opcode="usermanager" resourceType="orgunit">
 							<a
 								class="btn btn-xs blue"  
 								data-toggle="modal" data-backdrop="static" id="button_sys_add_user"> 新增 <i class="fa fa-edit"></i>
@@ -156,6 +157,7 @@
 							</a> <a href="javascript:;" class="btn btn-xs grey-cascade" id="button_sys_movein_user"> 用户调入 <i
 								class="fa fa-link"></i>
 							</a>
+							</admin:haspermission>
 						</div>						
 					</div>
 					<div class="portlet-body portlet_userlists">

@@ -2,6 +2,7 @@
 	contentType="text/html; charset=utf-8"%>
 <%@ taglib uri="/WEB-INF/tld/pager-taglib.tld" prefix="pg" %>
 <%@ taglib uri="/WEB-INF/tld/dictionary.tld" prefix="dict" %>
+<%@ taglib uri="/WEB-INF/tld/admin-taglib.tld" prefix="admin"%>
 <pg:pager scope="request"  data="smUsers" desc="false" isList="false" containerid=".portlet_userlists">
 
 	
@@ -51,7 +52,7 @@
 	             <td> <dict:itemname type="sex"  colName="userSex"/> </td>
 	            <td> <dict:itemname type="userType"  colName="userType"/> </td>
 	            <td> <dict:itemname type="userIsvalid"  colName="userIsvalid"/></td>
-	            <td><pg:empty colName="departName" evalbody="true"><pg:yes>待岗用户</pg:yes><pg:no> <pg:cell colName="departName"/></pg:no></pg:empty> </td>
+	            <td><pg:empty colName="departName" evalbody="true"><pg:yes>待岗用户</pg:yes><pg:no> <pg:cell colName="departName"/></pg:no></pg:empty>(<pg:cell colName="userJob"/>) </td>
 	            <td><button userName="<pg:cell colName="userRealname"/>" userAccount="<pg:cell colName="userName"/>" defaultAdmin="<pg:cell colName="defaultAdmin"/>" 
 	            	userId="<pg:cell colName="userId"/>" 
 	            	class="btn btn-outline btn-xs green-sharp  uppercase" data-toggle="user_ops_confirmation"  data-singleton="true" data-placement="left">操作</button></td>
@@ -71,7 +72,7 @@
 		{
 			
 			
-			 var content_ = [
+			 var content_ =[
 			                 {
 			                     class: 'btn btn-xs btn-default',
 			                     icon: 'fa fa-pencil',
@@ -82,8 +83,9 @@
 			                    	 var userId = $(this).attr("userId");
 			                    	 SysUser.viewUser(userId,userName+"("+userAccount+")")
 			                     }
-			                   },
-			                   {
+			                   }];
+			 <admin:haspermission resource="orgunit" opcode="usermanager" resourceType="orgunit">
+			 content_.push( {
 			                     class: 'btn  btn-xs btn-default',
 			                     icon: 'fa fa-pencil',
 			                     label:'修改',
@@ -93,9 +95,9 @@
 			                    	 var userId = $(this).attr("userId");
 			                    	 SysUser.tomodifyUser(userId,userName+"("+userAccount+")");
 			                     }
-			                   },
+			                   });
 			                  
-			                   {
+			 content_.push({
 			                     class: 'btn  btn-xs btn-default',
 			                     icon: 'fa fa-pencil',
 			                     label:'修改密码',
@@ -106,8 +108,9 @@
 			                    	 var userAccount = $(this).attr("userAccount");
 			                    	 SysUser.tomodifyPassword(userId,userName,userAccount)
 			                     }
-			                   },
-			                   {
+			                   });
+			             </admin:haspermission>       
+			             content_.push({
 			                     class: 'btn  btn-xs btn-default',
 			                     icon: 'fa fa-pencil',
 			                     label:'授权',
@@ -125,15 +128,15 @@
 			                    		 PlatformCommonUtils.warn("管理员无需授权!");
 		                    		 }
 			                     }
-			                   },		                   
+			                   });	                   
 			                  
 			                  
-			                   {
+			             content_.push({
 			                	   class: 'btn  btn-xs btn-default',
 			                	      icon: 'glyphicon glyphicon-remove',
 			                	      cancel: true
-				                   }
-			                 ];
+				                   });
+			                
 			return content_;
 		}
 		PDP.popconfirmation({selector:'[data-toggle=user_ops_confirmation]',buttons:userButtonMethods()});

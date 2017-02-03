@@ -18,6 +18,8 @@ package com.frameworkset.platform.admin.service;
 
 import java.util.List;
 
+import org.frameworkset.platform.entity.Leader;
+
 import com.frameworkset.platform.admin.entity.MoveinUserCondition;
 import com.frameworkset.platform.admin.entity.QueryUserCondition;
 import com.frameworkset.platform.admin.entity.SmUser;
@@ -112,4 +114,14 @@ public interface SmUserService {
 	 * @return
 	 */
 	public ListInfo queryUsers(QueryUserCondition condition, long offset, int pagesize)throws SmUserException;
+	/**
+	 * @param userAccount
+	 * @return
+	 */
+	public String getChargeOrgId(String userAccount)throws SmUserException;
+	/**
+	 * @param departId
+	 * @return
+	 */
+	public Leader getLeader(String departTreeLevel)throws SmUserException;
 }

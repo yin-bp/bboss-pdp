@@ -76,4 +76,26 @@ public interface SmOrganizationService {
 	 * @param orgId
 	 */
 	public void removeorgmanager(String[] userIds_, String orgId) throws SmOrganizationException;
+	/**
+	 * @param org
+	 * @return
+	 */
+	public String getOrgLeader(String org);
+	/**
+	 * @param userAccount
+	 * @param orgId
+	 * @return
+	 */
+	public boolean isOrganizationManager(String userAccount, String orgId);
+	/**
+	 * @param userAccount
+	 * @return
+	 */
+	public boolean isOrgManager(String userAccount);
+	/**
+	 * @param userAccount
+	 * @param orgId
+	 * @return
+	 */
+	public boolean isSubOrgManager(String userAccount, String orgId);
 }

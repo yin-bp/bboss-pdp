@@ -99,7 +99,7 @@
 								class="caption-subject font-dark sbold uppercase">机构列表</span>
 						</div>
 						<div class="actions">	
-				
+							<admin:haspermission resource="orgunit" opcode="orgmanager" resourceType="orgunit">
 							<a
 								class="btn btn-xs blue"  
 								data-toggle="modal" data-backdrop="static" id="button_sys_add_org"> 新增 <i class="fa fa-edit"></i>
@@ -112,6 +112,7 @@
 							<a href="javascript:;" onclick="javascript:SysOrg.buildTreeLevel();" class="btn btn-xs purple"> <i
 								class="fa fa-file-o"></i> 更新机构层级关系
 							</a>
+							</admin:haspermission>
 						</div>
 				
 					</div>

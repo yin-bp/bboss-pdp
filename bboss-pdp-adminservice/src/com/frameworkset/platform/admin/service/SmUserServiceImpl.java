@@ -26,6 +26,7 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.frameworkset.platform.common.Constants;
+import org.frameworkset.platform.entity.Leader;
 import org.frameworkset.platform.security.AccessControl;
 import org.frameworkset.platform.security.authentication.EncrpyPwd;
 import org.frameworkset.platform.util.AdminUtil;
@@ -688,5 +689,37 @@ public class SmUserServiceImpl implements SmUserService {
 		} catch (SQLException e) {
 			throw new SmUserException(e);
 		}
+	}
+	/** (non-Javadoc)
+	 * @see com.frameworkset.platform.admin.service.SmUserService#getChargeOrgId(java.lang.String)
+	 */
+	@Override
+	public String getChargeOrgId(String userAccount) throws SmUserException {
+		try {
+			String chargeOrgId = this.executor.queryObject(String.class, "getChargeOrgId",userAccount);
+//			users = _users.getDatas();
+			if(chargeOrgId == null || chargeOrgId.equals(""))
+				return "";
+			return chargeOrgId;
+		} catch (SQLException e) {
+			throw new SmUserException(e);
+		}
+	}
+	/** (non-Javadoc)
+	 * @see com.frameworkset.platform.admin.service.SmUserService#getLeader(java.lang.String)
+	 */
+	@Override
+	public Leader getLeader(String departTreeLevel) throws SmUserException {
+		String[] departIds = departTreeLevel.split("\\|");
+		for(int i = departIds.length - 1; i > 0; i--){
+			try {
+				Leader leader = executor.queryObject(Leader.class, "getOrgLeader", departIds[i]);
+				if(leader != null)
+					return leader;
+			} catch (SQLException e) {
+				throw new SmUserException(e);
+			}
+		}
+		return null;
 	}
 }

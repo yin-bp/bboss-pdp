@@ -142,11 +142,17 @@
 			
 		</div>
 		<div class="row">
-			
-			<div class="col-md-12" >			
+			<div class="col-md-6" >		
 				<div class="form-group">
-					<label class="col-md-2 control-label" >备注:</label>
-					<div class="col-md-10"><p class="form-control-static"> <pg:cell colName="remark1" htmlEncode="true"/> </p>						
+					<label class="col-md-3 control-label" >岗位</label>
+					<div class="col-md-9"><p class="form-control-static"> <pg:cell colName="userJob"/> </p>						
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6" >			
+				<div class="form-group">
+					<label class="col-md-3 control-label" >备注:</label>
+					<div class="col-md-9"><p class="form-control-static"> <pg:cell colName="remark1" htmlEncode="true"/> </p>						
 					</div>
 				</div>				
 				
