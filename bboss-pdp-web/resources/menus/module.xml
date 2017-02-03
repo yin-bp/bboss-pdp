@@ -4,10 +4,10 @@
 	<!-- 定义系统中的子系统功能模块 属性：name－子系统中文名称 id－子系统标识 module－模块文件名称 baseuri－如果子系统部署在其他的应用 -->
 	
 		
-	<subsystem name="测试系统" i18n:en_US="testsystem" id="test" module="menus/module-test.xml"
+	<!--<subsystem name="测试系统" i18n:en_US="testsystem" id="test" module="menus/module-test.xml"
 		baseuri="http://localhost:7000/creatorcms" 
 		successRedirect="sanydesktop/index.page"
-		logoutredirect="/sanymbp/login.page"/>
+		logoutredirect="/sanymbp/login.page"/>-->
 	
 <!-- 可以配置一些菜单变量,
 	菜单路径配置中除了可以配置#[userAccount]类的变量，还可以配置#[p:userAccount]类型变量，p:开头的变量的值可以从属性文件中获取，属性文件的配置方法是：
@@ -107,13 +107,14 @@
 			<item name="用户管理" id="usermanager"  i18n:en_US="usermanager Manage" fullpageload="false">
 				
 				<workspace>
-					<content>/sysmanager/user/index.page</content>
+					<content>/sysmanager/user/index.page?aa=cc</content>
 				</workspace>
 				<authoration>				 
-				 	<url>/jsp/sysmanager/user/main.jsp</url>	
+				 	<url>/jsp/sysmanager/user/main.jsp,/sysmanager/user/*.page</url>	
 				 	 		 			 
 				</authoration>
 			</item>
+			 
 			
 			<item name="部门管理" id="orgmanager"  i18n:en_US="orgmanager Manage" >				
 				<workspace>

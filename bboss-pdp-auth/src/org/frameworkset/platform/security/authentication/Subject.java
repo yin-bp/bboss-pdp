@@ -28,7 +28,8 @@ import java.security.Principal;
  */
 public class Subject {
 	private Credential  credential;
-	private  Principal   principal;
+	private  Principal   loginPrincipal;
+	private  Principal   realPrincipal;
 	public Subject()
 	{
 //		credential = new ArrayList<Credential>();
@@ -41,17 +42,23 @@ public class Subject {
 		this.credential = credential;
 	}
 	public Principal getPrincipal() {
-		return principal;
+		return realPrincipal;
 	}
 	public void setPrincipal( Principal principal) {
-		this.principal = principal;
+		this.realPrincipal = principal;
 	}
 	public void addAuthPrincipal(Principal authPrincipal)
 	{
-		this.principal =authPrincipal;
+		this.realPrincipal =authPrincipal;
 	}
 	public void addCredential(Credential credential)
 	{
 		this.credential =credential;
+	}
+	public Principal getLoginPrincipal() {
+		return loginPrincipal;
+	}
+	public void setLoginPrincipal(Principal loginPrincipal) {
+		this.loginPrincipal = loginPrincipal;
 	}
 }
