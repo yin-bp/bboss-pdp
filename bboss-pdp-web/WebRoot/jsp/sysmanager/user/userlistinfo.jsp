@@ -52,7 +52,7 @@
 	             <td> <dict:itemname type="sex"  colName="userSex"/> </td>
 	            <td> <dict:itemname type="userType"  colName="userType"/> </td>
 	            <td> <dict:itemname type="userIsvalid"  colName="userIsvalid"/></td>
-	            <td><pg:empty colName="departName" evalbody="true"><pg:yes>待岗用户</pg:yes><pg:no> <pg:cell colName="departName"/></pg:no></pg:empty> </td>
+	            <td><pg:empty colName="departName" evalbody="true"><pg:yes>待岗用户</pg:yes><pg:no> <pg:cell colName="departName"/></pg:no></pg:empty>(<pg:cell colName="userJob"/>) </td>
 	            <td><button userName="<pg:cell colName="userRealname"/>" userAccount="<pg:cell colName="userName"/>" defaultAdmin="<pg:cell colName="defaultAdmin"/>" 
 	            	userId="<pg:cell colName="userId"/>" 
 	            	class="btn btn-outline btn-xs green-sharp  uppercase" data-toggle="user_ops_confirmation"  data-singleton="true" data-placement="left">操作</button></td>

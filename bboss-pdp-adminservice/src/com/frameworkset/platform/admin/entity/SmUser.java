@@ -194,6 +194,7 @@ public class SmUser implements java.io.Serializable {
 	 */
 	private String worklength;
 	private String departjobs;
+	private String userJob;
 	
 	public SmUser() {
 	}
@@ -579,6 +580,16 @@ public class SmUser implements java.io.Serializable {
 
 	public void setDepartTreeLevel(String departTreeLevel) {
 		this.departTreeLevel = departTreeLevel;
+	}
+
+
+	public String getUserJob() {
+		return userJob;
+	}
+
+
+	public void setUserJob(String userJob) {
+		this.userJob = userJob;
 	}
 
 }

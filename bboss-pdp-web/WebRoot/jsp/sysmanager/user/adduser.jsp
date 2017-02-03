@@ -249,8 +249,16 @@
 			</div>
 		</div>
 		<div class="row">
-			
-			<div class="col-md-12" >		
+			<div class="col-md-6" >		
+				<div class="form-group form-md-line-input">
+					<label class="col-md-3 control-label" for="form_control_1">岗位</label>
+					<div class="col-md-9">
+						<input type="text" class="form-control" placeholder="" name="userJob"  autocomplete="off">
+						<div class="form-control-focus"></div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6" >		
 				<div class="form-group form-md-line-input">
 					<label class="col-md-3 control-label" for="form_control_1">备注</label>
 					<div class="col-md-9">
