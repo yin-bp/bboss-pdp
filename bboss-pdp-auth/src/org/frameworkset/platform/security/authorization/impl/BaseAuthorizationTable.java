@@ -360,8 +360,9 @@ public abstract class BaseAuthorizationTable implements AuthorizationTable,
 	        	}
 	        	catch(Exception se)
 	        	{
-	        		log.debug("Get all roles of "
-	                        + userName + " error: " + se.getMessage());
+	        		if(log.isDebugEnabled())
+		        		log.debug("Get all roles of "
+		                        + userName + " error: " + se.getMessage(),se);
 	        		return false;
 	        		
 	        	}

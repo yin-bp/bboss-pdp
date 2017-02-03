@@ -104,9 +104,9 @@ configure([project(":bboss-pdp-auth"),project(":bboss-pdp-adminservice"),project
 		  repositories {		   
 			 mavenDeployer {
 					beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
-			     	repository(url: sonatype_url) {
+			     	repository(url: proxysonatype_url) {
 			     		
-					         authentication(userName: sonatype_username, password: sonatype_password)
+					         authentication(userName: proxysonatype_username, password: proxysonatype_password)
 					}
 					pom.project {
 				        name subproject.name
