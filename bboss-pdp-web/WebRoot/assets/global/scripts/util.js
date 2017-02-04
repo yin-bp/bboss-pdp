@@ -2,6 +2,10 @@ var PlatformCommonUtils = function(){
 	var validataformset = {
 			inmodal:true
 	}
+	var containSpecial = function( s ) {  
+		  var containSpecial = RegExp(/[(\ )(\~)(\!)(\@)(\#)(\$)(\%)(\^)(\&)(\+)(\=)(\[)(\])(\{)(\})(\|)(\\)(\;)(\:)(\')(\")(\,)(\/)(\<)(\>)(\?)(\)]+/);      
+		  return ( containSpecial.test(s) );      
+	}
 	var validateform = function(options){
 		var $setting = $.extend(true,validataformset,options);
 		var form2 = $setting.inmodal? $($setting.form,ModelDialog.getCurrentModal()):$($setting.form);		
@@ -241,6 +245,9 @@ var PlatformCommonUtils = function(){
 		},
 		removeErrorClass:function(element){
 			removeErrorClass(element);
+		},
+		containSpecial:function(s){
+			return containSpecial(s);
 		}
 	}
 }();

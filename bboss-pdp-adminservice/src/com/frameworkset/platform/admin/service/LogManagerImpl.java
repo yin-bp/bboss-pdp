@@ -279,6 +279,7 @@ public class LogManagerImpl  implements LogManager {
 		}
 		try {
 			this.executor.updateBeans("logsetting", logSettings);
+			map.clear();//fixed me:需要广播日志设定事件
 		} catch (SQLException e) {
 			throw new LogException(e);
 		}

@@ -145,3 +145,4 @@
 			}
 			PDP.popconfirmation({selector:'[data-toggle=role_ops_confirmation]',buttons:roleButtonMethods()});
 		});
+</script>
