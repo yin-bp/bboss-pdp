@@ -93,6 +93,9 @@
 			         建子机构，删除机构，修改机构,机构管理员设置
 			     ]]>
 			 </description>
+			 <authoration>		 	
+				 	<url>/sysmanager/org/*.page,/jsp/sysmanager/org/*.jsp</url>						 			 	
+				</authoration>
 			</operation>
 			<operation id="usermanager" priority="30" name="用户管理" >
 			  <description>
@@ -100,6 +103,9 @@
 					用户调入，用户调出，内容管理中的用户状态修改，包括开通、停用、删除、离散管理
 				]]>
 			  </description>
+			   <authoration>		 	
+				 	<url>/sysmanager/user/*.page,/jsp/sysmanager/user/*.jsp</url>						 			 	
+				</authoration>
 			</operation>
 		 
 			 

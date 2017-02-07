@@ -66,8 +66,51 @@
 		</publicitem>
 		<module name="一级菜单" 
 		             i18n:en_US="Line Information Query" 
-		            id="veh_line_query1" used="true"		         
-		             url="theme/admin/content.page" menuType="type1" icon="icon-home">	
+		            id="veh_line_query1" used="false"		         
+		            menuType="type1" icon="icon-home">
+		        <module name="一级菜单" 
+		             i18n:en_US="Line Information Query" 
+		            id="veh_line_query11" used="true"		         
+		             url="admin/content.page" menuType="type1" icon="icon-home">	
+						<item name="二级菜单"
+						i18n:en_US="pathvariable demo" id="pathvariabledemo21"  showleftmenu="false" menuType="type1">
+							
+							 
+							<workspace>
+								<content>admin/content.page</content>
+							</workspace>
+						
+						</item> 
+						
+						<item name="百度" iframe="true"
+						i18n:en_US="pathvariable demo" id="baidu1" menuType="type1">
+							
+							 
+							<workspace>
+								<content>http://www.baidu.com</content>
+							</workspace>
+						
+						</item> 
+						 
+						
+						<item name="个人简历" 
+						i18n:en_US="myprofile" id="myprofile1" menuType="type1">
+							
+							 
+							<workspace>
+								<content>jsp/sysmanager/user/main.jsp</content>
+							</workspace>
+						
+						</item> 
+						<item name="用户管理"
+							i18n:en_US="usermanager demo" id="usermanagerManage1"  showleftmenu="true" menuType="type1">
+							<top>header.page</top>
+							<workspace>
+								<content>/jsp/usermanager/index.page</content>
+							</workspace>
+						</item> 
+						
+				</module>	
 				<item name="二级菜单"
 				i18n:en_US="pathvariable demo" id="pathvariabledemo2"  showleftmenu="false" menuType="type1">
 					
@@ -87,6 +130,7 @@
 					</workspace>
 				
 				</item> 
+				 
 				
 				<item name="个人简历" 
 				i18n:en_US="myprofile" id="myprofile" menuType="type1">
@@ -96,6 +140,13 @@
 						<content>jsp/sysmanager/user/main.jsp</content>
 					</workspace>
 				
+				</item> 
+				<item name="用户管理"
+					i18n:en_US="usermanager demo" id="usermanagerManage"  showleftmenu="true" menuType="type1">
+					<top>header.page</top>
+					<workspace>
+						<content>/jsp/usermanager/index.page</content>
+					</workspace>
 				</item> 
 				
 		</module>
@@ -107,10 +158,10 @@
 			<item name="用户管理" id="usermanager"  i18n:en_US="usermanager Manage" fullpageload="false">
 				
 				<workspace>
-					<content>/sysmanager/user/index.page?aa=cc</content>
+					<content>/sysmanager/user/index.page</content>
 				</workspace>
 				<authoration>				 
-				 	<url>/jsp/sysmanager/user/main.jsp,/sysmanager/user/*.page</url>	
+				 	<url>/jsp/sysmanager/user/main.jsp</url>	
 				 	 		 			 
 				</authoration>
 			</item>
@@ -186,7 +237,7 @@
 				
 			</item>
 
-			<item name="IP限制管理" id="ipcontrol" i18n:en_US="Ip Control">
+			<item name="IP限制管理" id="ipcontrol" i18n:en_US="Ip Control" used="false">
 					<mouseclickimg>html/images/jixiao.jpg</mouseclickimg>
 				<top>header.page</top>
 				<!-- <top>perspective_toolbar.jsp</top> -->
@@ -200,7 +251,7 @@
 				</authoration>
 				
 			</item>
-			<item name="Session管理" id="sessioncontrol" showleftmenu="false" i18n:en_US="Session Control">
+			<item name="Session管理" id="sessioncontrol" showleftmenu="false" used="false" i18n:en_US="Session Control">
 					<mouseclickimg>html/images/jixiao.jpg</mouseclickimg>
 				<top>header.page</top>
 				<navigator></navigator>
@@ -221,7 +272,7 @@
 			</authoration>
 		</module>	
 
-		<item name="个人信息修改" id="personuserinfomodify" i18n:en_US="User Infomation Modification">
+		<item name="个人信息修改" id="personuserinfomodify"  used="false" i18n:en_US="User Infomation Modification">
 				<mouseclickimg>html/images/jixiao.jpg</mouseclickimg>
 			<top>perspective_toolbar.jsp</top>
 			<left>perspective_outlookbar.jsp</left>
@@ -246,7 +297,7 @@
 			
 		</item>
 
-		<item name="系统监控" id="dbmonitor" i18n:en_US="System Monitor">
+		<item name="系统监控" id="dbmonitor" i18n:en_US="System Monitor"  used="false">
 				<mouseclickimg>html/images/jixiao.jpg</mouseclickimg>
 			<top>perspective_toolbar.jsp</top>
 			<left>perspective_outlookbar.jsp</left>
@@ -262,7 +313,7 @@
 		</item>
 		
 		
-		<item name="数据库管理" id="dbmanager_" i18n:en_US="DB Manager">
+		<item name="数据库管理" id="dbmanager_" i18n:en_US="DB Manager"  used="false">
 			<mouseclickimg>html/images/jixiao.jpg</mouseclickimg>
 			<top>perspective_toolbar.jsp</top>
 			<left>perspective_outlookbar.jsp</left>
@@ -276,7 +327,7 @@
 			</authoration>
 		</item>
 		
-		<item name="缓存管理" id="cachemonitor" i18n:en_US="Cache Monitor">
+		<item name="缓存管理" id="cachemonitor" i18n:en_US="Cache Monitor"  used="false">
 				<mouseclickimg>html/images/jixiao.jpg</mouseclickimg>
 			<workspace>
 				<content>monitor/cache_console.page</content>
@@ -286,16 +337,16 @@
 			</authoration>
 		</item>
 
-		<item name="权限测试" id="permissiontest" i18n:en_US="Role Unit">
+		<item name="权限测试" id="permissiontest" i18n:en_US="Role Unit" >
 				<mouseclickimg>html/images/jixiao.jpg</mouseclickimg>
 			<top>header.page</top>
 			<!-- <top>perspective_toolbar.jsp</top> <left>perspective_outlookbar.jsp</left> -->
 			<workspace>
-				<content>test/testcheckpermission.jsp</content>
+				<content>jsp/test/testcheckpermission.jsp</content>
 			</workspace>
 		</item>
 		
-		<item name="桌面快捷管理" id="desktopmanager" i18n:en_US="desktop manager">
+		<item name="桌面快捷管理" id="desktopmanager" i18n:en_US="desktop manager"  used="false">
 				<mouseclickimg>html/images/jixiao.jpg</mouseclickimg>
 			<top>header.page</top>
 			<!-- <top>perspective_toolbar.jsp</top> <left>perspective_outlookbar.jsp</left> -->
