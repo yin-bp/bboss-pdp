@@ -80,8 +80,10 @@
 									 
 								</div>
 								<div class="row">
-									<div class="col-md-6">&nbsp;</div>
-									<div class="col-md-6">
+									<div class="col-md-3">&nbsp;</div>
+									<div class="col-md-3">&nbsp;</div>
+									<div class="col-md-3">&nbsp;</div>
+									<div class="col-md-3">
 										<div class="form-group form-md-line-input">
 
 											<div class="col-md-12">
