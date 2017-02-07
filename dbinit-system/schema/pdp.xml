@@ -316,7 +316,7 @@
         <column name="DEPART_ID" size="50" type="VARCHAR"/>
         <column name="USER_PICTURE" size="500" type="VARCHAR"/>
         <column name="update_time"  type="TIMESTAMP"/>
-        <column name="USER_JOB"  type="100"/>
+        <column name="USER_JOB"  size="100" type="VARCHAR"/>
     </table>
     <table name="TD_SM_USERGROUP">
         <column name="GROUP_ID" primaryKey="true" required="true"
