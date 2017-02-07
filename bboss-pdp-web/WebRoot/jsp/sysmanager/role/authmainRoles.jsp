@@ -12,11 +12,11 @@
 	 
 	<pg:param name="roleAttr"/>
 	
-<table	class="table table-bordered table-striped table-condensed table-unselectrole" style="height:50px;">
+<table	class="table table-bordered table-striped table-condensed table-unselectauthrole" style="height:50px;">
 	<thead >
 		<tr>
 			<th width="2%">
-					<input type="checkbox" class="checkboxall" onClick="checkAll('.table-unselectrole .checkboxall','.table-unselectrole .checkone')"
+					<input type="checkbox" class="checkboxall" onClick="checkAll('.table-unselectauthrole .checkboxall','.table-unselectauthrole .checkone')"
 					/></th>
 			
 			<th width="10%">名称</th>
@@ -31,7 +31,7 @@
 		  	 	<td>
 		  	 	
 		  	 	<input
-						name="roleId" type="checkbox" class="checkone" onClick="checkOne('.table-unselectrole .checkboxall','.table-unselectrole .checkone')" value="<pg:cell colName="roleId"/>" roleName="<pg:cell colName="roleName"/>" remark1="<pg:cell colName="remark1"/>" />
+						name="roleId" type="checkbox" class="checkone" onClick="checkOne('.table-unselectauthrole .checkboxall','.table-unselectauthrole .checkone')" value="<pg:cell colName="roleId"/>" roleName="<pg:cell colName="roleName"/>" remark1="<pg:cell colName="remark1"/>" />
 				</td>			
 		  	 	
 	            <td> <pg:cell colName="roleName"/> </td>

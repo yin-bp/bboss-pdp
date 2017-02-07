@@ -227,8 +227,7 @@ public class RoleServiceImpl implements RoleService {
 						menu.setResName(origine.getString("RES_NAME"));
 						menu.setResourceType(origine.getString("RESTYPE_ID"));					
 						menu.setAUTHORIZATION_ETIME(origine.getDate("AUTHORIZATION_ETIME"));
-						menu.setAUTHORIZATION_STIME(origine.getDate("AUTHORIZATION_STIME"));
-						
+						menu.setAUTHORIZATION_STIME(origine.getDate("AUTHORIZATION_STIME"));						
 						
 					}
 					

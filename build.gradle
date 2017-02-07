@@ -60,6 +60,9 @@ configure(allprojects) { project ->
 
 	dependencies {
 		testCompile 'junit:junit:4.12'
+		 compileOnly(
+    		 fileTree(dir: '../lib-compile', include: '**/*.jar'),    
+   		 )
 	}
 
 	repositories {
