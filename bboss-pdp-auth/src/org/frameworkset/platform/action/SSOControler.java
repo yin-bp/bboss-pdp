@@ -619,5 +619,22 @@ public class SSOControler {
         int b = fc + random.nextInt(bc - fc);
         return new Color(r, g, b);
     }
+    
+	/**
+	 * 在系统首页切换平台
+	 * @param request
+	 * @return
+	 */
+	public String switchSystem(HttpServletRequest request,ModelMap model)
+	{
+		MenuHelper menuHelper = MenuHelper.getMenuHelper(request,true);
+		
+		String indexpage = AccessControl.getIndexPage(request);
+		if(!indexpage.startsWith("/"))
+			indexpage = "/"+indexpage;
+		model.addAttribute("selected", AccessControl.getAccessControl().getCurrentSystemID());
+		return indexpage;
+			
+	}
 
 }
