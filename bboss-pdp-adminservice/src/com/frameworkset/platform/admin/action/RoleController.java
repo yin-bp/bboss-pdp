@@ -434,7 +434,10 @@ public class RoleController {
 				}
 				roles.setDatas(rolesetPermissions);
 				model.addAttribute("roles", roles);
-				return "path:authmainRoles";
+				if(!conditions.isCangrantedRole())
+					return "path:authmainRoles";
+				else
+					return "path:cangrantedRole";
 			}
 		} catch (RoleException e) {
 			throw e;

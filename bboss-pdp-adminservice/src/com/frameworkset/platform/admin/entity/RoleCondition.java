@@ -33,6 +33,7 @@ public class RoleCondition implements java.io.Serializable {
 	private String sortKey;
 	private boolean sortDesc;
 	private boolean fromAuthmain;
+	private boolean cangrantedRole;
 	public RoleCondition() {
 	}
 	 
@@ -79,6 +80,16 @@ public class RoleCondition implements java.io.Serializable {
 
 	public void setFromAuthmain(boolean fromAuthmain) {
 		this.fromAuthmain = fromAuthmain;
+	}
+
+
+	public boolean isCangrantedRole() {
+		return cangrantedRole;
+	}
+
+
+	public void setCangrantedRole(boolean cangrantedRole) {
+		this.cangrantedRole = cangrantedRole;
 	}
 
 }

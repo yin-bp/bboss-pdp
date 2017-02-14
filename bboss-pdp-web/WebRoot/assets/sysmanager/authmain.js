@@ -7,7 +7,7 @@ var SysAuthmain = function(){
 	}
 	var getSelectRoles = function(doquery){
 		$(".select_roles",ModelDialog.getCurrentModal()).load(usercontextpath+"/sysmanager/role/queryListInfoRoles.page",
-				doquery?$('.form-queryroles').serialize():{fromAuthmain:true},
+				doquery?$('.form-queryroles',ModelDialog.getCurrentModal()).serialize():{fromAuthmain:true},
 					function(){
 					
 					});
@@ -15,7 +15,7 @@ var SysAuthmain = function(){
 	
 	var initAuthmainAction = function(userId){
 		$(".dotempadd_btn",ModelDialog.getCurrentModal()).bind("click",function(){
-			 $('input[name="roleId"]:checked',$(".table-unselectrole")).each(function(){ 
+			 $('input[name="roleId"]:checked',$(".table-unselectauthrole")).each(function(){ 
 				 	var tr = $(this).closest('tr');
 				 	// console.log(tr);
 				 	// console.log($(".selected_users_movein"));
@@ -45,14 +45,14 @@ var SysAuthmain = function(){
 				 	var tr = $(this).closest('tr');
 				 	// console.log(tr);
 				 	// console.log($(".selected_users_movein"));
-				 	var selectedtr = $(".table-unselectrole input[value='"+$(this).val()+"']");
+				 	var selectedtr = $(".table-unselectauthrole input[value='"+$(this).val()+"']");
 				 	// console.log(selectedtr);
 				 	if(selectedtr.length == 0){
 				 		
-				 		tr.clone().insertAfter(".table-unselectrole tr:last");// 插入到已选表格的最后一行
-				 		$(".table-unselectrole").find('input[name="roleId"]').each(function(){
+				 		tr.clone().insertAfter(".table-unselectauthrole tr:last");// 插入到已选表格的最后一行
+				 		$(".table-unselectauthrole").find('input[name="roleId"]').each(function(){
 				 			$(this).bind('click',function(){
-					 			checkOne('.table-unselectrolet .checkboxall','.table-unselectrole .checkone');
+					 			checkOne('.table-unselectauthrole .checkboxall','.table-unselectauthrole .checkone');
 					 		});
 				 		});
 				 	}		 		

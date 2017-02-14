@@ -41,7 +41,7 @@
 				<pg:false colName="defaultAdmin">
 				<input
 						name="userId" type="checkbox" class="checkone" onClick="checkOne('.table-userlist .checkboxall','.table-userlist .checkone')" value="<pg:cell colName="userId"/>" 
-						<pg:equal colName="roleType" value="1">disabled</pg:equal>
+						<pg:equal colName="userId" value="1">disabled</pg:equal>
 						/>
 				</pg:false>		
 				</td>
