@@ -66,13 +66,13 @@
 						<div class="actions">
 
 							<a href="javascript:;"
-								class="btn btn-circle blue btn-xs dotempadd_btn"> <i
+								class="btn btn-circle blue btn-xs btn-saveselectedauth"> <i
 								class="fa fa-plus"></i> 添加选中角色
 							</a>
 
 						</div>
 					</div>
-					<div class="portlet-body select_roles">
+					<div class="portlet-body select_cangrantedroles">
 					
 					</div>
 				</div>
@@ -85,18 +85,18 @@
 <script type="text/javascript">
 	jQuery(document).ready(function() {		
 		var getSelectRoles = function(doquery){
-			$(".select_roles",ModelDialog.getCurrentModal()).load("${pageContext.request.contextPath}/sysmanager/role/queryListInfoRoles.page",
-					doquery?$('.form-queryroles').serialize():{fromAuthmain:true},
+			$(".select_cangrantedroles",ModelDialog.getCurrentModal()).load("${pageContext.request.contextPath}/sysmanager/role/queryListInfoRoles.page",
+					doquery?$('.form-queryroles',ModelDialog.getCurrentModal()).serialize():{fromAuthmain:true,cangrantedRole:true},
 						function(){
 						
 						});
 		}
 		getSelectRoles(false);
 		
-		$(".dotempadd_btn",ModelDialog.getCurrentModal()).bind("click",function(){
+		$(".btn-saveselectedauth",ModelDialog.getCurrentModal()).bind("click",function(){
 			var selectroles = "";
 			var roleNames = "";
-			 $('input[name="roleId"]:checked',$(".table-unselectrole")).each(function(){ 
+			 $('input[name="roleId"]:checked',$(".table-cangrantedroles",ModelDialog.getCurrentModal())).each(function(){ 
 				 	var tr = $(this).closest('tr');
 				 	// console.log(tr);
 				 	// console.log($(".selected_users_movein"));

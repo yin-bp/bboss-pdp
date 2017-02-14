@@ -66,7 +66,7 @@
 		</publicitem>
 		<module name="一级菜单" 
 		             i18n:en_US="Line Information Query" 
-		            id="veh_line_query1" used="false"		         
+		            id="veh_line_query1" used="true"		         
 		            menuType="type1" icon="icon-home">
 		        <module name="一级菜单" 
 		             i18n:en_US="Line Information Query" 
