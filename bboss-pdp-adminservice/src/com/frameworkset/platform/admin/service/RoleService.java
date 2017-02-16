@@ -16,13 +16,17 @@
 
 package com.frameworkset.platform.admin.service;
 
-import com.frameworkset.common.poolman.handle.RowHandler;
-import com.frameworkset.platform.admin.entity.*;
-import com.frameworkset.util.ListInfo;
 import java.util.List;
 import java.util.Map;
 
 import org.frameworkset.platform.security.authorization.AuthRole;
+
+import com.frameworkset.common.poolman.handle.RowHandler;
+import com.frameworkset.platform.admin.entity.ResOpr;
+import com.frameworkset.platform.admin.entity.Role;
+import com.frameworkset.platform.admin.entity.RoleCondition;
+import com.frameworkset.platform.admin.entity.UserRole;
+import com.frameworkset.util.ListInfo;
 
 /**
  * <p>Title: RoleService</p> <p>Description: 角色管理管理服务接口 </p> <p>bboss</p>
@@ -64,7 +68,13 @@ public interface RoleService {
 	 */
 	public  List  getGrantedOperations(String opcode, String resourceType, String roleId,
 			String roleType,String permissionTable,RowHandler  rowHandler,Class poclazz)throws RoleException;
+	
+	public  ListInfo  getGrantedOperations(String opcode, String resourceType, String roleId,
+			String roleType,String resourceAttr,
+			 long offset,
+			int pagesize,String permissionTable,RowHandler  rowHandler,Class poclazz)throws RoleException;
 	/**
+	 * 
 	 * @param globalresourceid
 	 * @param globalopcode
 	 * @param resOprs

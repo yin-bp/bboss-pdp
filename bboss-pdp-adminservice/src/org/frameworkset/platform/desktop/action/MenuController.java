@@ -21,6 +21,7 @@ import org.frameworkset.platform.security.AccessControl;
 import org.frameworkset.platform.security.AuthorResource;
 import org.frameworkset.platform.security.authorization.AuthRole;
 import org.frameworkset.platform.util.AdminUtil;
+import org.frameworkset.util.annotations.PagerParam;
 import org.frameworkset.util.annotations.ResponseBody;
 import org.frameworkset.web.servlet.ModelMap;
 
@@ -29,6 +30,7 @@ import com.frameworkset.common.poolman.handle.RowHandler;
 import com.frameworkset.platform.admin.entity.MenuOPS;
 import com.frameworkset.platform.admin.entity.Role;
 import com.frameworkset.platform.admin.service.RoleService;
+import com.frameworkset.util.ListInfo;
 
 public class MenuController{
 	private ResourceManager resourceManager = new ResourceManager();
@@ -56,8 +58,26 @@ public class MenuController{
 		{
 			model.addAttribute("roleNeedGrantResource", true);
 		}
+		
+		return "path:grantedcolumns";
+	}
+	public String grantedcolumnsListInfo(String resourceType,String roleId,String roleType, 
+			String resourceAttr,
+			@PagerParam(name = PagerParam.OFFSET) long offset,
+			@PagerParam(name = PagerParam.PAGE_SIZE, defaultvalue = "10") int pagesize,ModelMap model){
+		if(resourceType == null)
+			resourceType = "column";
+		String currentSystem = AccessControl.getAccessControl().getCurrentSystemID();
+		final Framework framework = Framework.getInstance(currentSystem);		
+		model.addAttribute("roleId", roleId);
+		model.addAttribute("roleType", roleType);
+		model.addAttribute("resourceType", resourceType);
+		ResourceInfo resourceInfo = resourceManager.getResourceInfoByType(resourceType);
+		
 		@SuppressWarnings("unchecked")
-		List<MenuOPS> grantedcolumns = this.roleService.getGrantedOperations("visible",resourceType, roleId, roleType, resourceInfo.getPermissionTable(), new RowHandler<MenuOPS>(){
+		ListInfo grantedcolumns = this.roleService.getGrantedOperations("visible",resourceType, roleId, roleType,  resourceAttr,
+				   offset,
+					  pagesize, resourceInfo.getPermissionTable(), new RowHandler<MenuOPS>(){
 			
 			@Override
 			public void handleRow(MenuOPS menu,Record origine) throws Exception {
@@ -69,16 +89,18 @@ public class MenuController{
 				menu.setAUTHORIZATION_ETIME(origine.getDate("AUTHORIZATION_ETIME"));
 				menu.setAUTHORIZATION_STIME(origine.getDate("AUTHORIZATION_STIME"));
 				MenuItem menuItem = framework.getMenuByID(menu.getResCode());
-				menu.setMenuName(menuItem.getName());
-				menu.setMenupath(menuItem.getPath());
-				AuthorResource ar = (AuthorResource)menuItem;
-				menu.setUrls(ar.toString("<br>"));
-				
+				if(menuItem != null)
+				{
+					menu.setMenuName(menuItem.getName());
+					menu.setMenupath(menuItem.getPath());
+					AuthorResource ar = (AuthorResource)menuItem;
+					menu.setUrls(ar.toString("<br>"));
+				}
 			}
 			
 		},MenuOPS.class);
 		model.addAttribute("grantedcolumns", grantedcolumns);
-		return "path:grantedcolumns";
+		return "path:grantedcolumnsListInfo";
 	}
 	
 	private ZKTreeNode buildZKTreeNode(MenuItem menu)

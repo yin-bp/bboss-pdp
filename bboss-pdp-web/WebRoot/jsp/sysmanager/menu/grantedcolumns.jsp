@@ -11,7 +11,9 @@
 
 	</div>
 	<pg:true actual="${roleNeedGrantResource }">
-	<div class="actions">
+	<div class="actions">			
+									
+								
 			<admin:haspermission resource="globalrole" opcode="roleresauth" resourceType="role">
 			<a
 				class="btn btn-xs blue"  
@@ -25,43 +27,61 @@
 		</div>
 	</pg:true>	
 </div>
-<div class="portlet-body">
- 
-<table class="table table-striped table-bordered table-hover order-column table-grantedcolumns">
-     <thead>
-         <tr>
-         		<th  >
-				<input type="checkbox" class="checkboxall" onClick="checkAll('.table-grantedcolumns .checkboxall','.table-grantedcolumns .checkone')"/>
-		</th>
-              
-             <th  > 编码/名称</th>
-             <th  > <span class="tooltips" data-original-title="当url与操作关联，则url的访问权限自动与对应的操作权限一致"> 关联url</span></th>
-         </tr>
-     </thead> 
-     <tbody>
-		<pg:list actual="${grantedcolumns }">
-	         <tr>
-	         	<td ><input
-					name="menuid" type="checkbox" 					
-					class="checkone" onClick="checkOne('.table-grantedcolumns .checkboxall','.table-grantedcolumns .checkone')" value="<pg:cell colName="resCode" defaultValue="" />" />
-				</td>             
-	             <td >
-	                <pg:cell colName="resCode" defaultValue="" /> <pg:cell colName="resName" defaultValue="" />
-	             </td>
-	              <td >
-	                 <pg:cell colName="urls" defaultValue="" />
-	             </td>
-	         </tr>
-		</pg:list>
-   		 
-     </tbody>
- </table>
- 
-</div>
+<div class="row">
+	<div class="col-md-8">
+		<div class="form-group form-md-line-input">
+			<label class="col-md-3 control-label" for="form_control_1">  </label>
+			<div class="col-md-9">
+					<div class="input-icon right">
+						<input type="text" class="form-control  input-xs"
+							placeholder="" name="resourceAttr">
+						<div class="form-control-focus"></div>
+						<span class="help-block">请输入查询条件</span>
+					</div>															
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="form-group form-md-line-input">
+
+			<div class="col-md-12">
+				<div class="input-group">
+
+					<span class="input-group-btn btn-left">
+
+						<button type="button"
+							class="btn btn-xs green-haze btn-querygrantedColumns"
+							aria-expanded="false">查询</button>
+						
+					</span>
+				</div>
+
+			</div>
+		</div>
+	</div>
+</div>								
+	<div class="portlet-body portlet-grantcolumnslist">	 
+	</div>
 </div>
 <script type="text/javascript">
 		jQuery(document).ready(function() {								
-		
+			var usercontextpath = "<%=request.getContextPath()%>";
+			var queryColumns = function(doquery){
+				var resourceAttr=$("input[name='resourceAttr']").val();								 
+				if(  PDP.containSpecial(resourceAttr) ){
+					PDP.warn('查询字符串含有非法字符集,请检查输入条件！');
+					return;
+				}
+			$(".portlet-grantcolumnslist").load(usercontextpath+"/menu/grantedcolumnsListInfo.page",
+									doquery?{"resourceAttr":resourceAttr,"roleId":"${roleId}","roleType":"${roleType}","resourceType":"${resourceType}"}:
+											{"roleId":"${roleId}","roleType":"${roleType}","resourceType":"${resourceType}"},
+									function(){
+									});	
+			}
+			$(".btn-querygrantedColumns").bind("click",function(){
+						queryColumns(true);
+						});
+			queryColumns(false);
 			$("#button_sys_add_authmenu").bind("click",function(){
 				ModelDialog.dialog({
  					title:"选择菜单",
@@ -120,70 +140,6 @@
 					});
 			});
 			
-			var initTable4 = function () {
-		        var table = $('.table-grantedcolumns');
-
-		        var oTable = table.dataTable({
-
-		            // Internationalisation. For more info refer to http://datatables.net/manual/i18n
-		            "language": {
-		                "aria": {
-		                    "sortAscending": ": activate to sort column ascending",
-		                    "sortDescending": ": activate to sort column descending"
-		                },
-		                "emptyTable": "",
-		                "info": " 第_START_ - _END_条 共 _TOTAL_ 条记录",
-		                "infoEmpty": "",
-		                "infoFiltered": "(filtered1 from _MAX_ total entries)",
-		                "lengthMenu": "_MENU_ 条记录",
-		                "search": "查询:",
-		                "zeroRecords": ""
-		            },
-
-		            // Or you can use remote translation file
-		            //"language": {
-		            //   url: '//cdn.datatables.net/plug-ins/3cfcc339e89/i18n/Portuguese.json'
-		            //},
-
-		             
-
-		            // scroller extension: http://datatables.net/extensions/scroller/
-		            scrollY:        300,
-		            deferRender:    true,
-		            scroller:       true,
-		            deferRender:    true,
-		            scrollX:        true,
-		            scrollCollapse: true,      
-		            "columns": [
-		                        { "width": "5%", 'orderable': false,
-		                             "searchable": false },
-		                        { "width": "25%", 'orderable': true,
-			                             "searchable": true },
-			                    { "width": "70%", 'orderable': true,
-				                             "searchable": true }
-		                      ],
-                     "order": [
-                               [1, "asc"]
-                           ], // set first column as a default sort by asc
-		            
-		            "lengthMenu": [
-		                [10, 15, 20, -1],
-		                [10, 15, 20, "All"] // change per page values here
-		            ],
-		            // set the initial value
-		            "pageLength": 10,
-
-		            "dom": "<'row' <'col-md-12'>><'row'<'col-md-6 col-sm-12'l><'col-md-6 col-sm-12'f>r><'table-scrollable't><'row'<'col-md-5 col-sm-12'i><'col-md-7 col-sm-12'p>>", // horizobtal scrollable datatable
-
-		            // Uncomment below line("dom" parameter) to fix the dropdown overflow issue in the datatable cells. The default datatable layout
-		            // setup uses scrollable div(table-scrollable) with overflow:auto to enable vertical scroll(see: assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.js). 
-		            // So when dropdowns used the scrollable div should be removed. 
-		            //"dom": "<'row' <'col-md-12'T>><'row'<'col-md-6 col-sm-12'l><'col-md-6 col-sm-12'f>r>t<'row'<'col-md-5 col-sm-12'i><'col-md-7 col-sm-12'p>>",
-		        });
-		        
-			}
-			<pg:notempty actual="${grantedcolumns}">
-			initTable4();
-			</pg:notempty>
+			
 		});
 </script>

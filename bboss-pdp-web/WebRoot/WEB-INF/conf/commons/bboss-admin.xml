@@ -24,6 +24,7 @@
 	<property name="/menu/*.page"
 		f:roleService="attr:role.roleService"
 		path:grantedcolumns="/jsp/sysmanager/menu/grantedcolumns.jsp"
+		path:grantedcolumnsListInfo="/jsp/sysmanager/menu/grantedcolumnsListInfo.jsp"
 		path:columnAuthTree="/jsp/sysmanager/menu/columnAuthTree.jsp"
 		path:main="/jsp/sysmanager/menu/main.jsp"
 		path:system="/jsp/sysmanager/menu/system.jsp"

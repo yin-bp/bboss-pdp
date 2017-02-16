@@ -160,10 +160,10 @@ public class SmUserController {
 			return "success";
 		} catch (SmUserException e) {
 			log.error("add SmUser failed:", e);
-			return StringUtil.formatBRException(e);
+			return StringUtil.formatException(e);
 		} catch (Throwable e) {
 			log.error("add SmUser failed:", e);
-			return StringUtil.formatBRException(e);
+			return StringUtil.formatException(e);
 		}
 
 	}
