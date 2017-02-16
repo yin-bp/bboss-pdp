@@ -139,7 +139,10 @@
 		<![CDATA[
 			select *
 			from ${permissionTable} rop 			 	 
-			 where rop.ROLE_ID = #[roleId] and rop.TYPES =#[roleType] and RESTYPE_ID = #[resourceType] and op_id = #[opcode]		 
+			 where rop.ROLE_ID = #[roleId] and rop.TYPES =#[roleType] and RESTYPE_ID = #[resourceType] and op_id = #[opcode]
+			 #if($resourceAttr && !$resourceAttr.equals(""))
+			   and (RES_ID like #[resourceAttr] or RES_NAME like #[resourceAttr])
+			 #end		 
 		]]>
 	</property>
 	

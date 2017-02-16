@@ -242,6 +242,58 @@ public class RoleServiceImpl implements RoleService {
 			throw new RoleException(" getGrantedOperations failed:", e);
 		}
 	}
+	/**
+	 * 获取资源类型下面的，授予角色的全局操作及有效时间
+	 * op_id,AUTHORIZATION_STIME,AUTHORIZATION_ETIME
+	 * @param opcode
+	 * @param resourceType
+	 * @param roleId
+	 * @param roleType
+	 */
+	public ListInfo getGrantedOperations(String opcode, String resourceType, String roleId,
+			String roleType,String resourceAttr,
+			 long offset,
+				int pagesize,String permissionTable,RowHandler rowHandler,Class poclazz)throws RoleException{
+		try {
+			// rop.ROLE_ID = ? and rop.TYPES =? and RESTYPE_ID = ? and RES_ID = ?
+			Map params = new HashMap();
+			params.put("roleId", roleId);
+			params.put("resourceType", resourceType);
+			params.put("opcode", opcode);
+			params.put("roleType", roleType);
+			if(resourceAttr != null && !resourceAttr.trim().equals(""))
+				params.put("resourceAttr", "%"+resourceAttr+"%");
+			params.put("permissionTable", permissionTable);
+			ListInfo menus = null;
+			if(rowHandler == null){
+				menus = this.executor.queryListInfoBeanByRowHandler(new RowHandler<AuthOPS>(){
+	
+					@Override
+					public void handleRow(AuthOPS menu,Record origine) throws Exception {
+						String op_id = origine.getString("op_id");
+						menu.setOpcode(op_id);
+						menu.setResCode(origine.getString("RES_ID"));
+						menu.setResName(origine.getString("RES_NAME"));
+						menu.setResourceType(origine.getString("RESTYPE_ID"));					
+						menu.setAUTHORIZATION_ETIME(origine.getDate("AUTHORIZATION_ETIME"));
+						menu.setAUTHORIZATION_STIME(origine.getDate("AUTHORIZATION_STIME"));						
+						
+					}
+					
+				}, AuthOPS.class, "getGrantedOperations", offset,
+						 pagesize,params);
+			}
+			else
+			{
+				menus = this.executor.queryListInfoBeanByRowHandler(rowHandler,poclazz, "getGrantedOperations", offset,
+						 pagesize,params);
+			}
+			return menus;
+		} catch (Exception e) {
+			throw new RoleException(" getGrantedOperations failed:", e);
+		}
+	}
+	
 	
 	/**
 	 * 删除角色资源操作权限
