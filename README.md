@@ -9,10 +9,8 @@ github托管地址：
 
 https://github.com/bbossgroups/bboss-pdp 
 
-svn下载地址 
-
-https://github.com/bbossgroups/bboss-pdp/trunk 
-
+oschina托管地址:
+https://git.oschina.net/bboss/bboss-pdp
 
 
 
