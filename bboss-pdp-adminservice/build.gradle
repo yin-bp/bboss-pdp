@@ -16,7 +16,23 @@ sourceSets {
 dependencies {
 	   
 	 	compile project(':bboss-pdp-auth')
-	   
+	   compile(
+            [group: 'commons-io', name: 'commons-io', version: '2.0', transitive: false],
+            [group: 'commons-beanutils', name: 'commons-beanutils', version: '1.8.0', transitive: false],
+            [group: 'jstl', name: 'jstl', version: '1.2', transitive: false],
+            [group: 'org.apache.poi', name: 'poi', version: '3.10-FINAL', transitive: false],
+            [group: 'org.apache.poi', name: 'poi-excelant', version: '3.10-FINAL', transitive: false],
+            [group: 'org.apache.poi', name: 'poi-ooxml', version: '3.10-FINAL', transitive: false],
+            [group: 'org.apache.poi', name: 'poi-ooxml-schemas', version: '3.10-FINAL', transitive: false],
+            [group: 'org.apache.poi', name: 'poi-scratchpad', version: '3.10-FINAL', transitive: false],
+           
+           
+           [group: 'com.bbossgroups.activiti', name: 'activiti-bpmn-converter', version: "${WF_VERSION}", transitive: false],
+            [group: 'com.bbossgroups.activiti', name: 'activiti-bpmn-layout', version: "${WF_VERSION}", transitive: false],
+            [group: 'com.bbossgroups.activiti', name: 'activiti-bpmn-model', version: "${WF_VERSION}", transitive: false],
+            [group: 'com.bbossgroups.activiti', name: 'activiti-engine', version: "${WF_VERSION}", transitive: false],
+            [group: 'com.belerweb', name: 'pinyin4j', version: "2.5.1", transitive: false],
+	   )
 	  
 	   compileOnly (            
 	          
