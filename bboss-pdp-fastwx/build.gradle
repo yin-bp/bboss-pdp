@@ -1,0 +1,45 @@
+sourceSets {
+    main {
+        java {
+            srcDir 'src/main/java'
+           
+        }
+        resources {
+			srcDirs 'src/main/resources'
+			srcDir 'src/main/java'  exclude '**/*.java'
+        }
+        
+    }
+    test {
+        java {
+            srcDir 'test/main/java'
+           
+        }
+        resources {
+			srcDirs 'test/main/resources'
+			srcDir 'test/main/java'  exclude '**/*.java'
+        }
+        
+    }
+    
+}
+//project.tasks.compileJava.dependsOn(project(':activiti-bpmn-model').tasks.install)
+dependencies {
+	compile project(':bboss-pdp-adminservice')
+   compile (
+ 
+           
+			   [group: 'com.alibaba', name: 'fastjson', version: "1.2.24", transitive: true],
+              
+    )
+    
+    compileOnly (            
+	          
+	            [group: 'javax.servlet', name: 'javax.servlet-api', version: "3.0.1", transitive: false],
+	            //[group: 'javax.servlet', name: 'jsp-api', version: '2.0', transitive: false],
+	            [group: 'javax.servlet.jsp', name: 'javax.servlet.jsp-api', version: '2.3.1', transitive: false],
+	          
+	    	)
+	    	
+	
+}

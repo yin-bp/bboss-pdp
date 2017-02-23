@@ -54,3 +54,5 @@ Temporary Items
 
 *.bak
 /todolist.md
+/.idea/
+/out/

@@ -1,0 +1,18 @@
+<properties>
+
+	<!-- 
+		描述:初始化字典管理管理控制器DictController，并将所有关联的字典管理管理service注入到此控制器中。并以别名的形式定义好跳转页面。
+	    author:yinbp
+		CopyRight:bboss
+		版本:v1.0 
+	    Date: 2016-12-18 11:29:08
+	-->
+
+	<property name="/fastqywx/*.page"		
+		class="com.github.sd4324530.fastweixin.servlet.SimpleQYWeixinControllerSupport" >
+	</property>
+	<property name="/fastwx/*.page"		
+		class="com.github.sd4324530.fastweixin.servlet.SimpleWeixinControllerSupport" >
+	</property>	 
+	
+</properties>
