@@ -2,6 +2,7 @@
 	contentType="text/html; charset=utf-8"%>
 <%@ taglib uri="/WEB-INF/tld/pager-taglib.tld" prefix="pg"%>
 <%@ taglib uri="/WEB-INF/tld/admin-taglib.tld" prefix="admin"%>
+<link href="${pageContext.request.contextPath}/assets/global/plugins/socicon/socicon.css" rel="stylesheet" type="text/css" />
 
 <table
 	class="table table-striped table-hover table-bordered table-dictitemlist">
@@ -11,6 +12,9 @@
 				onClick="checkAll('.table-dictitemlist .checkall','.table-dictitemlist .checkone')" /></th>
 			<th>名称</th>
 			<th>值</th>
+			<pg:notequal actual="${actiontype }" value="view">
+			<th>排序</th>
+			</pg:notequal>
 		</tr>
 	</thead>
 	<tbody>
@@ -60,6 +64,20 @@
 								</div>
 		
 							</div></td>
+							
+							<td><div class="form-group form-md-line-input">
+								<div class="col-md-10 col-sm-offset-2">
+									<div class="input-icon left">
+									 	<div class="row fontawesome-icon-list">                                         
+										<i class="fa fa-angle-double-up"></i>置顶
+										  <i class="fa fa-angle-up"></i> 上移										
+										<i class="fa fa-angle-down"></i>下移
+										<i class="fa fa-angle-double-down"></i> 置底
+										</div>
+									</div> 
+								</div>
+		
+							</div></td>
 		
 					</tr>
 				</pg:list>
@@ -70,7 +88,7 @@
 <script type="text/javascript">
 	jQuery(document).ready(function() {
 		<pg:notequal actual="${actiontype }" value="view" >
-		SysDict.initDictItemOrderTable();
+		//SysDict.initDictItemOrderTable();
 		</pg:notequal>
 		
 	});
