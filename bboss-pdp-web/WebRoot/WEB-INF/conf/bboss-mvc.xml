@@ -57,7 +57,15 @@
      	<list>
 <!--     		<property class="org.frameworkset.http.converter.feed.RssChannelHttpMessageConverter"/>-->
 <!--     		<property class="org.frameworkset.http.converter.feed.AtomFeedHttpMessageConverter"/>-->
-				<property class="org.frameworkset.http.converter.json.MappingJacksonHttpMessageConverter"/>
+				<property class="org.frameworkset.http.converter.json.MappingJacksonHttpMessageConverter">
+     				<property name="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper">
+     					<property name="dateFormat" class="java.text.SimpleDateFormat">
+     						<construction>  
+				            <property value="yyyy-MM-dd HH:mm:ss"/>
+				        </construction>
+     					</property>
+     				</property>
+     			</property>
 <!--     		<property class="org.frameworkset.http.converter.xml.Jaxb2RootElementHttpMessageConverter"/>-->
      		
 <!--     		<property class="org.frameworkset.http.converter.xml.MarshallingHttpMessageConverter"/>-->

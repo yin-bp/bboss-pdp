@@ -191,8 +191,8 @@
         </init-param>
         <init-param>
 			<param-name>messagesources</param-name>
-				<param-value>/WEB-INF/messages_pdp,/WEB-INF/messages_pdp_common,
-		</param-value>
+			<param-value>/WEB-INF/messages_pdp,/WEB-INF/messages_pdp_common
+			</param-value>
 		</init-param>
 		<init-param>
 			<param-name>useCodeAsDefaultMessage</param-name>
@@ -217,7 +217,25 @@
     </servlet-mapping>
 	
 
- 
+ <servlet> 
+<servlet-name>DruidStatView</servlet-name> 
+<servlet-class>com.alibaba.druid.support.http.StatViewServlet</servlet-class> 
+</servlet>
+
+<servlet-mapping> 
+<servlet-name>DruidStatView</servlet-name> 
+<url-pattern>/druid/*</url-pattern> 
+</servlet-mapping>
+ <servlet>
+		<display-name>cxf</display-name>
+		<servlet-name>cxf</servlet-name>
+		<servlet-class>org.apache.cxf.transport.servlet.RPCCXFServlet</servlet-class>
+		<load-on-startup>2</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>cxf</servlet-name>
+		<url-pattern>/cxfservices/*</url-pattern>
+	</servlet-mapping>
 
 
 
