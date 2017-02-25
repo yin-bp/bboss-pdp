@@ -110,22 +110,23 @@ public class UserPasswordLoginModule extends ACLLoginModule
         }
         catch(LoginException e)
         {
-        	
+        	 log.debug("",e);
         	throw e;
         }
         catch (SPIException ex) {
-        	
+        	 log.debug("",ex);
            // ex.printStackTrace();
             throw new LoginException(StringUtil.exceptionToString(ex));
             /** @todo Handle this exception */
         }
         catch(SmUserException e)
         {
+        	 log.debug("",e);
         	throw new LoginException("服务端异常："+e.getMessage());
         }
         catch(Throwable e)
         {
-            log.debug("未知错误:" + e.getClass() + "," + e.getMessage());
+            log.debug("服务端异常：",e);
             //e.printStackTrace();
             //throw new LoginException("未知错误:" + e.getClass() + "," + e.getMessage());
             throw new LoginException(StringUtil.exceptionToString(e));
