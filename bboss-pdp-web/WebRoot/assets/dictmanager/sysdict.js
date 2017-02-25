@@ -274,7 +274,8 @@ var SysDict = function(){
 		$('.table-dictitemlist',ModelDialog.getCurrentModal()).DataTable( {
         	paging: false,
         	 "dom": "<'row'<'col-md-8 col-sm-12'><'col-md-4 col-sm-12'<'table-group-actions pull-right'>>r><'table-responsive't><'row'<'col-md-8 col-sm-12'><'col-md-4 col-sm-12'>>",
-    		rowReorder: { selector: 'tr'},
+    		//rowReorder: { selector: 'tr'},
+        	 rowReorder: true,
     		/**columnDefs: [
     		             { targets: 0, visible: false }
     		         ],*/

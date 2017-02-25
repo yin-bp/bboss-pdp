@@ -28,7 +28,19 @@
 				</div>
 
 			</div></td>
-
+		<td><div class="form-group form-md-line-input">
+								<div class="col-md-10 col-sm-offset-2">
+									<div class="input-icon left">
+									 	<div class="row fontawesome-icon-list">                                         
+										<i class="fa fa-angle-double-up"></i>置顶
+										  <i class="fa fa-angle-up"></i> 上移										
+										<i class="fa fa-angle-down"></i>下移
+										<i class="fa fa-angle-double-down"></i> 置底
+										</div>
+									</div> 
+								</div>
+		
+							</div></td>
 	</tr>
 </table>
 <pg:beaninfo actual="${dict }">
