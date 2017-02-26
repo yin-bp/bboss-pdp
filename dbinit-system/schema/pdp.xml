@@ -13,7 +13,7 @@
         <column name="REMARK3" size="100" type="VARCHAR"/>
         <column name="REMARK4" size="100" type="VARCHAR"/>
         <column name="REMARK5" size="100" type="VARCHAR"/>
-        <column name="PARENT_ID" size="22" type="DECIMAL"/>
+        <column name="PARENT_ID" size="50" type="VARCHAR"/>
         <column name="GROUP_TREE_LEVEL" size="200" type="VARCHAR"/>
         <column default="1" name="OWNER_ID" size="50" type="VARCHAR"/>
     </table>
@@ -50,7 +50,7 @@
         <column name="LOG_OPERTIME" type="DATE"/>
         <column name="LOG_CONTENT" type="CLOB"/>
         <column name="REMARK1" size="100" type="VARCHAR"/>
-        <column name="OPER_TYPE" size="1" type="DECIMAL"/>
+        <column name="OPER_TYPE" size="1" type="INTEGER"/>
     </table>
     <table name="TD_SM_LOGDETAIL">
         <column name="DETAIL_ID" primaryKey="true" required="true"
@@ -59,7 +59,7 @@
         <column name="LOG_ID" size="50" type="VARCHAR"/>
         <column name="OP_KEY_ID" size="50" type="VARCHAR"/>
         <column name="DETAIL_CONTENT" type="CLOB"/>
-        <column name="OP_TYPE" size="1" type="DECIMAL"/>
+        <column name="OP_TYPE" size="1" type="INTEGER"/>
         <foreign-key foreignTable="TD_SM_LOG">
             <reference foreign="LOG_ID" local="LOG_ID"/>
         </foreign-key>
@@ -71,14 +71,14 @@
         <column name="LOG_ID" size="50" type="VARCHAR"/>
         <column name="OP_KEY_ID" size="50" type="VARCHAR"/>
         <column name="DETAIL_CONTENT" type="CLOB"/>
-        <column name="OP_TYPE" size="1" type="DECIMAL"/>
+        <column name="OP_TYPE" size="1" type="INTEGER"/>
         <foreign-key foreignTable="TD_SM_LOG_HIS">
             <reference foreign="LOG_ID" local="LOG_ID"/>
         </foreign-key>
     </table>
     <table name="TD_SM_LOGMODULE">
         <column name="LOGMODULE" size="50" type="VARCHAR"/>
-        <column name="STATUS" size="2" type="DECIMAL"/>
+        <column name="STATUS" size="2" type="INTEGER"/>
         <column name="MODULE_DESC" size="50" type="VARCHAR"/>
         <column name="ID" primaryKey="true" required="true" size="50" type="VARCHAR"/>
     </table>
@@ -92,13 +92,13 @@
         <column name="LOG_OPERTIME" type="DATE"/>        
         <column name="LOG_CONTENT" type="CLOB"/>
         <column name="REMARK1" size="100" type="VARCHAR"/>
-        <column name="OPER_TYPE" size="1" type="DECIMAL"/>
+        <column name="OPER_TYPE" size="1" type="INTEGER"/>
         <column name="LOG_ARCHTIME" type="DATE"/>
     </table>
     <table name="TD_SM_ORGANIZATION">
         <column name="ORG_ID" primaryKey="true" required="true"
             size="50" type="VARCHAR"/>
-        <column name="ORG_SN" required="true" size="22" type="DECIMAL"/>
+        <column name="ORG_SN" required="true" size="10" type="INTEGER"/>
         <column name="ORG_NAME" required="true" size="100" type="VARCHAR"/>
         <column name="PARENT_ID" required="true" size="100" type="VARCHAR"/>
         <column name="PATH" size="1000" type="VARCHAR"/>
@@ -117,15 +117,15 @@
         <column name="REMARK4" size="100" type="VARCHAR"/>
         <column name="REMARK5" size="100" type="VARCHAR"/>
         <column name="CHARGEORGID" size="50" type="VARCHAR"/>
-        <column default="1" name="ISPARTYBUSSINESS" size="1" type="DECIMAL"/>
+        <column default="1" name="ISPARTYBUSSINESS" size="1" type="INTEGER"/>
         <column name="SATRAPJOBID" size="50" type="VARCHAR"/>
         <column default="1" name="ORG_LEVEL" size="1" type="VARCHAR"/>
         <column name="ORG_XZQM" size="10" type="VARCHAR"/>
         <column name="ORG_TREE_LEVEL" size="500" type="VARCHAR"/>
-        <column default="0" name="ISDIRECTLYPARTY" size="1" type="DECIMAL"/>
-        <column default="0" name="ISFOREIGNPARTY" size="1" type="DECIMAL"/>
-        <column default="0" name="ISJICHAPARTY" size="1" type="DECIMAL"/>
-        <column default="0" name="ISDIRECTGUANHU" size="1" type="DECIMAL"/>
+        <column default="0" name="ISDIRECTLYPARTY" size="1" type="INTEGER"/>
+        <column default="0" name="ISFOREIGNPARTY" size="1" type="INTEGER"/>
+        <column default="0" name="ISJICHAPARTY" size="1" type="INTEGER"/>
+        <column default="0" name="ISDIRECTGUANHU" size="1" type="INTEGER"/>
         <column name="ORGLEADER" size="50" type="VARCHAR"/>
     </table>
     <table name="TD_SM_ORGJOB">
@@ -133,7 +133,7 @@
             size="50" type="VARCHAR"/>
         <column name="JOB_ID" primaryKey="true" required="true"
             size="50" type="VARCHAR"/>
-        <column name="JOB_SN" size="22" type="DECIMAL"/>
+        <column name="JOB_SN" size="10" type="INTEGER"/>
 <!--        <foreign-key foreignTable="TD_SM_JOB">-->
 <!--            <reference foreign="JOB_ID" local="JOB_ID"/>-->
 <!--        </foreign-key>-->
@@ -253,11 +253,11 @@
         <column name="AUTO" size="50" type="VARCHAR"/>
         <column name="RES_NAME" size="500" type="VARCHAR"/>
         <column name="TYPES" primaryKey="true" required="true" size="50" type="VARCHAR"/>
-        <column default="0" name="AUTHORIZATION_TYPE" size="22" type="DECIMAL"/>
-        <column name="USE_COUNT" size="22" type="DECIMAL"/>
+        <column default="0" name="AUTHORIZATION_TYPE" size="2" type="INTEGER"/>
+        <column name="USE_COUNT" size="10" type="INTEGER"/>
         <column name="AUTHORIZATION_STIME" type="DATE"/>
         <column name="AUTHORIZATION_ETIME" type="DATE"/>
-        <column name="USE_COUNTED" size="22" type="DECIMAL"/>
+        <column name="USE_COUNTED" size="10" type="INTEGER"/>
     </table>
     
     
@@ -275,7 +275,7 @@
     <table name="TD_SM_USER">
         <column name="USER_ID" primaryKey="true" required="true"
             size="50" type="VARCHAR"/>
-        <column name="USER_SN" required="true" size="22" type="DECIMAL"/>
+        <column name="USER_SN" required="true" size="10" type="INTEGER"/>
         <column name="USER_NAME" required="true" size="200" type="VARCHAR"/>
         <column name="USER_PASSWORD" required="true" size="200" type="VARCHAR"/>
         <column name="USER_REALNAME" required="true" size="100" type="VARCHAR"/>
@@ -293,9 +293,9 @@
         <column name="USER_ADDRESS" size="200" type="VARCHAR"/>
         <column name="USER_POSTALCODE" size="10" type="VARCHAR"/>
         <column name="USER_IDCARD" size="50" type="VARCHAR"/>
-        <column name="USER_ISVALID" size="22" type="DECIMAL"/>
+        <column name="USER_ISVALID" size="2" type="INTEGER"/>
         <column name="USER_REGDATE" type="DATE"/>
-        <column name="USER_LOGINCOUNT" size="22" type="DECIMAL"/>
+        <column name="USER_LOGINCOUNT" size="10" type="INTEGER"/>
         <column name="USER_TYPE" size="100" type="VARCHAR"/>
         <column name="REMARK1" size="100" type="VARCHAR"/>
         <column name="REMARK2" size="100" type="VARCHAR"/>
@@ -307,11 +307,11 @@
         <column name="LASTLOGIN_DATE" type="DATE"/>
         <column name="WORKLENGTH" size="50" type="VARCHAR"/>
         <column name="POLITICS" size="100" type="VARCHAR"/>
-        <column name="ISTAXMANAGER" size="1" type="DECIMAL"/>
+        <column name="ISTAXMANAGER" size="1" type="INTEGER"/>
         <column name="LOGON_IP" size="15" type="VARCHAR"/>
         <column name="CERT_SN" size="50" type="VARCHAR"/>        
         <column name="PASSWORD_UPDATETIME" type="TIMESTAMP"/>
-        <column name="Password_DualTime" size="10" type="DECIMAL"/>
+        <column name="Password_DualTime" size="10" type="INTEGER"/>
         <column name="PASSWORD_TEXT" size="50" type="VARCHAR"/>
         <column name="DEPART_ID" size="50" type="VARCHAR"/>
         <column name="USER_PICTURE" size="500" type="VARCHAR"/>
@@ -331,10 +331,10 @@
             size="50" type="VARCHAR"/>
         <column name="ORG_ID" primaryKey="true" required="true"
             size="50" type="VARCHAR"/>
-        <column name="SAME_JOB_USER_SN" size="22" type="DECIMAL"/>
-        <column name="JOB_SN" size="22" type="DECIMAL"/>
+        <column name="SAME_JOB_USER_SN" size="10" type="INTEGER"/>
+        <column name="JOB_SN" size="10" type="INTEGER"/>
         <column name="JOB_STARTTIME" type="DATE"/>
-        <column name="JOB_FETTLE" size="22" type="DECIMAL"/>
+        <column name="JOB_FETTLE" size="10" type="INTEGER"/>
 <!--         <foreign-key foreignTable="TD_SM_JOB"> -->
 <!--             <reference foreign="JOB_ID" local="JOB_ID"/> -->
 <!--         </foreign-key> -->
@@ -347,7 +347,7 @@
         <column name="ORG_NAME" required="true" size="100" type="VARCHAR"/>
         <column name="JOB_STARTTIME" type="DATE"/>
         <column name="JOB_QUASHTIME" type="DATE"/>
-        <column name="JOB_FETTLE" size="22" type="DECIMAL"/>
+        <column name="JOB_FETTLE" size="10" type="INTEGER"/>
     </table>
     <table name="TD_SM_USERROLE">
         <column name="USER_ID" primaryKey="true" required="true"
@@ -368,7 +368,7 @@
             size="50" type="VARCHAR"/>
         <column name="subsystem" primaryKey="true" required="true"
             size="50" type="VARCHAR"/>
-         <column name="item_order" required="true" size="10" type="DECIMAL" default="0"/>
+         <column name="item_order" required="true" size="10" type="INTEGER" default="0"/>
     </table>
     
     <table name="td_sm_menucustom">
@@ -378,8 +378,8 @@
             size="40" type="VARCHAR"/>
         <column name="subsystem" primaryKey="true" required="true"
             size="50" type="VARCHAR"/>
-         <column name="width" required="true" size="10" type="DECIMAL" default="0"/>
-         <column name="height" required="true" size="10" type="DECIMAL" default="0"/>
+         <column name="width" required="true" size="10" type="INTEGER" default="0"/>
+         <column name="height" required="true" size="10" type="INTEGER" default="0"/>
     </table>
     
     <table name="td_sm_desktopblackground">
@@ -414,9 +414,9 @@
     	<column name="PARAM_TYPE" primaryKey="true" required="true" size="50" type="VARCHAR"/>
         <column name="NODE_ID" primaryKey="true" required="true" size="50" type="VARCHAR"/>
         <column name="NAME" primaryKey="true" required="true"  size="50" type="VARCHAR"/>
-        <column name="RN" size="10" primaryKey="true" required="true" type="DECIMAL"/>
+        <column name="RN" size="10" primaryKey="true" required="true" type="INTEGER"/>
         <column name="VALUE" size="200" type="VARCHAR"/>        
-        <column name="ISBIGDATA" size="1" type="DECIMAL"/>
+        <column name="ISBIGDATA" size="1" type="INTEGER"/>
         <column name="BIGDATA"  type="BLOB"/>               
     </table>
     
@@ -424,9 +424,9 @@
     	<column name="PARAM_TYPE" primaryKey="true" required="true" size="50" type="VARCHAR"/>
         <column name="NODE_ID" primaryKey="true" required="true" size="50" type="VARCHAR"/>
         <column name="NAME" primaryKey="true" required="true"  size="50" type="VARCHAR"/>
-        <column name="RN" size="10" primaryKey="true" required="true" type="DECIMAL"/>
+        <column name="RN" size="10" primaryKey="true" required="true" type="INTEGER"/>
         <column name="VALUE" size="200" type="VARCHAR"/>        
-        <column name="ISBIGDATA" size="1" type="DECIMAL"/>
+        <column name="ISBIGDATA" size="1" type="INTEGER"/>
         <column name="BIGDATA"  type="BLOB"/>               
     </table>
     
