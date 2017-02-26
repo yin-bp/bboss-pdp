@@ -76,6 +76,7 @@ public interface SmOrganizationService {
 	 * @param orgId
 	 */
 	public void removeorgmanager(String[] userIds_, String orgId) throws SmOrganizationException;
+	public void removeorgmanager(String[] userIds_) throws SmOrganizationException;
 	/**
 	 * @param org
 	 * @return

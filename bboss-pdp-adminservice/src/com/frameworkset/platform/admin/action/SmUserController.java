@@ -35,12 +35,14 @@ import org.frameworkset.util.annotations.PagerParam;
 import org.frameworkset.util.annotations.ResponseBody;
 import org.frameworkset.web.servlet.ModelMap;
 
+import com.frameworkset.orm.transaction.TransactionManager;
 import com.frameworkset.platform.admin.entity.HandleResult;
 import com.frameworkset.platform.admin.entity.MoveinUserCondition;
 import com.frameworkset.platform.admin.entity.SmUser;
 import com.frameworkset.platform.admin.entity.SmUserCondition;
 import com.frameworkset.platform.admin.entity.UserRole;
 import com.frameworkset.platform.admin.service.RoleService;
+import com.frameworkset.platform.admin.service.SmOrganizationService;
 import com.frameworkset.platform.admin.service.SmUserException;
 import com.frameworkset.platform.admin.service.SmUserService;
 import com.frameworkset.util.ListInfo;
@@ -57,6 +59,7 @@ public class SmUserController {
 
 	private SmUserService smUserService;
 	private RoleService roleService;
+	private SmOrganizationService smOrganizationService;
 	private ResourceManager resourceManager = new ResourceManager();
 	public String authmain(String userId,ModelMap model){
 		if(StringUtil.isEmpty(userId) ){
@@ -168,8 +171,27 @@ public class SmUserController {
 
 	}
 	public @ResponseBody String deleteSmUser(String userId) {
+		if(userId == null || userId.equals("")){
+			return "请选择要删除的用户！";
+			
+		}
+		TransactionManager tm = new TransactionManager();
 		try {
+			tm.begin();
 			smUserService.deleteSmUser(userId);
+			//删除用户权限资源
+			String[] _ids = new String[]{userId};
+			this.roleService.deleteAllRoleAuthResources(_ids, "user");
+			this.smUserService.deleteRoleUsersOfUsers(_ids);
+			//删除部门管理员关系
+			smOrganizationService.removeorgmanager(_ids);
+			tm.commit();
+			Event event = new EventImpl(new String[] { "user", userId },
+					ACLEventType.RESOURCE_ROLE_INFO_CHANGE);
+			EventHandle.sendEvent(event);
+			event = new EventImpl(new String[] { "user",userId },
+					ACLEventType.USER_ROLE_INFO_CHANGE);
+			EventHandle.sendEvent(event);
 			return "success";
 		} catch (SmUserException e) {
 			log.error("delete SmUser failed:", e);
@@ -178,19 +200,50 @@ public class SmUserController {
 			log.error("delete SmUser failed:", e);
 			return StringUtil.formatBRException(e);
 		}
+		finally{
+			tm.release();
+		}
 
 	}
 	public @ResponseBody String deleteBatchSmUser(String userIds,String user_deltype) {
+		TransactionManager tm = new TransactionManager();
 		try {
+			tm.begin();
+			Boolean logicdel = null;
 			if(StringUtil.isNotEmpty(userIds))
 			{
 				String[] uids = userIds.split(",");
+				logicdel = user_deltype == null || user_deltype.equals("0");//逻辑删除
 				smUserService.deleteBatchSmUser(uids,user_deltype);
+				if(!logicdel){
+					//删除用户权限资源
+					this.roleService.deleteAllRoleAuthResources(uids, "user");
+					//删除用户角色关系
+					this.smUserService.deleteRoleUsersOfUsers(uids);
+					//删除部门管理员关系
+					smOrganizationService.removeorgmanager(uids);
+				}
+				
+			}
+			tm.commit();
+			if(StringUtil.isNotEmpty(userIds)){
+				if(!logicdel){
+					Event event = new EventImpl(new String[] { "user", userIds },
+							ACLEventType.RESOURCE_ROLE_INFO_CHANGE);
+					EventHandle.sendEvent(event);
+					event = new EventImpl(new String[] { "user",userIds },
+							ACLEventType.USER_ROLE_INFO_CHANGE);
+					EventHandle.sendEvent(event);
+				}
 			}
 			return "success";
 		} catch (Throwable e) {
 			log.error("delete Batch userIds failed:", e);
 			return StringUtil.formatBRException(e);
+		}
+		finally
+		{
+			tm.release();
 		}
 
 	}

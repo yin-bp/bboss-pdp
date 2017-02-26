@@ -34,7 +34,11 @@
 		]]>
 	</property>
 	
-	
+	<property name="removeorgmanagerofusers">
+		<![CDATA[
+			delete from td_sm_orgmanager where USER_ID = ?
+		]]>
+	</property>
 	
 	<property name="addSmOrganization">
 		<![CDATA[

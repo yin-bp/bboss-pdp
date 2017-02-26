@@ -97,6 +97,7 @@ public class SmUserServiceImpl implements SmUserService {
 			else
 			{
 				executor.deleteByKeys("deleteByKey", userIds);//物理删除
+				
 			}
 			tm.commit();
 		} catch (Throwable e) {
@@ -606,14 +607,37 @@ public class SmUserServiceImpl implements SmUserService {
 			tm.release();
 		}
 	}
-	public void deleteRoleUsersOfRoles(String[] roleIds)throws SmUserException{
+	/**
+	 * 删除角色用户关系
+	 * @param userIds
+	 */
+	public void deleteRoleUsersOfUsers(String[] userIds)throws SmUserException{
+		if(userIds == null || userIds.length == 0)
+			return;
 		TransactionManager tm = new TransactionManager();
 		try {
 			tm.begin();
 //			String roleIds_[] = StringUtil.isEmpty(roleIds)?null: roleIds.split(",");
 //			
-			if(roleIds != null && roleIds.length > 0)
-				this.executor.deleteByKeys("deleteRoleUsersOfRoles", roleIds);
+			this.executor.deleteByKeys("deleteRoleUsersOfUsers", userIds);
+			tm.commit();
+		} catch (Exception e) {
+			throw new SmUserException(e);
+		}
+		finally
+		{
+			tm.release();
+		}
+	}
+	public void deleteRoleUsersOfRoles(String[] roleIds)throws SmUserException{
+		if(roleIds == null || roleIds.length == 0)
+			return;
+		TransactionManager tm = new TransactionManager();
+		try {
+			tm.begin();
+//			String roleIds_[] = StringUtil.isEmpty(roleIds)?null: roleIds.split(",");
+//			
+			this.executor.deleteByKeys("deleteRoleUsersOfRoles", roleIds);
 			tm.commit();
 		} catch (Exception e) {
 			throw new SmUserException(e);

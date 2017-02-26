@@ -92,6 +92,12 @@ public interface SmUserService {
 	 * @param roleIds
 	 */
 	public void deleteRoleUsersOfRoles(String[] roleIds)throws SmUserException;
+	
+	/**
+	 * 删除角色用户关系
+	 * @param userIds
+	 */
+	public void deleteRoleUsersOfUsers(String[] userIds)throws SmUserException;
 	/**
 	 * @param userWorknumber
 	 * @return

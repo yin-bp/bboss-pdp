@@ -246,6 +246,20 @@ public class SmOrganizationServiceImpl implements SmOrganizationService {
 			throw new SmOrganizationException("existManager failed:", e);
 		}	
 	}
+	public void removeorgmanager(String[] userIds_) throws SmOrganizationException{
+		TransactionManager tm = new TransactionManager();
+		 try {			 
+			
+			 tm.begin();
+			 this.executor.deleteByKeys("removeorgmanagerofusers", userIds_);
+			 tm.commit();
+		} catch (Exception e) {
+			throw new SmOrganizationException("removeorgmanagerofusers failed:", e);
+		}
+		finally{
+			tm.release();
+		}
+	}
 	public void removeorgmanager(String[] userIds_, String orgId) throws SmOrganizationException{
 		TransactionManager tm = new TransactionManager();
 		 try {			 
