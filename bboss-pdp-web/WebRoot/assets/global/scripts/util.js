@@ -551,20 +551,22 @@ var ModelDialog = function(){
 			
 		}
 		
-		$('.ok', $modal).bind("click",function (e) {
-			
-			if(setting.okCallBack){
-				var r = setting.okCallBack($modal);
-				if(r)//处理成功，关闭弹窗，否则保持弹窗
+		if(setting.showfooter && !setting.disableokbutton){
+			$('.ok', $modal).bind("click",function (e) {
+				
+				if(setting.okCallBack){
+					var r = setting.okCallBack($modal);
+					if(r)//处理成功，关闭弹窗，否则保持弹窗
+						$modal.modal('hide');
+				}
+				else{
 					$modal.modal('hide');
-			}
-			else{
-				$modal.modal('hide');
-			}
-				
-				
-				
-		  })  
+				}
+					
+					
+					
+			  }) ;
+		} 
 		/**$modal.on('hidden.bs.modal', function (e) {
 			if(setting.closeCallBack)
 				setting.closeCallBack($modal);
