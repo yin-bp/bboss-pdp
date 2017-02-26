@@ -8,6 +8,7 @@
 <pg:pager scope="request"  data="roleusers" desc="false" isList="false" containerid=".portlet_roleusers">	
 	<pg:param name="roleName"/>
 	<pg:param name="userAttr"/>
+	<pg:param name="roleId"/>
  
 <table class="table table-striped table-bordered table-hover order-column table-roleusers">
      <thead>
