@@ -59,6 +59,11 @@
 			delete from td_sm_userrole where user_id = ? and role_id not in (select role_id from td_sm_role where role_name in ('orgmanager','orgmanagerroletemplate'))
 		]]>
 	</property>
+	<property name="deleteRoleUsersOfUsers">
+		<![CDATA[ 
+			delete from td_sm_userrole where user_id = ? 
+		]]>
+	</property>
 	<property name="deleteRoleUsersOfRoles">
 		<![CDATA[ 
 			delete from td_sm_userrole where role_id = ? 

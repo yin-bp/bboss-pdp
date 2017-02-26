@@ -119,10 +119,23 @@ public class RoleController {
 		try {
 			if (roleIds != null && !roleIds.equals("")) {
 				String[] rs = roleIds.split(",");
-				roleService.deleteBatchRole(rs);
-				
-				this.userService.deleteRoleUsersOfRoles(rs);
-				this.roleService.deleteAllRoleAuthResources(rs, "role");
+				TransactionManager tm = new TransactionManager();
+				try{
+					
+					tm.begin();
+					roleService.deleteBatchRole(rs);
+					
+					this.userService.deleteRoleUsersOfRoles(rs);
+					this.roleService.deleteAllRoleAuthResources(rs, "role");
+					tm.commit();
+				}
+				catch(Exception e){
+					log.error("",e);
+				}
+				finally
+				{
+					tm.release();
+				}
 				Event event = new EventImpl(new String[] { "role", roleIds },
 						ACLEventType.RESOURCE_ROLE_INFO_CHANGE);
 				EventHandle.sendEvent(event);

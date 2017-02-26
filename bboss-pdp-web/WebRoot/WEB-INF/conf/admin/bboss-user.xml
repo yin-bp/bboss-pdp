@@ -23,6 +23,7 @@
 		path:authmain="/jsp/sysmanager/user/authmain.jsp"
 		f:roleService="attr:role.roleService"
 		f:smUserService="attr:user.smUserService"
+		f:smOrganizationService="attr:org.smOrganizationService"
 		class="com.frameworkset.platform.admin.action.SmUserController" >
 	</property>
 		<property name="user.smUserService"

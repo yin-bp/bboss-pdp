@@ -347,9 +347,10 @@ public class RoleServiceImpl implements RoleService {
 		{
 			tm.begin();
 			List<ResourceInfo> resourceInfos = resourceManager.getResourceInfos();
-			List<Map> deleteAuths = new ArrayList<Map>();
+			
 			if(resourceInfos == null || resourceInfos.size() == 0){
 					String permissionTable = resourceManager.DEFAULT_PERMISSION_TABLE;
+					List<Map> deleteAuths = new ArrayList<Map>();
 					for(String roleId:roleIds){
 						HashMap authinfos = new HashMap();
 						authinfos.put("roleId", roleId);				 
@@ -357,14 +358,19 @@ public class RoleServiceImpl implements RoleService {
 						authinfos.put("permissionTable", permissionTable);
 						deleteAuths.add(authinfos);
 					}
-					 
+					this.executor.deleteBeans("deleteAllRoleAuthResources", deleteAuths); 
 				 
 			}
 			else
 			{
+				Map<String,Object> handled = new HashMap<String,Object>(); 				
 				for(int i = 0; i < resourceInfos.size(); i ++){
 					ResourceInfo resourceInfo = resourceInfos.get(i);
 					String permissionTable = resourceInfo.getPermissionTable();
+					if(handled.containsKey(permissionTable))
+						continue;
+					handled.put(permissionTable, permissionTable);
+					List<Map> deleteAuths = new ArrayList<Map>();
 					for(String roleId:roleIds){
 						HashMap authinfos = new HashMap();
 						authinfos.put("roleId", roleId);				 
@@ -372,11 +378,13 @@ public class RoleServiceImpl implements RoleService {
 						authinfos.put("permissionTable", permissionTable);
 						deleteAuths.add(authinfos);
 					}
+					this.executor.deleteBeans("deleteAllRoleAuthResources", deleteAuths); 
 					 
 				}
+				handled = null;
 			}	
 			
-			this.executor.deleteBeans("deleteAllRoleAuthResources", deleteAuths);
+			
 			tm.commit();
 		}
 		catch(Exception e)
