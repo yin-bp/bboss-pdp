@@ -13,10 +13,10 @@
         <column name="AUTO" size="50" type="VARCHAR"/>
         <column name="RES_NAME" size="500" type="VARCHAR"/>
         <column name="TYPES" primaryKey="true" required="true" size="50" type="VARCHAR"/>
-        <column default="0" name="AUTHORIZATION_TYPE" size="22" type="DECIMAL"/>
-        <column name="USE_COUNT" size="22" type="DECIMAL"/>
+        <column default="0" name="AUTHORIZATION_TYPE" size="2" type="INTEGER"/>
+        <column name="USE_COUNT" size="10" type="INTEGER"/>
         <column name="AUTHORIZATION_STIME" type="DATE"/>
         <column name="AUTHORIZATION_ETIME" type="DATE"/>
-        <column name="USE_COUNTED" size="22" type="DECIMAL"/>
+        <column name="USE_COUNTED" size="10" type="INTEGER"/>
     </table>
 </database> 
