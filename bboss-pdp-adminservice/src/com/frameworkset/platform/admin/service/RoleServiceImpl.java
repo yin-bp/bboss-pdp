@@ -528,7 +528,7 @@ public class RoleServiceImpl implements RoleService {
 			params.put("action", action);
 			params.put("resourceType", resourceType);
 			executor.queryBeanByNullRowHandler(new NullRowHandler(){
-
+				
 				@Override
 				public void handleRow(Record origine) throws Exception {
 					String types= origine.getString("types");
@@ -543,17 +543,28 @@ public class RoleServiceImpl implements RoleService {
 			}, "getRequiredRoles", params);
 			if(authRoles.size() > 0)
 			{
-				temp = new AuthRole[authRoles.size()];
+				
+				List<AuthRole> rtemp = new ArrayList<AuthRole>();
 				for(int i =0; i < authRoles.size(); i++){
 					AuthRole role = authRoles.get(i);
 					if(role.getRoleType().equals(AuthRole.TYPE_ROLE)){//设置角色名称
 						String roleName = this.getSimpleRoleName(role.getRoleId());
+						if(roleName == null || roleName.equals(""))
+							continue;
 						role.setRoleName(roleName);
 					}
 					else if(role.getRoleType().equals(AuthRole.TYPE_USER)){//设置用户名称						
 						String userAccount = this.getSimpleUserAccount(role.getRoleId());
+						if(userAccount == null || userAccount.equals(""))
+							continue;
 						role.setRoleName(userAccount);
 					}
+					rtemp.add(role);
+						
+				}
+				temp = new AuthRole[rtemp.size()];	
+				for(int i =0; i < rtemp.size(); i++){
+					AuthRole role = rtemp.get(i);
 					temp[i] = role;
 						
 				}
