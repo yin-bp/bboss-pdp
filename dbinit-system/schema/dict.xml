@@ -19,8 +19,8 @@
 	<table name="TD_SM_PARAMETERS">
     	<column name="PAEAM_ID" primaryKey="true" required="true" size="50" type="VARCHAR"/>
         <column name="NAME"  required="true"  size="50" type="VARCHAR"/>
-        <column name="RN" size="4" required="true" type="DECIMAL"/>
-        <column name="data_order" size="10" default="1"  required="true" type="DECIMAL"/>
+        <column name="RN" size="4" required="true" type="INTEGER"/>
+        <column name="data_order" size="10" default="1"  required="true" type="INTEGER"/>
         <column name="VALUE" size="500" type="VARCHAR"/>              
         <column name="DICT_ID" required="true" size="50" type="VARCHAR"/>    	          
     </table>
