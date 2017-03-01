@@ -9,10 +9,10 @@
 	-->
 
 	<property name="/fastqywx/*.page"		
-		class="com.github.sd4324530.fastweixin.servlet.SimpleQYWeixinControllerSupport" >
+		class="org.frameworkset.platform.fastwx.SimpleQYWeixinControllerSupport" >
 	</property>
 	<property name="/fastwx/*.page"		
-		class="com.github.sd4324530.fastweixin.servlet.SimpleWeixinControllerSupport" >
+		class="org.frameworkset.platform.fastwx.SimpleWeixinControllerSupport" >
 	</property>	 
 	
 </properties>

@@ -47,6 +47,241 @@ public class SSOControler {
 
     private static Logger log = Logger.getLogger(SSOControler.class);
     private boolean enableuseraccountsso = false;
+//    public @ResponseBody String recive(ModelMap model, HttpServletRequest request, HttpServletResponse response)
+//			throws IOException {
+//		log.info("消息接收接口");
+//
+//		String app = request.getParameter("app");
+//		log.info("微信系统app名称=" + app);
+//
+//		// 微信加密签名
+//		String sVerifyMsgSig = request.getParameter("msg_signature");
+//		// System.out.println("微信加密签名msg_signature=" + sVerifyMsgSig);
+//		log.info("微信加密签名msg_signature=" + sVerifyMsgSig);
+//
+//		// 时间戳
+//		String sVerifyTimeStamp = request.getParameter("timestamp");
+//		// System.out.println("时间戳sVerifyTimeStamp=" + sVerifyTimeStamp);
+//		log.info("时间戳sVerifyTimeStamp=" + sVerifyTimeStamp);
+//
+//		// 随机数
+//		String sVerifyNonce = request.getParameter("nonce");
+//		// System.out.println("随机数sVerifyNonce=" + sVerifyNonce);
+//		log.info("随机数sVerifyNonce=" + sVerifyNonce);
+//
+//		// 随机字符串
+//		String sVerifyEchoStr = request.getParameter("echostr");
+//		// System.out.println("随机字符串sVerifyEchoStr=" + sVerifyEchoStr);
+//		log.info("随机字符串sVerifyEchoStr=" + sVerifyEchoStr);
+//
+//		String sEchoStr = ""; // 需要返回的明文
+//		if (StringUtils.isNotEmpty(sVerifyEchoStr)) {
+//
+//			WXBizMsgCrypt wxcpt;
+//			try {
+//				String weixin_token = WXHelper.getEnterpriseToken(app);
+//				String weixin_aeskey = WXHelper.getEnterpriseAeskey(app);
+//				String weixin_corpid = WXHelper.getEnterpriseCorpid(app);
+//
+//				wxcpt = new WXBizMsgCrypt(weixin_token, weixin_aeskey, weixin_corpid);
+//				sEchoStr = wxcpt.VerifyURL(sVerifyMsgSig, sVerifyTimeStamp, sVerifyNonce, sVerifyEchoStr);
+//				System.out.println("需要返回的明文sEchoStr=" + sEchoStr);
+//
+//				// 验证URL成功，将sEchoStr返回
+//			} catch (AesException e1) {
+//				e1.printStackTrace();
+//			}
+//		}
+//
+//		return sEchoStr;
+//
+//	}
+    
+
+//	/**
+//	 * 配置微信菜单 //redirect_uri=http://domain/contextpath/sso/wxsso.page?loginMenu=
+//	 * appbommanager
+//	 * 
+//	 * redirect_uri=http://domain/contextpath/sso/wxsso.page?successRedirect=<%=
+//	 * URLEncoder.encode("/appbom/aaa.page")
+//	 * 
+//	 * 微信跳转过来的地址
+//	 * redirect_uri=http://domain/contextpath/sso/wxsso.page?loginMenu=
+//	 * appbommanager&app=zqztpy&code=CODE&state=STATE
+//	 * 
+//	 * redirect_uri=http://domain/contextpath/sso/wxsso.page?successRedirect=/
+//	 * appbom/aaa.page&code=CODE&state=STATE
+//	 * 
+//	 * @param request
+//	 * @param response
+//	 */
+//	public void wxsso(HttpServletRequest request, HttpServletResponse response) {
+//
+//		String code = request.getParameter("code");
+//		log.info("微信code=" + code);
+//
+//		String app = request.getParameter("state");
+//		log.info("微信state=" + app);
+//
+//		String successRedirect = request.getParameter("successRedirect");
+//
+//		// 解析successRedirect参数中含有多个参数
+//		if (StringUtil.isNotEmpty(app)) {
+//			int num = app.indexOf(";");
+//			if (num > -1) {
+//				successRedirect = successRedirect + app.substring(num).replace(";", "?").replace(",", "&");
+//				app = app.substring(0, num);
+//			}
+//		}
+//		log.info("微信successRedirect=" + successRedirect);
+//
+//		String corpid = WXHelper.getEnterpriseCorpid(app), corpsecret = WXHelper.getEnterpriseCorpsecret(app);
+//		log.info("微信corpid=" + corpid);
+//		log.info("微信corpsecret=" + corpsecret);
+//
+//		String userName = null;
+//		String loginMenu = request.getParameter("loginMenu");
+//		String contextpath = request.getContextPath();
+//		String menuid = null;
+//		if (loginMenu != null) {
+//
+//			menuid = loginMenu;
+//
+//		}
+//		HttpSession session = request.getSession();
+//
+//		try {
+//			AccessControl control = AccessControl.getInstance();
+//			control.checkAccess(request, response, false);
+//			String user = control.getUserAccount();
+//			if (!control.isGuest()) {
+//				if (!WXHelper.uselocalsession()) {
+//
+//					WxAccessToken accesstoken = WXHelper.getEnterpriseWXSecurityService().getWxAccessToken(corpid,
+//							corpsecret);
+//					WxUserToken userToken = WXHelper.getEnterpriseWXSecurityService()
+//							.getWxUserToken(accesstoken.getAccess_token(), code);
+//
+//					userName = userToken.getUserId();
+//
+//				} else {
+//					userName = user;
+//				}
+//			} else {
+//				user = null;
+//				WxAccessToken accesstoken = WXHelper.getEnterpriseWXSecurityService().getWxAccessToken(corpid,
+//						corpsecret);
+//				WxUserToken userToken = WXHelper.getEnterpriseWXSecurityService()
+//						.getWxUserToken(accesstoken.getAccess_token(), code);
+//
+//				userName = userToken.getUserId();
+//			}
+//
+//			log.info("微信userName=" + userName);
+//
+//			boolean issameuser = false;
+//
+//			if (user != null && !user.equals(""))
+//				issameuser = userName.equals(user);
+//
+//			if (user == null || "".equals(user) || !issameuser) {
+//
+//				if (!issameuser) {
+//					control.resetSession(session);
+//				}
+//
+//				try {
+//					// 1-域账号登录 2-工号登录
+//					String password = null;
+//
+//					password = SSOUserMapping.getUserPassword(userName);
+//					if (password == null)
+//						throw new AccessException("用户" + userName + "不存在。");
+//
+//					control = AccessControl.getInstance();
+//					request.setAttribute("fromsso", "true");
+//					// System.out.println("-----------userName="+userName+",password="+password);
+//					control.login(request, response, userName, password);
+//					if (StringUtil.isEmpty(successRedirect)) {
+//						Framework framework = Framework.getInstance(control.getCurrentSystemID());
+//						MenuItem menuitem = framework.getMenuByID(menuid);
+//						if (menuitem instanceof Item) {
+//
+//							Item menu = (Item) menuitem;
+//							successRedirect = MenuHelper.getRealUrl(contextpath,
+//									Framework.getWorkspaceContent(menu, control), MenuHelper.sanymenupath_menuid,
+//									menu.getId());
+//						} else {
+//
+//							Module menu = (Module) menuitem;
+//							StringBuilder framepath = new StringBuilder();
+//							framepath.append(contextpath).append("/sanydesktop/singleframe.page?")
+//									.append(MenuHelper.sanymenupath).append("=").append(menu.getPath());
+//							successRedirect = framepath.toString();
+//						}
+//						AccessControl.recordIndexPage(request, successRedirect);
+//					} else {
+//						successRedirect = URLDecoder.decode(successRedirect);
+//					}
+//					response.sendRedirect(successRedirect);
+//					return;
+//				} catch (Exception e) {
+//					log.info("", e);
+//					String msg = e.getMessage();
+//					if (msg == null)
+//						msg = "";
+//					response.sendRedirect(new StringBuilder().append(contextpath)
+//							.append("/webseal/websealloginfail.jsp?userName=").append(userName).append("&errormsg=")
+//							.append(java.net.URLEncoder.encode(java.net.URLEncoder.encode(msg, "UTF-8"), "UTF-8"))
+//							.toString());
+//					return;
+//				}
+//
+//			} else {
+//				control.resetUserAttributes();
+//				if (StringUtil.isEmpty(successRedirect)) {
+//					Framework framework = Framework.getInstance(control.getCurrentSystemID());
+//					MenuItem menuitem = framework.getMenuByID(menuid);
+//					if (menuitem instanceof Item) {
+//
+//						Item menu = (Item) menuitem;
+//						successRedirect = MenuHelper.getRealUrl(contextpath,
+//								Framework.getWorkspaceContent(menu, control), MenuHelper.sanymenupath_menuid,
+//								menu.getId());
+//					} else {
+//
+//						Module menu = (Module) menuitem;
+//						StringBuilder framepath = new StringBuilder();
+//						framepath.append(contextpath).append("/sanydesktop/singleframe.page?")
+//								.append(MenuHelper.sanymenupath).append("=").append(menu.getPath());
+//						successRedirect = framepath.toString();
+//					}
+//					AccessControl.recordIndexPage(request, successRedirect);
+//				} else {
+//					successRedirect = URLDecoder.decode(successRedirect);
+//				}
+//				response.sendRedirect(successRedirect);
+//				return;
+//			}
+//
+//		} catch (Throwable ex) {
+//			log.info("", ex);
+//			String errorMessage = ex.getMessage();
+//			if (errorMessage == null)
+//				errorMessage = "";
+//
+//			try {
+//				FileCopyUtils.copy(
+//						new StringBuilder().append(errorMessage).append(",").append(userName)
+//								.append("登陆失败，请确保输入的用户名和口令是否正确！").toString(),
+//						new OutputStreamWriter(response.getOutputStream(), "UTF-8"));
+//			} catch (IOException e) {
+//				log.info("", e);
+//			}
+//
+//		}
+//
+//	}
     public String sso(ModelMap model) {
     	model.addAttribute("enableuseraccountsso", new Boolean(enableuseraccountsso));
     	if(enableuseraccountsso)

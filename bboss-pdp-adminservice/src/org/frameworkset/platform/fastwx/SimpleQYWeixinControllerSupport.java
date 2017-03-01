@@ -1,4 +1,4 @@
-package com.github.sd4324530.fastweixin.servlet;
+package org.frameworkset.platform.fastwx;
 
 import java.util.List;
 
@@ -18,6 +18,7 @@ import com.github.sd4324530.fastweixin.company.message.req.QYTextReqMsg;
 import com.github.sd4324530.fastweixin.company.message.req.QYVideoReqMsg;
 import com.github.sd4324530.fastweixin.company.message.req.QYVoiceReqMsg;
 import com.github.sd4324530.fastweixin.company.message.resp.QYBaseRespMsg;
+import com.github.sd4324530.fastweixin.servlet.QYWeixinControllerSupport;
 
 /**
  * 必须自己实现里头的方法

@@ -1,4 +1,4 @@
-package com.github.sd4324530.fastweixin.servlet;
+package org.frameworkset.platform.fastwx;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +13,7 @@ import com.github.sd4324530.fastweixin.message.TextMsg;
 import com.github.sd4324530.fastweixin.message.req.BaseEvent;
 import com.github.sd4324530.fastweixin.message.req.BaseReqMsg;
 import com.github.sd4324530.fastweixin.message.req.TextReqMsg;
+import com.github.sd4324530.fastweixin.servlet.WeixinControllerSupport;
 
 public class SimpleWeixinControllerSupport extends WeixinControllerSupport {
 
