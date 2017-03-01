@@ -67,7 +67,9 @@ public class UserPasswordLoginModule extends ACLLoginModule
         	  tm.commit();
         	  throw new LoginException("用户["+userName+"]无效,请联系系统管理员!");
           }
-            if(user.getUserPassword().equals(EncrpyPwd.encodePassword(password)))
+          String fromsso = checkCallBack.getRequest() != null ?(String)checkCallBack.getRequest().getAttribute("fromsso"):null;
+          boolean _fromsso = fromsso != null && fromsso.equals("true");
+            if(_fromsso || user.getUserPassword().equals(EncrpyPwd.encodePassword(password)))
             {
             	if(user.getLeaderid() == null || user.getLeaderid().equals("")){
             		if(user.getDepartId() != null){
