@@ -1,4 +1,4 @@
-package org.frameworkset.platform.action;
+package com.frameworkset.platform.admin.action;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
+import org.frameworkset.platform.action.SysInfo;
 import org.frameworkset.platform.config.ConfigManager;
 import org.frameworkset.platform.framework.Framework;
 import org.frameworkset.platform.framework.Item;

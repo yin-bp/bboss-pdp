@@ -9,6 +9,6 @@
 	path:ssofailed="/jsp/common/ssofailed.jsp"
 	path:login="/jsp/login_admin1.jsp"
 	f:enableuseraccountsso="false"
-	class="org.frameworkset.platform.action.SSOControler" />
+	class="com.frameworkset.platform.admin.action.SSOControler" />
 	
 </properties>
