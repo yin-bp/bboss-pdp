@@ -295,6 +295,9 @@ public class ParamsHandler implements org.frameworkset.spi.InitializingBean,List
 	public static Params getParams(String handler,String dictCode) {
 		return getParamsHandler(handler).getParams(dictCode);
 	}
+	public static Params getDefaultParams(String dictCode) {
+		return getParamsHandler("default").getParams(dictCode);
+	}
 	
 	public static String  getStringParam(String paramHandle,String paramid, String paramName,String paramType) {
 		return getParamsHandler(paramHandle).getParams(paramid, paramType).getAttributeString(paramName);

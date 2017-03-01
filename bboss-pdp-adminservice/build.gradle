@@ -16,6 +16,7 @@ sourceSets {
 dependencies {
 	   
 	 	compile project(':bboss-pdp-auth')
+	 	compile project(':bboss-pdp-fastwx')
 	   compile(
             [group: 'commons-io', name: 'commons-io', version: '2.0', transitive: false],
             [group: 'commons-beanutils', name: 'commons-beanutils', version: '1.8.0', transitive: false],
