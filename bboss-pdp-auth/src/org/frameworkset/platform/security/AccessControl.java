@@ -3252,11 +3252,10 @@ public class AccessControl implements AccessControlInf{
 			// 使session失效
 			
 			
-			String userId = this.getUserID();
-
+			 
 			String userName = this.getUserName();
 			
-			String machineIP = (String)this.credential.getCheckCallBack().getUserAttribute(REMOTEADDR_CACHE_KEY);
+			
 			String orgID = this.getChargeOrgId();
 //			onlineUser.valueUnbound(session.getId(), userAccount, machineIP,(String)session.getAttribute(MACADDR_CACHE_KEY));
 
@@ -3274,13 +3273,14 @@ public class AccessControl implements AccessControlInf{
 //					String operContent = userName + "[" + userId + "] 退出["
 //							+ subsystem + "]";
 					// modified by hilary on 20101105,for fixing bug 13979,for logout's log  and login's log has same manner 
-					String operContent = userAccount + "(" + userName + ") 退出[" + subsystem + "]";
+					StringBuilder operContent = new StringBuilder();
+					operContent.append(userAccount).append( "(" ).append( userName ).append( ") 退出[" ).append( subsystem ).append( "]");
 					if(_alt != null)
-						operContent = operContent + ",退出原因为：该用户在其他地方登录或者用户会话信息被管理员清除。";
-					String operSource = machineID;
+						operContent.append(",退出原因为：该用户在其他地方登录或者用户会话信息被管理员清除。");
+					 
 					String operModle = "认证管理";
-					logMgr.log(userAccount,orgID,operModle,  operSource,
-							operContent ,"", LogManagerInf.INSERT_OPER_TYPE);		
+					logMgr.log(userAccount,orgID,operModle,  machineID,
+							operContent.toString() ,"", LogManagerInf.INSERT_OPER_TYPE);		
 					
 				} catch (SPIException e1) {
 					//e1.printStackTrace();
