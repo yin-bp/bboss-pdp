@@ -21,6 +21,7 @@ import org.frameworkset.platform.security.authorization.AuthPrincipal;
 public abstract class ACLLoginModule implements LoginModule {
 
     private static Logger log = Logger.getLogger(ACLLoginModule.class);
+    
     protected String loginModuleName;
 
     /**注册表类型*/
@@ -102,6 +103,7 @@ public abstract class ACLLoginModule implements LoginModule {
      * @roseuid 43FD4F8600AC
      */
     public boolean login() throws LoginException {
+    	
         //
         // Since we need input from a user, we need a callback handler
         if (callbackHandler == null) {
@@ -116,12 +118,18 @@ public abstract class ACLLoginModule implements LoginModule {
         //
         // Call the callback handler to get the username
         try {
-            log.debug( this.getClass().getName() + " Login");
+          
 //            callbackHandler.handle(callbacks);
             username =callbackHandler.getUserName();
+            if(username == null || username.equals(""))
+            	throw new LoginException("用户账号不能为空!");
+            password = callbackHandler.getPassword();
+            if(password == null || password.equals(""))
+            	throw new LoginException("用户口令不能为空!");
             userTypes = callbackHandler.getUserTypes();
 //            this.request = ((RequestCallBack)callbacks[3]).getRequest();
-            password = callbackHandler.getPassword();
+            
+           
 //            password = new char[temp.length];
 
 //            System.arraycopy(temp, 0, password, 0, temp.length);
@@ -151,13 +159,14 @@ public abstract class ACLLoginModule implements LoginModule {
 
 
             if (loginSuccess) {
-
-                log.debug( "" + this.getClass().getName() + " login SUCCESS");
+            	if(log.isDebugEnabled())
+                	log.debug(  this.getClass().getName() + " login SUCCESS");
                 return true;
             }
             else
             {
-                log.debug( "" + this.getClass().getName() + " login failed");
+            	if(log.isDebugEnabled())
+                	log.debug(  this.getClass().getName() + " login failed");
             }
         }
         catch (LoginException ioe) {
@@ -183,7 +192,8 @@ public abstract class ACLLoginModule implements LoginModule {
      */
     public boolean commit() throws LoginException {
         if (loginSuccess == false) {
-            log.debug( "" + this.getClass().getName() + " commit  FAIL");
+        	if(log.isDebugEnabled())
+            	log.debug(  this.getClass().getName() + " commit  FAIL");
             return false;
         }
 
@@ -208,7 +218,8 @@ public abstract class ACLLoginModule implements LoginModule {
         
         //往subject中添加用户身份令牌
         subject.addCredential(credential);
-        log.debug( "" + this.getClass().getName() + " commit SUCCESS");
+        if(log.isDebugEnabled())
+        	log.debug( this.getClass().getName() + " commit SUCCESS");
         return true;
 
     }
@@ -225,14 +236,16 @@ public abstract class ACLLoginModule implements LoginModule {
     public boolean abort() throws LoginException {
 
         if (loginSuccess == false) {
-            log.debug( "" + this.getClass().getName() + " abort FAIL");
+        	if(log.isDebugEnabled())
+            	log.debug( this.getClass().getName() + " abort FAIL");
             principal = null;
             username = null;
             this.checkCallBack = null;
             this.credential = null;
             return false;
         }
-        log.debug( "" + this.getClass().getName() + " abort SUCCESS");
+        if(log.isDebugEnabled())
+        	log.debug(  this.getClass().getName() + " abort SUCCESS");
         logout();
         return true;
 
@@ -267,7 +280,8 @@ public abstract class ACLLoginModule implements LoginModule {
         principal = null;
         credential = null;
         checkCallBack = null;
-        log.debug( "" + this.getClass().getName() + " logout SUCCESS");
+        if(log.isDebugEnabled())
+        	log.debug(  this.getClass().getName() + " logout SUCCESS");
         return true;
 
     }
