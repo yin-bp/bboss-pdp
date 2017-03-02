@@ -124,8 +124,10 @@ public abstract class ACLLoginModule implements LoginModule {
             if(username == null || username.equals(""))
             	throw new LoginException("用户账号不能为空!");
             password = callbackHandler.getPassword();
-            if(password == null || password.equals(""))
-            	throw new LoginException("用户口令不能为空!");
+            if(password == null || password.equals("")){
+            	if (!username.equals("guest___"))
+            		throw new LoginException("用户口令不能为空!");
+            }
             userTypes = callbackHandler.getUserTypes();
 //            this.request = ((RequestCallBack)callbacks[3]).getRequest();
             
@@ -140,8 +142,7 @@ public abstract class ACLLoginModule implements LoginModule {
             if (username.equals("guest___")) {
                 checkCallBack.setUserAttribute("userName", "匿名用户");
                 checkCallBack.setUserAttribute("userID", "-1");
-                checkCallBack.setUserAttribute("password", EncrpyPwd.encodePassword("123456"));
-                checkCallBack.setUserAttribute("password_i", "123456");
+              
                 checkCallBack.setUserAttribute("CHARGEORGID", null);
                 checkCallBack.setUserAttribute("orgName", "没有兼职单位");
                 checkCallBack.setUserAttribute("secondOrgs", null);
