@@ -1193,14 +1193,16 @@ public class AccessControl implements AccessControlInf{
 		// 将loginContext缓冲到session中
 		// session.setAttribute(LOGINCONTEXT_CACHE_KEY, loginContext);
 		// 缓冲远程地址，以便session实效时清除未清除的用户信息
-		String machineIP = request.getHeader("iv-remote-address");//获取webseal反向代理过来的ip地址
-		if(machineIP == null || machineIP.equals(""))
-		{
-
-			machineIP = request.getParameter("machineIp_");
-			if(machineIP == null || machineIP.trim().equals(""))
-				machineIP = StringUtil.getClientIP(request);
-		}
+//		String machineIP = request.getHeader("iv-remote-address");//获取webseal反向代理过来的ip地址
+//		if(machineIP == null || machineIP.equals(""))
+//		{
+//
+//			machineIP = request.getParameter("machineIp_");
+//			if(machineIP == null || machineIP.trim().equals(""))
+//				machineIP = StringUtil.getClientIP(request);
+//		}
+		
+		String machineIP = getMachinedID();
 		if(session == null)
 			session = request.getSession();
 		
@@ -1238,13 +1240,13 @@ public class AccessControl implements AccessControlInf{
 				/**
 				 * 获取客服端网卡的mac地址
 				 */
-				String macaddr = request.getParameter("macaddr_");
-				String machineName = request.getParameter("machineName_");
+//				String macaddr = request.getParameter("macaddr_");
+//				String machineName = request.getParameter("machineName_");
 				 
 //				session.setAttribute(MACADDR_CACHE_KEY, macaddr);
-				credential.getCheckCallBack().setUserAttribute(MACADDR_CACHE_KEY, macaddr);
+//				credential.getCheckCallBack().setUserAttribute(MACADDR_CACHE_KEY, macaddr);
 //				session.setAttribute(AccessControl.MACHINENAME_CACHE_KEY, machineName);
-				credential.getCheckCallBack().setUserAttribute(MACHINENAME_CACHE_KEY, machineName);
+//				credential.getCheckCallBack().setUserAttribute(MACHINENAME_CACHE_KEY, machineName);
 				String subsystem_id = request.getParameter(SUBSYSTEM_ID);
 				if (subsystem_id == null || subsystem_id.equals(""))
 					subsystem_id = getDefaultSUBSystemID();
@@ -1345,15 +1347,14 @@ public class AccessControl implements AccessControlInf{
 			
 		}
 		//记录登录子系统的subsystemid到cookie中
-		setSubSystemToCookie(response, principal.getName(), subsystem_id);
+//		setSubSystemToCookie(response, principal.getName(), subsystem_id); //被yinbp注释，暂时没有发现使用的地方 2017-03-02
 //		Cookie subsystemCookie = new Cookie(SUBSYSTEM_COOKIE + "_"
 //				+ userName, subsystem_id);
 //		subsystemCookie.setMaxAge(86400);
 //		response.addCookie(subsystemCookie);
 		// 记录cookie
-
-		String operSource = this.getMachinedID();
-		log_info("User[" + this.getUserAccount() + ","+ getUserName() + "] login from [" +operSource +"].session id is " + session.getId(),request);
+		
+		
 		//log.info("User[" + this.getUserAccount() + "," + getUserName() + "] login from [" +operSource +"].");
 //		String serverIp = request.getServerName();
 //		String serverport = request.getServerPort() + "";
@@ -1368,15 +1369,32 @@ public class AccessControl implements AccessControlInf{
 		session.setAttribute("userAccount", this.getUserAccount());
 		session.setAttribute("worknumber", this.getUserAttribute("userWorknumber"));
 		current.set(this);
+		String operSource = machineIP;
+		String content = null;
 		
+		StringBuilder builder = new StringBuilder();
+		builder.append("用户" )
+			   .append( this.getUserAccount() )
+			   .append( "(")
+			   .append( getUserName() )
+			   .append( ")从" )
+			   .append(operSource )
+			   .append("登陆")
+			   .append( getCurrentSystemName() )
+			   .append( ",sessionid=" )
+			   .append(session.getId());
+		content = builder.toString();
+		if(log.isDebugEnabled()){
+			
+			log.debug(content);
+		}
 		// ------------登陆时保存用户日志信息
 		if(enablelog && recordonlineuser)
 		{
 			try {
 				LogManagerInf logMgr = ConfigManager.getInstance().getLogManager();
-				String userrelName = getUserName();
-				String operContent = userName + "(" +userrelName + ")" + " 登陆["
-						+ getCurrentSystemName() + "]";
+			
+				String operContent = content;
 				
 				String openModle = "认证管理";
 
@@ -1443,11 +1461,18 @@ public class AccessControl implements AccessControlInf{
 	
 	public String getMachinedID()
 	{
-		if(this.isGuest())
+		
+		if(request == null)
 			return "";
-		String machineID = this.getRemoteAddr() + "||" + this.getMacAddr() + "||" + this.getMachineName()
-		;
-		return machineID;
+		String machineIP = request.getHeader("iv-remote-address");//获取webseal反向代理过来的ip地址
+		if(machineIP == null || machineIP.equals(""))
+		{
+
+			machineIP = request.getParameter("machineIp_");
+			if(machineIP == null || machineIP.trim().equals(""))
+				machineIP = StringUtil.getClientIP(request);
+		}
+		return machineIP;
 	}
 
 	/**
@@ -1909,28 +1934,28 @@ public class AccessControl implements AccessControlInf{
 		}
 	}
 	
-	private static void log_info(String msg,HttpServletRequest request)
-	{
-		Date date = new java.util.Date() ; 
-		if(request != null)
-		{
-			String remoteip = StringUtil.getClientIP(request);
-			
-//			System.err.println(date + "===============================================");
-//			Exception e = new Exception("date["+ date +"] [remoteip=" + remoteip + "] " +msg);
-//			e.printStackTrace();
-//			log.debug("date["+ date +"] [remoteip=" + remoteip + "] " +msg);
-//			System.err.println(date +"================================================");
-		}
-		else
-		{
-//			System.err.println(date + "===============================================");
-//			Exception e = new Exception("date["+ date +"] [remoteip=null] " +msg);
-//			e.printStackTrace();
-//			log.debug("date["+ date +"] [remoteip=null] " +msg);
-//			System.err.println(date +"================================================");
-		}
-	}
+//	private static void log_info(String msg,HttpServletRequest request)
+//	{
+//		Date date = new java.util.Date() ; 
+//		if(request != null)
+//		{
+//			String remoteip = StringUtil.getClientIP(request);
+//			
+////			System.err.println(date + "===============================================");
+////			Exception e = new Exception("date["+ date +"] [remoteip=" + remoteip + "] " +msg);
+////			e.printStackTrace();
+////			log.debug("date["+ date +"] [remoteip=" + remoteip + "] " +msg);
+////			System.err.println(date +"================================================");
+//		}
+//		else
+//		{
+////			System.err.println(date + "===============================================");
+////			Exception e = new Exception("date["+ date +"] [remoteip=null] " +msg);
+////			e.printStackTrace();
+////			log.debug("date["+ date +"] [remoteip=null] " +msg);
+////			System.err.println(date +"================================================");
+//		}
+//	}
 	/**
 	 * 检测到用户未登陆时进行相应的处理
 	 * 返回值说明ret:
@@ -2925,7 +2950,7 @@ public class AccessControl implements AccessControlInf{
 			}
 //			String address = (String) session
 //			.getAttribute(AccessControl.REMOTEADDR_CACHE_KEY);
-			log_info("User[" + principal_ + "] logoutdirect from session destroyed event.session id is "+session.getId(),null);
+//			log_info("User[" + principal_ + "] logoutdirect from session destroyed event.session id is "+session.getId(),null);
 			try {
 				
 				String userName = principal_.getName();
@@ -3135,7 +3160,7 @@ public class AccessControl implements AccessControlInf{
 			{
 				if(redirected )
 				{
-					log_info("Unknown user Logout to "+redirect+" from system on " + new java.util.Date() + ". session is null.",request);
+//					log_info("Unknown user Logout to "+redirect+" from system on " + new java.util.Date() + ". session is null.",request);
 					if(redirect == null && redirecttarget == null)
 					{
 						redirect();
@@ -3153,7 +3178,7 @@ public class AccessControl implements AccessControlInf{
 			if (this.principal == null) {
 				if(redirected )
 				{
-					log_info("Unknown user Logout from system on " + new java.util.Date() + ". session id is " + session.getId(),request);
+//					log_info("Unknown user Logout from system on " + new java.util.Date() + ". session id is " + session.getId(),request);
 					if(redirect == null && redirecttarget == null)
 					{
 						redirect();
@@ -3166,7 +3191,7 @@ public class AccessControl implements AccessControlInf{
 				
 				return;
 			}
-			log_info("Logout from page["+ request.getRequestURI() +"]: User["+ this.getUserAccount() + "," + getUserName() + "] logout.session id is " + session.getId(),request);
+//			log_info("Logout from page["+ request.getRequestURI() +"]: User["+ this.getUserAccount() + "," + getUserName() + "] logout.session id is " + session.getId(),request);
 			//log.debug("Logout from page["+ request.getRequestURI() +"]: \r\n\tUser["+ this.getUserAccount() + "," + getUserName() + "] logout.");
 			
 			
@@ -3269,7 +3294,7 @@ public class AccessControl implements AccessControlInf{
 			{
 				if(redirect == null && redirecttarget == null)
 				{
-					log_info("User["+ this.getUserAccount() + "," + getUserName() + "] logout." + new java.util.Date() + ". " + _alt,request);
+//					log_info("User["+ this.getUserAccount() + "," + getUserName() + "] logout." + new java.util.Date() + ". " + _alt,request);
 					if(_alt == null)
 					{
 						redirect();
@@ -3281,7 +3306,7 @@ public class AccessControl implements AccessControlInf{
 				}
 				else
 				{
-					log_info("User["+ this.getUserAccount() + "," + getUserName() + "] logout." + new java.util.Date() + ". " + _alt + ".redirect=" + redirect + ",redirecttarget=" +redirecttarget,request);
+//					log_info("User["+ this.getUserAccount() + "," + getUserName() + "] logout." + new java.util.Date() + ". " + _alt + ".redirect=" + redirect + ",redirecttarget=" +redirecttarget,request);
 					if(_alt == null)
 					{
 						redirect(request,response,redirect,redirecttarget);
