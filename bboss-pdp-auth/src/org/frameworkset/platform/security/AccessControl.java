@@ -1345,7 +1345,7 @@ public class AccessControl implements AccessControlInf{
 			
 		}
 		//记录登录子系统的subsystemid到cookie中
-		setSubSystemToCookie(response, userName, subsystem_id);
+		setSubSystemToCookie(response, principal.getName(), subsystem_id);
 //		Cookie subsystemCookie = new Cookie(SUBSYSTEM_COOKIE + "_"
 //				+ userName, subsystem_id);
 //		subsystemCookie.setMaxAge(86400);
