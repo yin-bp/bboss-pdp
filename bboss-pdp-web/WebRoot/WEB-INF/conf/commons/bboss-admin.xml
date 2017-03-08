@@ -18,8 +18,11 @@
 	<property name="security.authorization.permissionRoleMap"		
 		class="org.frameworkset.platform.security.authorization.AppPermissionRoleMap" />
 	
-	<property name="security.appPermissionModule"		
-		class="org.frameworkset.platform.security.AppPermissionModule" />	
+	<property name="security.appPermissionModule"
+			  f:organizationService="attr:org.smOrganizationService"
+			  f:userService="attr:user.smUserService"
+		class="org.frameworkset.platform.security.AppPermissionModule"
+	/>
 		
 	<property name="/menu/*.page"
 		f:roleService="attr:role.roleService"
