@@ -60,6 +60,12 @@
 	      </param-value>
 	      
 	    </init-param>
+	    <init-param>
+	      <param-name>ignoreParameterDecoding</param-name>
+	      <param-value>false</param-value>
+	      
+	    </init-param>
+	    
 	    
     </filter>
 

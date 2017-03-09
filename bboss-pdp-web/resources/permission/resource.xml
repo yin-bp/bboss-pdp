@@ -107,6 +107,16 @@
 				 	<url>/sysmanager/user/*.page,/jsp/sysmanager/user/*.jsp</url>						 			 	
 				</authoration>
 			</operation>
+			<operation id="modifypassword" priority="30" name="口令修改" >
+				<description>
+					<![CDATA[
+					口令修改
+				]]>
+				</description>
+				<authoration>
+					<url>/sysmanager/user/modifypassword.page</url>
+				</authoration>
+			</operation>
 		 
 			 
 		</group>

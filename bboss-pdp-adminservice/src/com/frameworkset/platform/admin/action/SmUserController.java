@@ -469,7 +469,7 @@ public class SmUserController {
 	}
 	public @ResponseBody String modifypassword(String userId,String newPassword,String newPasswordSecond,String oldPassword){
 		String currentUserId = AccessControl.getAccessControl().getUserID();
-		if(currentUserId.equals(userId) || AccessControl.getAccessControl().checkPermission("user", "modifypassword","admin"))//判断用户是否有重置密码的权限
+		if(currentUserId.equals(userId) || AccessControl.getAccessControl().checkPermission("orgunit", "modifypassword","orgunit"))//判断用户是否有重置密码的权限
 		{
 			
 			return smUserService.modifypassword(  userId,  newPassword,  newPasswordSecond,  oldPassword);

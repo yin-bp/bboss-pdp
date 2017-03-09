@@ -12,9 +12,9 @@
 		<form role="form" class="form-horizontal form-queryusers">
 			 
 			<div class="form-body">
-				<div class="col-md-4">
+				<div class="col-md-3">
 					<div class="form-group form-md-line-input">		
-						<label class="col-md-3 control-label" for="form_control_1">输入条件
+						<label class="col-md-3 control-label" for="form_control_1">条件
 
 						</label>							
 						<div class="col-md-9">
@@ -27,14 +27,14 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-md-4">
+				<div class="col-md-3">
 					<div class="form-group form-md-line-input">
-						<label class="col-md-3 control-label" for="form_control_1">用户状态
+						<label class="col-md-3 control-label" for="form_control_1">状态
 
 						</label>
 						<div class="col-md-9">
 							<div class="input-icon right">
-								<select name="userIsvalid" class="form-control input-xs">
+								<select name="userIsvalid" class="form-control input-sm">
 									<option value="-1">全部</option>
 									<option value="2">开通</option>
 									<option value="1">申请</option>
@@ -47,7 +47,27 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-md-4">
+				<div class="col-md-3">
+					<div class="form-group form-md-line-input">
+						<label class="col-md-3 control-label" for="form_control_1">部门
+
+						</label>
+						<div class="col-md-9">
+							<div class="input-icon right">
+								<select name="userIsvalid" class="form-control input-sm">
+									<option value="-1">全部</option>
+									<option value="2">开通</option>
+									<option value="1">申请</option>
+									<option value="3">停用</option>
+									<option value="0">删除</option>
+								</select>
+								<div class="form-control-focus"></div>
+
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-3">
 					<div class="form-group form-md-line-input">
 						<div class="col-md-12">
 							<div class="input-group">
