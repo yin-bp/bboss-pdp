@@ -66,20 +66,42 @@
                             	<input type="text" class="form-control" name = "ticketlivetimes" value ="${application.ticketlivetimes}">
                             </div>								                       
                         </div>
-						
-                        
-                         <div class="form-group">	
-							<label class="col-sm-2 control-label">签名公钥:</label>
-							<div class="col-sm-4">
-                            	<textarea cols="100" class="control-label">${application.publicKey}</textarea>
-                            </div>	
-                        </div>
-                        <div class="form-group">	
-							<label class="col-sm-2 control-label">签名私钥:</label>
-							<div class="col-sm-4">
-                            	<textarea cols="100" class="control-label">${application.privateKey}</textarea>
-                            </div>	
-                        </div> 
+						<div class="form-group">
+								<label class="col-sm-2 control-label">证书算法:</label>
+								<div class="col-sm-4">
+									<select class="form-control input-sm" name = "certAlgorithm" >
+									<option value="RSA" <pg:equal actual="${application.certAlgorithm}" value="RSA">selected</pg:equal>>RSA</option>
+									<option value="HS256" <pg:equal actual="${application.certAlgorithm}" value="HS256">selected</pg:equal>>HS256</option> 
+									</select>
+									<span
+										class="help-block m-b-none"></span>
+								</div>
+							</div>
+							 
+                        <pg:equal actual="${application.certAlgorithm}" value="RSA" evalbody="true">
+	                        <pg:yes>
+		                         <div class="form-group">	
+									<label class="col-sm-2 control-label">签名公钥:</label>
+									<div class="col-sm-4">
+		                            	<textarea cols="100" class="control-label">${application.publicKey}</textarea>
+		                            </div>	
+		                        </div>
+		                        <div class="form-group">	
+									<label class="col-sm-2 control-label">签名私钥:</label>
+									<div class="col-sm-4">
+		                            	<textarea cols="100" class="control-label">${application.privateKey}</textarea>
+		                            </div>	
+		                        </div> 
+	                        </pg:yes>
+	                        <pg:no>
+	                        	<div class="form-group">	
+									<label class="col-sm-2 control-label">签名证书:</label>
+									<div class="col-sm-4">
+		                            	<textarea cols="100" class="control-label">${application.publicKey}</textarea>
+		                            </div>	
+		                        </div>
+	                        </pg:no>
+                        </pg:equal>
                         <div class="form-group">
 							<div class="col-sm-offset-2 col-sm-10">
 								<a class="btn btn-sm btn-primary" type="button" href="javascript:Application.saveAppSystem('#editAppSystem')">保 存</a> 

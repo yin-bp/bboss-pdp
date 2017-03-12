@@ -48,25 +48,45 @@
                         </div> 
 
                        
-						<div class="form-group">	
+						
+                        <div class="form-group">	
 							<label class="col-sm-2 control-label">有效时长（毫秒）:</label>
 							<div class="col-sm-4">
                             	<label class="control-label">${application.ticketlivetimes}</label>
                             </div>	
                         </div> 
-                        
                         <div class="form-group">	
-							<label class="col-sm-2 control-label">签名公钥:</label>
+							<label class="col-sm-2 control-label">证书算法:</label>
 							<div class="col-sm-4">
-                            	<textarea cols="100" class="control-label">${application.publicKey}</textarea>
-                            </div>	
-                        </div>
-                        <div class="form-group">	
-							<label class="col-sm-2 control-label">签名私钥:</label>
-							<div class="col-sm-4">
-                            	<textarea cols="100" class="control-label">${application.privateKey}</textarea>
+                            	<label class="control-label">${application.certAlgorithm}  </label>
                             </div>	
                         </div> 
+                        
+                        <pg:equal actual="${application.certAlgorithm}" value="RSA" evalbody="true">
+	                        <pg:yes>
+		                         <div class="form-group">	
+									<label class="col-sm-2 control-label">签名公钥:</label>
+									<div class="col-sm-4">
+		                            	<textarea cols="100" class="control-label">${application.publicKey}</textarea>
+		                            </div>	
+		                        </div>
+		                        <div class="form-group">	
+									<label class="col-sm-2 control-label">签名私钥:</label>
+									<div class="col-sm-4">
+		                            	<textarea cols="100" class="control-label">${application.privateKey}</textarea>
+		                            </div>	
+		                        </div> 
+	                        </pg:yes>
+	                        <pg:no>
+	                        	<div class="form-group">	
+									<label class="col-sm-2 control-label">签名证书:</label>
+									<div class="col-sm-4">
+		                            	<textarea cols="100" class="control-label">${application.publicKey}</textarea>
+		                            </div>	
+		                        </div>
+	                        </pg:no>
+                        </pg:equal>
+                        
 						
                     </div>
                     <div><a href="${pageContext.request.contextPath}/application/downcafile.page?appCode=${application.appCode}" id="downcafile" target="_downcafile"></a>

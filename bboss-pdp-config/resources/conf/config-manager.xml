@@ -27,7 +27,7 @@
 			 
 		</resources>
 		<permissionModule class="mvc:security.appPermissionModule"/>
-		<logmanager class="org.frameworkset.platform.log.AppLogManager"/>
+		<logmanager class="org.frameworkset.platform.log.DefaultLogManager"/>
 		<globalconfig file="conf/manager-provider.xml"/>
 		<globalmenu file="menus/module.xml"/>
 		

@@ -30,6 +30,7 @@ import org.frameworkset.platform.entity.PageBean;
 import org.frameworkset.util.annotations.ResponseBody;
 import org.frameworkset.web.auth.AuthorHelper;
 import org.frameworkset.web.servlet.ModelMap;
+import org.frameworkset.web.token.TokenHelper;
 
 import com.frameworkset.util.ListInfo;
 import com.frameworkset.util.SimpleStringUtil;
@@ -111,8 +112,9 @@ public class ApplicationController {
     		throw new java.lang.NullPointerException("下载证书出错:必须指定应用编码");
     	
 		try {
-			
-			InputStream input =  AuthorHelper.generateCAStream(appCode);
+			Application application = applicationService.getApplicationByAppcode(appCode);
+			Application serverapplication = applicationService.getApplicationByAppcode(TokenHelper.getTokenService().getTokenServerAppName());
+			InputStream input =  AuthorHelper.generateCAStream(appCode,application.getCertAlgorithm(),serverapplication.getCertAlgorithm());
 	        FileBlob fb = new FileBlob ("token.certificate",input);//下载文件流
 	        return fb;
 		} catch (Exception e) {

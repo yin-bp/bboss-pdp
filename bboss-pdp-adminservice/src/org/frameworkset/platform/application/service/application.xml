@@ -29,7 +29,7 @@
 	
 	<property name="addApplication">
 		<![CDATA[
-			insert into auth_application (app_id,app_code,app_name,app_secret,app_secret_text,ticketlivetimes) values(#[appId],#[appCode],#[appName],#[appSecret],#[appSecretText],#[ticketlivetimes])
+			insert into auth_application (app_id,app_code,app_name,app_secret,app_secret_text,ticketlivetimes,certAlgorithm) values(#[appId],#[appCode],#[appName],#[appSecret],#[appSecretText],#[ticketlivetimes],#[certAlgorithm])
 		]]>
 	</property>
 		<property name="deleteByKey">
@@ -39,7 +39,7 @@
 	</property>
 		<property name="updateApplication">
 		<![CDATA[
-			update auth_application set app_id=#[appId],app_code=#[appCode],app_name=#[appName],app_secret=#[appSecret],app_secret_text=#[appSecretText],ticketlivetimes=#[ticketlivetimes] where app_id=#[appId]
+			update auth_application set app_id=#[appId],app_code=#[appCode],app_name=#[appName],app_secret=#[appSecret],app_secret_text=#[appSecretText],ticketlivetimes=#[ticketlivetimes],certAlgorithm=#[certAlgorithm] where app_id=#[appId]
 		]]>
 	</property>
 	<property name="selectById">

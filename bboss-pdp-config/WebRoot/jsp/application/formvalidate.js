@@ -229,6 +229,9 @@ var Application = function(){
                     item: "appName",
                     name: "应用名称"
                 },{
+                    item: "certAlgorithm",
+                    name: "证书类型"
+                },{
                     item: "appSecretText",
                     name: "口令明文"
                 },{

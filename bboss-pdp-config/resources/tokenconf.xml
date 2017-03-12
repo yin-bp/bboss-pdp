@@ -1,24 +1,27 @@
 <properties>
-	<!-- 令牌服务配置-->
+	<!-- 令牌服务配置 -->
 	<property name="token.TokenService" class="org.frameworkset.web.token.TokenService"
 		destroy-method="destroy" init-method="afterPropertiesSet">
-			<property name="ticketdualtime" value="100000"/>			
-			<property name="tokenstore" refid="attr:tokenStoreService"/>
-			<property name="enableToken" value="true"/>
- 			<property name="tokenfailpath" value="/common/jsp/tokenfail.jsp"/>
-			<property name="tokenServerAppName" value="tokenserver"/>
-			<property name="authenticatePlugin" refid="attr:authenticatePlugin"></property>
-		</property>
+		<property name="ticketdualtime" value="100000" />
+		<property name="tokenstore" refid="attr:tokenStoreService" />
+		<property name="enableToken" value="true" />
+		<property name="tokenfailpath" value="/common/jsp/tokenfail.jsp" />
+		<property name="tokenServerAppName" value="tokenserver" />
+		<property name="authenticatePlugin" refid="attr:authenticatePlugin"></property>
+	</property>
 	<property name="tokenStoreService" class="org.frameworkset.web.token.RedisTokenStore">
-		<property name="validateApplication" 
-				f:applicationService="attr:application.applicationService"
-				class="org.frameworkset.web.ticketserver.TicketValidateApplication"/>
-	</property>	
-	<property name="authenticatePlugin" class="org.frameworkset.web.ticketserver.TicketAuthenticatePlugin"/>	
-	<property name="webapplicationcontext" factory-class="org.frameworkset.web.servlet.support.WebApplicationContextUtils" factory-method="getWebApplicationContext"/>
-	<property name="application.applicationService" factory-bean="webapplicationcontext" factory-method="getBeanObject">
+		<property name="validateApplication" f:applicationService="attr:application.applicationService"
+			class="org.frameworkset.web.ticketserver.TicketValidateApplication" />
+	</property>
+	<property name="authenticatePlugin"
+		class="org.frameworkset.web.ticketserver.TicketAuthenticatePlugin" />
+	<property name="webapplicationcontext"
+		factory-class="org.frameworkset.web.servlet.support.WebApplicationContextUtils"
+		factory-method="getWebApplicationContext" />
+	<property name="application.applicationService" factory-bean="webapplicationcontext"
+		factory-method="getBeanObject">
 		<construction>
 			<property value="application.applicationService" />
 		</construction>
-	</property> 
+	</property>
 </properties>

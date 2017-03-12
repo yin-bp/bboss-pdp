@@ -54,6 +54,15 @@
 										class="help-block m-b-none">单位：毫秒，-2表示读取tokenconf.xml中的全局配置</span>
 								</div>
 							</div>
+							
+							<div class="form-group">
+								<label class="col-sm-2 control-label">证书算法:</label>
+								<div class="col-sm-4">
+									<select class="form-control input-sm" name = "certAlgorithm" ><option value="RSA">RSA</option><option value="HS256">HS256</option> </select>
+									<span
+										class="help-block m-b-none"></span>
+								</div>
+							</div>
 							 
 							
 							<div class="form-group">

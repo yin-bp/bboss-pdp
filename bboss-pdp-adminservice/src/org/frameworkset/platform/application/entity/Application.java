@@ -42,6 +42,13 @@ public class Application implements java.io.Serializable {
 	 * 应用口令明文
 	 */
 	private String appSecretText;
+	private String certAlgorithm = "RSA";
+	public String getCertAlgorithm() {
+		return certAlgorithm;
+	}
+	public void setCertAlgorithm(String certAlgorithm) {
+		this.certAlgorithm = certAlgorithm;
+	}
 	/**
 	 * 凭证有效期
 	 */

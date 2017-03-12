@@ -22,8 +22,8 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.frameworkset.platform.application.entity.Application;
 import org.frameworkset.platform.application.entity.ApplicationCondition;
-import org.frameworkset.platform.security.authentication.EncrpyPwd;
 import org.frameworkset.security.ecc.SimpleKeyPair;
+import org.frameworkset.web.auth.ApplicationSecretEncrpy;
 import org.frameworkset.web.token.TokenHelper;
 
 import com.frameworkset.common.poolman.ConfigSQLExecutor;
@@ -48,10 +48,10 @@ public class ApplicationServiceImpl implements ApplicationService {
     			
 					application.setAppSecretText(application.getAppSecret());
     			
-					application.setAppSecret(EncrpyPwd.encodePassword(application.getAppSecret()));
+					application.setAppSecret(ApplicationSecretEncrpy.encodePassword(application.getAppSecret()));
     		}else if(StringUtils.isNotEmpty(application.getAppSecretText())){
     			
-    			application.setAppSecret(EncrpyPwd.encodePassword(application.getAppSecretText()));
+    			application.setAppSecret(ApplicationSecretEncrpy.encodePassword(application.getAppSecretText()));
     			
     		}
 			executor.insertBean("addApplication", application);
@@ -88,10 +88,10 @@ public class ApplicationServiceImpl implements ApplicationService {
     			
 					application.setAppSecretText(application.getAppSecret());
 				
-					application.setAppSecret(EncrpyPwd.encodePassword(application.getAppSecret()));
+					application.setAppSecret(ApplicationSecretEncrpy.encodePassword(application.getAppSecret()));
 			}else if(StringUtils.isNotEmpty(application.getAppSecretText())){
 				
-				application.setAppSecret(EncrpyPwd.encodePassword(application.getAppSecretText()));
+				application.setAppSecret(ApplicationSecretEncrpy.encodePassword(application.getAppSecretText()));
 				
 			}
 			executor.updateBean("updateApplication", application);
@@ -113,14 +113,28 @@ public class ApplicationServiceImpl implements ApplicationService {
 	private Application _getApplication(String appId,boolean loadKey) throws ApplicationException {
 		try {
 			Application bean = executor.queryObject(Application.class, "selectById", appId);
+			if(bean.getCertAlgorithm() == null){
+				bean.setCertAlgorithm("RSA") ;
+			}
 			if(loadKey)
 			{
-				SimpleKeyPair keypair = TokenHelper.getTokenService().getSimpleKeyPair(bean.getAppCode());
-	    		if(keypair != null)
-	    		{
-	    			bean.setPrivateKey(keypair.getPrivateKey());
-	    			bean.setPublicKey(keypair.getPublicKey());
-	    		}
+//				if(bean.getCertAlgorithm().equals("RSA")){
+//					SimpleKeyPair keypair = TokenHelper.getTokenService().getSimpleKeyPair(bean.getAppCode());
+//		    		if(keypair != null)
+//		    		{
+//		    			bean.setPrivateKey(keypair.getPrivateKey());
+//		    			bean.setPublicKey(keypair.getPublicKey());
+//		    		}
+//				}
+//				else
+				{
+					SimpleKeyPair keypair =  TokenHelper.getTokenService().getSimpleKey(bean.getAppCode(),bean.getCertAlgorithm());
+		    		if(keypair != null)
+		    		{
+		    			bean.setPrivateKey(keypair.getPrivateKey());
+		    			bean.setPublicKey(keypair.getPublicKey());
+		    		}
+				}
 	    		
 			}
 			return bean;
@@ -139,16 +153,31 @@ public class ApplicationServiceImpl implements ApplicationService {
 	private Application _getApplicationByAppcode(String appcode,boolean loadKey) throws ApplicationException {
 		try {
 			Application bean = executor.queryObject(Application.class, "selectByAppcode", appcode);
+			if(bean.getCertAlgorithm() == null){
+				bean.setCertAlgorithm("RSA") ;
+			}
 			if(loadKey)
 			{
-				SimpleKeyPair keypair = TokenHelper.getTokenService().getSimpleKeyPair(bean.getAppCode());
-	    		if(keypair != null)
-	    		{
-	    			bean.setPrivateKey(keypair.getPrivateKey());
-	    			bean.setPublicKey(keypair.getPublicKey());
-	    		}
+//				if(bean.getCertAlgorithm().equals("RSA")){
+//					SimpleKeyPair keypair = TokenHelper.getTokenService().getSimpleKeyPair(bean.getAppCode());
+//		    		if(keypair != null)
+//		    		{
+//		    			bean.setPrivateKey(keypair.getPrivateKey());
+//		    			bean.setPublicKey(keypair.getPublicKey());
+//		    		}
+//				}
+//				else
+				{
+					SimpleKeyPair keypair =  TokenHelper.getTokenService().getSimpleKey(bean.getAppCode(),bean.getCertAlgorithm());
+		    		if(keypair != null)
+		    		{
+		    			bean.setPublicKey(keypair.getPublicKey());
+		    			bean.setPrivateKey(keypair.getPrivateKey());
+		    		}
+				}
 	    		
 			}
+		
 			return bean;
 		} catch (Throwable e) {
 			throw new ApplicationException("get Application failed::appcode=" + appcode, e);
