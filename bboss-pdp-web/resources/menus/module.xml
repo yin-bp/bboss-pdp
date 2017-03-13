@@ -264,6 +264,25 @@
 				
 			</item>
 		</module>
+		<module name="微信管理" id="weixinmanager" used="true" showleftmenu="false" i18n:en_US="Weixin Manage">
+			<description>微信管理</description>
+			<item name="微信配置" id="weixinconfigmanager"  i18n:en_US="weixinconfigmanager Manage" fullpageload="false">
+				<workspace>
+					<content>/jsp/weixin/index.page</content>
+				</workspace>
+				<authoration>
+					<url>/jsp/weixin/main.jsp</url>
+				</authoration>
+			</item>
+			<item name="微信素材" id="weixinFilemanager"  i18n:en_US="weixinfilemanager Manage" fullpageload="false">
+				<workspace>
+					<content>/jsp/weixin/file/index.page</content>
+				</workspace>
+				<authoration>
+					<url>/jsp/weixin/file/main.jsp</url>
+				</authoration>
+			</item>
+		</module>
 		<module name="字典管理" id="dictmanager" used="true" showleftmenu="false" url="/dictmanager/index.page"  i18n:en_US="System Manage">
 		
 			<description>字典管理</description>		
