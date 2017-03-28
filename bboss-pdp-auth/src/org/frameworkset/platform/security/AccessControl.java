@@ -93,24 +93,23 @@ import com.frameworkset.util.StringUtil;
 /**
  * @author biaoping.yin created on 2005-9-29 version 1.0
  */
-public class AccessControl implements AccessControlInf{
+public class AccessControl implements AccessControlInf {
 	private static final Logger log = Logger.getLogger(AccessControl.class);
 
 	// public static final String LOGINCONTEXT_CACHE_KEY = "LOGIN_CONTEXT";
 	public static final String accesscontrol_request_attribute_key = "com.frameworkset.platform.security.AccessControl";
 	public static final String REMOTEADDR_CACHE_KEY = "REMOTEADDR_CACHE_KEY";
-	
+
 	public static final String MACADDR_CACHE_KEY = "MACADDR_CACHE_KEY";
-	
+
 	public static final String MACHINENAME_CACHE_KEY = "MACHINENAME_CACHE_KEY";
 	public static final String LOGINSTYLE_CACHE_KEY = "LOGINSTYLE_CACHE_KEY";
-	
+
 	public static final String SERVER_IP_KEY = "SERVER_IP_KEY";
 	public static final String SERVER_PORT_KEY = "SERVER_PORT_KEY";
 
 	public static final String PRINCIPAL_INDEXS = "PRINCIPAL_INDEXS";
 	public static final String LOGIN_PRINCIPAL_INDEXS = "LOGIN_PRINCIPAL_INDEXS";
-	
 
 	public static final String PRINCIPALS_COOKIE = "PRINCIPALS_COOKIE";
 
@@ -122,7 +121,8 @@ public class AccessControl implements AccessControlInf{
 
 	public static final String HEAD_SPLIT = "^@^";
 
-	public static final String PRINCIPAL_SPLIT = "^_^";
+	public static final String PRINCIPAL_SPLIT = "|";
+	public static final String PRINCIPAL_SPLIT_pattern = "\\|";
 
 	public static final String IDENTITY_SPLIT = "#$#";
 
@@ -531,8 +531,6 @@ public class AccessControl implements AccessControlInf{
 
 	private Subject subject;
 
-
-
 	private String moduleName;
 
 	protected Credential credential;
@@ -548,8 +546,6 @@ public class AccessControl implements AccessControlInf{
 	public static String pathloginPage = "login.page";
 	public static String redirectpathloginPage = "redirect:/login.page";
 	public static String authorfailedPage = "login.page";
-	
-	
 
 	HttpServletRequest request;
 
@@ -557,43 +553,36 @@ public class AccessControl implements AccessControlInf{
 
 	HttpSession session;
 	PageContext pageContext;
-	
+
 	/**
 	 * 未知身份的用户对象
 	 */
-	private static  AccessControl guest ;
-	static
-	{
+	private static AccessControl guest;
+	static {
 		try {
 			loginPage = ConfigManager.getInstance().getDefaultLoginpage();
-			
+
 			if (loginPage == null || loginPage.trim().equals("")) {
 				loginPage = "login.jsp";
 			}
-			pathloginPage = loginPage.startsWith("/") ?loginPage:"/"+loginPage;
-			redirectpathloginPage = "redirect:"+pathloginPage;
+			pathloginPage = loginPage.startsWith("/") ? loginPage : "/" + loginPage;
+			redirectpathloginPage = "redirect:" + pathloginPage;
 			authorfailedPage = ConfigManager.getInstance().getAuthorfailedDirect();
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		try
-		{
+		try {
 			guest = new AccessControl();
 			guest.guestlogin();
-		}
-		catch(Exception e)
-		{
-			
+		} catch (Exception e) {
+
 			e.printStackTrace();
 		}
-		
-		
-		
+
 	}
-	
-	public static AccessControl getGuest()
-	{
+
+	public static AccessControl getGuest() {
 		return guest;
 	}
 
@@ -607,26 +596,21 @@ public class AccessControl implements AccessControlInf{
 	 */
 	public static final String OUTER_USER_PASSWORD_KEY = "OUTER_USER_PASSWORD_KEY";
 
-//	static final OnLineUser onlineUser = new OnLineUser();
+	// static final OnLineUser onlineUser = new OnLineUser();
 
-	public  static final String SESSIONID_FROMCLIENT_KEY = "SESSIONID_FROMCLIENT_KEY";
+	public static final String SESSIONID_FROMCLIENT_KEY = "SESSIONID_FROMCLIENT_KEY";
 
 	HttpServletResponse response;
 
 	protected AccessControl() {
 
-		try
-		{
-			
+		try {
+
 			moduleName = ConfigManager.getInstance().getModuleName();
-		}
-		catch(Exception e)
-		{
+		} catch (Exception e) {
 			log.error("", e);
 		}
 	}
-	
-	
 
 	public static void init(AccessControl instance) {
 		current.set(instance);
@@ -635,31 +619,30 @@ public class AccessControl implements AccessControlInf{
 	public static AccessControl getInstance() {
 		return new AccessControl();
 	}
+
 	public static final String current_indexpage = "current_indexpage";
 	public static final String current_logoutredirect_cookie = "current.logoutredirect.cookie";
-	public static void recordIndexPage(HttpServletRequest request,String page)
-	{
+
+	public static void recordIndexPage(HttpServletRequest request, String page) {
 		HttpSession session = request.getSession();
 		session.setAttribute(current_indexpage, page);
 	}
-	
-	public static void recordeSystemLoginPage(HttpServletRequest request,HttpServletResponse response)
-	{
+
+	public static void recordeSystemLoginPage(HttpServletRequest request, HttpServletResponse response) {
 		String subsystem_id = request.getParameter(SUBSYSTEM_ID);
-		if(subsystem_id == null)
-			return ;
-		String logoutredirect = AccessControl.getSubSystemLogoutRedirect(request, subsystem_id,false);
-		if(logoutredirect == null )
-			logoutredirect = StringUtil.getRealPath(request.getContextPath(),loginPage,true);
-		
+		if (subsystem_id == null)
+			return;
+		String logoutredirect = AccessControl.getSubSystemLogoutRedirect(request, subsystem_id, false);
+		if (logoutredirect == null)
+			logoutredirect = StringUtil.getRealPath(request.getContextPath(), loginPage, true);
+
 		AccessControl.addCookieValue(request, response, current_logoutredirect_cookie, logoutredirect);
 	}
-	public static String getIndexPage(HttpServletRequest request)
-	{
+
+	public static String getIndexPage(HttpServletRequest request) {
 		HttpSession session = request.getSession();
-		return (String)session.getAttribute(current_indexpage);
+		return (String) session.getAttribute(current_indexpage);
 	}
-	
 
 	// public static AccessControl getInstance(AccessControl instance) {
 	// return new AccessControl(instance);
@@ -679,8 +662,7 @@ public class AccessControl implements AccessControlInf{
 	 *            是否对密码加密
 	 * @return
 	 */
-	public boolean login(HttpServletRequest request,
-			HttpServletResponse response, String userName, String password)
+	public boolean login(HttpServletRequest request, HttpServletResponse response, String userName, String password)
 			throws AccessException
 
 	{
@@ -688,159 +670,144 @@ public class AccessControl implements AccessControlInf{
 	}
 
 	public String getCurrentSystemID() {
-		if(this.session == null)
+		if (this.session == null)
 			return "";
 		String id = (String) this.session.getAttribute(Framework.SUBSYSTEM);
 
 		return id == null ? "" : id;
 	}
-	
+
 	/**
 	 * 获取当前登录系统的注销跳转页面
+	 * 
 	 * @return
 	 */
 	public String getSubSystemLogoutRedirect() {
 		String systemid = this.getCurrentSystemID();
-		
-			return getSubSystemLogoutRedirect(request,systemid,false) ;
-		
+
+		return getSubSystemLogoutRedirect(request, systemid, false);
+
 	}
-	
-	public static String getCookieValue(HttpServletRequest request,String name,String defaultvalue)
-	{
-//		Cookie[] cookies = request.getCookies();
-//	
-//	
-//			String temp_ = null;
-//			for (Cookie temp : cookies) {
-//				if(name.equals(temp.getName()))
-//				{
-//					temp_ = temp.getValue();
-//					break;
-//				}
-//			}
-//			if(temp_==null){
-//				temp_ = defaultvalue;
-//			}
-//		return temp_;
-		return StringUtil.getCookieValue( request, name, defaultvalue);
+
+	public static String getCookieValue(HttpServletRequest request, String name, String defaultvalue) {
+		// Cookie[] cookies = request.getCookies();
+		//
+		//
+		// String temp_ = null;
+		// for (Cookie temp : cookies) {
+		// if(name.equals(temp.getName()))
+		// {
+		// temp_ = temp.getValue();
+		// break;
+		// }
+		// }
+		// if(temp_==null){
+		// temp_ = defaultvalue;
+		// }
+		// return temp_;
+		return StringUtil.getCookieValue(request, name, defaultvalue);
 	}
-	
-	public static String getCookieValue(HttpServletRequest request,String name)
-	{
-		return getCookieValue(request,name,null);
+
+	public static String getCookieValue(HttpServletRequest request, String name) {
+		return getCookieValue(request, name, null);
 	}
-	
-	public static void  addCookieValue(HttpServletRequest request,HttpServletResponse response ,String name,String value,int maxage)
-	{
-//		Cookie[] cookies = request.getCookies();
-//		Cookie loginPathCookie = null;
-//		for(Cookie cookie:cookies)
-//		{
-//			if(name.equals(cookie.getName()))
-//			{
-//				loginPathCookie = cookie;
-//				break;
-//			}
-//		}
-//		if(loginPathCookie == null)
-//		{
-//			 loginPathCookie = new Cookie(name, value);			 
-//			loginPathCookie.setMaxAge(maxage);
-//			loginPathCookie.setPath(request.getContextPath());			
-//			response.addCookie(loginPathCookie);
-//		}
-//		else
-//		{
-//			loginPathCookie.setMaxAge(maxage);
-//			loginPathCookie.setValue(value);
-//			loginPathCookie.setPath(request.getContextPath());	
-//			response.addCookie(loginPathCookie);
-////			loginPathCookie.setPath(request.getContextPath());
-//		}
-		StringUtil.addCookieValue(request, response, name, value,maxage);
+
+	public static void addCookieValue(HttpServletRequest request, HttpServletResponse response, String name,
+			String value, int maxage) {
+		// Cookie[] cookies = request.getCookies();
+		// Cookie loginPathCookie = null;
+		// for(Cookie cookie:cookies)
+		// {
+		// if(name.equals(cookie.getName()))
+		// {
+		// loginPathCookie = cookie;
+		// break;
+		// }
+		// }
+		// if(loginPathCookie == null)
+		// {
+		// loginPathCookie = new Cookie(name, value);
+		// loginPathCookie.setMaxAge(maxage);
+		// loginPathCookie.setPath(request.getContextPath());
+		// response.addCookie(loginPathCookie);
+		// }
+		// else
+		// {
+		// loginPathCookie.setMaxAge(maxage);
+		// loginPathCookie.setValue(value);
+		// loginPathCookie.setPath(request.getContextPath());
+		// response.addCookie(loginPathCookie);
+		//// loginPathCookie.setPath(request.getContextPath());
+		// }
+		StringUtil.addCookieValue(request, response, name, value, maxage);
 	}
-	
-	public static void  addCookieValue(HttpServletRequest request,HttpServletResponse response ,String name,String value)
-	{
-		addCookieValue( request, response , name, value,3600 * 24);
+
+	public static void addCookieValue(HttpServletRequest request, HttpServletResponse response, String name,
+			String value) {
+		addCookieValue(request, response, name, value, 3600 * 24);
 	}
-	
-	
+
 	/**
 	 * 获取指定系统的注销跳转页面
+	 * 
 	 * @return
 	 */
-	public static String getSubSystemLogoutRedirect(HttpServletRequest request,String systemid,boolean appendToken) {
+	public static String getSubSystemLogoutRedirect(HttpServletRequest request, String systemid, boolean appendToken) {
 		String ret = null;
-		if(systemid == null)
-		{
-			String defaultvalue = StringUtil.getRealPath(request.getContextPath(),pathloginPage,true);
+		if (systemid == null) {
+			String defaultvalue = StringUtil.getRealPath(request.getContextPath(), pathloginPage, true);
 			ret = AccessControl.getCookieValue(request, current_logoutredirect_cookie);
-			if(!StringUtil.isEmpty(ret))
-			{
-				 if(ret.indexOf(TokenStore.temptoken_param_name_word) > 0)
-					 ret = defaultvalue;				 
+			if (!StringUtil.isEmpty(ret)) {
+				if (ret.indexOf(TokenStore.temptoken_param_name_word) > 0)
+					ret = defaultvalue;
+			} else {
+				ret = defaultvalue;
 			}
-			else
-			{
-				ret = defaultvalue;	
-			}
-			if(ret != null && appendToken)
-			{
-				
-				if(TokenHelper.isEnableToken())//如果开启令牌机制就会存在memTokenManager对象，否则不存在
+			if (ret != null && appendToken) {
+
+				if (TokenHelper.isEnableToken())// 如果开启令牌机制就会存在memTokenManager对象，否则不存在
 				{
-					ret = TokenHelper.getTokenService().appendDTokenToURL(request,ret);
+					ret = TokenHelper.getTokenService().appendDTokenToURL(request, ret);
 				}
 			}
-				
-		}
-		else
-		{
+
+		} else {
 			SubSystem subsystem = Framework.getInstance().getSubsystem(systemid);
-			if(subsystem != null)
-			{
+			if (subsystem != null) {
 				systemid = subsystem.getLogoutredirect();
-				if(systemid != null )
-				{
-					ret = StringUtil.getRealPath(request.getContextPath(), systemid,true);
+				if (systemid != null) {
+					ret = StringUtil.getRealPath(request.getContextPath(), systemid, true);
 				}
-			}
-			else
-			{
-				String defaultvalue = StringUtil.getRealPath(request.getContextPath(),pathloginPage,true);
+			} else {
+				String defaultvalue = StringUtil.getRealPath(request.getContextPath(), pathloginPage, true);
 				ret = AccessControl.getCookieValue(request, current_logoutredirect_cookie);
-				if(!StringUtil.isEmpty(ret))
-				{
-					 if(ret.indexOf(TokenStore.temptoken_param_name_word) > 0)
-						 ret = defaultvalue;				 
-				}
-				else
-				{
-					ret = defaultvalue;	
+				if (!StringUtil.isEmpty(ret)) {
+					if (ret.indexOf(TokenStore.temptoken_param_name_word) > 0)
+						ret = defaultvalue;
+				} else {
+					ret = defaultvalue;
 				}
 			}
-			if(ret != null && appendToken)
-			{
-				
-				if(TokenHelper.getTokenService() != null)//如果开启令牌机制就会存在memTokenManager对象，否则不存在
+			if (ret != null && appendToken) {
+
+				if (TokenHelper.getTokenService() != null)// 如果开启令牌机制就会存在memTokenManager对象，否则不存在
 				{
-					ret = TokenHelper.getTokenService().appendDTokenToURL(request,ret);
+					ret = TokenHelper.getTokenService().appendDTokenToURL(request, ret);
 				}
 			}
-			
+
 		}
 		return ret;
 	}
-	
+
 	/**
 	 * 获取指定系统的注销跳转页面
+	 * 
 	 * @return
 	 */
 	public static String getSubSystemLogoutRedirect(HttpServletRequest request) {
-		return getSubSystemLogoutRedirect(request,null,false);
-		
+		return getSubSystemLogoutRedirect(request, null, false);
+
 	}
 
 	public String getCurrentSystemName() {
@@ -871,15 +838,12 @@ public class AccessControl implements AccessControlInf{
 	 * @throws AccessException
 	 */
 
-	public boolean login(HttpServletRequest request,
-			HttpServletResponse response, String userName, String password,
+	public boolean login(HttpServletRequest request, HttpServletResponse response, String userName, String password,
 			boolean enablelog) throws AccessException
 
 	{
-		return login( request,
-				 response,  userName,  password,
-				 enablelog,null);
-		
+		return login(request, response, userName, password, enablelog, null);
+
 	}
 
 	/**
@@ -899,17 +863,13 @@ public class AccessControl implements AccessControlInf{
 	 * @throws AccessException
 	 */
 
-	public boolean login(HttpServletRequest request,
-			HttpServletResponse response, String userName, String password,
+	public boolean login(HttpServletRequest request, HttpServletResponse response, String userName, String password,
 			String userType) throws AccessException
 
 	{
 
-		return login(request, response, userName, password,
-				new String[] { userType });
+		return login(request, response, userName, password, new String[] { userType });
 	}
-	
-	
 
 	/**
 	 * 系统用户登录接口 目前的ssoCookie未加密,将来需实现ssoCookie的加密处理,用户的信息cookie格式：
@@ -928,45 +888,40 @@ public class AccessControl implements AccessControlInf{
 	 * @throws AccessException
 	 */
 
-	public boolean login(HttpServletRequest request,
-			HttpServletResponse response, String userName, String password,
+	public boolean login(HttpServletRequest request, HttpServletResponse response, String userName, String password,
 			String[] userTypes) throws AccessException
 
 	{
 
-		return login( request,
-				 response,  userName,  password, true,
-				 userTypes);
+		return login(request, response, userName, password, true, userTypes);
 	}
-	
+
 	public static String kickmode = ConfigManager.getInstance().getConfigValue("kickmode", "refuse");
-	
-	public static boolean enablemutilogin = ConfigManager.getInstance().getConfigBooleanValue("enablemutilogin", true) ;
-	public static boolean cluster_session_synchronize = ConfigManager.getInstance().getConfigBooleanValue("cluster.session.synchronize", false);
-	public static void resetSession(HttpSession session)
-	{
-		if(session == null )
-		{
+
+	public static boolean enablemutilogin = ConfigManager.getInstance().getConfigBooleanValue("enablemutilogin", true);
+	public static boolean cluster_session_synchronize = ConfigManager.getInstance()
+			.getConfigBooleanValue("cluster.session.synchronize", false);
+
+	public static void resetSession(HttpSession session) {
+		if (session == null) {
 			return;
 		}
-//		session.removeAttribute(PRINCIPAL_INDEXS);
-//		session.removeAttribute(Framework.SUBSYSTEM);
-//		session.removeAttribute(CREDENTIAL_INDEXS);
-//		session.removeAttribute(AccessControl.SESSIONID_FROMCLIENT_KEY);
-//		session.removeAttribute(SERVER_IP_KEY);
-//		session.removeAttribute(SERVER_PORT_KEY);
-//		session.removeAttribute(REMOTEADDR_CACHE_KEY);
-//		
-//		 
-//		session.removeAttribute(MACADDR_CACHE_KEY);
-//		session.removeAttribute(AccessControl.MACHINENAME_CACHE_KEY);
-//		session.removeAttribute(SESSIONID_CACHE_KEY);
+		// session.removeAttribute(PRINCIPAL_INDEXS);
+		// session.removeAttribute(Framework.SUBSYSTEM);
+		// session.removeAttribute(CREDENTIAL_INDEXS);
+		// session.removeAttribute(AccessControl.SESSIONID_FROMCLIENT_KEY);
+		// session.removeAttribute(SERVER_IP_KEY);
+		// session.removeAttribute(SERVER_PORT_KEY);
+		// session.removeAttribute(REMOTEADDR_CACHE_KEY);
+		//
+		//
+		// session.removeAttribute(MACADDR_CACHE_KEY);
+		// session.removeAttribute(AccessControl.MACHINENAME_CACHE_KEY);
+		// session.removeAttribute(SESSIONID_CACHE_KEY);
 		try {
 			Enumeration anames = session.getAttributeNames();
-			if(anames != null )
-			{
-				while(anames.hasMoreElements())
-				{
+			if (anames != null) {
+				while (anames.hasMoreElements()) {
 					String name = String.valueOf(anames.nextElement());
 					session.removeAttribute(name);
 				}
@@ -975,8 +930,9 @@ public class AccessControl implements AccessControlInf{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-			
+
 	}
+
 	/**
 	 * 系统用户登录接口 目前的ssoCookie未加密,将来需实现ssoCookie的加密处理,用户的信息cookie格式：
 	 * loginMudleName + #$% + userName 不同身份信息之间以^_^分隔，例如
@@ -994,171 +950,143 @@ public class AccessControl implements AccessControlInf{
 	 * @throws AccessException
 	 */
 
-	public boolean login(HttpServletRequest request,
-			HttpServletResponse response, String userName, String password,boolean enablelog,
-			String[] userTypes) throws AccessException
+	public boolean login(HttpServletRequest request, HttpServletResponse response, String userName, String password,
+			boolean enablelog, String[] userTypes) throws AccessException
 
 	{
 
-		
-		
 		/**
 		 * 如果ie session相互干扰时需要给出提示,不允许用户登录
 		 */
 		session = request.getSession(false);
-		
-		Principal temp =  (session != null ?(Principal)session.getAttribute(PRINCIPAL_INDEXS):null);
-		
-		 this.log("userAccount.login",request);
-		if(temp != null )
-		{
-		        boolean sameuserenable = ConfigManager.getInstance().getConfigBooleanValue("session.sameuserenable",true);
-		        this.unprotectedCheck(null, null);
-		        String userAccount = this.getUserAccount();
-//			Principal principal_ = (Principal) temp.get(moduleName);
-		        if(userAccount.equals(userName))
-		        {
-		             this.log("userAccount.equals(userName)",request);
-		            String subsystem_id = request.getParameter(SUBSYSTEM_ID);
-		            if (subsystem_id == null || subsystem_id.equals(""))
-		            {
-		                        ;
-		                // 将用户登录的子系统模块名称添加到session中
-		            }
-		            else
-		            {
-		                String old = (String)session.getAttribute(Framework.SUBSYSTEM);
-		                if(old != null && !old.equals(subsystem_id))
-		                    session.setAttribute(Framework.SUBSYSTEM, subsystem_id);
-		            }
-		            return true;
-		        }
-		        else
-		        {
-		            this.log("!userAccount.equals(userName)",request);
-		            if(!sameuserenable)
-		                throw new AccessException("用户[" + userAccount + "]正在使用系统，等待退出后再登录！");
-		        }
-			
-		}
-		
-//		if ((!enablemutilogin 
-//				|| cluster_session_synchronize) 
-//				&& onlineUser.existUser(userName))
-//		{
-//			if(kickmode.equalsIgnoreCase("refuse"))
-//			{
-//				if(!isAdmin(userName))
-//					throw new AccessException("用户[" + userName + "]已登陆,登陆情况为：\\n"
-//							+ onlineUser.getUserLoginInfo(userName)
-//							+ "，不允许用户同时多次登陆系统。");
-//			}
-//		}
-		
-		UsernamePasswordCallbackHandler callbackHandler = new UsernamePasswordCallbackHandler(
-				userName, password,userTypes,request,response);
 
-	 
-		
+		Principal temp = (session != null ? (Principal) session.getAttribute(PRINCIPAL_INDEXS) : null);
+
+		if (temp != null) {
+			boolean sameuserenable = ConfigManager.getInstance().getConfigBooleanValue("session.sameuserenable", true);
+			this.unprotectedCheck(null, null);
+			String userAccount = this.getUserAccount();
+			// Principal principal_ = (Principal) temp.get(moduleName);
+			if (userAccount.equals(userName)) {
+				String subsystem_id = request.getParameter(SUBSYSTEM_ID);
+				if (subsystem_id == null || subsystem_id.equals("")) {
+					subsystem_id = (String)request.getAttribute(SUBSYSTEM_ID);
+					
+				} 
+				if(subsystem_id == null || subsystem_id.equals(""))
+				{
+					String old = (String) session.getAttribute(Framework.SUBSYSTEM);
+					if (old != null && !old.equals(subsystem_id))
+						session.setAttribute(Framework.SUBSYSTEM, subsystem_id);
+				}
+				return true;
+			} else {
+				if (!sameuserenable)
+					throw new AccessException("用户[" + userAccount + "]正在使用系统，等待退出后再登录！");
+			}
+
+		}
+
+		// if ((!enablemutilogin
+		// || cluster_session_synchronize)
+		// && onlineUser.existUser(userName))
+		// {
+		// if(kickmode.equalsIgnoreCase("refuse"))
+		// {
+		// if(!isAdmin(userName))
+		// throw new AccessException("用户[" + userName + "]已登陆,登陆情况为：\\n"
+		// + onlineUser.getUserLoginInfo(userName)
+		// + "，不允许用户同时多次登陆系统。");
+		// }
+		// }
+
+		UsernamePasswordCallbackHandler callbackHandler = new UsernamePasswordCallbackHandler(userName, password,
+				userTypes, request, response);
+
 		this.request = request;
 		this.response = response;
 		try {
-			innerlogon(callbackHandler,
-					userName,
-					 enablelog,true);			
+			innerlogon(callbackHandler, userName, enablelog, true);
 			return true;
 		} catch (LoginException ex) {
-			
-			throw new AccessException(ex.getMessage(),ex);
+
+			throw new AccessException(ex.getMessage(), ex);
 		}
-		
+
 		catch (Exception ex) {
-			
-			throw new AccessException(ex.getMessage(),ex);
+
+			throw new AccessException(ex.getMessage(), ex);
 		}
 	}
-	
-	public String getSessionID()
-	{
-		if(session == null)
+
+	public String getSessionID() {
+		if (session == null)
 			return null;
 		return this.session.getId();
 	}
-	
-	private void guestlogin()
-	{
+
+	private void guestlogin() {
 		UsernamePasswordCallbackHandler callbackHandler = new UsernamePasswordCallbackHandler(
-				BaseAuthorizationTable.guest, BaseAuthorizationTable.password,null,request,response);
-		
+				BaseAuthorizationTable.guest, BaseAuthorizationTable.password, null, request, response);
+
 		try {
-			
-			SimpleLoginContext loginContext = new SimpleLoginContext("base",
-					callbackHandler);
+
+			SimpleLoginContext loginContext = new SimpleLoginContext("base", callbackHandler);
 			loginContext.login();
 			subject = loginContext.getSubject();
-			 
-				Credential credential = subject.getCredential();
-				
-//					CheckCallBack.AttributeQueue attributeQueue = credential
-//							.getCheckCallBack().getAttributeQueue();				
-				 				
-				this.credential = credential;
-				
 
-			 
-				AuthPrincipal principal = (AuthPrincipal)subject.getPrincipal();
-				this.principal = principal;
-				this.loginPrincipal = subject.getLoginPrincipal();
-		
-			 
+			Credential credential = subject.getCredential();
+
+			// CheckCallBack.AttributeQueue attributeQueue = credential
+			// .getCheckCallBack().getAttributeQueue();
+
+			this.credential = credential;
+
+			AuthPrincipal principal = (AuthPrincipal) subject.getPrincipal();
+			this.principal = principal;
+			this.loginPrincipal = subject.getLoginPrincipal();
+
 		} catch (LoginException e) {
-			
+
 			e.printStackTrace();
 		}
-		
+
 	}
-	
-	public String getMachineName()
-	{
+
+	public String getMachineName() {
 		String machineName = null;
-		if(this.credential != null)
-		{
-			machineName = (String)this.credential.getCheckCallBack().getUserAttribute(AccessControl.MACHINENAME_CACHE_KEY);
-			
+		if (this.credential != null) {
+			machineName = (String) this.credential.getCheckCallBack()
+					.getUserAttribute(AccessControl.MACHINENAME_CACHE_KEY);
+
 		}
-		if(machineName == null)
-		{
+		if (machineName == null) {
 			return "";
 		}
 		return machineName;
 	}
-	public static String getDefaultSUBSystemID()
-	{
+
+	public static String getDefaultSUBSystemID() {
 		String default_module = ConfigManager.getInstance().getConfigValue("default_module", "module");
 		return default_module;
 	}
-	public static String getLoginStyle(HttpServletRequest request)
-	{
-//		HttpSession session = request.getSession(false);
-		AccessControl  control = AccessControl.getAccessControl();
+
+	public static String getLoginStyle(HttpServletRequest request) {
+		// HttpSession session = request.getSession(false);
+		AccessControl control = AccessControl.getAccessControl();
 		/**
-		 * 1 other
-		 * 2 other
-		 * 3 ISany
-		 * 4 WEBIsany
-		 * 5 common
+		 * 1 other 2 other 3 ISany 4 WEBIsany 5 common
 		 */
-		String loginstyle = !control.isGuest() ?(String)control.getUserAttribute(AccessControl.LOGINSTYLE_CACHE_KEY):null;
-		if(loginstyle == null)
-		{
-			
+		String loginstyle = !control.isGuest() ? (String) control.getUserAttribute(AccessControl.LOGINSTYLE_CACHE_KEY)
+				: null;
+		if (loginstyle == null) {
+
 			return ConfigManager.getInstance().getConfigValue("destop.defaultstyle", "3");
 		}
 		return loginstyle;
 	}
-	public static void setSubSystemToCookie(HttpServletResponse resp,
-			String userName, String subsystem)
-	{
+
+	public static void setSubSystemToCookie(HttpServletResponse resp, String userName, String subsystem) {
 		if (resp == null)
 			return;
 		String name = AccessControl.SUBSYSTEM_COOKIE + "_" + userName;
@@ -1168,245 +1096,242 @@ public class AccessControl implements AccessControlInf{
 		resp.addCookie(co);
 
 	}
-	private void innerlogon(UsernamePasswordCallbackHandler callbackHandler,
-			String userName,
-			boolean enablelog,boolean recordonlineuser) throws LoginException
-	{
-		SimpleLoginContext loginContext = new SimpleLoginContext("base",
-				callbackHandler);
+
+	private void innerlogon(UsernamePasswordCallbackHandler callbackHandler, String userName, boolean enablelog,
+			boolean recordonlineuser) throws LoginException {
+		SimpleLoginContext loginContext = new SimpleLoginContext("base", callbackHandler);
 		loginContext.login();
-//		/**
-//		 * 通过验证以后，判断用户是否已经登录系统，如果已经登录了，按以下情况进行相应处理：
-//		 * 1.不允许用户多次登录系统时,将先前登录的用户从系统中剔除
-//		 * 2.应用存在多实例或者应用部署在集群环境中时,将先前登录的用户从系统中剔除
-//		 */
-//		if ((!enablemutilogin 
-//				|| cluster_session_synchronize) 
-//				&& recordonlineuser && onlineUser.existUser(userName) )
-//		{
-//			onlineUser.removeUser(userName);
-////			throw new AccessException("用户[" + userName + "]已登陆,登陆情况为：\\n"
-////					+ onlineUser.getUserLoginInfo(userName)
-////					+ "，系统不允许用户在同时多次登陆。");
-//		}
+		// /**
+		// * 通过验证以后，判断用户是否已经登录系统，如果已经登录了，按以下情况进行相应处理：
+		// * 1.不允许用户多次登录系统时,将先前登录的用户从系统中剔除
+		// * 2.应用存在多实例或者应用部署在集群环境中时,将先前登录的用户从系统中剔除
+		// */
+		// if ((!enablemutilogin
+		// || cluster_session_synchronize)
+		// && recordonlineuser && onlineUser.existUser(userName) )
+		// {
+		// onlineUser.removeUser(userName);
+		//// throw new AccessException("用户[" + userName + "]已登陆,登陆情况为：\\n"
+		//// + onlineUser.getUserLoginInfo(userName)
+		//// + "，系统不允许用户在同时多次登陆。");
+		// }
 		subject = loginContext.getSubject();
 		// 将loginContext缓冲到session中
 		// session.setAttribute(LOGINCONTEXT_CACHE_KEY, loginContext);
 		// 缓冲远程地址，以便session实效时清除未清除的用户信息
-//		String machineIP = request.getHeader("iv-remote-address");//获取webseal反向代理过来的ip地址
-//		if(machineIP == null || machineIP.equals(""))
-//		{
-//
-//			machineIP = request.getParameter("machineIp_");
-//			if(machineIP == null || machineIP.trim().equals(""))
-//				machineIP = StringUtil.getClientIP(request);
-//		}
-		
+		// String machineIP =
+		// request.getHeader("iv-remote-address");//获取webseal反向代理过来的ip地址
+		// if(machineIP == null || machineIP.equals(""))
+		// {
+		//
+		// machineIP = request.getParameter("machineIp_");
+		// if(machineIP == null || machineIP.trim().equals(""))
+		// machineIP = StringUtil.getClientIP(request);
+		// }
+
 		String machineIP = getMachinedID();
-		if(session == null)
+		if (session == null)
 			session = request.getSession();
-		
+
 		String sessionTimeout = request.getParameter("sessionTimeout");
-		if(sessionTimeout != null && !sessionTimeout.equals(""))
-		{
+		if (sessionTimeout != null && !sessionTimeout.equals("")) {
 			int timeout = Integer.parseInt(sessionTimeout);
 			session.setMaxInactiveInterval(timeout);
 		}
+
+		credential = (Credential) subject.getCredential();
+		principal = (AuthPrincipal) subject.getPrincipal();
+		this.loginPrincipal = subject.getLoginPrincipal();
+		/**
+		 * 1 other 2 other 3 ISany 4 WEBIsany 5 common
+		 */
+		String loginPath = request.getParameter("loginPath");
+		if (StringUtil.isEmpty(loginPath)) {
+			loginPath = "5";
+		}
+		// session.setAttribute(LOGINSTYLE_CACHE_KEY,loginPath);
+		credential.getCheckCallBack().setUserAttribute(LOGINSTYLE_CACHE_KEY, loginPath);
+		// session.setAttribute(REMOTEADDR_CACHE_KEY, machineIP);
+		credential.getCheckCallBack().setUserAttribute(REMOTEADDR_CACHE_KEY, machineIP);
+		/**
+		 * 获取客服端网卡的mac地址
+		 */
+		// String macaddr = request.getParameter("macaddr_");
+		// String machineName = request.getParameter("machineName_");
+
+		// session.setAttribute(MACADDR_CACHE_KEY, macaddr);
+		// credential.getCheckCallBack().setUserAttribute(MACADDR_CACHE_KEY,
+		// macaddr);
+		// session.setAttribute(AccessControl.MACHINENAME_CACHE_KEY,
+		// machineName);
+		// credential.getCheckCallBack().setUserAttribute(MACHINENAME_CACHE_KEY,
+		// machineName);
+		String subsystem_id = request.getParameter(SUBSYSTEM_ID);
+		if (subsystem_id == null || subsystem_id.equals(""))
+			subsystem_id = getDefaultSUBSystemID();
+		// 将用户登录的子系统模块名称添加到session中
+		session.setAttribute(Framework.SUBSYSTEM, subsystem_id);
+
+		// 添加用户的所有身份索引到session中
+		session.setAttribute(PRINCIPAL_INDEXS, this.principal);
+		session.setAttribute(LOGIN_PRINCIPAL_INDEXS, loginPrincipal);
+		// 添加用户的所有属性到session中
+		session.setAttribute(CREDENTIAL_INDEXS, this.credential);
+		// CheckCallBack.AttributeQueue attributeQueue = credential
+		// .getCheckCallBack().getAttributeQueue();
+		Map<String, Object> callBacks = credential.getCheckCallBack().getCallBacks();
+		// if(enablecookie)
+		// {
+		// if (callBacks.size() > 0) {
+		// if (!flag) {
+		// flag = true;
+		// } else {
+		// credentialCookie.append(CREDENTIAL_SPLIT);
+		// }
+		// credentialCookie.append(credential.getLoginModule())
+		// .append(CREDENTIAL_ATTRIBUTE_SPLIT);
+		// boolean _flag = false;
+		// Iterator<Entry<String, Object>> it = callBacks.entrySet().iterator();
+		//
+		// while (it.hasNext()) {
+		// if (!_flag) {
+		// _flag = true;
+		// } else {
+		// credentialCookie.append(ATTRIBUTE_SPLIT);
+		// }
+		// Entry<String, Object> entry = it.next();
+		// Object attr =entry.getValue();
+		// credentialCookie.append(entry.getKey()).append("=")
+		// .append(attr);
+		// }
+		// }
+		// }
+
+
 	
-		StringBuffer ssoCookie = new StringBuffer();
-		StringBuffer credentialCookie = new StringBuffer();
-		boolean flag = false;
-		boolean enablecookie = this.enablecookie();
-		
-			  credential = (Credential) subject.getCredential();
-			  principal = (AuthPrincipal)subject.getPrincipal();
-			  this.loginPrincipal = subject.getLoginPrincipal();
-			  /**
-				 * 1 other
-				 * 2 other
-				 * 3 ISany
-				 * 4 WEBIsany
-				 * 5 common
-				 */
-				String loginPath = request.getParameter("loginPath");
-				if(StringUtil.isEmpty(loginPath))
-				{
-					loginPath = "5";
-				}
-//				session.setAttribute(LOGINSTYLE_CACHE_KEY,loginPath);
-				credential.getCheckCallBack().setUserAttribute(LOGINSTYLE_CACHE_KEY, loginPath);
-//				session.setAttribute(REMOTEADDR_CACHE_KEY, machineIP);
-				credential.getCheckCallBack().setUserAttribute(REMOTEADDR_CACHE_KEY, machineIP);
-				/**
-				 * 获取客服端网卡的mac地址
-				 */
-//				String macaddr = request.getParameter("macaddr_");
-//				String machineName = request.getParameter("machineName_");
-				 
-//				session.setAttribute(MACADDR_CACHE_KEY, macaddr);
-//				credential.getCheckCallBack().setUserAttribute(MACADDR_CACHE_KEY, macaddr);
-//				session.setAttribute(AccessControl.MACHINENAME_CACHE_KEY, machineName);
-//				credential.getCheckCallBack().setUserAttribute(MACHINENAME_CACHE_KEY, machineName);
-				String subsystem_id = request.getParameter(SUBSYSTEM_ID);
-				if (subsystem_id == null || subsystem_id.equals(""))
-					subsystem_id = getDefaultSUBSystemID();
-				// 将用户登录的子系统模块名称添加到session中
-				session.setAttribute(Framework.SUBSYSTEM, subsystem_id);
-				
-				
-				// 添加用户的所有身份索引到session中
-						session.setAttribute(PRINCIPAL_INDEXS, this.principal);
-						 session.setAttribute(LOGIN_PRINCIPAL_INDEXS,loginPrincipal);
-						// 添加用户的所有属性到session中
-						session.setAttribute(CREDENTIAL_INDEXS, this.credential);
-//				CheckCallBack.AttributeQueue attributeQueue = credential
-//						.getCheckCallBack().getAttributeQueue();
-				Map<String,Object> callBacks = credential.getCheckCallBack().getCallBacks();
-				if(enablecookie)
-				{
-					if (callBacks.size() > 0) {
-						if (!flag) {
-							flag = true;
-						} else {
-							credentialCookie.append(CREDENTIAL_SPLIT);
-						}
-						credentialCookie.append(credential.getLoginModule())
-								.append(CREDENTIAL_ATTRIBUTE_SPLIT);
-						boolean _flag = false;
-						Iterator<Entry<String, Object>>  it = callBacks.entrySet().iterator();
-						
-						while (it.hasNext()) {
-							if (!_flag) {
-								_flag = true;
-							} else {
-								credentialCookie.append(ATTRIBUTE_SPLIT);
-							}
-							Entry<String, Object> entry = it.next();
-							Object attr =entry.getValue();
-							credentialCookie.append(entry.getKey()).append("=")
-									.append(attr);
-						}
-					}
-				}
-				
-			 
 
-			 
+		//// log("enablecookie:" + enablecookie);
+		// if (enablecookie) {
+		// if (!flag) {
+		// ssoCookie.append(((AuthPrincipal)principal).getLoginModuleName()).append(
+		// IDENTITY_SPLIT).append(principal.getName());
+		// flag = true;
+		// } else {
+		// ssoCookie.append(PRINCIPAL_SPLIT).append(
+		// ((AuthPrincipal)principal).getLoginModuleName()).append(
+		// IDENTITY_SPLIT).append(principal.getName());
+		// }
+		// }
 
-		 
-		flag = false;
-		
-			
-			
-			
-//			log("enablecookie:" + enablecookie);
-			if (enablecookie) {
-				if (!flag) {
-					ssoCookie.append(((AuthPrincipal)principal).getLoginModuleName()).append(
-							IDENTITY_SPLIT).append(principal.getName());
-					flag = true;
-				} else {
-					ssoCookie.append(PRINCIPAL_SPLIT).append(
-							((AuthPrincipal)principal).getLoginModuleName()).append(
-							IDENTITY_SPLIT).append(principal.getName());
-				}
-			}
-		
-		if (enablecookie) {
-			if (ssoCookie.length() > 0) {
-				ssoCookie.insert(0, "encrypt=false" + HEAD_SPLIT);
-				ssoCookie.append(PRINCIPAL_CREDENTIAL_SPLIT).append(
-						credentialCookie);
-			}
-		}
+		// if (enablecookie) {
+		// if (ssoCookie.length() > 0) {
+		// ssoCookie.insert(0, "encrypt=false" + HEAD_SPLIT);
+		// ssoCookie.append(PRINCIPAL_CREDENTIAL_SPLIT).append(
+		// credentialCookie);
+		// }
+		// }
 		
 		
-		if (enablecookie) {
+		// 记录登录子系统的subsystemid到cookie中
 
-			try
-			{
-				DESCipher dd = new DESCipher();
-				String sss = dd.encrypt(ssoCookie.toString());
-				// 添加用户登录信息到客服端cookie中，以便实现单点登录
-				log.debug("生成sso Cookie[" + PRINCIPALS_COOKIE + ","
-						+ sss + "]");
-				Cookie newCookie = new Cookie(PRINCIPALS_COOKIE,
-						sss);
-				
-				// 记录cookie
-				newCookie.setMaxAge(86400);
-				
-				response.addCookie(newCookie);
-			}
-			catch(Exception e)
-			{
-				e.printStackTrace();
-			}
-			
-
-			
-		}
-		//记录登录子系统的subsystemid到cookie中
-//		setSubSystemToCookie(response, principal.getName(), subsystem_id); //被yinbp注释，暂时没有发现使用的地方 2017-03-02
-//		Cookie subsystemCookie = new Cookie(SUBSYSTEM_COOKIE + "_"
-//				+ userName, subsystem_id);
-//		subsystemCookie.setMaxAge(86400);
-//		response.addCookie(subsystemCookie);
-		// 记录cookie
-		
-		
-		//log.info("User[" + this.getUserAccount() + "," + getUserName() + "] login from [" +operSource +"].");
-//		String serverIp = request.getServerName();
-//		String serverport = request.getServerPort() + "";
-//		session.setAttribute(SERVER_IP_KEY,serverIp);
-//		session.setAttribute(SERVER_PORT_KEY,serverport);
-//		if(recordonlineuser)
-//		{
-//			onlineUser.valueBound(session.getId(), getUserAccount(), machineIP,
-//	//				request.getRemoteAddr(),
-//					macaddr,machineName,serverIp,serverport);
-//		}
 		session.setAttribute("userAccount", this.getUserAccount());
 		session.setAttribute("worknumber", this.getUserAttribute("userWorknumber"));
 		current.set(this);
+		 rememberme(subsystem_id);
 		String operSource = machineIP;
 		String content = null;
-		
-		StringBuilder builder = new StringBuilder();
-		builder.append("用户" )
-			   .append( this.getUserAccount() )
-			   .append( "(")
-			   .append( getUserName() )
-			   .append( ")从" )
-			   .append(operSource )
-			   .append("登陆")
-			   .append( getCurrentSystemName() )
-			   .append( ",sessionid=" )
-			   .append(session.getId());
-		content = builder.toString();
-		if(log.isDebugEnabled()){
-			
-			log.debug(content);
+		if(enablelog || log.isDebugEnabled()){
+			StringBuilder builder = new StringBuilder();
+			builder.append("用户").append(this.getUserAccount()).append("(").append(getUserName()).append(")从")
+					.append(operSource).append("登陆").append(getCurrentSystemName()).append(",sessionid=")
+					.append(session.getId());
+			content = builder.toString();
+			if (log.isDebugEnabled()) {
+	
+				log.debug(content);
+			}
+			// ------------登陆时保存用户日志信息
+			if (enablelog ) {
+				try {
+					LogManagerInf logMgr = ConfigManager.getInstance().getLogManager();
+	
+					String operContent = content;
+	
+					String openModle = "认证管理";
+	
+					logMgr.log(userName, operContent, openModle, operSource);
+				} catch (SPIException e1) {
+	
+					e1.printStackTrace();
+				} catch (Exception e) {
+	
+					e.printStackTrace();
+				}
+			}
 		}
-		// ------------登陆时保存用户日志信息
-		if(enablelog && recordonlineuser)
-		{
-			try {
-				LogManagerInf logMgr = ConfigManager.getInstance().getLogManager();
-			
-				String operContent = content;
-				
-				String openModle = "认证管理";
+	}
+	private String encodeUserInfo(String userAccount,String subsystem_id) throws Exception{
+		DESCipher dd = new DESCipher();
+		StringBuilder cookievalue = new StringBuilder();
+		// 在cookie中记录登陆账号和子系统
+		cookievalue.append(this.getUserAccount()).append(PRINCIPAL_SPLIT).append(subsystem_id);
+		String sss = dd.encrypt(cookievalue.toString());
+		return sss;
+	}
+	
+	public static  String[] decodeUserInfo(String userInfo) throws Exception{
+		DESCipher dd = new DESCipher();
+		String sss = dd.decrypt(userInfo);
+		String infos[] = sss.split(PRINCIPAL_SPLIT_pattern);	
+		return infos;
+	}
+	boolean loginFromRemeberMe = false;
+	public boolean loginFromRemeberMe(){
+		return loginFromRemeberMe;
+	}
+	private void rememberme(String subsystem_id){
+		String remember = request.getParameter("remember");
+		if (remember != null && remember.equals("1") && ConfigManager.getInstance().getConfigValue("security.rememberme", "true").equals("true")) {
 
-				logMgr.log(userName, operContent,
-						openModle, operSource);
-			} catch (SPIException e1) {
-				
-				e1.printStackTrace();
+			try {
+				 
+				String sss = encodeUserInfo(  getUserAccount(),  subsystem_id);
+				// 添加用户登录信息到客服端cookie中，以便实现记住我登陆功能,
+
+				Cookie newCookie = new Cookie(PRINCIPALS_COOKIE, sss);
+				newCookie.setHttpOnly(true);
+				newCookie.setPath("/");
+				// 记录cookie
+				newCookie.setMaxAge(
+						ConfigManager.getInstance().getConfigIntValue("security.rememberme.timeinterval", 864000));
+
+				response.addCookie(newCookie);//用户登出系统时，需要将cookie清除
+				if (log.isDebugEnabled())
+					log.debug("记录登陆remember Cookie[" + PRINCIPALS_COOKIE + "," + this.getUserAccount() + "]");
 			} catch (Exception e) {
-				
 				e.printStackTrace();
 			}
+
+		}
+	}
+	
+	private void clearrememberme(){
+		 
+		if ( ConfigManager.getInstance().getConfigValue("security.rememberme", "true").equals("true") && response != null) {
+
+			try {				
+				Cookie newCookie = new Cookie(PRINCIPALS_COOKIE, "");
+				newCookie.setHttpOnly(true);
+				newCookie.setPath("/");
+				// 记录cookie
+				newCookie.setMaxAge(0);
+				response.addCookie(newCookie);//用户登出系统时，需要将cookie清除
+				if (log.isDebugEnabled())
+					log.debug("清除登陆remember Cookie[" + PRINCIPALS_COOKIE +  "]");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
 		}
 	}
 
@@ -1428,48 +1353,38 @@ public class AccessControl implements AccessControlInf{
 	 * @throws AccessException
 	 */
 
-	public boolean logindw(HttpServletRequest request,
-			HttpServletResponse response, String userName, String password,
+	public boolean logindw(HttpServletRequest request, HttpServletResponse response, String userName, String password,
 			String userType) throws AccessException
 
 	{
 
-		if(userType != null && !userType.equals(""))
-		{
-			return logindw(request, response, userName, password,
-					new String[] { userType });
-		}
-		else
-		{
-			return logindw(request, response, userName, password,
-					(String[])null);
+		if (userType != null && !userType.equals("")) {
+			return logindw(request, response, userName, password, new String[] { userType });
+		} else {
+			return logindw(request, response, userName, password, (String[]) null);
 		}
 	}
-	
-	public String getRemoteAddr()
-	{
+
+	public String getRemoteAddr() {
 		String ip = null;
-		if(this.credential != null)
-		{
-			ip = (String)this.credential.getCheckCallBack().getUserAttribute(REMOTEADDR_CACHE_KEY);
+		if (this.credential != null) {
+			ip = (String) this.credential.getCheckCallBack().getUserAttribute(REMOTEADDR_CACHE_KEY);
 		}
-		if(ip == null)
+		if (ip == null)
 			return "";
 		return ip;
-		
+
 	}
-	
-	public String getMachinedID()
-	{
-		
-		if(request == null)
+
+	public String getMachinedID() {
+
+		if (request == null)
 			return "";
-		String machineIP = request.getHeader("iv-remote-address");//获取webseal反向代理过来的ip地址
-		if(machineIP == null || machineIP.equals(""))
-		{
+		String machineIP = request.getHeader("iv-remote-address");// 获取webseal反向代理过来的ip地址
+		if (machineIP == null || machineIP.equals("")) {
 
 			machineIP = request.getParameter("machineIp_");
-			if(machineIP == null || machineIP.trim().equals(""))
+			if (machineIP == null || machineIP.trim().equals(""))
 				machineIP = StringUtil.getClientIP(request);
 		}
 		return machineIP;
@@ -1493,14 +1408,12 @@ public class AccessControl implements AccessControlInf{
 	 * @throws AccessException
 	 */
 
-	public boolean logindw(HttpServletRequest request,
-			HttpServletResponse response, String userName, String password)
+	public boolean logindw(HttpServletRequest request, HttpServletResponse response, String userName, String password)
 			throws AccessException
 
 	{
 
-		return logindw(request, response, userName, password,
-				(String[] )null);
+		return logindw(request, response, userName, password, (String[]) null);
 	}
 
 	/**
@@ -1521,42 +1434,34 @@ public class AccessControl implements AccessControlInf{
 	 * @throws AccessException
 	 */
 
-	public boolean logindw(HttpServletRequest request,
-			HttpServletResponse response, String userName, String password,
+	public boolean logindw(HttpServletRequest request, HttpServletResponse response, String userName, String password,
 			String[] userTypes) throws AccessException
 
 	{
 
-		
-		UsernamePasswordCallbackHandler callbackHandler = new UsernamePasswordCallbackHandler(
-				userName, password, userTypes,request,response);
+		UsernamePasswordCallbackHandler callbackHandler = new UsernamePasswordCallbackHandler(userName, password,
+				userTypes, request, response);
 
-	 
 		this.request = request;
 		this.response = response;
 		session = request.getSession(false);
-		
+
 		try {
-			innerlogon(callbackHandler,
-					userName,
-					 true,false);	
-			if(session != null)
+			innerlogon(callbackHandler, userName, true, false);
+			if (session != null)
 				session.setAttribute(AccessControl.SESSIONID_FROMCLIENT_KEY, new Boolean(true));
 			return true;
 		} catch (LoginException ex) {
-//			principalIndexs = null;
-//			credentialIndexs = null;
+			// principalIndexs = null;
+			// credentialIndexs = null;
+			throw new AccessException(ex.getMessage());
+		} catch (Exception ex) {
+			// principalIndexs = null;
+			// credentialIndexs = null;
 			throw new AccessException(ex.getMessage());
 		}
-		catch (Exception ex) {
-//			principalIndexs = null;
-//			credentialIndexs = null;
-			throw new AccessException(ex.getMessage());
-		}
-		
+
 	}
-	
-	
 
 	/**
 	 * 用户修改密码时，同步session中保存的用户密码
@@ -1566,104 +1471,90 @@ public class AccessControl implements AccessControlInf{
 	 */
 	public void refreshPassword(String newPassword) {
 		if (this.getUserAttribute("password") != null) {
-			this.credential.getCheckCallBack().setUserAttribute(
-					"password",
-					org.frameworkset.platform.security.authentication.EncrpyPwd
-							.encodePassword(newPassword));
-			this.credential.getCheckCallBack().setUserAttribute("password_i",
-					newPassword);
+			this.credential.getCheckCallBack().setUserAttribute("password",
+					org.frameworkset.platform.security.authentication.EncrpyPwd.encodePassword(newPassword));
+			this.credential.getCheckCallBack().setUserAttribute("password_i", newPassword);
 		}
 	}
-
-
 
 	/**
 	 * 检查用户是否登录，如果没有登录，系统将跳转的登录页面 检查用户是否有权限，如果没有权限访问本页面将跳转的权限检测失败页面
 	 */
-	public boolean checkAccess(HttpServletRequest request,
-			HttpServletResponse response) {
+	public boolean checkAccess(HttpServletRequest request, HttpServletResponse response) {
 		AccessControl c = AccessControl.getAccessControl();
-		if(c.isGuest())
+		if (c.isGuest())
 			return false;
-		else
-		{
+		else {
 			this.request = c.getRequest();
-			this.response = c.getResponse();		
-			this.session = c.getSession();			
-			 
+			this.response = c.getResponse();
+			this.session = c.getSession();
+
 			// 添加用户的所有属性到session中
-			 
+
 			this.principal = c.principal;
 			this.loginPrincipal = c.loginPrincipal;
 			this.credential = c.credential;
-			if(this.principal != null)
-			{
+			if (this.principal != null) {
 				this.subject = new Subject();
-				
+
 				this.subject.setCredential(credential);
 				this.subject.setPrincipal(principal);
 				this.subject.setLoginPrincipal(loginPrincipal);
 			}
 			return true;
 		}
-//		boolean isLogin = checkAccess(request, response, null, true);
-//		//modify by jianfeng 20090909
-////		if (!isLogin){			
-////			throw new SessionTimeoutExcetpion();
-////		}
-////		return true;
-//		return isLogin;
+		// boolean isLogin = checkAccess(request, response, null, true);
+		// //modify by jianfeng 20090909
+		//// if (!isLogin){
+		//// throw new SessionTimeoutExcetpion();
+		//// }
+		//// return true;
+		// return isLogin;
 	}
-	
+
 	/**
 	 * 检测当前登陆用户是否是管理员或者拥有超级管理员角色
 	 */
-	public boolean checkManagerAccess(HttpServletRequest request,
-			HttpServletResponse response) {
+	public boolean checkManagerAccess(HttpServletRequest request, HttpServletResponse response) {
 		boolean success = checkAccess(request, response);
-		if(!success)
+		if (!success)
 			return false;
-		if(isAdmin() || isOrgManager(getUserAccount())){
+		if (isAdmin() || isOrgManager(getUserAccount())) {
 			return true;
-		}else{
-			redirectManager(request,response,"/purviewmanager/nopermission.jsp");
+		} else {
+			redirectManager(request, response, "/purviewmanager/nopermission.jsp");
 			return false;
 		}
-		
+
 	}
-	
+
 	protected boolean isOrgManager(String userAccount) {
-		if(ConfigManager.getInstance().getPermissionModule() != null)
+		if (ConfigManager.getInstance().getPermissionModule() != null)
 			return ConfigManager.getInstance().getPermissionModule().isOrgManager(userAccount);
 		return false;
 	}
 
-
-
 	/**
 	 * 检测当前登陆用户是否是管理员
 	 */
-	public boolean checkAdminAccess(HttpServletRequest request,
-			HttpServletResponse response) {
+	public boolean checkAdminAccess(HttpServletRequest request, HttpServletResponse response) {
 		boolean success = checkAccess(request, response);
-		if(!success)
+		if (!success)
 			return false;
-		if(isAdmin()){
+		if (isAdmin()) {
 			return true;
-		}else{
-			redirectManager(request,response,"/purviewmanager/onlyAdminPermission.jsp");
+		} else {
+			redirectManager(request, response, "/purviewmanager/onlyAdminPermission.jsp");
 			return false;
 		}
-		
+
 	}
-	
+
 	/**
 	 * 检查用户是否登录，如果没有登录，系统将跳转的登录页面 检查用户是否有权限，如果没有权限访问本页面将跳转的权限检测失败页面
 	 */
-	public boolean checkAccess(String[] needUserTypes,HttpServletRequest request,
-			HttpServletResponse response) {
-		return checkAccess( needUserTypes,  request,
-				 response, null,true,null);
+	public boolean checkAccess(String[] needUserTypes, HttpServletRequest request, HttpServletResponse response) {
+		return checkAccess(needUserTypes, request, response, null, true, null);
 	}
 
 	/**
@@ -1680,8 +1571,7 @@ public class AccessControl implements AccessControlInf{
 	 * @param redirectPath
 	 * @return
 	 */
-	public boolean checkAccess(HttpServletRequest request,
-			HttpServletResponse response, String redirectPath) {
+	public boolean checkAccess(HttpServletRequest request, HttpServletResponse response, String redirectPath) {
 		return checkAccess(request, response, null, true, redirectPath);
 	}
 
@@ -1689,18 +1579,14 @@ public class AccessControl implements AccessControlInf{
 	 * 检查用户是否登录
 	 * 
 	 */
-	public boolean checkAccess(HttpServletRequest request,
-			HttpServletResponse response, boolean protect) {
+	public boolean checkAccess(HttpServletRequest request, HttpServletResponse response, boolean protect) {
 		return checkAccess(request, response, null, protect);
 	}
 
-	public boolean checkAccess(HttpServletRequest request,
-			HttpServletResponse response, JspWriter out, boolean protect) {
+	public boolean checkAccess(HttpServletRequest request, HttpServletResponse response, JspWriter out,
+			boolean protect) {
 
-
-		return checkAccess(request,
-				response, out, protect,
-				null);
+		return checkAccess(request, response, out, protect, null);
 
 	}
 
@@ -1711,16 +1597,14 @@ public class AccessControl implements AccessControlInf{
 	 * @return
 	 */
 	private boolean checkUserType(String[] userTypes) {
-		if(userTypes == null || userTypes.length == 0)
+		if (userTypes == null || userTypes.length == 0)
 			return true;
-		
+
 		Credential dd = this.credential;
-		String _userType = (String) dd.getCheckCallBack().getUserAttribute(
-				"LOGINCONTEXT.USERTYPE");
+		String _userType = (String) dd.getCheckCallBack().getUserAttribute("LOGINCONTEXT.USERTYPE");
 		if (_userType != null && !_userType.equals("")) {
 			StringBuffer b = new StringBuffer();
-			for(int i = 0; i < userTypes.length; i ++)
-			{
+			for (int i = 0; i < userTypes.length; i++) {
 				String userType = userTypes[i];
 				if (userType != null && _userType.equals(userType)) {
 					b.setLength(0);
@@ -1728,8 +1612,7 @@ public class AccessControl implements AccessControlInf{
 				}
 				b.append(userType).append(",");
 			}
-			log.debug("用户类型不一致，访问当前模块需要的类型为[needType=" + b.toString()
-					+ "],但是用户的类型为[userType=" + _userType + "]");
+			log.debug("用户类型不一致，访问当前模块需要的类型为[needType=" + b.toString() + "],但是用户的类型为[userType=" + _userType + "]");
 			return false;
 		}
 
@@ -1749,10 +1632,9 @@ public class AccessControl implements AccessControlInf{
 	 *             HttpServletResponse response)
 	 * @return
 	 */
-	public boolean checkAccess(String userType, HttpServletRequest request,
-			HttpServletResponse response, JspWriter out) {
-		return checkAccess(new String[] {userType}, request,response, out,null);
-
+	public boolean checkAccess(String userType, HttpServletRequest request, HttpServletResponse response,
+			JspWriter out) {
+		return checkAccess(new String[] { userType }, request, response, out, null);
 
 	}
 
@@ -1766,26 +1648,20 @@ public class AccessControl implements AccessControlInf{
 	 * @param protect
 	 * @return
 	 */
-	public boolean checkAccess(String userType, HttpServletRequest request,
-			HttpServletResponse response) {
+	public boolean checkAccess(String userType, HttpServletRequest request, HttpServletResponse response) {
 
 		return checkAccess(userType, request, response, (JspWriter) null);
 	}
 
-	public boolean checkAccess(HttpServletRequest request,
-			HttpServletResponse response, JspWriter out, boolean protect,
+	public boolean checkAccess(HttpServletRequest request, HttpServletResponse response, JspWriter out, boolean protect,
 			boolean abc) {
-		return this.checkAccess( request,response,out,  protect);
+		return this.checkAccess(request, response, out, protect);
 	}
 
-	public boolean checkAccess(HttpServletRequest request,
-			HttpServletResponse response, JspWriter out, boolean protect,
+	public boolean checkAccess(HttpServletRequest request, HttpServletResponse response, JspWriter out, boolean protect,
 			String redirectPath) {
 
-
-		
-		return checkAccess(null,  request,
-				 response,  out, protect, redirectPath);
+		return checkAccess(null, request, response, out, protect, redirectPath);
 
 	}
 
@@ -1799,176 +1675,174 @@ public class AccessControl implements AccessControlInf{
 	 * @param redirectPath
 	 * @return
 	 */
-	public boolean checkAccess(String userType, HttpServletRequest request,
-			HttpServletResponse response, String redirectPath) {
-		return this.checkAccess(new String[] {userType}, request, response, null,redirectPath);
+	public boolean checkAccess(String userType, HttpServletRequest request, HttpServletResponse response,
+			String redirectPath) {
+		return this.checkAccess(new String[] { userType }, request, response, null, redirectPath);
 
 	}
-	
-	public boolean checkAccess(String[] userType, HttpServletRequest request,
-			HttpServletResponse response, JspWriter out,String redirectPath) {
-		
-		return checkAccess(userType,  request,
-				 response,  out,true, redirectPath);
+
+	public boolean checkAccess(String[] userType, HttpServletRequest request, HttpServletResponse response,
+			JspWriter out, String redirectPath) {
+
+		return checkAccess(userType, request, response, out, true, redirectPath);
 	}
-	
-	private  boolean unprotectedCheck(String redirectPath,String[] userTypes)
-	{
-		try
-		{
+
+	private boolean unprotectedCheck(String redirectPath, String[] userTypes) {
+		try {
 			this.principal = (Principal) session.getAttribute(PRINCIPAL_INDEXS);
 			this.loginPrincipal = (Principal) session.getAttribute(LOGIN_PRINCIPAL_INDEXS);
 			// 添加用户的所有属性到session中
 			this.credential = (Credential) session.getAttribute(CREDENTIAL_INDEXS);
-			
+
 			if (this.principal != null) {
 				current.set(this);
-				 
+
 			}
-			 
-//			String sessionid = (String)session.getAttribute(SESSIONID_CACHE_KEY);
-//			Boolean fromclient =  (Boolean)session.getAttribute(SESSIONID_FROMCLIENT_KEY);
-	//		if (principal != null
-	//				&& (fromclient == null && !onlineUser.existUser(principal.getName(), sessionid))) {
-	//			if(redirectPath == null || redirectPath.equals(""))
-	//			{					
-	//				this.logoutwithalt_(null, null,true, true,"kickout") ;
-	//			}
-	//			else
-	//			{
-	////				this.logout(redirectPath);
-	//				this.logoutwithalt_(redirectPath, null,true, true,"kickout") ;
-	//			}
-	//			return false;
-	//		}
-			
-			
-	//		/**
-	//		 * 检查当前用户的类型是否在被允许的范围内，不允许则跳转到相应的页面
-	//		 */
-	//		if (!checkUserType(userTypes))
-	//		{
-	//			if(redirectPath == null || redirectPath.equals(""))
-	//			{
-	//				this.redirect();
-	//			}
-	//			else
-	//			{
-	//				redirect(request, response, redirectPath);
-	//			}
-	//			return false;
-	//		}
-		}
-		catch(Exception e)
-		{
+			else
+			{
+				boolean loginresult = loginfromremember();
+				if(loginresult )
+					return true;
+			}
+
+			// String sessionid =
+			// (String)session.getAttribute(SESSIONID_CACHE_KEY);
+			// Boolean fromclient =
+			// (Boolean)session.getAttribute(SESSIONID_FROMCLIENT_KEY);
+			// if (principal != null
+			// && (fromclient == null &&
+			// !onlineUser.existUser(principal.getName(), sessionid))) {
+			// if(redirectPath == null || redirectPath.equals(""))
+			// {
+			// this.logoutwithalt_(null, null,true, true,"kickout") ;
+			// }
+			// else
+			// {
+			//// this.logout(redirectPath);
+			// this.logoutwithalt_(redirectPath, null,true, true,"kickout") ;
+			// }
+			// return false;
+			// }
+
+			// /**
+			// * 检查当前用户的类型是否在被允许的范围内，不允许则跳转到相应的页面
+			// */
+			// if (!checkUserType(userTypes))
+			// {
+			// if(redirectPath == null || redirectPath.equals(""))
+			// {
+			// this.redirect();
+			// }
+			// else
+			// {
+			// redirect(request, response, redirectPath);
+			// }
+			// return false;
+			// }
+		} catch (Exception e) {
 			e.printStackTrace();
-//			if(redirectPath == null || redirectPath.equals(""))
-//			{
-//				this.redirect();
-//			}
-//			else
-//			{
-//				redirect(request, response, redirectPath);
-//			}
+			// if(redirectPath == null || redirectPath.equals(""))
+			// {
+			// this.redirect();
+			// }
+			// else
+			// {
+			// redirect(request, response, redirectPath);
+			// }
 			return false;
 		}
-		if(this.principal != null)
+		if (this.principal != null)
 			return true;
 		else
 			return false;
 	}
-	
-	private boolean innerRedirect(String redirectPath)
-	{
-//		if (ConfigManager.getInstance().securityEnabled()) 
+
+	private boolean innerRedirect(String redirectPath) {
+		// if (ConfigManager.getInstance().securityEnabled())
 		{
-			if(redirectPath == null || redirectPath.equals(""))
-			{
+			if (redirectPath == null || redirectPath.equals("")) {
 				this.redirect();
-			}
-			else
-			{
+			} else {
 				redirect(request, response, redirectPath);
 			}
 		}
 		return false;
-		
-		
+
 	}
-	
-	private boolean innerLogout(String redirectPath,String kickmode)
-	{
-		if(redirectPath == null || redirectPath.equals(""))
-		{
-			//"kickout"
-			this.logoutwithalt_(null, null,true, true,kickmode) ;
-		}
-		else
-		{
-//			this.logout(redirectPath);
-			this.logoutwithalt_(redirectPath, null,true, true,kickmode) ;
+
+	private boolean innerLogout(String redirectPath, String kickmode) {
+		if (redirectPath == null || redirectPath.equals("")) {
+			// "kickout"
+			this.logoutwithalt_(null, null, true, true, kickmode);
+		} else {
+			// this.logout(redirectPath);
+			this.logoutwithalt_(redirectPath, null, true, true, kickmode);
 		}
 
 		return false;
 	}
-	private static void log(String msg,HttpServletRequest request)
-	{
-		Date date = new java.util.Date() ; 
-		if(request != null)
-		{
+
+	private static void log(String msg, HttpServletRequest request) {
+		Date date = new java.util.Date();
+		if (request != null) {
 			String remoteip = StringUtil.getClientIP(request);
-			
-//			System.err.println(date + "===============================================");
-//			Exception e = new Exception("date["+ date +"] [remoteip=" + remoteip + "] " +msg);
-//			e.printStackTrace();
-//			log.debug("date["+ date +"] [remoteip=" + remoteip + "] " +msg);
-//			System.err.println(date +"================================================");
-		}
-		else
-		{
-//			System.err.println(date + "===============================================");
-//			Exception e = new Exception("date["+ date +"] [remoteip=null] " +msg);
-//			log.error("",e);
-//			System.err.println("date["+ date +"] [remoteip=null] " +msg);
-//			System.err.println(date +"================================================");
+
+			// System.err.println(date +
+			// "===============================================");
+			// Exception e = new Exception("date["+ date +"] [remoteip=" +
+			// remoteip + "] " +msg);
+			// e.printStackTrace();
+			// log.debug("date["+ date +"] [remoteip=" + remoteip + "] " +msg);
+			// System.err.println(date
+			// +"================================================");
+		} else {
+			// System.err.println(date +
+			// "===============================================");
+			// Exception e = new Exception("date["+ date +"] [remoteip=null] "
+			// +msg);
+			// log.error("",e);
+			// System.err.println("date["+ date +"] [remoteip=null] " +msg);
+			// System.err.println(date
+			// +"================================================");
 		}
 	}
-	
-//	private static void log_info(String msg,HttpServletRequest request)
-//	{
-//		Date date = new java.util.Date() ; 
-//		if(request != null)
-//		{
-//			String remoteip = StringUtil.getClientIP(request);
-//			
-////			System.err.println(date + "===============================================");
-////			Exception e = new Exception("date["+ date +"] [remoteip=" + remoteip + "] " +msg);
-////			e.printStackTrace();
-////			log.debug("date["+ date +"] [remoteip=" + remoteip + "] " +msg);
-////			System.err.println(date +"================================================");
-//		}
-//		else
-//		{
-////			System.err.println(date + "===============================================");
-////			Exception e = new Exception("date["+ date +"] [remoteip=null] " +msg);
-////			e.printStackTrace();
-////			log.debug("date["+ date +"] [remoteip=null] " +msg);
-////			System.err.println(date +"================================================");
-//		}
-//	}
+
+	// private static void log_info(String msg,HttpServletRequest request)
+	// {
+	// Date date = new java.util.Date() ;
+	// if(request != null)
+	// {
+	// String remoteip = StringUtil.getClientIP(request);
+	//
+	//// System.err.println(date +
+	// "===============================================");
+	//// Exception e = new Exception("date["+ date +"] [remoteip=" + remoteip +
+	// "] " +msg);
+	//// e.printStackTrace();
+	//// log.debug("date["+ date +"] [remoteip=" + remoteip + "] " +msg);
+	//// System.err.println(date
+	// +"================================================");
+	// }
+	// else
+	// {
+	//// System.err.println(date +
+	// "===============================================");
+	//// Exception e = new Exception("date["+ date +"] [remoteip=null] " +msg);
+	//// e.printStackTrace();
+	//// log.debug("date["+ date +"] [remoteip=null] " +msg);
+	//// System.err.println(date
+	// +"================================================");
+	// }
+	// }
 	/**
-	 * 检测到用户未登陆时进行相应的处理
-	 * 返回值说明ret:
-	 * 0: 继续执行，无意义
-	 * 1：返回false
-	 * 2: 返回true，客服端登陆成功
+	 * 检测到用户未登陆时进行相应的处理 返回值说明ret: 0: 继续执行，无意义 1：返回false 2: 返回true，客服端登陆成功
+	 * 
 	 * @return
 	 */
-	private int unlogincheck()
-	{
+	private int unlogincheck() {
 		String OUT_useraccount = request.getParameter(OUTER_USER_ACCOUNT_KEY);
 		String OUT_userpassord = request.getParameter(OUTER_USER_PASSWORD_KEY);
-		
+
 		int ret = 0;
 		/**
 		 * 判断用户是否从外部系统访问bs系统，如果不是则从cookie中获取用户登录信息，
@@ -1976,64 +1850,15 @@ public class AccessControl implements AccessControlInf{
 		 */
 		if (OUT_useraccount == null || OUT_useraccount.equals("")) {
 			// 启用了系统安全性、或者启用了页面保护、或者启用了sso机制，则尝试从cookie中恢复用户信息
-			boolean enablecookie = enablecookie();
-//			log("enablecookie:" + enablecookie,request);
-			if (enablecookie) {
-				Cookie[] cookies = request.getCookies();
-				int idx = 0;
-				boolean flag = false;
-				for (int i = 0; cookies != null && i < cookies.length; i++) {
-
-					if (cookies[i].getName().equals(PRINCIPALS_COOKIE)) {
-
-						flag = true;
-						idx = i;
-						break;
-					}
-				}
-				if (!flag) {
-//					return innerRedirect(redirectPath);
-					ret = 1;
-					return ret;
-				}
+			 
+			boolean loginresult = loginfromremember();
+			
+			// log("enablecookie:" + enablecookie,request);
+			if (loginresult) {
+				return 3;
 				
-
-				String ssoCookie = cookies[idx]
-						.getValue();
-				
-				try
-				{
-					DESCipher dd = new DESCipher();
-					ssoCookie = dd.decrypt(ssoCookie);
-				}
-				catch(Exception e)
-				{
-					
-				}
-				CookieUtil cookieUtil = new CookieUtil();
-				Object[] messages = cookieUtil.refactorPricipal(ssoCookie);
-
-				if (messages != null) {
-					this.principal = (Principal) messages[0];
-					this.credential = (Credential) messages[1];
-					subject = new Subject();
-					subject.setCredential(credential);
-					subject.setPrincipal(principal);
-					subject.setLoginPrincipal(loginPrincipal);
-					// 添加用户的所有身份索引到session中
-					session.setAttribute(PRINCIPAL_INDEXS, principal);
-					// 添加用户的所有属性到session中
-					session.setAttribute(CREDENTIAL_INDEXS, credential);
-					ret = 3;
-					return ret;
-
-				} else {
-//					return innerRedirect(redirectPath);
-					ret = 1;
-					return ret;
-				}
 			} else {
-//				return innerRedirect(redirectPath);
+				// return innerRedirect(redirectPath);
 				ret = 1;
 				return ret;
 			}
@@ -2041,230 +1866,223 @@ public class AccessControl implements AccessControlInf{
 		else // 客服端登陆系统
 		{
 			try {
-				boolean su = this.logindw(request, response, OUT_useraccount,
-						OUT_userpassord);
+				boolean su = this.logindw(request, response, OUT_useraccount, OUT_userpassord);
 				if (!su) {
-//					return innerRedirect(redirectPath);
+					// return innerRedirect(redirectPath);
 					ret = 4;
 					return ret;
-				}
-				else
-				{
-//				return su;
+				} else {
+					// return su;
 					ret = 2;
 					return ret;
 				}
 
 			} catch (AccessException e) {
 
-//				return innerRedirect(redirectPath);
+				// return innerRedirect(redirectPath);
 				ret = 1;
 				return ret;
 			}
 		}
-		
+
 	}
-//	public static String serverid;
-//	public static String getServerID(String filePath)
-//	{
-//		if(serverid == null)
-//		{
-//		
-//			String localpath = filePath;
-//			try {
-//				BufferedReader reader = new BufferedReader(new FileReader(localpath));
-//				serverid = reader.readLine().trim();
-//				return serverid;
-//			} catch (FileNotFoundException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//			//request.getRealPath("/ServerID.txt");
-//			catch (IOException e) {
-//						// TODO Auto-generated catch block
-//						e.printStackTrace();
-//					}
-//		}
-//		return serverid;
-//	}
-//	
-	public String getParameters(HttpServletRequest request)
-	{
-		java.util.Enumeration enums =  request.getParameterNames();
+
+	// public static String serverid;
+	// public static String getServerID(String filePath)
+	// {
+	// if(serverid == null)
+	// {
+	//
+	// String localpath = filePath;
+	// try {
+	// BufferedReader reader = new BufferedReader(new FileReader(localpath));
+	// serverid = reader.readLine().trim();
+	// return serverid;
+	// } catch (FileNotFoundException e) {
+	// // TODO Auto-generated catch block
+	// e.printStackTrace();
+	// }
+	// //request.getRealPath("/ServerID.txt");
+	// catch (IOException e) {
+	// // TODO Auto-generated catch block
+	// e.printStackTrace();
+	// }
+	// }
+	// return serverid;
+	// }
+	//
+	public String getParameters(HttpServletRequest request) {
+		java.util.Enumeration enums = request.getParameterNames();
 		StringBuffer sb = new StringBuffer(100);
 		boolean flag = false;
-		while(enums.hasMoreElements())
-		{
-			String key = (String)enums.nextElement();
-			String value = (String)request.getParameter(key);
-			if(!flag)
-			{
+		while (enums.hasMoreElements()) {
+			String key = (String) enums.nextElement();
+			String value = (String) request.getParameter(key);
+			if (!flag) {
 				sb.append("?").append(key).append("=").append(value);
 				flag = true;
-			}
-			else
-			{
+			} else {
 				sb.append("&").append(key).append("=").append(value);
-				
+
 			}
 		}
 		return sb.toString();
 	}
-	public boolean checkAccess(String[] userTypes, HttpServletRequest request,
-			HttpServletResponse response, JspWriter out,boolean protect,String redirectPath) {		
-		this.request = request;
-		this.response = response;		
-		// this.out = out;
-
-//		System.out.println("session is " + session.isNew());
-		this.session = this.request.getSession(false);
+	private boolean loginfromremember() {
 		
-		
-		
-		String sessionid = null;
-		if(session != null)
-		{
-			sessionid = session.getId();
+		boolean enablerememberlogin = ConfigManager.getInstance().getConfigValue("security.rememberme", "true").equals("true");
+		if ( !enablerememberlogin) {
+			return false;
 		}
-//		log("checkAccess ,puid["+ puid+"] sessionid["+ sessionid +"] ["+ request.getRequestURI() + this.getParameters(request) +"] ." ,request);
-		
-//		log("checkAccess puid["+ puid+"],Localid["+ LocalServerPort+"] " ,request);
-		if(session == null)
-		{
-			
-//			String puid = request.getParameter("uid");
-//			String LocalServerPort = request.getServerPort() + "";
-			
-			
-			if(protect)
-			{
-				log("Session is null, Check page["+ request.getRequestURI() + this.getParameters(request) +"] will go to "+pathloginPage+"." ,request);
-				return innerRedirect(redirectPath);
-			}
-			else
-				return false;
-		}
-		
-		
-//		if(this.session.isNew()){	
-//			log("session is new, Check page["+ request.getRequestURI() +
-//					"] session id is:"+this.session.getId(),request );
-//			
-//		}
-		
-		// onlineUser =
-		// (OnLineUser)session.getServletContext().getAttribute("onlineUser");
-		if (!protect) {
-			return unprotectedCheck(redirectPath,userTypes);
-			
-		}
-		principal = (Principal) session.getAttribute(PRINCIPAL_INDEXS);
-		this.loginPrincipal = (Principal) session.getAttribute(LOGIN_PRINCIPAL_INDEXS);
-		// 添加用户的所有属性到session中
-		credential = (Credential) session.getAttribute(CREDENTIAL_INDEXS);
-		if (principal == null ) // 如果没有当前用户的会话信息，则判断cookie中是否有当前用户的登录信息
-		{
-			int ret = unlogincheck();
-			if(ret == 1) //无cookie，或者客服端登陆失败
-			{
-				boolean isNew = false;
-				try
-				{
-					isNew = session.isNew();
-					log(" Check page["+ request.getRequestURI() + this.getParameters(request) + "]:  No user logon  will go to "+pathloginPage+".session id is " + sessionid + " and new is " + isNew,request);
+		String userInfo =  StringUtil.getCookieValue(request, PRINCIPALS_COOKIE);
+		if(userInfo != null && !userInfo.equals("")){
+			try {
+				String[] _userInfo = decodeUserInfo( userInfo);
+				String subsystem_id = _userInfo[1];
+				request.setAttribute(SUBSYSTEM_ID,subsystem_id);
+				String userAccount = _userInfo[0];
+				request.setAttribute("fromsso", "true");
+				boolean result = this.login(request, response, userAccount, "aa");
+				if(result){
+					loginFromRemeberMe = true;
+					session.setAttribute("loginFromRemeberMe", loginFromRemeberMe);
 				}
-				catch(Exception e)
-				{
-					//e.printStackTrace();
-					log(" Check page["+ request.getRequestURI() + this.getParameters(request) +"]:  No user logon  will go to "+pathloginPage+".session id is " + sessionid + " and get session status failed: " + e.getMessage(),request);
-				}
-				
-				return innerRedirect(redirectPath);
-			}
-			else if(ret == 4)
-			{
-				log("Check page["+ request.getRequestURI() + this.getParameters(request) +"]: CS client user logon failed, will go to "+pathloginPage+".session id is " + sessionid,request);
-				
-				String redirecttarget = "_self";
-				redirect(request,
-						response, 
-						redirectPath,
-						redirecttarget,false); 
+				return result;
+			} catch (Exception e) {
+				log.error("loginfromremember failed:",e);
+				this.clearrememberme();
 				return false;
-//				return innerRedirect(redirectPath);
 			}
-			else if(ret == 2) //CS客服端登录成功
-			{
-				return true;
-			}
-			else if(ret == 3) //从cookie中读取用户会话信息成功
-			{
-				log(" Check page["+ request.getRequestURI() + this.getParameters(request) +"]: \r\n\tUser not logon ,but Get user info from cookie successed continue login.session id is " + sessionid,request);
-			}
-			else
-			{
-				log(" Check page["+ request.getRequestURI() + this.getParameters(request) +"]: \r\n\tUser not logon ,Will go to "+pathloginPage+".session id is " + session.getId()+ " and new is " + session.isNew(),request);
-				return innerRedirect(redirectPath);
-			}
+			
 		}
 		else
 		{
+			return false;
+		}
+	}
+	public boolean checkAccess(String[] userTypes, HttpServletRequest request, HttpServletResponse response,
+			JspWriter out, boolean protect, String redirectPath) {
+		this.request = request;
+		this.response = response;
+		// this.out = out;
+
+		// System.out.println("session is " + session.isNew());
+		this.session = this.request.getSession(false);		
+		
+
+		String sessionid = null;
+		if (session != null) {
+			sessionid = session.getId();
+		}		
+		// log("checkAccess ,puid["+ puid+"] sessionid["+ sessionid +"] ["+
+		// request.getRequestURI() + this.getParameters(request) +"] ."
+		// ,request);
+
+		// log("checkAccess puid["+ puid+"],Localid["+ LocalServerPort+"] "
+		// ,request);
+		
+		 
+		if (session == null) {
+
+			// String puid = request.getParameter("uid");
+			// String LocalServerPort = request.getServerPort() + "";
+			boolean loginresult = loginfromremember();
+			if(loginresult )
+				return true;
+
+			if (protect) {
+				log("Session is null, Check page[" + request.getRequestURI() + this.getParameters(request)
+						+ "] will go to " + pathloginPage + ".", request);
+				
+				return innerRedirect(redirectPath);
+			} else
+				return false;
+		}
+
+		// if(this.session.isNew()){
+		// log("session is new, Check page["+ request.getRequestURI() +
+		// "] session id is:"+this.session.getId(),request );
+		//
+		// }
+
+		// onlineUser =
+		// (OnLineUser)session.getServletContext().getAttribute("onlineUser");
+		if (!protect) {
+			return unprotectedCheck(redirectPath, userTypes);
+
+		}
+		principal = (Principal) session.getAttribute(PRINCIPAL_INDEXS);
+		this.loginPrincipal = (Principal) session.getAttribute(LOGIN_PRINCIPAL_INDEXS);
+		Boolean loginFromRemeberMe_ = (Boolean)session.getAttribute("loginFromRemeberMe");
+		if(loginFromRemeberMe_ != null)
+			loginFromRemeberMe = loginFromRemeberMe_.booleanValue();
+		
+		// 添加用户的所有属性到session中
+		credential = (Credential) session.getAttribute(CREDENTIAL_INDEXS);
+		if (principal == null) // 如果没有当前用户的会话信息，则判断cookie中是否有当前用户的登录信息
+		{
+			int ret = unlogincheck();
+			if (ret == 1) // 无cookie，或者客服端登陆失败
+			{
+				boolean isNew = false;
+				try {
+					isNew = session.isNew();
+					log(" Check page[" + request.getRequestURI() + this.getParameters(request)
+							+ "]:  No user logon  will go to " + pathloginPage + ".session id is " + sessionid
+							+ " and new is " + isNew, request);
+				} catch (Exception e) {
+					// e.printStackTrace();
+					log(" Check page[" + request.getRequestURI() + this.getParameters(request)
+							+ "]:  No user logon  will go to " + pathloginPage + ".session id is " + sessionid
+							+ " and get session status failed: " + e.getMessage(), request);
+				}
+
+				return innerRedirect(redirectPath);
+			} else if (ret == 4) {
+				log("Check page[" + request.getRequestURI() + this.getParameters(request)
+						+ "]: CS client user logon failed, will go to " + pathloginPage + ".session id is " + sessionid,
+						request);
+
+				String redirecttarget = "_self";
+				redirect(request, response, redirectPath, redirecttarget, false);
+				return false;
+				// return innerRedirect(redirectPath);
+			} else if (ret == 2) // CS客服端登录成功
+			{
+				return true;
+			} else if (ret == 3) // 从cookie中读取用户会话信息成功
+			{
+				log(" Check page[" + request.getRequestURI() + this.getParameters(request)
+						+ "]: \r\n\tUser not logon ,but Get user info from cookie successed continue login.session id is "
+						+ sessionid, request);
+			} else {
+				log(" Check page[" + request.getRequestURI() + this.getParameters(request)
+						+ "]: \r\n\tUser not logon ,Will go to " + pathloginPage + ".session id is " + session.getId()
+						+ " and new is " + session.isNew(), request);
+				return innerRedirect(redirectPath);
+			}
+		} else {
 			this.subject = new Subject();
-			
+
 			this.subject.setCredential(credential);
 			this.subject.setPrincipal(principal);
 			this.subject.setLoginPrincipal(loginPrincipal);
-		}
-		{
-			
-		}
-//		else // 如果有已经登陆会话信息，直接获取用户的会话信息
-		{
-			
-//			// mmmm
-//			String sessionid_ = (String)session.getAttribute(SESSIONID_CACHE_KEY);
-//			Boolean fromclient =  (Boolean)session.getAttribute(SESSIONID_FROMCLIENT_KEY);
-			if (this.credential != null) {
-				 
-			} 
-			else 
-			{
-				log("Check page["+ request.getRequestURI() +"]: \r\n\tUser[" + principal + "]'s credentialIndexs not exist,Will go to login.page.session id is " + sessionid,request);
-				return this.innerRedirect(redirectPath);
-			}
-//			if (principal != null
-//					&& (fromclient == null && !onlineUser.existUser(principal.getName(), sessionid_))) {
-//
-//				return innerLogout(redirectPath,"kickout");
-//			}
-//			if (this.principalIndexs != null) {
-			
-			
-//			// mmmm
-//			String sessionid = (String)session.getAttribute(SESSIONID_CACHE_KEY);
-//			Boolean fromclient =  (Boolean)session.getAttribute(SESSIONID_FROMCLIENT_KEY);
-//			if (principal != null
-//					&& (fromclient == null && !onlineUser.existUser(principal.getName(), sessionid))){
-//				return innerLogout(redirectPath,"kickout");
-//			}
-			/**
-			 * 检查当前用户的类型是否在被允许的范围内，不允许则跳转到相应的页面
-			 */
-//			if (!checkUserType(userTypes))
-//			{
-//				return this.innerRedirect(redirectPath);
-//			}
-//			} else {
-//				return this.innerRedirect(redirectPath);
-//			}
-			
-			current.set(this);
-			
-			
-			return true;
+		}		 
+		 
+		if (this.credential != null) {
 
+		} else {
+			log("Check page[" + request.getRequestURI() + "]: \r\n\tUser[" + principal
+					+ "]'s credentialIndexs not exist,Will go to login.page.session id is " + sessionid, request);
+			return this.innerRedirect(redirectPath);
 		}
-		
+		 
+
+		current.set(this);
+
+		return true;
+
+		 
 
 	}
 
@@ -2281,11 +2099,9 @@ public class AccessControl implements AccessControlInf{
 	 *             HttpServletResponse response, String redirectPath)
 	 * @return
 	 */
-	public boolean checkAccess(String userType, HttpServletRequest request,
-			HttpServletResponse response, JspWriter out, String redirectPath) {
-		return checkAccess(new String[] {userType}, request,
-				response, out, redirectPath);
-
+	public boolean checkAccess(String userType, HttpServletRequest request, HttpServletResponse response, JspWriter out,
+			String redirectPath) {
+		return checkAccess(new String[] { userType }, request, response, out, redirectPath);
 
 	}
 
@@ -2310,8 +2126,7 @@ public class AccessControl implements AccessControlInf{
 	 * @param redirectPath
 	 */
 
-	public static void redirect(HttpServletRequest request,
-			HttpServletResponse response, String redirectPath) {
+	public static void redirect(HttpServletRequest request, HttpServletResponse response, String redirectPath) {
 		if (redirectPath == null || redirectPath.trim().equals("")) {
 			redirectPath = ConfigManager.getInstance().getLoginPage();
 		}
@@ -2321,9 +2136,19 @@ public class AccessControl implements AccessControlInf{
 
 			// 如果response已经提交过，则不执行重定向操作，否则执行
 			if (!response.isCommitted()) {
-				String t_redirectPath = StringUtil.getRealPath(request,
-						redirectPath);
-				response.sendRedirect(t_redirectPath);
+				String currentPath = request.getRequestURI();
+				int idx = redirectPath.indexOf("?");
+				String r = null;
+				if(idx > 0){
+					r = redirectPath.substring(0, idx);
+				}
+				else
+					r = redirectPath;
+					
+				if(!currentPath.equals(r)){//判断是否是loopdispatch，如果是则阻止跳转
+					String t_redirectPath = StringUtil.getRealPath(request, redirectPath);
+					response.sendRedirect(t_redirectPath);
+				}
 			}
 
 		} catch (IOException e) {
@@ -2344,18 +2169,14 @@ public class AccessControl implements AccessControlInf{
 	 * @param redirecttarget
 	 */
 
-	public static void redirect(HttpServletRequest request,
-			HttpServletResponse response, String redirectPath,
+	public static void redirect(HttpServletRequest request, HttpServletResponse response, String redirectPath,
 			String redirecttarget) {
-		redirect(request,
-				 response,  redirectPath,
-				 redirecttarget,false);
+		redirect(request, response, redirectPath, redirecttarget, false);
 
 	}
-	
-	public static void redirect(HttpServletRequest request,
-			HttpServletResponse response, String redirectPath,
-			String redirecttarget,boolean _alertMsg) {
+
+	public static void redirect(HttpServletRequest request, HttpServletResponse response, String redirectPath,
+			String redirecttarget, boolean _alertMsg) {
 		if (redirectPath == null || redirectPath.trim().equals("")) {
 			redirectPath = ConfigManager.getInstance().getLoginPage();
 		}
@@ -2369,16 +2190,10 @@ public class AccessControl implements AccessControlInf{
 			// 如果response已经提交过，则不执行重定向操作，否则执行
 			if (!response.isCommitted()) {
 				StringBuffer url = new StringBuffer(request.getContextPath());
-				url.append("/" )
-				.append( LOGOUT_REDIRECT)
-						.append("?_redirectPath=" )
-						.append( StringUtil.encode(redirectPath))
-						.append( "&_redirecttarget=" )
-						.append( redirecttarget)						
-						;
-				if(_alertMsg)
-				{
-					url.append( "&_alertMsg=true");
+				url.append("/").append(LOGOUT_REDIRECT).append("?_redirectPath=")
+						.append(StringUtil.encode(redirectPath)).append("&_redirecttarget=").append(redirecttarget);
+				if (_alertMsg) {
+					url.append("&_alertMsg=true");
 				}
 				response.sendRedirect(url.toString());
 			}
@@ -2393,30 +2208,26 @@ public class AccessControl implements AccessControlInf{
 
 		try {
 			// 如果response已经提交过，则不执行重定向操作，否则执行
-			//从分页列表树数据加载器执行页面保护失败时，不需要跳转，所以response为null，
-			//此处需要判断reponse是否为null
+			// 从分页列表树数据加载器执行页面保护失败时，不需要跳转，所以response为null，
+			// 此处需要判断reponse是否为null
 			if (response != null && !response.isCommitted()) {
 				StringBuffer url = new StringBuffer(request.getContextPath());
-				url.append("/")
-				.append(LOGOUT_REDIRECT)
-				.append("?_redirectPath=")
-				.append(StringUtil.encode(request.getContextPath() + "/"
-						+ loginPage) );
-				if(_alertMsg)
-				{
-					url.append( "&_alertMsg=true");
+				url.append("/").append(LOGOUT_REDIRECT).append("?_redirectPath=")
+						.append(StringUtil.encode(request.getContextPath() + "/" + loginPage));
+				if (_alertMsg) {
+					url.append("&_alertMsg=true");
 				}
-				
-				
-//				{
-//					MemTokenManager memTokenManager = org.frameworkset.web.token.MemTokenManagerFactory.getMemTokenManagerNoexception();
-//					if(memTokenManager != null)//如果开启令牌机制就会存在memTokenManager对象，否则不存在
-//					{
-//						url.append("&").append(MemTokenManager.temptoken_param_name).append("=").append(memTokenManager.buildDToken(request));
-//					}
-//				}
-				response.sendRedirect(url.toString());
 
+				// {
+				// MemTokenManager memTokenManager =
+				// org.frameworkset.web.token.MemTokenManagerFactory.getMemTokenManagerNoexception();
+				// if(memTokenManager !=
+				// null)//如果开启令牌机制就会存在memTokenManager对象，否则不存在
+				// {
+				// url.append("&").append(MemTokenManager.temptoken_param_name).append("=").append(memTokenManager.buildDToken(request));
+				// }
+				// }
+				response.sendRedirect(url.toString());
 			}
 
 		} catch (IOException e) {
@@ -2424,14 +2235,14 @@ public class AccessControl implements AccessControlInf{
 		}
 
 	}
-	
+
 	private void redirect() {
 
 		redirect(false);
 
 	}
-	
-	private void redirectManager(HttpServletRequest request,HttpServletResponse response,String redirectPath) {
+
+	private void redirectManager(HttpServletRequest request, HttpServletResponse response, String redirectPath) {
 		try {
 			if (response != null && !response.isCommitted()) {
 				StringBuffer url = new StringBuffer(request.getContextPath());
@@ -2441,7 +2252,7 @@ public class AccessControl implements AccessControlInf{
 
 		} catch (IOException e) {
 			e.printStackTrace();
-		} catch(Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -2455,10 +2266,10 @@ public class AccessControl implements AccessControlInf{
 		this.session = session;
 		// onlineUser =
 		// (OnLineUser)session.getServletContext().getAttribute("onlineUser");
-		principal  = (Principal) session.getAttribute(PRINCIPAL_INDEXS);
+		principal = (Principal) session.getAttribute(PRINCIPAL_INDEXS);
 		this.loginPrincipal = (Principal) session.getAttribute(LOGIN_PRINCIPAL_INDEXS);
 		// 添加用户的所有属性到session中
-		credential  = (Credential) session.getAttribute(CREDENTIAL_INDEXS);
+		credential = (Credential) session.getAttribute(CREDENTIAL_INDEXS);
 
 		return true;
 	}
@@ -2468,8 +2279,9 @@ public class AccessControl implements AccessControlInf{
 	 * 
 	 */
 	public boolean checkAccess(PageContext pageContext) {
-		return this.checkAccess((HttpServletRequest)pageContext.getRequest(), (HttpServletResponse)pageContext.getResponse());
-//		return this.checkAccess(pageContext, true);
+		return this.checkAccess((HttpServletRequest) pageContext.getRequest(),
+				(HttpServletResponse) pageContext.getResponse());
+		// return this.checkAccess(pageContext, true);
 	}
 
 	/**
@@ -2481,8 +2293,7 @@ public class AccessControl implements AccessControlInf{
 	 *            String
 	 * @return boolean
 	 */
-	public boolean checkPermission(PageContext pageContext, String resourceID,
-			String action) {
+	public boolean checkPermission(PageContext pageContext, String resourceID, String action) {
 		// onlineUser = (OnLineUser)pageContext.getAttribute("onlineUser");
 		if (!ConfigManager.getInstance().securityEnabled())
 			return true;
@@ -2492,19 +2303,16 @@ public class AccessControl implements AccessControlInf{
 			this.response = (HttpServletResponse) pageContext.getResponse();
 			// this.out = pageContext.getOut();
 			this.session = request.getSession(false);
-			if(session == null)
-			{
-				log("Check Permission failed: session is null.",request);
+			if (session == null) {
+				log("Check Permission failed: session is null.", request);
 				return false;
 			}
-			this.principal  = (Principal) session.getAttribute(PRINCIPAL_INDEXS);
+			this.principal = (Principal) session.getAttribute(PRINCIPAL_INDEXS);
 			this.loginPrincipal = (Principal) session.getAttribute(LOGIN_PRINCIPAL_INDEXS);
-			this.credential  = (Credential) session
-					.getAttribute(CREDENTIAL_INDEXS);
-			String resourceType = ConfigManager.getInstance().getResourceInfo()
-			.getId();
+			this.credential = (Credential) session.getAttribute(CREDENTIAL_INDEXS);
+			String resourceType = ConfigManager.getInstance().getResourceInfo().getId();
 
-			return checkPermission( resourceID, action,resourceType);
+			return checkPermission(resourceID, action, resourceType);
 		}
 	}
 
@@ -2517,8 +2325,7 @@ public class AccessControl implements AccessControlInf{
 	 *            String
 	 * @return boolean
 	 */
-	public static boolean checkPermission(Principal principal,
-			String resourceID, String action) {
+	public static boolean checkPermission(Principal principal, String resourceID, String action) {
 		return checkPermission(principal, resourceID, action, null);
 	}
 
@@ -2531,76 +2338,73 @@ public class AccessControl implements AccessControlInf{
 	 *            String
 	 * @return boolean
 	 */
-	public static boolean checkPermission(Principal principal,
-			String resourceID, String action, String resourceType) {
+	public static boolean checkPermission(Principal principal, String resourceID, String action, String resourceType) {
 
 		if (resourceType == null)
-			resourceType = ConfigManager.getInstance().getResourceInfo()
-					.getId();
-		
+			resourceType = ConfigManager.getInstance().getResourceInfo().getId();
+
 		boolean ret = false;
-		if(ConfigManager.getInstance().getPermissionModule() != null)
-		{
-			ret = ConfigManager.getInstance().getPermissionModule().checkPermission(principal,resourceID, action, resourceType);
+		if (ConfigManager.getInstance().getPermissionModule() != null) {
+			ret = ConfigManager.getInstance().getPermissionModule().checkPermission(principal, resourceID, action,
+					resourceType);
 		}
-		String userID = ((AuthPrincipal)principal).getUserID();
-//		if(userID == null)
-//			userID = AccessControl.getUserIDByUserAccount(principal.getName());
-//		
-//		if (ROLE_RESOURCE.equalsIgnoreCase(resourceType)) // 判断角色是否当前用户创建，如果是当前用户创建则拥有该角色的全部操作权限
-//		{
-//			if (isAdmin(principal.getName()))
-//				return true;
-//			
-//			Role role = RoleCacheManager.getInstance().getRoleByID(resourceID);
-//			if (role != null) {
-//				if (userID.equals(role.getOwner_id() + ""))
-//					return true;
-//			}
-//
-//		}
-//
-//		else if (JOB_RESOURCE.equalsIgnoreCase(resourceType)) {// 判断岗位是否当前用户创建，如果是当前用户创建则拥有该岗位的全部操作权限
-//			if (isAdmin(principal.getName()))
-//				return true;
-//			try {
-//				boolean state = JobManagerImpl.isJobCreatorByUserId(userID, resourceID);
-//				if (state) {
-//					return true;
-//				}
-//			} catch (ManagerException e) {
-//				e.printStackTrace();
-//			}
-//		}
-//
-//		else if (GROUP_RESOURCE.equalsIgnoreCase(resourceType)) // 判断用户组是否当前用户创建，如果是当前用户创建则拥有该用户组的全部操作权限
-//		{
-//			if (isAdmin(principal.getName()))
-//				return true;
-//			Group group = GroupCacheManager.getInstance().getGroupByID(
-//					resourceID);
-//			if (group != null) {
-//				if (userID.equals(group.getOwner_id() + ""))
-//					return true;
-//			}
-//
-//		}
-		if(!ret)
-			ret = AppSecurityCollaborator.getInstance().checkAccess(principal,
-				resourceID, action, resourceType);
+		String userID = ((AuthPrincipal) principal).getUserID();
+		// if(userID == null)
+		// userID = AccessControl.getUserIDByUserAccount(principal.getName());
+		//
+		// if (ROLE_RESOURCE.equalsIgnoreCase(resourceType)) //
+		// 判断角色是否当前用户创建，如果是当前用户创建则拥有该角色的全部操作权限
+		// {
+		// if (isAdmin(principal.getName()))
+		// return true;
+		//
+		// Role role = RoleCacheManager.getInstance().getRoleByID(resourceID);
+		// if (role != null) {
+		// if (userID.equals(role.getOwner_id() + ""))
+		// return true;
+		// }
+		//
+		// }
+		//
+		// else if (JOB_RESOURCE.equalsIgnoreCase(resourceType)) {//
+		// 判断岗位是否当前用户创建，如果是当前用户创建则拥有该岗位的全部操作权限
+		// if (isAdmin(principal.getName()))
+		// return true;
+		// try {
+		// boolean state = JobManagerImpl.isJobCreatorByUserId(userID,
+		// resourceID);
+		// if (state) {
+		// return true;
+		// }
+		// } catch (ManagerException e) {
+		// e.printStackTrace();
+		// }
+		// }
+		//
+		// else if (GROUP_RESOURCE.equalsIgnoreCase(resourceType)) //
+		// 判断用户组是否当前用户创建，如果是当前用户创建则拥有该用户组的全部操作权限
+		// {
+		// if (isAdmin(principal.getName()))
+		// return true;
+		// Group group = GroupCacheManager.getInstance().getGroupByID(
+		// resourceID);
+		// if (group != null) {
+		// if (userID.equals(group.getOwner_id() + ""))
+		// return true;
+		// }
+		//
+		// }
+		if (!ret)
+			ret = AppSecurityCollaborator.getInstance().checkAccess(principal, resourceID, action, resourceType);
 		return ret;
 	}
 
-	  
-
 	private static String getUserIDByUserAccount(String name) {
-		if(ConfigManager.getInstance().getPermissionModule() != null)
+		if (ConfigManager.getInstance().getPermissionModule() != null)
 			return ConfigManager.getInstance().getPermissionModule().getUserIDByUserAccount(name);
 		return null;
-		
+
 	}
-
-
 
 	/**
 	 * 检查用户userAccount是否拥有资源resourceId的操作action的权限
@@ -2611,31 +2415,29 @@ public class AccessControl implements AccessControlInf{
 	 *            String
 	 * @return boolean
 	 */
-	public static boolean checkPermission(String useraccount,
-			String resourceID, String action, String resourceType) {
+	public static boolean checkPermission(String useraccount, String resourceID, String action, String resourceType) {
 		Principal principal = new AuthPrincipal(useraccount, null, null);
-		return checkPermission(principal,
-				 resourceID,  action,  resourceType);
-		
+		return checkPermission(principal, resourceID, action, resourceType);
+
 	}
 
-//	/**
-//	 * 检查用户userAccount是否拥有资源resourceId的操作action的权限
-//	 * 
-//	 * @param pageContext
-//	 *            PageContext
-//	 * @param resourceID
-//	 *            String
-//	 * @return boolean
-//	 */
-//	public static boolean checkPermissionByUserID(String userID,
-//			String resourceID, String action, String resourceType) {
-//		String useraccount = AccessControl.getUserAccountByUserID(userID);
-//
-//		Principal principal = new AuthPrincipal(useraccount,  null,userID);
-//		return checkPermission(principal,
-//				 resourceID,  action,  resourceType);
-//	}
+	// /**
+	// * 检查用户userAccount是否拥有资源resourceId的操作action的权限
+	// *
+	// * @param pageContext
+	// * PageContext
+	// * @param resourceID
+	// * String
+	// * @return boolean
+	// */
+	// public static boolean checkPermissionByUserID(String userID,
+	// String resourceID, String action, String resourceType) {
+	// String useraccount = AccessControl.getUserAccountByUserID(userID);
+	//
+	// Principal principal = new AuthPrincipal(useraccount, null,userID);
+	// return checkPermission(principal,
+	// resourceID, action, resourceType);
+	// }
 
 	/**
 	 * 检测当前系统用户是否拥有访问资源的权限
@@ -2645,16 +2447,11 @@ public class AccessControl implements AccessControlInf{
 	 * @param resourceType
 	 * @return
 	 */
-	public boolean checkPermission(String resourceID, String action,
-			String resourceType) {
-		
-		return checkPermission( resourceID,  action,
-				 resourceType,  false,  null);
-	}
-	
-	
+	public boolean checkPermission(String resourceID, String action, String resourceType) {
 
-	
+		return checkPermission(resourceID, action, resourceType, false, null);
+	}
+
 	/**
 	 * 检测当前系统用户是否拥有访问资源的权限
 	 * 
@@ -2666,7 +2463,7 @@ public class AccessControl implements AccessControlInf{
 	public boolean checkURLPermission(String uri) {
 
 		return AppSecurityCollaborator.getInstance().getPermissionTokenMap().checkUrlPermission(uri);
-		
+
 	}
 
 	/**
@@ -2679,10 +2476,8 @@ public class AccessControl implements AccessControlInf{
 	 * @param redirect
 	 * @return
 	 */
-	public boolean checkPermission(String resourceID, String action,
-			String resourceType, boolean redirect) {
-		return checkPermission( resourceID,  action,
-				 resourceType,  redirect,  null);
+	public boolean checkPermission(String resourceID, String action, String resourceType, boolean redirect) {
+		return checkPermission(resourceID, action, resourceType, redirect, null);
 	}
 
 	/**
@@ -2695,82 +2490,84 @@ public class AccessControl implements AccessControlInf{
 	 * @param redirect
 	 * @return
 	 */
-	public boolean checkPermission(String resourceID, String action,
-			String resourceType, boolean redirect, String redirectPath) {
-		//如果使用新版系统管理注释掉机构资源的判断    org_org
-		//如果是机构资源且用户拥有该机构的管理员身份，则返回true
+	public boolean checkPermission(String resourceID, String action, String resourceType, boolean redirect,
+			String redirectPath) {
+		// 如果使用新版系统管理注释掉机构资源的判断 org_org
+		// 如果是机构资源且用户拥有该机构的管理员身份，则返回true
 		boolean ret = false;
-		if(ConfigManager.getInstance().getPermissionModule() != null)
-		{
-			ret = ConfigManager.getInstance().getPermissionModule().checkPermission(principal,resourceID, action, resourceType);
-					
-		}
-//		if(resourceType.equals(ORGUNIT_RESOURCE)){
-//			if(this.isAdmin())
-//				return true;
-//			//判断当前用户是否是resourceID对应的机构何上级机构的管理员，如果是的话，不管是什么操作都是可以做的
-//			if(this.isOrganizationManager(resourceID))
-//			{
-//				return true;
-//			}
-//			else if(action.equals(READ_PERMISSION))//如果当前用户是resourceID对应的机构的下级机构的管理员，可以进行读操作
-//			{
-//				if(this.isSubOrgManager(resourceID)){
-//					return true;
-//				}
-//			}
-//		}
-//
-//		if (ROLE_RESOURCE.equalsIgnoreCase(resourceType)) // 判断角色是否当前用户创建，如果是当前用户创建则拥有该角色的全部操作权限
-//		{
-//			if (this.isAdmin())
-//				return true;
-//			Role role = RoleCacheManager.getInstance().getRoleByID(resourceID);
-//			if (role != null) {
-//				if (this.getUserID().equals(role.getOwner_id() + ""))
-//					return true;
-//			}
-//
-//		}
-//
-//		else if (JOB_RESOURCE.equalsIgnoreCase(resourceType)) {// 判断岗位是否当前用户创建，如果是当前用户创建则拥有该岗位的全部操作权限
-//			if (this.isAdmin())
-//				return true;
-//			try {
-//				boolean state = JobManagerImpl.isJobCreatorByUserId(this
-//						.getUserID(), resourceID);
-//				if (state) {
-//					return true;
-//				}
-//			} catch (ManagerException e) {
-//				e.printStackTrace();
-//			}
-//		}
-//
-//		else if (GROUP_RESOURCE.equalsIgnoreCase(resourceType)) // 判断用户组是否当前用户创建，如果是当前用户创建则拥有该用户组的全部操作权限
-//		{
-//			if (this.isAdmin())
-//				return true;
-//			Group group = GroupCacheManager.getInstance().getGroupByID(
-//					resourceID);
-//			if (group != null) {
-//				if (this.getUserID().equals(group.getOwner_id() + ""))
-//					return true;
-//			}
-//
-//		}
+		if (ConfigManager.getInstance().getPermissionModule() != null) {
+			ret = ConfigManager.getInstance().getPermissionModule().checkPermission(principal, resourceID, action,
+					resourceType);
 
-		
-		if(!ret)
-			ret =  AppSecurityCollaborator.getInstance().checkAccess(principal,
-				resourceID, action, resourceType);
+		}
+		// if(resourceType.equals(ORGUNIT_RESOURCE)){
+		// if(this.isAdmin())
+		// return true;
+		// //判断当前用户是否是resourceID对应的机构何上级机构的管理员，如果是的话，不管是什么操作都是可以做的
+		// if(this.isOrganizationManager(resourceID))
+		// {
+		// return true;
+		// }
+		// else
+		// if(action.equals(READ_PERMISSION))//如果当前用户是resourceID对应的机构的下级机构的管理员，可以进行读操作
+		// {
+		// if(this.isSubOrgManager(resourceID)){
+		// return true;
+		// }
+		// }
+		// }
+		//
+		// if (ROLE_RESOURCE.equalsIgnoreCase(resourceType)) //
+		// 判断角色是否当前用户创建，如果是当前用户创建则拥有该角色的全部操作权限
+		// {
+		// if (this.isAdmin())
+		// return true;
+		// Role role = RoleCacheManager.getInstance().getRoleByID(resourceID);
+		// if (role != null) {
+		// if (this.getUserID().equals(role.getOwner_id() + ""))
+		// return true;
+		// }
+		//
+		// }
+		//
+		// else if (JOB_RESOURCE.equalsIgnoreCase(resourceType)) {//
+		// 判断岗位是否当前用户创建，如果是当前用户创建则拥有该岗位的全部操作权限
+		// if (this.isAdmin())
+		// return true;
+		// try {
+		// boolean state = JobManagerImpl.isJobCreatorByUserId(this
+		// .getUserID(), resourceID);
+		// if (state) {
+		// return true;
+		// }
+		// } catch (ManagerException e) {
+		// e.printStackTrace();
+		// }
+		// }
+		//
+		// else if (GROUP_RESOURCE.equalsIgnoreCase(resourceType)) //
+		// 判断用户组是否当前用户创建，如果是当前用户创建则拥有该用户组的全部操作权限
+		// {
+		// if (this.isAdmin())
+		// return true;
+		// Group group = GroupCacheManager.getInstance().getGroupByID(
+		// resourceID);
+		// if (group != null) {
+		// if (this.getUserID().equals(group.getOwner_id() + ""))
+		// return true;
+		// }
+		//
+		// }
+
+		if (!ret)
+			ret = AppSecurityCollaborator.getInstance().checkAccess(principal, resourceID, action, resourceType);
 		if (!ret && redirect) {
-			log("permission check failed,will go to " + redirectPath + "/" + authorfailedPage,request);
+			log("permission check failed,will go to " + redirectPath + "/" + authorfailedPage, request);
 			// try {
 			if (redirectPath == null || redirectPath.trim().equals(""))
 				redirectPath = "/" + authorfailedPage;
 			redirect(request, response, redirectPath);
-			
+
 		}
 		return ret;
 	}
@@ -2788,39 +2585,34 @@ public class AccessControl implements AccessControlInf{
 	 * 释放所有的session中的系统资源
 	 */
 	private static void releaseSession(HttpSession session) {
-//		try
-//		{
-//			session.removeAttribute(AccessControl.PRINCIPAL_INDEXS);
-//			session.removeAttribute(REMOTEADDR_CACHE_KEY);
-//			session.removeAttribute(MACADDR_CACHE_KEY);
-//			session.removeAttribute(SESSIONID_CACHE_KEY);
-//			
-//			// 添加用户的所有属性到session中
-//			session.removeAttribute(CREDENTIAL_INDEXS);
-//			session.removeAttribute(SERVER_IP_KEY);
-//			session.removeAttribute(SERVER_PORT_KEY);
-//			
-//			session.removeAttribute(Framework.SUBSYSTEM);
-//			session.removeAttribute(AccessControl.SESSIONID_FROMCLIENT_KEY);
-//		}
-//		catch(Exception e)
-//		{
-//			e.printStackTrace();
-//		}
-		
-		
+		// try
+		// {
+		// session.removeAttribute(AccessControl.PRINCIPAL_INDEXS);
+		// session.removeAttribute(REMOTEADDR_CACHE_KEY);
+		// session.removeAttribute(MACADDR_CACHE_KEY);
+		// session.removeAttribute(SESSIONID_CACHE_KEY);
+		//
+		// // 添加用户的所有属性到session中
+		// session.removeAttribute(CREDENTIAL_INDEXS);
+		// session.removeAttribute(SERVER_IP_KEY);
+		// session.removeAttribute(SERVER_PORT_KEY);
+		//
+		// session.removeAttribute(Framework.SUBSYSTEM);
+		// session.removeAttribute(AccessControl.SESSIONID_FROMCLIENT_KEY);
+		// }
+		// catch(Exception e)
+		// {
+		// e.printStackTrace();
+		// }
 
 	}
-	
-	public boolean enablecookie()
-	{
+
+	public boolean enablecookie() {
 		return ConfigManager.getInstance().isSecuritycookieenabled()
-		&& (ConfigManager.getInstance().securityEnabled() || ConfigManager
-				.getInstance().isSSO());
-		
+				&& (ConfigManager.getInstance().securityEnabled() || ConfigManager.getInstance().isSSO());
+
 	}
 
-	
 	/**
 	 * 用户从dreamweaver客户端退出系统，不重定向系统
 	 */
@@ -2829,10 +2621,9 @@ public class AccessControl implements AccessControlInf{
 
 		// LoginContext loginContext = (LoginContext) session
 		// .getAttribute(LOGINCONTEXT_CACHE_KEY);
-		
 
 		try {
-			if(session == null)
+			if (session == null)
 				return;
 			Principal principals = (Principal) session.getAttribute(PRINCIPAL_INDEXS);
 
@@ -2841,77 +2632,70 @@ public class AccessControl implements AccessControlInf{
 				return;
 			}
 
-			log("Check page["+ request.getRequestURI() +"]: User[" + this.getUserAccount() + "] logout from cs client。session id is " + session.getId(),request);
-		
+			log("Check page[" + request.getRequestURI() + "]: User[" + this.getUserAccount()
+					+ "] logout from cs client。session id is " + session.getId(), request);
+
 			String userAccount = this.getUserAccount();
 			// 清除cookie;
-//			if (this.enablecookie()) {
-//
-//				
-////				String subsystemcookieid = SUBSYSTEM_COOKIE + "_" + userAccount;
-//				Cookie[] cookies = request.getCookies();
-//				for (int i = 0; cookies != null && i < cookies.length; i++) {
-//					if (cookies[i].getName().equals(PRINCIPALS_COOKIE)) {
-//						// 设置cookie一秒后失效
-//						cookies[i].setMaxAge(1);
-//						response.addCookie(cookies[i]);
-//
-//					} 
-////					else if (cookies[i].getName()
-////							.equals(subsystemcookieid)) {
-////						cookies[i].setMaxAge(1);
-////
-////						response.addCookie(cookies[i]);
-////					}
-//				}
-//				
-//
-//			}
-			
-			
+			// if (this.enablecookie()) {
+			//
+			//
+			//// String subsystemcookieid = SUBSYSTEM_COOKIE + "_" +
+			// userAccount;
+			// Cookie[] cookies = request.getCookies();
+			// for (int i = 0; cookies != null && i < cookies.length; i++) {
+			// if (cookies[i].getName().equals(PRINCIPALS_COOKIE)) {
+			// // 设置cookie一秒后失效
+			// cookies[i].setMaxAge(1);
+			// response.addCookie(cookies[i]);
+			//
+			// }
+			//// else if (cookies[i].getName()
+			//// .equals(subsystemcookieid)) {
+			//// cookies[i].setMaxAge(1);
+			////
+			//// response.addCookie(cookies[i]);
+			//// }
+			// }
+			//
+			//
+			// }
+
 			current.set(null);
 			// 使session失效
 			// session.removeAttribute(LOGINCONTEXT_CACHE_KEY);
-		
+
 			String machineID = getMachinedID();
-			
+
 			releaseSession(session);
 			// onlineUser.valueUnbound(session.getId(),getUserAccount(),
 			// request.getRemoteAddr());
 			String userName = this.getUserName();
-			
+
 			String userId = this.getUserID();
-			
+
 			session.invalidate();
 			// System.out.println("session:" + session);
 			// ------------退出时保存用户日志信息
 			try {
-				LogManagerInf logMgr =  ConfigManager.getInstance().getLogManager();
-				String operContent = userName + "[" + userId + "]"
-						+ " 从客户端退出系统";
+				LogManagerInf logMgr = ConfigManager.getInstance().getLogManager();
+				String operContent = userName + "[" + userId + "]" + " 从客户端退出系统";
 				String operSource = machineID;
-				
-				
-				
-				
+
 				String openModle = "认证管理";
 
-				logMgr.log(userAccount, operContent,
-						openModle, operSource);
+				logMgr.log(userAccount, operContent, openModle, operSource);
 			} catch (SPIException e1) {
 				e1.printStackTrace();
-			} 
+			}
 
 			// // -------------------
 			// // 跳转到登录页面
 			// if (redirected)
 			// redirect();
-		} 
-		 catch (Exception ex) {
+		} catch (Exception ex) {
 			log.debug("Logout from dreamweaver client failed：" + ex.getMessage());
-		}
-		finally
-		{
+		} finally {
 			current.set(null);
 		}
 	}
@@ -2927,7 +2711,7 @@ public class AccessControl implements AccessControlInf{
 
 	public void logout(boolean redirected, boolean enablelog) {
 
-		logout(null, null,redirected, enablelog);
+		logout(null, null, redirected, enablelog);
 
 	}
 
@@ -2939,48 +2723,49 @@ public class AccessControl implements AccessControlInf{
 	 */
 	public static void logoutdirect(HttpSession session) {
 
-		try
-		{
-//			log("Enter logoutdirect from session destroyed event.   session id is:"+session.getId(),null);
+		try {
+			// log("Enter logoutdirect from session destroyed event. session id
+			// is:"+session.getId(),null);
 			Principal principal_ = (Principal) session.getAttribute(PRINCIPAL_INDEXS);
-	
-			if (principal_ == null) {	
-				log("Unknowken user logoutdirect from session destroyed event.",null);
+
+			if (principal_ == null) {
+				log("Unknowken user logoutdirect from session destroyed event.", null);
 				return;
 			}
-//			String address = (String) session
-//			.getAttribute(AccessControl.REMOTEADDR_CACHE_KEY);
-//			log_info("User[" + principal_ + "] logoutdirect from session destroyed event.session id is "+session.getId(),null);
+			// String address = (String) session
+			// .getAttribute(AccessControl.REMOTEADDR_CACHE_KEY);
+			// log_info("User[" + principal_ + "] logoutdirect from session
+			// destroyed event.session id is "+session.getId(),null);
 			try {
-				
+
 				String userName = principal_.getName();
-				
-//				LoginContext loginContext = new LoginContext(subject);
-//				loginContext.logout();
+
+				// LoginContext loginContext = new LoginContext(subject);
+				// loginContext.logout();
 				// session.removeAttribute(LOGINCONTEXT_CACHE_KEY);
 				if (userName == null) {
-	
+
 					return;
 				}
-//				
-//				onlineUser.valueUnbound(session.getId(), userName, address,(String)session
-//						.getAttribute(AccessControl.MACADDR_CACHE_KEY));
-//				releaseSession(session);
-////				current.set(null);
-//	
-//				
-//	
+				//
+				// onlineUser.valueUnbound(session.getId(), userName,
+				// address,(String)session
+				// .getAttribute(AccessControl.MACADDR_CACHE_KEY));
+				// releaseSession(session);
+				//// current.set(null);
+				//
+				//
+				//
 			} catch (Exception ex) {
 				log.debug("退出登录失败：" + ex.getMessage());
 			}
-		}
-		finally
-		{
-//			current.set(null);
+		} finally {
+			// current.set(null);
 		}
 	}
 
 	private String _alt;
+
 	/**
 	 * 用户登录退出
 	 * 
@@ -3010,46 +2795,40 @@ public class AccessControl implements AccessControlInf{
 	public static Subject getLocalSubject() {
 		return getAccessControl().subject;
 	}
-	public static boolean fromWebseal(HttpServletRequest request)
-	{
-		boolean isWebSealServer = ConfigManager.getInstance()
-				.getConfigBooleanValue("isWebSealServer", false);
+
+	public static boolean fromWebseal(HttpServletRequest request) {
+		boolean isWebSealServer = ConfigManager.getInstance().getConfigBooleanValue("isWebSealServer", false);
 		String user_name = request.getHeader("iv-user");
-		 if(isWebSealServer && user_name!= null && !user_name.equals(""))
-			 return true;
-		 return false;
+		if (isWebSealServer && user_name != null && !user_name.equals(""))
+			return true;
+		return false;
 	}
+
 	public static AccessControl getAccessControl() {
 		AccessControl context = (AccessControl) current.get();
-		if(context == null)
-		{
+		if (context == null) {
 			context = AccessControl.guest;
 		}
 		return context;
 	}
-	
-	public static AccessControl getAccessControl(HttpServletRequest request,HttpServletResponse response) {
+
+	public static AccessControl getAccessControl(HttpServletRequest request, HttpServletResponse response) {
 		AccessControl context = (AccessControl) current.get();
-		if(context == null)
-		{
+		if (context == null) {
 			context = AccessControl.getAccessControl(request);
-			if(context == null)
-			{
+			if (context == null) {
 				context = AccessControl.getInstance();
-				boolean success = context.checkAccess(request, response,false);
-				if(success)
-				{
-					request.setAttribute(AccessControl.accesscontrol_request_attribute_key,context);
+				boolean success = context.checkAccess(request, response, false);
+				if (success) {
+					request.setAttribute(AccessControl.accesscontrol_request_attribute_key, context);
 					return context;
-				}
-				else
+				} else
 					return AccessControl.guest;
 			}
 		}
 		return context;
 	}
 
-	
 	/**
 	 * 用户登录退出
 	 * 
@@ -3057,71 +2836,71 @@ public class AccessControl implements AccessControlInf{
 	 *            String 用户退出系统重定向页面
 	 */
 	public void logout(String redirect, boolean enablelog) {
-		logout( redirect,  null, true,  enablelog);
-//		Map principalsIndexs = (Map) session.getAttribute(PRINCIPAL_INDEXS);
-//
-//		if (principalsIndexs == null) {
-//			redirect();
-//			return;
-//		}
-//		try {
-//			String userName = getUserName();
-//			log.debug("用户[" + getUserName() + "]退出系统。");
-//
-//			LoginContext loginContext = new LoginContext(this.getSubject());
-//			loginContext.logout();
-//			// 清除cookie;
-//			Cookie[] cookies = request.getCookies();
-//			for (int i = 0; i < cookies.length; i++) {
-//				if (cookies[i].getName().equals(PRINCIPALS_COOKIE)) {
-//					// 设置cookie一秒后失效
-//					cookies[i].setMaxAge(1);
-//
-//					response.addCookie(cookies[i]);
-//
-//				} else if (cookies[i].getName().equals(SUBSYSTEM_COOKIE)) {
-//					// 设置cookie一秒后失效
-//					cookies[i].setMaxAge(1);
-//
-//					response.addCookie(cookies[i]);
-//
-//				}
-//			}
-//			// 使session失效
-//			String subsystem = getCurrentSystemName();
-//
-//			String userAccount = this.getUserAccount();
-//			String userId = this.getUserID();
-//			onlineUser.valueUnbound(session.getId(), userAccount, request
-//					.getRemoteAddr());
-//			releaseSession(session);
-//			session.invalidate();
-//			// ------------退出时保存用户日志信息
-//			if(enablelog)
-//			{
-//				try {
-//					LogManager logMgr = SecurityDatabase.getLogManager();
-//	
-//					String operContent = userName + "[" + userId + "] 退出["
-//							+ subsystem + "]";
-//					String operSource = request.getRemoteAddr();
-//					String openModle = "认证管理";
-//	
-//					logMgr.log(userAccount + ":" + userName, operContent,
-//							openModle, operSource);
-//				} catch (SPIException e1) {
-//					e1.printStackTrace();
-//				} catch (ManagerException e) {
-//					e.printStackTrace();
-//				}
-//			}
-//
-//			
-//			// 跳转到登录页面
-//			redirect(request, response, redirect);
-//		} catch (LoginException ex) {
-//			log.debug("退出登录失败：" + ex.getMessage());
-//		}
+		logout(redirect, null, true, enablelog);
+		// Map principalsIndexs = (Map) session.getAttribute(PRINCIPAL_INDEXS);
+		//
+		// if (principalsIndexs == null) {
+		// redirect();
+		// return;
+		// }
+		// try {
+		// String userName = getUserName();
+		// log.debug("用户[" + getUserName() + "]退出系统。");
+		//
+		// LoginContext loginContext = new LoginContext(this.getSubject());
+		// loginContext.logout();
+		// // 清除cookie;
+		// Cookie[] cookies = request.getCookies();
+		// for (int i = 0; i < cookies.length; i++) {
+		// if (cookies[i].getName().equals(PRINCIPALS_COOKIE)) {
+		// // 设置cookie一秒后失效
+		// cookies[i].setMaxAge(1);
+		//
+		// response.addCookie(cookies[i]);
+		//
+		// } else if (cookies[i].getName().equals(SUBSYSTEM_COOKIE)) {
+		// // 设置cookie一秒后失效
+		// cookies[i].setMaxAge(1);
+		//
+		// response.addCookie(cookies[i]);
+		//
+		// }
+		// }
+		// // 使session失效
+		// String subsystem = getCurrentSystemName();
+		//
+		// String userAccount = this.getUserAccount();
+		// String userId = this.getUserID();
+		// onlineUser.valueUnbound(session.getId(), userAccount, request
+		// .getRemoteAddr());
+		// releaseSession(session);
+		// session.invalidate();
+		// // ------------退出时保存用户日志信息
+		// if(enablelog)
+		// {
+		// try {
+		// LogManager logMgr = SecurityDatabase.getLogManager();
+		//
+		// String operContent = userName + "[" + userId + "] 退出["
+		// + subsystem + "]";
+		// String operSource = request.getRemoteAddr();
+		// String openModle = "认证管理";
+		//
+		// logMgr.log(userAccount + ":" + userName, operContent,
+		// openModle, operSource);
+		// } catch (SPIException e1) {
+		// e1.printStackTrace();
+		// } catch (ManagerException e) {
+		// e.printStackTrace();
+		// }
+		// }
+		//
+		//
+		// // 跳转到登录页面
+		// redirect(request, response, redirect);
+		// } catch (LoginException ex) {
+		// log.debug("退出登录失败：" + ex.getMessage());
+		// }
 	}
 
 	/**
@@ -3134,12 +2913,11 @@ public class AccessControl implements AccessControlInf{
 	 * @param enablelog
 	 *            用户退出系统是否记录日志
 	 */
-	public void logout(String redirect, String redirecttarget,boolean redirected, boolean enablelog) {
+	public void logout(String redirect, String redirecttarget, boolean redirected, boolean enablelog) {
 
-		
-		logoutwithalt_( redirect,  redirecttarget, redirected,  enablelog,null);
+		logoutwithalt_(redirect, redirecttarget, redirected, enablelog, null);
 	}
-	
+
 	/**
 	 * 用户登录退出
 	 * 
@@ -3150,181 +2928,164 @@ public class AccessControl implements AccessControlInf{
 	 * @param enablelog
 	 *            用户退出系统是否记录日志
 	 */
-	public void logoutwithalt_(String redirect, String redirecttarget,boolean redirected, boolean enablelog,String _alt) {
-
-		
-		
+	public void logoutwithalt_(String redirect, String redirecttarget, boolean redirected, boolean enablelog,
+			String _alt) {
 
 		try {
-			if(session == null)
-			{
-				if(redirected )
-				{
-//					log_info("Unknown user Logout to "+redirect+" from system on " + new java.util.Date() + ". session is null.",request);
-					if(redirect == null && redirecttarget == null)
-					{
+			clearrememberme();
+			if (session == null) {
+				if (redirected) {
+					// log_info("Unknown user Logout to "+redirect+" from system
+					// on " + new java.util.Date() + ". session is
+					// null.",request);
+					if (redirect == null && redirecttarget == null) {
 						redirect();
-					}
-					else
-					{
-						redirect(request,response,redirect,redirecttarget);
+					} else {
+						redirect(request, response, redirect, redirecttarget);
 					}
 				}
-				
+
 				return;
 			}
-//			Principal principalsIndexs = (Principal) session.getAttribute(PRINCIPAL_INDEXS);
+			// Principal principalsIndexs = (Principal)
+			// session.getAttribute(PRINCIPAL_INDEXS);
 
 			if (this.principal == null) {
-				if(redirected )
-				{
-//					log_info("Unknown user Logout from system on " + new java.util.Date() + ". session id is " + session.getId(),request);
-					if(redirect == null && redirecttarget == null)
-					{
+				if (redirected) {
+					// log_info("Unknown user Logout from system on " + new
+					// java.util.Date() + ". session id is " +
+					// session.getId(),request);
+					if (redirect == null && redirecttarget == null) {
 						redirect();
-					}
-					else
-					{
-						redirect(request,response,redirect,redirecttarget);
+					} else {
+						redirect(request, response, redirect, redirecttarget);
 					}
 				}
-				
+
 				return;
 			}
-//			log_info("Logout from page["+ request.getRequestURI() +"]: User["+ this.getUserAccount() + "," + getUserName() + "] logout.session id is " + session.getId(),request);
-			//log.debug("Logout from page["+ request.getRequestURI() +"]: \r\n\tUser["+ this.getUserAccount() + "," + getUserName() + "] logout.");
-			
-			
-			
-			
-				
-				
+			// log_info("Logout from page["+ request.getRequestURI() +"]:
+			// User["+ this.getUserAccount() + "," + getUserName() + "]
+			// logout.session id is " + session.getId(),request);
+			// log.debug("Logout from page["+ request.getRequestURI() +"]:
+			// \r\n\tUser["+ this.getUserAccount() + "," + getUserName() + "]
+			// logout.");
+
 			String userAccount = this.getUserAccount();
-			if(subject == null)
-			{
+			if (subject == null) {
 				subject = new Subject();
 				subject.setCredential(credential);
 				subject.setPrincipal(principal);
 				subject.setLoginPrincipal(loginPrincipal);
 			}
-			
-			LogoutCallbackHandler callbackHandler = new LogoutCallbackHandler(
-					userAccount,  request,response);
-			SimpleLoginContext loginContext = new SimpleLoginContext("base",
-					callbackHandler,this.subject);
-			
+
+			LogoutCallbackHandler callbackHandler = new LogoutCallbackHandler(userAccount, request, response);
+			SimpleLoginContext loginContext = new SimpleLoginContext("base", callbackHandler, this.subject);
+
 			loginContext.logout();
 			String subsystem = getCurrentSystemName();
-//			String subsystemcookieid = SUBSYSTEM_COOKIE + "_" + userAccount;
-			
-			// 清除cookie;
-//			if(this.enablecookie())
-//			{
-//				Cookie[] cookies = request.getCookies();
-//				for (int i = 0; cookies != null && i < cookies.length; i++) {
-//					if (cookies[i].getName().equals(PRINCIPALS_COOKIE)) {
-//						// 设置cookie一秒后失效
-//						cookies[i].setMaxAge(1);	
-//						response.addCookie(cookies[i]);
-//	
-//					} 
-////					else if (cookies[i].getName().equals(subsystemcookieid)) {
-////						// 设置cookie一秒后失效
-////						cookies[i].setMaxAge(1);	
-////						response.addCookie(cookies[i]);
-////	
-////					} 
-//					
-//				}
-//			}
-//			Cookie subsystemCookie = new Cookie(subsystemcookieid, subsystem);
-//			subsystemCookie.setMaxAge(1);
-//			response.addCookie(subsystemCookie);
-//			else if (cookies[i].getName().equals(subsystemcookieid )) {
-//				// 设置cookie一秒后失效
-//				cookies[i].setMaxAge(1);
-//
-//				response.addCookie(cookies[i]);
-//
-//			}
+			// String subsystemcookieid = SUBSYSTEM_COOKIE + "_" + userAccount;
 
-			
+			// 清除cookie;
+			// if(this.enablecookie())
+			// {
+			// Cookie[] cookies = request.getCookies();
+			// for (int i = 0; cookies != null && i < cookies.length; i++) {
+			// if (cookies[i].getName().equals(PRINCIPALS_COOKIE)) {
+			// // 设置cookie一秒后失效
+			// cookies[i].setMaxAge(1);
+			// response.addCookie(cookies[i]);
+			//
+			// }
+			//// else if (cookies[i].getName().equals(subsystemcookieid)) {
+			//// // 设置cookie一秒后失效
+			//// cookies[i].setMaxAge(1);
+			//// response.addCookie(cookies[i]);
+			////
+			//// }
+			//
+			// }
+			// }
+			// Cookie subsystemCookie = new Cookie(subsystemcookieid,
+			// subsystem);
+			// subsystemCookie.setMaxAge(1);
+			// response.addCookie(subsystemCookie);
+			// else if (cookies[i].getName().equals(subsystemcookieid )) {
+			// // 设置cookie一秒后失效
+			// cookies[i].setMaxAge(1);
+			//
+			// response.addCookie(cookies[i]);
+			//
+			// }
+
 			// 使session失效
-			
-			
-			 
+
 			String userName = this.getUserName();
-			
-			
+
 			String orgID = this.getChargeOrgId();
-//			onlineUser.valueUnbound(session.getId(), userAccount, machineIP,(String)session.getAttribute(MACADDR_CACHE_KEY));
+			// onlineUser.valueUnbound(session.getId(), userAccount,
+			// machineIP,(String)session.getAttribute(MACADDR_CACHE_KEY));
 
 			String machineID = this.getMachinedID();
-			
+
 			current.set(null);
 			releaseSession(session);
 			session.invalidate();
 			// ------------退出时保存用户日志信息
-			if(enablelog)
-			{
+			if (enablelog) {
 				try {
 					LogManagerInf logMgr = ConfigManager.getInstance().getLogManager();
-					
-//					String operContent = userName + "[" + userId + "] 退出["
-//							+ subsystem + "]";
-					// modified by hilary on 20101105,for fixing bug 13979,for logout's log  and login's log has same manner 
+
+					// String operContent = userName + "[" + userId + "] 退出["
+					// + subsystem + "]";
+					// modified by hilary on 20101105,for fixing bug 13979,for
+					// logout's log and login's log has same manner
 					StringBuilder operContent = new StringBuilder();
-					operContent.append(userAccount).append( "(" ).append( userName ).append( ") 退出[" ).append( subsystem ).append( "]");
-					if(_alt != null)
+					operContent.append(userAccount).append("(").append(userName).append(") 退出[").append(subsystem)
+							.append("]");
+					if (_alt != null)
 						operContent.append(",退出原因为：该用户在其他地方登录或者用户会话信息被管理员清除。");
-					 
+
 					String operModle = "认证管理";
-					logMgr.log(userAccount,orgID,operModle,  machineID,
-							operContent.toString() ,"", LogManagerInf.INSERT_OPER_TYPE);		
-					
+					logMgr.log(userAccount, orgID, operModle, machineID, operContent.toString(), "",
+							LogManagerInf.INSERT_OPER_TYPE);
+
 				} catch (SPIException e1) {
-					//e1.printStackTrace();
-				} 
+					// e1.printStackTrace();
+				}
 
 			}
 			// -------------------
 
-
-			if(redirected )
-			{
-				if(redirect == null && redirecttarget == null)
-				{
-//					log_info("User["+ this.getUserAccount() + "," + getUserName() + "] logout." + new java.util.Date() + ". " + _alt,request);
-					if(_alt == null)
-					{
+			if (redirected) {
+				if (redirect == null && redirecttarget == null) {
+					// log_info("User["+ this.getUserAccount() + "," +
+					// getUserName() + "] logout." + new java.util.Date() + ". "
+					// + _alt,request);
+					if (_alt == null) {
 						redirect();
-					}
-					else
-					{
+					} else {
 						redirect(true);
 					}
-				}
-				else
-				{
-//					log_info("User["+ this.getUserAccount() + "," + getUserName() + "] logout." + new java.util.Date() + ". " + _alt + ".redirect=" + redirect + ",redirecttarget=" +redirecttarget,request);
-					if(_alt == null)
-					{
-						redirect(request,response,redirect,redirecttarget);
+				} else {
+					// log_info("User["+ this.getUserAccount() + "," +
+					// getUserName() + "] logout." + new java.util.Date() + ". "
+					// + _alt + ".redirect=" + redirect + ",redirecttarget="
+					// +redirecttarget,request);
+					if (_alt == null) {
+						redirect(request, response, redirect, redirecttarget);
+					} else {
+						redirect(request, response, redirect, redirecttarget, true);
 					}
-					else
-					{
-						redirect(request,response,redirect,redirecttarget,true);
-					}
-					
+
 				}
 			}
-		}  catch (Exception ex) {
+		} catch (Exception ex) {
 			ex.printStackTrace();
-			//log("Unknown user Logout failed from system on " + new java.util.Date() + ". ",request);
+			// log("Unknown user Logout failed from system on " + new
+			// java.util.Date() + ". ",request);
 			log.debug("Logout failed：" + ex.getMessage());
-		}
-		finally
-		{
+		} finally {
 			current.set(null);
 		}
 	}
@@ -3337,8 +3098,7 @@ public class AccessControl implements AccessControlInf{
 	public String getUserID() {
 		if (credential == null)
 			return "";
-		Object userID = credential.getCheckCallBack()
-				.getUserAttribute("userID");
+		Object userID = credential.getCheckCallBack().getUserAttribute("userID");
 
 		return userID == null ? "" : userID.toString();
 	}
@@ -3364,14 +3124,11 @@ public class AccessControl implements AccessControlInf{
 	public String getUserName() {
 		if (credential == null)
 			return "";
-		Object userName = credential.getCheckCallBack().getUserAttribute(
-				"userName");
+		Object userName = credential.getCheckCallBack().getUserAttribute("userName");
 
 		return userName == null ? "" : userName.toString();
 	}
 
-
-	
 	/**
 	 * 判断用户是否是系统管理员
 	 * 
@@ -3397,8 +3154,9 @@ public class AccessControl implements AccessControlInf{
 	public Principal getPrincipal() {
 		return principal;
 	}
+
 	public Principal getLoginPrincipal() {
-		return loginPrincipal != null?loginPrincipal:principal;
+		return loginPrincipal != null ? loginPrincipal : principal;
 	}
 
 	public Credential getCredential() {
@@ -3409,7 +3167,7 @@ public class AccessControl implements AccessControlInf{
 	 * 获取用户当前登录的子系统标识
 	 * 
 	 * @return
-	 * @deprecated 
+	 * @deprecated
 	 * @see use getCurrentSystemID()
 	 */
 	public String getCurrentSystem() {
@@ -3431,17 +3189,14 @@ public class AccessControl implements AccessControlInf{
 		AuthPrincipal principal = new AuthPrincipal(userAccount, null, null);
 		return AppSecurityCollaborator.getInstance().isAdmin(principal);
 	}
-	
-	public static boolean isDefaultAdmin(String userId)
-	{
-		if(userId == null)
+
+	public static boolean isDefaultAdmin(String userId) {
+		if (userId == null)
 			return false;
-		if(userId.equals("1") || userId.equals("admin"))
+		if (userId.equals("1") || userId.equals("admin"))
 			return true;
 		return false;
 	}
-
-	
 
 	/**
 	 * 判断给定的角色是否是超级管理员角色
@@ -3452,8 +3207,7 @@ public class AccessControl implements AccessControlInf{
 	public static boolean isAdministratorRole(String role) {
 		if (role == null)
 			return false;
-		String administratorRole = AppSecurityCollaborator.getInstance()
-				.getAdministratorRoleName();
+		String administratorRole = AppSecurityCollaborator.getInstance().getAdministratorRoleName();
 
 		return administratorRole.equals(role);
 	}
@@ -3467,8 +3221,7 @@ public class AccessControl implements AccessControlInf{
 	public static boolean isRoleOfEveryOne(String role) {
 		if (role == null)
 			return false;
-		String roleOfEveryOne = AppSecurityCollaborator.getInstance()
-				.getEveryonegrantedRoleName();
+		String roleOfEveryOne = AppSecurityCollaborator.getInstance().getEveryonegrantedRoleName();
 
 		return roleOfEveryOne.equals(role);
 	}
@@ -3481,10 +3234,9 @@ public class AccessControl implements AccessControlInf{
 	 * @return boolean
 	 */
 	public boolean isGrantedRole(AuthRole role) {
-		return AppSecurityCollaborator.getInstance().isCallerInRole(
-				new AppAccessContext(ConfigManager.getInstance().getAppName(),
-						ConfigManager.getInstance().getModuleName()), role,
-				principal);
+		return AppSecurityCollaborator.getInstance()
+				.isCallerInRole(new AppAccessContext(ConfigManager.getInstance().getAppName(),
+						ConfigManager.getInstance().getModuleName()), role, principal);
 	}
 
 	/**
@@ -3499,8 +3251,8 @@ public class AccessControl implements AccessControlInf{
 		arole.setRoleName(role);
 		return isGrantedRole(arole);
 	}
-	public boolean isOrgmanager()
-	{
+
+	public boolean isOrgmanager() {
 		return this.isGrantedRole(AuthRole.ORGMANAGER);
 	}
 
@@ -3519,95 +3271,75 @@ public class AccessControl implements AccessControlInf{
 	 * @return
 	 */
 	public static String getEveryonegrantedRoleName() {
-		return AppSecurityCollaborator.getInstance()
-				.getEveryonegrantedRoleName();
+		return AppSecurityCollaborator.getInstance().getEveryonegrantedRoleName();
 	}
 
 	/**
-	 *  
-     * userName
-userID
-password
-orgId
-logincount
-userAccount
-remark1
-remark2
-remark3
-remark4
-remark5
-userAddress
-userEmail
-userFax
-userHometel
-userIdcard
-userMobiletel1
-userMobiletel2
-userOicq
-userPinyin
-userPostalcode
-userSex
-userType
-userWorknumber
-userWorktel
-userBirthday
-userRegdate
-userSn
-userIsvalid
-passwordExpiredTime
-passwordUpdateTime
-     * @param userAttribute
-     * @return
-     */
-	 
+	 * 
+	 * userName userID password orgId logincount userAccount remark1 remark2
+	 * remark3 remark4 remark5 userAddress userEmail userFax userHometel
+	 * userIdcard userMobiletel1 userMobiletel2 userOicq userPinyin
+	 * userPostalcode userSex userType userWorknumber userWorktel userBirthday
+	 * userRegdate userSn userIsvalid passwordExpiredTime passwordUpdateTime
+	 * 
+	 * @param userAttribute
+	 * @return
+	 */
+
 	public String getUserAttribute(String userAttribute) {
 		try {
-			Object value = credential.getCheckCallBack().getUserAttribute(
-					userAttribute);
+			Object value = credential.getCheckCallBack().getUserAttribute(userAttribute);
 			return value == null ? "" : value.toString();
 		} catch (Exception e) {
 			return "";
 		}
 	}
+
 	/**
 	 * 重置指定的用户属性值
+	 * 
 	 * @param userAttribute
 	 */
 	public void resetUserAttribute(String userAttribute) {
 		try {
-			
-			LoginContext.resetUserAttribute(request,credential.getCheckCallBack(), userAttribute);
-//			LoginModuleInfoQueue moduleQueue = ConfigManager.getInstance().getDefaultApplicationInfo().getLoginModuleInfos();
-//			credential.getCheckCallBack().setUserAttribute(userAttribute, value);
+
+			LoginContext.resetUserAttribute(request, credential.getCheckCallBack(), userAttribute);
+			// LoginModuleInfoQueue moduleQueue =
+			// ConfigManager.getInstance().getDefaultApplicationInfo().getLoginModuleInfos();
+			// credential.getCheckCallBack().setUserAttribute(userAttribute,
+			// value);
 			session.setAttribute(CREDENTIAL_INDEXS, credential);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * 重置指定的用户属性值
+	 * 
 	 * @param userAttribute
 	 */
-	public void setUserAttribute(String userAttribute,Object value) {
+	public void setUserAttribute(String userAttribute, Object value) {
 		try {
-			
-			
+
 			session.setAttribute(userAttribute, value);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
+
 	/**
 	 * 重置用户属性值
 	 */
 	public void resetUserAttributes() {
 		try {
-			
-			LoginContext.resetUserAttribute(request,credential.getCheckCallBack());
-//			LoginModuleInfoQueue moduleQueue = ConfigManager.getInstance().getDefaultApplicationInfo().getLoginModuleInfos();
-//			credential.getCheckCallBack().setUserAttribute(userAttribute, value);
-			
+
+			LoginContext.resetUserAttribute(request, credential.getCheckCallBack());
+			// LoginModuleInfoQueue moduleQueue =
+			// ConfigManager.getInstance().getDefaultApplicationInfo().getLoginModuleInfos();
+			// credential.getCheckCallBack().setUserAttribute(userAttribute,
+			// value);
+
 			session.setAttribute(CREDENTIAL_INDEXS, credential);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -3616,8 +3348,7 @@ passwordUpdateTime
 
 	public Object getUserObjectAttribute(String userAttribute) {
 		try {
-			Object value = credential.getCheckCallBack().getUserAttribute(
-					userAttribute);
+			Object value = credential.getCheckCallBack().getUserAttribute(userAttribute);
 			return value;
 		} catch (Exception e) {
 			return null;
@@ -3636,17 +3367,14 @@ passwordUpdateTime
 			return false;
 		else {
 			String login_userAccount = principal.getName();
-			return login_userAccount != null
-					&& login_userAccount.equals(userAccount);
+			return login_userAccount != null && login_userAccount.equals(userAccount);
 		}
 	}
 
 	public int getLoginUserCount() {
-//		return onlineUser.getCount();
+		// return onlineUser.getCount();
 		return -1;
 	}
-
-	
 
 	/**
 	 * 判断给定类型的资源在没有授权的情况下是否允许用户访问
@@ -3655,8 +3383,7 @@ passwordUpdateTime
 	 * @return
 	 */
 	public boolean allowIfNoRequiredRoles(String resourceType) {
-		return AppSecurityCollaborator.getInstance().allowIfNoRequiredRoles(
-				resourceType);
+		return AppSecurityCollaborator.getInstance().allowIfNoRequiredRoles(resourceType);
 	}
 
 	/**
@@ -3667,10 +3394,8 @@ passwordUpdateTime
 	 * @param operation
 	 * @return
 	 */
-	public static boolean isUnprotected(String resourceId, String operation,
-			String resourceType) {
-		return AppSecurityCollaborator.getInstance().isUnprotected(resourceId,
-				operation, resourceType);
+	public static boolean isUnprotected(String resourceId, String operation, String resourceType) {
+		return AppSecurityCollaborator.getInstance().isUnprotected(resourceId, operation, resourceType);
 	}
 
 	/**
@@ -3683,8 +3408,7 @@ passwordUpdateTime
 	 * @return
 	 */
 	public static boolean isUnprotected(String resourceId, String resourceType) {
-		return AppSecurityCollaborator.getInstance().isUnprotected(resourceId,
-				resourceType);
+		return AppSecurityCollaborator.getInstance().isUnprotected(resourceId, resourceType);
 	}
 
 	/**
@@ -3695,10 +3419,8 @@ passwordUpdateTime
 	 * @param operation
 	 * @return
 	 */
-	public static boolean isExcluded(String resourceId, String operation,
-			String resourceType) {
-		return AppSecurityCollaborator.getInstance().isExcluded(resourceId,
-				operation, resourceType);
+	public static boolean isExcluded(String resourceId, String operation, String resourceType) {
+		return AppSecurityCollaborator.getInstance().isExcluded(resourceId, operation, resourceType);
 	}
 
 	/**
@@ -3712,13 +3434,11 @@ passwordUpdateTime
 	 * @return
 	 */
 	public static boolean isExcluded(String resourceId, String resourceType) {
-		return AppSecurityCollaborator.getInstance().isExcluded(resourceId,
-				resourceType);
+		return AppSecurityCollaborator.getInstance().isExcluded(resourceId, resourceType);
 	}
 
 	public static AuthRole[] getAllRoleofUser(String userAccount) {
-		return AppSecurityCollaborator.getInstance().getAllRoleofUser(
-				userAccount);
+		return AppSecurityCollaborator.getInstance().getAllRoleofUser(userAccount);
 	}
 
 	/**
@@ -3729,8 +3449,7 @@ passwordUpdateTime
 	 * @return
 	 */
 	public static boolean hasGrantedAnyRole(String resource, String resourceType) {
-		return AppSecurityCollaborator.getInstance().hasGrantedAnyRole(
-				resource, resourceType);
+		return AppSecurityCollaborator.getInstance().hasGrantedAnyRole(resource, resourceType);
 	}
 
 	/**
@@ -3740,273 +3459,227 @@ passwordUpdateTime
 	 * @param resourceType
 	 * @return
 	 */
-	public static boolean hasGrantedRole(String role, String roleType,
-			String resource, String resourceType) {
-		return AppSecurityCollaborator.getInstance().hasGrantedRole(role,
-				roleType, resource, resourceType);
+	public static boolean hasGrantedRole(String role, String roleType, String resource, String resourceType) {
+		return AppSecurityCollaborator.getInstance().hasGrantedRole(role, roleType, resource, resourceType);
 	}
 
-//	/**
-//	 * 获取拥有特定资源许可操作的用户列表
-//	 * 
-//	 * @param resourceid
-//	 * @param operation
-//	 * @param resourceType
-//	 * @return
-//	 */
-//	public static AuthUser[] getAllPermissionUsersOfResource(String resourceid,
-//			String operation, String resourceType) {
-//		return AppSecurityCollaborator.getInstance()
-//				.getAllPermissionUsersOfResource(resourceid, operation,
-//						resourceType);
-//	}
+	// /**
+	// * 获取拥有特定资源许可操作的用户列表
+	// *
+	// * @param resourceid
+	// * @param operation
+	// * @param resourceType
+	// * @return
+	// */
+	// public static AuthUser[] getAllPermissionUsersOfResource(String
+	// resourceid,
+	// String operation, String resourceType) {
+	// return AppSecurityCollaborator.getInstance()
+	// .getAllPermissionUsersOfResource(resourceid, operation,
+	// resourceType);
+	// }
 
-	
 	public String getMacAddr() {
-		String macaddr =null;
-		if(credential != null)
-//			macaddr = (String)this.session.getAttribute(AccessControl.MACADDR_CACHE_KEY);
-			macaddr = (String)this.credential.getCheckCallBack().getUserAttribute(AccessControl.MACADDR_CACHE_KEY);
-		if(macaddr == null)
+		String macaddr = null;
+		if (credential != null)
+			// macaddr =
+			// (String)this.session.getAttribute(AccessControl.MACADDR_CACHE_KEY);
+			macaddr = (String) this.credential.getCheckCallBack().getUserAttribute(AccessControl.MACADDR_CACHE_KEY);
+		if (macaddr == null)
 			return "";
 		return macaddr;
 	}
-	
-	 
-	
-	//转换异常信息中的 \\n,\\r 
-	public static String formatErrorMsg(String errorMessage){
-		if(errorMessage != null)
-        {
-        	errorMessage = errorMessage.replaceAll("\\n","\\\\n");
-        	errorMessage = errorMessage.replaceAll("\\r","\\\\r");
-        	errorMessage = errorMessage.replaceAll("\"","\'");
-        }
+
+	// 转换异常信息中的 \\n,\\r
+	public static String formatErrorMsg(String errorMessage) {
+		if (errorMessage != null) {
+			errorMessage = errorMessage.replaceAll("\\n", "\\\\n");
+			errorMessage = errorMessage.replaceAll("\\r", "\\\\r");
+			errorMessage = errorMessage.replaceAll("\"", "\'");
+		}
 		return errorMessage;
 	}
-	
+
 	/**
-     * 清除角色和资源操作的缓冲关系
-     */
-	public static void resetPermissionCache(){
+	 * 清除角色和资源操作的缓冲关系
+	 */
+	public static void resetPermissionCache() {
 		AppSecurityCollaborator.getInstance().resetPermissionCache();
 	}
-	
+
 	/**
-     * 清除用户和角色的缓冲关系
-     */
-	public static void resetAuthCache(){
+	 * 清除用户和角色的缓冲关系
+	 */
+	public static void resetAuthCache() {
 		AppSecurityCollaborator.getInstance().resetAuthCache();
 	}
-	
+
 	/**
 	 * 得到应用端口
+	 * 
 	 * @return
 	 */
-	public String getPort(){
+	public String getPort() {
 		return String.valueOf(request.getLocalPort());
 	}
-	
+
 	/**
 	 * 得到应用上下文
+	 * 
 	 * @return
 	 */
-	public String getContextPath(){
+	public String getContextPath() {
 		return request.getContextPath();
 	}
-	
-	public static AccessControl getAccessControl(HttpServletRequest request)
-	{
-		return (AccessControl)request.getAttribute(AccessControl.accesscontrol_request_attribute_key);
+
+	public static AccessControl getAccessControl(HttpServletRequest request) {
+		return (AccessControl) request.getAttribute(AccessControl.accesscontrol_request_attribute_key);
 	}
-
-
 
 	public PageContext getPageContext() {
 		return pageContext;
 	}
 
-
-
 	public void setPageContext(PageContext pageContext) {
 		this.pageContext = pageContext;
 	}
-
-
 
 	public HttpServletRequest getRequest() {
 		return request;
 	}
 
-
-
 	public HttpSession getSession() {
 		return session;
 	}
 
-
-	
 	public void refreshCurrentSystemID(HttpServletRequest request) {
 		String subsystem_id = request.getParameter(SUBSYSTEM_ID);
-		if(!StringUtil.isEmpty(subsystem_id))
-		{
-			if (subsystem_id == null || subsystem_id.equals(""))
-            {
-                        ;
-                // 将用户登录的子系统模块名称添加到session中
-            }
-            else
-            {
-                String old = (String)session.getAttribute(Framework.SUBSYSTEM);
-                if(old != null && !old.equals(subsystem_id))
-                    session.setAttribute(Framework.SUBSYSTEM, subsystem_id);
-            }
-			
+		if (!StringUtil.isEmpty(subsystem_id)) {
+			if (subsystem_id == null || subsystem_id.equals("")) {
+				;
+				// 将用户登录的子系统模块名称添加到session中
+			} else {
+				String old = (String) session.getAttribute(Framework.SUBSYSTEM);
+				if (old != null && !old.equals(subsystem_id))
+					session.setAttribute(Framework.SUBSYSTEM, subsystem_id);
+			}
+
 			setSubSystemToCookie(response, getUserAccount(), subsystem_id);
 		}
-		
+
 	}
 
-
-	public boolean evalResource(   PermissionToken token) {
-		return _evalResource( token,request);
+	public boolean evalResource(PermissionToken token) {
+		return _evalResource(token, request);
 	}
-	public int compareParams(List<P> paramConditions)
-	{
-		
+
+	public int compareParams(List<P> paramConditions) {
+
 		int nullcount = 0;
-		
-		
+
 		boolean success = true;
-	
-		for(int i = 0; i < paramConditions.size(); i ++)
-		{
+
+		for (int i = 0; i < paramConditions.size(); i++) {
 			P p = paramConditions.get(i);
 			String value = request.getParameter(p.getName());
-			if(value != null)
-			{
-			
-				if(!value.equals(p.getValue()))
-				{
-					
+			if (value != null) {
+
+				if (!value.equals(p.getValue())) {
+
 					success = false;
-					
+
 				}
+			} else {
+				nullcount++;
 			}
-			else
-			{
-				nullcount ++;
-			}
-			
+
 		}
-		if(nullcount > 0)
-			return 2;	
-		return success?1:0;
+		if (nullcount > 0)
+			return 2;
+		return success ? 1 : 0;
 	}
-	
+
 	/**
 	 * 
 	 * @param token
-	 * @return 0:参数匹配不成功，1:参数匹配成功 2:request没有设置部分相关的参数 ,3:request完全没有设置对应的参数,4:没有配置参数
+	 * @return 0:参数匹配不成功，1:参数匹配成功 2:request没有设置部分相关的参数
+	 *         ,3:request完全没有设置对应的参数,4:没有配置参数
 	 */
-	public int compareParams(PermissionToken token)
-	{
-		if(!token.hasParamCondition())//带参数的token排在最前面，都已经比较过了，没有匹配的值，没有参数时，自然返回true
+	public int compareParams(PermissionToken token) {
+		if (!token.hasParamCondition())// 带参数的token排在最前面，都已经比较过了，没有匹配的值，没有参数时，自然返回true
 			return 4;
 		List<P> params = token.getParamConditions();
-//		int nullcount = 0;
-		
-		
+		// int nullcount = 0;
+
 		boolean success = true;
-	
-		for(int i = 0; i < params.size(); i ++)
-		{
+
+		for (int i = 0; i < params.size(); i++) {
 			P p = params.get(i);
 			String value = request.getParameter(p.getName());
-			if(value != null)
-			{
-			
-				
-				if(!value.equals(p.getValue()))
-				{
-					
+			if (value != null) {
+
+				if (!value.equals(p.getValue())) {
+
 					success = false;
 					break;
-					
+
 				}
-			}
-			else
-			{
+			} else {
 				success = false;
 				break;
 			}
-			
+
 		}
-//		if(nullcount > 0)
-//			return 2;	
-//		else if(nullcount == params.size() - 1)
-//		{
-//			return 3;
-//		}
-		return success?1:0;
-		
-		
-		
+		// if(nullcount > 0)
+		// return 2;
+		// else if(nullcount == params.size() - 1)
+		// {
+		// return 3;
+		// }
+		return success ? 1 : 0;
+
 	}
-	public boolean _evalResource(  PermissionToken token,HttpServletRequest request) {
-								
+
+	public boolean _evalResource(PermissionToken token, HttpServletRequest request) {
+
 		{
 			String resourceParamName = token.getResouceAuthCodeParamName();
-			if(resourceParamName == null || resourceParamName.equals(""))
-			{
-				if(token.isResouceAuthCodeRequired())
-				{
+			if (resourceParamName == null || resourceParamName.equals("")) {
+				if (token.isResouceAuthCodeRequired()) {
 					return false;
-				}
-				else
+				} else
 					return true;
-			}
-			else
-			{
-				if(request != null)
-				{
+			} else {
+				if (request != null) {
 					String rid = request.getParameter(resourceParamName);
-					if(rid == null)
-					{
+					if (rid == null) {
 						return false;
 					}
-//					return token.getResourcedID().equals(rid);
-					return checkPermission(rid, token.getOperation(),token.getResourceType());
-				}
-				else
-				{
-					
+					// return token.getResourcedID().equals(rid);
+					return checkPermission(rid, token.getOperation(), token.getResourceType());
+				} else {
+
 				}
 				return false;
 			}
 		}
 		// TODO Auto-generated method stub
-		
+
 	}
-
-
 
 	@Override
 	public boolean isGuest() {
-		
-		return this.getUserAccount() == null || this.getUserAccount().equals("") 
+
+		return this.getUserAccount() == null || this.getUserAccount().equals("")
 				|| this.getUserAccount().equals(BaseAuthorizationTable.guest);
 	}
-
-
 
 	public HttpServletResponse getResponse() {
 		return response;
 	}
-	
-	public static Map<String,MenuItemU> geMenus(HttpServletRequest request,AccessControl accesscontroler)
-	{
-		Map<String,MenuItemU> permissionMenus = new HashMap<String,MenuItemU>();
+
+	public static Map<String, MenuItemU> geMenus(HttpServletRequest request, AccessControl accesscontroler) {
+		Map<String, MenuItemU> permissionMenus = new HashMap<String, MenuItemU>();
 		MenuHelper menuHelper = MenuHelper.getMenuHelper(request);
 		ModuleQueue moduleQueue = menuHelper.getModules();
 		for (int i = 0; moduleQueue != null && i < moduleQueue.size(); i++) {
@@ -4020,40 +3693,37 @@ passwordUpdateTime
 			menuItemU.setImageUrl(module.getMouseclickimg(request));
 			menuItemU.setType("module");
 			permissionMenus.put(module.getId(), menuItemU);
-			geSubMenus(  permissionMenus,  module,  request,  accesscontroler);
+			geSubMenus(permissionMenus, module, request, accesscontroler);
 		}
 		return permissionMenus;
 	}
-	
-	public static void geSubMenus(Map<String,MenuItemU> permissionMenus,Module module,HttpServletRequest request,AccessControl accesscontroler)
-	{
-		
+
+	public static void geSubMenus(Map<String, MenuItemU> permissionMenus, Module module, HttpServletRequest request,
+			AccessControl accesscontroler) {
+
 		MenuQueue menus = module.getMenus();
 		String contextpath = request.getContextPath();
-		for(int i = 0 ; menus != null && i < menus.size() ; i ++)
-		{
+		for (int i = 0; menus != null && i < menus.size(); i++) {
 			MenuItem menu = menus.getMenuItem(i);
 			if (!menu.isUsed()) {
 				continue;
 			}
-			if(menu instanceof Module)
-			{
+			if (menu instanceof Module) {
 				MenuItemU menuItemU = new MenuItemU();
 				menuItemU.setId(menu.getId());
 				menuItemU.setName(menu.getName(request));
 				menuItemU.setImageUrl(menu.getMouseclickimg(request));
 				menuItemU.setType("module");
 				permissionMenus.put(menu.getId(), menuItemU);
-			}
-			else
-			{
-				Item item = (Item)menu;
-				
+			} else {
+				Item item = (Item) menu;
+
 				String url = null;
 				String area = item.getArea();
-				
+
 				{
-					url = MenuHelper.getRealUrl(contextpath, Framework.getWorkspaceContent(item,accesscontroler),MenuHelper.menupath_menuid,item.getId());
+					url = MenuHelper.getRealUrl(contextpath, Framework.getWorkspaceContent(item, accesscontroler),
+							MenuHelper.menupath_menuid, item.getId());
 				}
 				MenuItemU menuItemU = new MenuItemU();
 				menuItemU.setId(item.getId());
@@ -4066,124 +3736,118 @@ passwordUpdateTime
 				permissionMenus.put(item.getId(), menuItemU);
 			}
 		}
-	 
-		 
+
 	}
-	
-	public static Map<String,List<String>> getResourcePermissions(AccessControl accesscontroler,String resourceType) throws Exception
-	{
-		Map<String,List<String>> cmPermissions = new HashMap<String,List<String>>();
-		List<Resource> cmresources =ConfigManager.getInstance().getResourceManager() !=null? ConfigManager.getInstance().getResourceManager().getResourcesByType(resourceType):null;//SQLExecutor.queryList(String.class, "select title from td_sm_res where restype_id=?", resourceType);
-		if(cmresources == null)
-		{
+
+	public static Map<String, List<String>> getResourcePermissions(AccessControl accesscontroler, String resourceType)
+			throws Exception {
+		Map<String, List<String>> cmPermissions = new HashMap<String, List<String>>();
+		List<Resource> cmresources = ConfigManager.getInstance().getResourceManager() != null
+				? ConfigManager.getInstance().getResourceManager().getResourcesByType(resourceType) : null;// SQLExecutor.queryList(String.class,
+																											// "select
+																											// title
+																											// from
+																											// td_sm_res
+																											// where
+																											// restype_id=?",
+																											// resourceType);
+		if (cmresources == null) {
 			cmresources = new ArrayList<Resource>();
 		}
-		
+
 		ResourceManager resourceManager = new ResourceManager();
 		ResourceInfo resourceInfo = resourceManager.getResourceInfoByType(resourceType);
-		if(resourceInfo == null)
+		if (resourceInfo == null)
 			return cmPermissions;
 		OperationQueue operationQueue = resourceInfo.getOperationQueue();
-		
-		for(int i = 0; operationQueue != null && operationQueue.size() > 0 && i < cmresources.size(); i ++)
-		{
+
+		for (int i = 0; operationQueue != null && operationQueue.size() > 0 && i < cmresources.size(); i++) {
 			String resid = cmresources.get(i).getTitle();
 			List<String> ops = new ArrayList<String>();
-			for(int j = 0; j < operationQueue.size(); j ++)
-			{
+			for (int j = 0; j < operationQueue.size(); j++) {
 				Operation op = operationQueue.getOperation(j);
-				if(accesscontroler.checkPermission(resid, op.getId(), resourceType))
-				{
+				if (accesscontroler.checkPermission(resid, op.getId(), resourceType)) {
 					ops.add(op.getId());
 				}
 			}
-			if(ops.size()> 0)
+			if (ops.size() > 0)
 				cmPermissions.put(resid, ops);
 		}
-		
+
 		String globalid = resourceInfo.getGlobalresourceid();
-		if(StringUtil.isNotEmpty(globalid))
-		{
+		if (StringUtil.isNotEmpty(globalid)) {
 			operationQueue = resourceInfo.getGlobalOperationQueue();
 			List<String> ops = new ArrayList<String>();
-			for(int j = 0; operationQueue != null && operationQueue.size() > 0 &&j < operationQueue.size(); j ++)
-			{
+			for (int j = 0; operationQueue != null && operationQueue.size() > 0 && j < operationQueue.size(); j++) {
 				Operation op = operationQueue.getOperation(j);
-				if(accesscontroler.checkPermission(globalid, op.getId(), resourceType))
-				{
+				if (accesscontroler.checkPermission(globalid, op.getId(), resourceType)) {
 					ops.add(op.getId());
 				}
 			}
-			if(ops.size()> 0)
+			if (ops.size() > 0)
 				cmPermissions.put(globalid, ops);
-		}		
-		
+		}
+
 		return cmPermissions;
 	}
-	
-	public static String getRequestParameter(String name)
-	{
+
+	public static String getRequestParameter(String name) {
 		return AccessControl.getAccessControl()._getRequestParameter(name);
 	}
-	
-	private String _getRequestParameter(String name)
-	{
-		return request !=null?request.getParameter(name):null;
+
+	private String _getRequestParameter(String name) {
+		return request != null ? request.getParameter(name) : null;
 	}
-	
-	public static String[] getRequestParameters(String name)
-	{
+
+	public static String[] getRequestParameters(String name) {
 		return AccessControl.getAccessControl()._getRequestParameters(name);
 	}
-	
-	private String[] _getRequestParameters(String name)
-	{
-		return request !=null?request.getParameterValues(name):null;
+
+	private String[] _getRequestParameters(String name) {
+		return request != null ? request.getParameterValues(name) : null;
 	}
-
-
 
 	@Override
 	public boolean isOrganizationManager(String orgId) {
-		if(ConfigManager.getInstance().getPermissionModule() != null)
-			return ConfigManager.getInstance().getPermissionModule().isOrganizationManager(this.getUserAccount(),orgId);
+		if (ConfigManager.getInstance().getPermissionModule() != null)
+			return ConfigManager.getInstance().getPermissionModule().isOrganizationManager(this.getUserAccount(),
+					orgId);
 		return false;
 	}
-
-
 
 	@Override
 	public boolean isSubOrgManager(String orgId) {
-		if(ConfigManager.getInstance().getPermissionModule() != null)
-			return ConfigManager.getInstance().getPermissionModule().isSubOrgManager(this.getUserAccount(),orgId);
+		if (ConfigManager.getInstance().getPermissionModule() != null)
+			return ConfigManager.getInstance().getPermissionModule().isSubOrgManager(this.getUserAccount(), orgId);
 		return false;
 	}
-
-
 
 	@Override
 	public String getChargeOrgId() {
 		return this.getUserAttribute("departId");
 	}
+
 	public String getChargeOrgName() {
 
 		return this.getUserAttribute("depart");
 	}
+
 	public String getDirectLeaderid() {
 		return this.getUserAttribute("userLeaderid");
 	}
+
 	public String getDirectLeaderName() {
 		return this.getUserAttribute("userLeaderName");
 	}
+
 	public String getDirectLeaderAccount() {
 		return this.getUserAttribute("userLeaderAccount");
 	}
-	
-	
+
 	public String getOrgLeader(String org) {
-		if(ConfigManager.getInstance().getPermissionModule() != null)
+		if (ConfigManager.getInstance().getPermissionModule() != null)
 			return ConfigManager.getInstance().getPermissionModule().getOrgLeader(org);
 		return null;
 	}
-	
+
 }

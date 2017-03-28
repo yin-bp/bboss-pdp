@@ -72,7 +72,7 @@ public class ConfigIOCListener implements IocLifeCycleEventListener {
 				.append("PRIMARY KEY (app_id))")
 				;
 			}
-			log.info("BBOSS_GENCODE table 不存在，创建BBOSS_GENCODE表："+tsql+"。");
+			log.info("auth_application table 不存在，创建auth_application表："+tsql+"。");
 			try {
 				SQLExecutor.update(tsql.toString());
 				log.info("创建auth_application表成功："+tsql+"。");

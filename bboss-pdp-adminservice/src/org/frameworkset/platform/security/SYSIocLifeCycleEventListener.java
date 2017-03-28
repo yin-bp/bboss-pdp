@@ -26,7 +26,7 @@ public class SYSIocLifeCycleEventListener implements IocLifeCycleEventListener {
 		TaskService service = TaskService.getTaskService();
 		service.startService();
 		EventUtils.init();
-		System.out.println("public void afterstart(BaseApplicationContext arg0) ");
+		
 		Framework.getInstanceWithContext(((WebApplicationContext)arg0).getServletContext()).init();
 	}
 

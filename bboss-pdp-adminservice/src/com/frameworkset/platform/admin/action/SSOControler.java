@@ -493,6 +493,7 @@ public class SSOControler {
          */
         String loginPath = request.getParameter("loginPath");//登陆界面风格
         String subsystem_id = request.getParameter("subsystem_id");
+       
 
         loginStyle = StringUtil.getCookieValue(request, "loginStyle");
         system_id = StringUtil.getCookieValue(request, "subsystem_id");
@@ -577,7 +578,7 @@ public class SSOControler {
         } else {
            String flag = request.getParameter("flag"); // 是否触发提交
 
-            // 登陆名称的长度
+            
 
             if (flag == null) {
             } else {
