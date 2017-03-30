@@ -253,8 +253,7 @@
 			</item>
 			<item name="Session管理" id="sessioncontrol" showleftmenu="false" used="false" i18n:en_US="Session Control">
 					<mouseclickimg>html/images/jixiao.jpg</mouseclickimg>
-				<top>header.page</top>
-				<navigator></navigator>
+				 
 				<workspace>
 					<content>session/sessionManager/sessionManager.page</content>
 				</workspace>
@@ -263,6 +262,15 @@
 				</authoration>
 				
 			</item>
+			<item name="dubbo服务测试" id="dubboservice" showleftmenu="false" used="true" i18n:en_US="dubboservice">
+				 
+				<workspace>
+					<content>/jsp/test/testdubbo.jsp</content>
+				</workspace>
+				 
+				
+			</item>
+			
 		</module>
 		<module name="微信管理" id="weixinmanager" used="true" showleftmenu="false" i18n:en_US="Weixin Manage">
 			<description>微信管理</description>

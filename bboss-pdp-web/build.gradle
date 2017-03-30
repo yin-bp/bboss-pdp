@@ -27,8 +27,11 @@ sourceSets {
 	 	compile project(':bboss-pdp-adminservice')
 	   compile project(':bboss-pdp-dict')
 	   compile project(':bboss-pdp-fastwx')
+	   compile project(':bboss-pdp-dubbo-inf')
 	  compile 'io.jsonwebtoken:jjwt:0.7.0' 
-      compile (      		
+      compile (  
+      	 [group: 'com.bbossgroups.plugins', name: 'bboss-plugin-dubbo', version: "${bbossplugin_version}", transitive: true],
+           		
 		  [group: 'mysql', name: 'mysql-connector-java', version: '5.1.39', transitive: false],
 		   fileTree(dir: '../lib', include: '**/*.jar'),    
 		)

@@ -1,1 +1,1 @@
-include "bboss-pdp-auth","bboss-pdp-web","bboss-pdp-config","bboss-pdp-adminservice","bboss-pdp-dict","bboss-pdp-fastwx"
+include "bboss-pdp-auth","bboss-pdp-web","bboss-pdp-config","bboss-pdp-adminservice","bboss-pdp-dict","bboss-pdp-fastwx","bboss-pdp-dubbo-inf","bboss-pdp-dubbo"
