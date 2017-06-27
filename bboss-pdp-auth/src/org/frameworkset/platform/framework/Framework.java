@@ -1,21 +1,7 @@
 package org.frameworkset.platform.framework;
 
-import java.io.File;
-import java.io.PrintWriter;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
+import com.frameworkset.util.DaemonThread;
+import com.frameworkset.util.ResourceInitial;
 import org.apache.log4j.Logger;
 import org.frameworkset.platform.config.ConfigManager;
 import org.frameworkset.platform.framework.Item.ItemUrlStruction;
@@ -34,14 +20,11 @@ import org.frameworkset.spi.support.NoSuchMessageException;
 import org.frameworkset.web.servlet.i18n.WebMessageSourceUtil;
 import org.frameworkset.web.servlet.support.RequestContextUtils;
 
-import com.frameworkset.util.DaemonThread;
-import com.frameworkset.util.FileUtil;
-import com.frameworkset.util.ResourceInitial;
-import com.frameworkset.util.StringUtil;
-import com.frameworkset.util.VelocityUtil;
-
-import bboss.org.apache.velocity.Template;
-import bboss.org.apache.velocity.VelocityContext;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import java.io.PrintWriter;
+import java.util.*;
+import java.util.Map.Entry;
 
 /**
  * <p>
@@ -234,10 +217,10 @@ public class Framework implements ResourceInitial,MessageSource {
 		if (init != null) {
 			return init;
 		} else {
-			init = new Framework();
-			init.setServletContext(servletContext);
-			init.init((String) null);
-			return init;
+			Framework init_ = new Framework();
+			init_.setServletContext(servletContext);
+			init_.init((String) null);
+			return init = init_;
 		}
 	}
 
@@ -282,6 +265,7 @@ public class Framework implements ResourceInitial,MessageSource {
 	// }
 
 	public static Framework getSubFramework(String subsystem) {
+
 		if (init.subsystemFrameworks == null
 				|| init.subsystemFrameworks.size() == 0)
 			return init;
@@ -576,8 +560,6 @@ public class Framework implements ResourceInitial,MessageSource {
 	/**
 	 * reinit
 	 * 
-	 * @param configFile
-	 *            String
 	 */
 	public synchronized void reinit() {
 		reset();
