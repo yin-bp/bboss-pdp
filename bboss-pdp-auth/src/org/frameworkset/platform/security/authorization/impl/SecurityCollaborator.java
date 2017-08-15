@@ -2,22 +2,19 @@
 
 package org.frameworkset.platform.security.authorization.impl;
 
-import java.io.Serializable;
 import java.security.Principal;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
-
 import org.frameworkset.platform.config.ConfigManager;
 import org.frameworkset.platform.security.authorization.AccessException;
 import org.frameworkset.platform.security.authorization.AccessManager;
 import org.frameworkset.platform.security.authorization.AuthRole;
-import org.frameworkset.platform.security.authorization.AuthUser;
-import org.frameworkset.platform.security.authorization.AuthorizationTable;
 import org.frameworkset.platform.security.context.AccessContext;
 import org.frameworkset.platform.security.context.AppAccessContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 
@@ -29,7 +26,7 @@ import org.frameworkset.platform.security.context.AppAccessContext;
  * @version 1.0
  */
 public abstract class SecurityCollaborator{
-    private static Logger log  = Logger.getLogger(SecurityCollaborator.class);
+    private static Logger log  = LoggerFactory.getLogger(SecurityCollaborator.class);
     protected static boolean securityEnabled;
     protected static AccessManager appAccessManager;
     protected PermissionTokenMap permissionTokenMap;

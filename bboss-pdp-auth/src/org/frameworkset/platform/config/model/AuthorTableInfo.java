@@ -1,10 +1,11 @@
 package org.frameworkset.platform.config.model;
 
-import org.apache.log4j.Logger;
 import org.frameworkset.platform.security.authorization.AuthRole;
 import org.frameworkset.platform.security.authorization.impl.BaseAuthorizationTable;
 import org.frameworkset.spi.BaseApplicationContext;
 import org.frameworkset.web.servlet.support.WebApplicationContextUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * <p>Title: </p>
@@ -19,7 +20,7 @@ import org.frameworkset.web.servlet.support.WebApplicationContextUtils;
  * @version 1.0
  */
 public class AuthorTableInfo implements java.io.Serializable {
-    private static Logger log = Logger.getLogger(AuthorTableInfo.class);
+    private static Logger log = LoggerFactory.getLogger(AuthorTableInfo.class);
     private String moduleName;
     private String authorizetableClass ;
     private boolean cachable ;

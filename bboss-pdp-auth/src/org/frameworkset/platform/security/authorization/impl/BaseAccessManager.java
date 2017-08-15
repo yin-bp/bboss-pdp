@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
 import org.frameworkset.platform.config.ConfigManager;
 import org.frameworkset.platform.config.model.ResourceInfo;
 import org.frameworkset.platform.resource.ResourceManager;
@@ -16,6 +15,8 @@ import org.frameworkset.platform.security.authorization.AccessManager;
 import org.frameworkset.platform.security.authorization.AuthRole;
 import org.frameworkset.platform.security.authorization.AuthorizationTable;
 import org.frameworkset.platform.security.context.AccessContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -48,7 +49,7 @@ public abstract class BaseAccessManager implements AccessManager {
 	}
     private Map<String,AuthorizationTable> pluggableAuthTableIdx;
    
-    private static final Logger log = Logger.getLogger(BaseAccessManager.class);
+    private static final Logger log = LoggerFactory.getLogger(BaseAccessManager.class);
 
     /**
      * @since 2004.12.15
@@ -296,7 +297,7 @@ public abstract class BaseAccessManager implements AccessManager {
             return pluggableAuthTable.isGrantedRole(securityrole,
                     principal);
         } catch (SecurityException securityproviderex) {
-            log.error(securityproviderex);
+            log.error("",securityproviderex);
             return false;
         }
     }

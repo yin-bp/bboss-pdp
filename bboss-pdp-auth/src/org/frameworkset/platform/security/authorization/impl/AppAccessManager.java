@@ -2,8 +2,6 @@
 
 package org.frameworkset.platform.security.authorization.impl;
 
-import org.apache.log4j.Logger;
-
 import org.frameworkset.platform.config.ConfigException;
 import org.frameworkset.platform.config.ConfigManager;
 import org.frameworkset.platform.config.model.ResourceInfo;
@@ -13,6 +11,8 @@ import org.frameworkset.platform.resource.ResourceManager;
 import org.frameworkset.platform.security.authorization.AuthRole;
 import org.frameworkset.platform.security.context.AccessContext;
 import org.frameworkset.platform.security.context.AppAccessContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 //import com.ibm.ejs.ras.Tr;
 //import com.ibm.ejs.ras.TraceComponent;
@@ -28,7 +28,7 @@ import org.frameworkset.platform.security.context.AppAccessContext;
  */
 public class AppAccessManager extends BaseAccessManager
 {
-	 private static Logger log = Logger.getLogger(ResourceManager.class);
+	 private static Logger log = LoggerFactory.getLogger(ResourceManager.class);
 
 	/** 
 	 * @since 2004.12.15
@@ -149,8 +149,7 @@ public class AppAccessManager extends BaseAccessManager
 		}
 		catch (ConfigException e)
 		{
-			log.error(e);
-			e.printStackTrace();
+			log.error("",e);
 		}
     	if(resInfo == null)
     	{
@@ -195,8 +194,7 @@ public class AppAccessManager extends BaseAccessManager
 		}
 		catch (ConfigException e)
 		{
-			log.error(e);
-			e.printStackTrace();
+			log.error("",e);
 		}
     	if(resInfo == null)
     	{

@@ -7,9 +7,10 @@ import java.util.Iterator;
 
 import javax.servlet.jsp.JspException;
 
-import com.frameworkset.util.StringUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import org.apache.log4j.Logger;
+import com.frameworkset.util.StringUtil;
 
 /**
  * @author biaoping.yin
@@ -17,7 +18,7 @@ import org.apache.log4j.Logger;
  */
 public class ItemvalueTag extends DictBaseTag
 {
-    private static Logger log = Logger.getLogger(ItemvalueTag.class);
+    private static Logger log = LoggerFactory.getLogger(ItemvalueTag.class);
 	private String itemName;
 	private String defaultItemValue;
 	/* (non-Javadoc)

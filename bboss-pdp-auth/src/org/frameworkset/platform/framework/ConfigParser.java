@@ -7,7 +7,7 @@ package org.frameworkset.platform.framework;
  *
  * <p>Copyright: Copyright (c) 2005</p>
  *
- * <p>Company: iSany</p>
+ * <p>Company: bbossgroups</p>
  *
  * @author biaoping.yin
  * @version 1.0
@@ -24,13 +24,14 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Stack;
 
-import org.apache.log4j.Logger;
-import org.frameworkset.spi.BaseApplicationContext;
-import org.frameworkset.spi.DefaultApplicationContext;
-import org.xml.sax.Attributes;
-
 import org.frameworkset.platform.config.ConfigManager;
 import org.frameworkset.platform.util.I18nXMLParser;
+import org.frameworkset.spi.BaseApplicationContext;
+import org.frameworkset.spi.DefaultApplicationContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.xml.sax.Attributes;
+
 import com.frameworkset.util.StringUtil;
 
 /**
@@ -40,7 +41,7 @@ import com.frameworkset.util.StringUtil;
  * and admin-agent properties.
  */
 public class ConfigParser extends I18nXMLParser  {
-    private static Logger log = Logger.getLogger(ConfigParser.class) ;
+    private static Logger log = LoggerFactory.getLogger(ConfigParser.class) ;
     private ModuleQueue modules;
     private MenuQueue menus; 
     private ItemQueue items;

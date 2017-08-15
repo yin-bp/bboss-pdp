@@ -4,7 +4,7 @@
  *
  * Copyright: Copyright (c) 2004
  *
- * Company: iSany Co., Ltd
+ * Company: bbossgroups Co., Ltd
  *
  * All right reserved.
  *
@@ -19,23 +19,22 @@ package org.frameworkset.platform.security.authorization.impl;
 
 import java.security.Principal;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
 import org.frameworkset.event.Event;
 import org.frameworkset.event.Listener;
 import org.frameworkset.event.NotifiableFactory;
 import org.frameworkset.event.ResourceChangeEventType;
-
 import org.frameworkset.platform.config.model.AuthorTableInfo;
 import org.frameworkset.platform.security.authorization.AuthRole;
 import org.frameworkset.platform.security.authorization.AuthUser;
 import org.frameworkset.platform.security.authorization.AuthorizationTable;
 import org.frameworkset.platform.security.context.AccessContext;
 import org.frameworkset.platform.security.event.ACLEventType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * To change for your class or interface
@@ -45,7 +44,7 @@ import org.frameworkset.platform.security.event.ACLEventType;
  */
 public abstract class BaseAuthorizationTable implements AuthorizationTable,
         Listener {
-    private static final Logger log = Logger.getLogger(BaseAuthorizationTable.class);
+    private static final Logger log = LoggerFactory.getLogger(BaseAuthorizationTable.class);
     /**
      * 当用户没有授予任何角色时，将本空角色数组付给用户的缓冲
      */

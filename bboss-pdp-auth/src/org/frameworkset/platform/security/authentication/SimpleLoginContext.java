@@ -23,10 +23,11 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.log4j.Logger;
 import org.frameworkset.platform.config.ConfigManager;
 import org.frameworkset.platform.config.LoginModuleInfoQueue;
 import org.frameworkset.platform.config.model.LoginModuleInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * <p>Title: SimpleLoginContext.java</p> 
@@ -42,7 +43,7 @@ public class SimpleLoginContext {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private static final Logger log = Logger.getLogger(LoginContext.class);
+	private static final Logger log = LoggerFactory.getLogger(LoginContext.class);
     private static final String INIT_METHOD		= "initialize";
     private static final String LOGIN_METHOD		= "login";
     private static final String COMMIT_METHOD		= "commit";

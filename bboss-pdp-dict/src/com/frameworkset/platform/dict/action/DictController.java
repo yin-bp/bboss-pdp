@@ -18,10 +18,11 @@ package com.frameworkset.platform.dict.action;
 
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.frameworkset.util.annotations.PagerParam;
 import org.frameworkset.util.annotations.ResponseBody;
 import org.frameworkset.web.servlet.ModelMap;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.frameworkset.platform.dict.core.Params;
 import com.frameworkset.platform.dict.core.ParamsHandler;
@@ -40,7 +41,7 @@ import com.frameworkset.util.StringUtil;
  */
 public class DictController {
 
-	private static Logger log = Logger.getLogger(DictController.class);
+	private static Logger log = LoggerFactory.getLogger(DictController.class);
 
 	private DictService dictService;
 	public @ResponseBody String addDict(Dict dict,List<DictItem> dictItems) {

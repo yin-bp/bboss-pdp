@@ -1,7 +1,8 @@
 package org.frameworkset.platform.log;
 
-import org.apache.log4j.Logger;
 import org.frameworkset.platform.util.LogManagerInf;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class DefaultLogManager implements LogManagerInf {
 
@@ -9,7 +10,7 @@ public class DefaultLogManager implements LogManagerInf {
 		// TODO Auto-generated constructor stub
 	}
 
-	private static Logger logger = Logger.getLogger(DefaultLogManager.class);
+	private static Logger logger = LoggerFactory.getLogger(DefaultLogManager.class);
 
 	 
 

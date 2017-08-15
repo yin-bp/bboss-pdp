@@ -4,8 +4,8 @@ import java.util.Map;
 
 /**
  * 
- * <p>Copyright: isany (c) 2010</p>
- * <p>Company: isany</p>
+ * <p>Copyright: bbossgroups (c) 2010</p>
+ * <p>Company: bbossgroups</p>
  * @author: 
  * @date: 2011-2-15
  * @version 1.0 

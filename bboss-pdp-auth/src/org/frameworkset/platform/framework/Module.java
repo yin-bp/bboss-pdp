@@ -17,7 +17,7 @@ import org.frameworkset.web.servlet.support.RequestContextUtils;
  *
  * <p>Copyright: Copyright (c) 2005</p>
  *
- * <p>Company: iSany</p>
+ * <p>Company: bbossgroups</p>
  *
  * @author biaoping.yin
  * @version 1.0

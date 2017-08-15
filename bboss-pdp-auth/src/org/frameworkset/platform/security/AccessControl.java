@@ -37,10 +37,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -49,7 +47,6 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.PageContext;
 
-import org.apache.log4j.Logger;
 import org.frameworkset.platform.config.ConfigManager;
 import org.frameworkset.platform.config.model.Operation;
 import org.frameworkset.platform.config.model.OperationQueue;
@@ -80,13 +77,14 @@ import org.frameworkset.platform.security.authorization.impl.P;
 import org.frameworkset.platform.security.authorization.impl.PermissionToken;
 import org.frameworkset.platform.security.context.AppAccessContext;
 import org.frameworkset.platform.security.menu.MenuItemU;
-import org.frameworkset.platform.security.util.CookieUtil;
 import org.frameworkset.platform.util.LogManagerInf;
 import org.frameworkset.security.AccessControlInf;
 import org.frameworkset.security.DESCipher;
 import org.frameworkset.spi.SPIException;
 import org.frameworkset.web.token.TokenHelper;
 import org.frameworkset.web.token.TokenStore;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.frameworkset.util.StringUtil;
 
@@ -94,7 +92,7 @@ import com.frameworkset.util.StringUtil;
  * @author biaoping.yin created on 2005-9-29 version 1.0
  */
 public class AccessControl implements AccessControlInf {
-	private static final Logger log = Logger.getLogger(AccessControl.class);
+	private static final Logger log = LoggerFactory.getLogger(AccessControl.class);
 
 	// public static final String LOGINCONTEXT_CACHE_KEY = "LOGIN_CONTEXT";
 	public static final String accesscontrol_request_attribute_key = "com.frameworkset.platform.security.AccessControl";

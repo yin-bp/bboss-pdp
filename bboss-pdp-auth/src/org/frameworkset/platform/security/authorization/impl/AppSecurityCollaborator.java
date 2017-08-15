@@ -6,9 +6,6 @@ import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
-import org.frameworkset.spi.BaseApplicationContext;
-
 import org.frameworkset.platform.config.ConfigException;
 import org.frameworkset.platform.config.ConfigManager;
 import org.frameworkset.platform.config.model.ResourceInfo;
@@ -17,10 +14,12 @@ import org.frameworkset.platform.resource.UNProtectedResourceQueue;
 import org.frameworkset.platform.security.authorization.AccessException;
 import org.frameworkset.platform.security.authorization.AuthPrincipal;
 import org.frameworkset.platform.security.authorization.AuthRole;
-import org.frameworkset.platform.security.authorization.AuthUser;
 import org.frameworkset.platform.security.authorization.AuthorizationTable;
 import org.frameworkset.platform.security.context.AccessContext;
 import org.frameworkset.platform.security.context.AppAccessContext;
+import org.frameworkset.spi.BaseApplicationContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 
@@ -31,7 +30,7 @@ import org.frameworkset.platform.security.context.AppAccessContext;
  */
 public class AppSecurityCollaborator extends SecurityCollaborator
 {
-	private static Logger log = Logger.getLogger(AppSecurityCollaborator.class);
+	private static Logger log = LoggerFactory.getLogger(AppSecurityCollaborator.class);
 
 	private static AppSecurityCollaborator securityCollaboratorInstance;
 	
@@ -118,8 +117,7 @@ public class AppSecurityCollaborator extends SecurityCollaborator
 		}
 		catch (ConfigException e)
 		{
-			log.error(e);
-			e.printStackTrace();
+			log.error("",e);
 		}
 		if (resInfo == null)
 		{
@@ -164,8 +162,7 @@ public class AppSecurityCollaborator extends SecurityCollaborator
 		}
 		catch (ConfigException e)
 		{
-			log.error(e);
-			e.printStackTrace();
+			log.error("",e);
 		}
 		if (resInfo == null)
 		{

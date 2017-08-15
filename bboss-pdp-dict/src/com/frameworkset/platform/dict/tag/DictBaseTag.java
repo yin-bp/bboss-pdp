@@ -12,7 +12,8 @@ import java.util.List;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.frameworkset.common.tag.exception.FormulaException;
 import com.frameworkset.common.tag.pager.tags.CellTag;
@@ -29,7 +30,7 @@ import com.frameworkset.util.StringUtil;
  */
 public class  DictBaseTag extends CellTag 
 {
-    private static Logger log = Logger.getLogger(DictBaseTag.class);
+    private static Logger log = LoggerFactory.getLogger(DictBaseTag.class);
     
     private boolean defaultCell;
     protected String defaultName = "";

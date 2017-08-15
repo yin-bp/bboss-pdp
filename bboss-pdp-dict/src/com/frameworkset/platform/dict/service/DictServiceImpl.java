@@ -21,7 +21,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.frameworkset.common.poolman.ConfigSQLExecutor;
 import com.frameworkset.orm.transaction.TransactionManager;
@@ -40,7 +41,7 @@ import com.frameworkset.util.ListInfo;
  */
 public class DictServiceImpl implements DictService {
 
-	private static Logger log = Logger.getLogger(com.frameworkset.platform.dict.service.DictServiceImpl.class);
+	private static Logger log = LoggerFactory.getLogger(com.frameworkset.platform.dict.service.DictServiceImpl.class);
 
 	private ConfigSQLExecutor executor;
 	private List<Param> params(Dict dict,List<DictItem> dictItems,String dictId){

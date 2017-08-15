@@ -1,16 +1,16 @@
 /*
  * @(#)AppBomControler.java
  * 
- * Copyright @ 2001-2011 SANY Group Co.,Ltd.
+ * Copyright @ 2001-2011 bbossgroups Co.,Ltd.
  * All right reserved.
  * 
- * 这个软件是属于三一集团有限公司机密的和私有信息，不得泄露。
- * 并且只能由三一集团有限公司内部员工在得到许可的情况下才允许使用。
+ * 这个软件是属于bbossgroups有限公司机密的和私有信息，不得泄露。
+ * 并且只能由bbossgroups有限公司内部员工在得到许可的情况下才允许使用。
  * This software is the confidential and proprietary information
- * of SANY Group Co, Ltd. You shall not disclose such
+ * of bbossgroups Co, Ltd. You shall not disclose such
  * Confidential Information and shall use it only in accordance
  * with the terms of the license agreement you entered into with
- * SANY Group Co, Ltd.
+ * bbossgroups Co, Ltd.
  */
 package org.frameworkset.platform.security;
 
@@ -18,11 +18,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.log4j.Logger;
+import org.frameworkset.platform.config.ConfigManager;
 import org.frameworkset.web.interceptor.AuthenticateFilter;
 import org.frameworkset.web.servlet.handler.HandlerMeta;
-
-import org.frameworkset.platform.config.ConfigManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -32,7 +32,7 @@ import org.frameworkset.platform.config.ConfigManager;
  */
 public class SYSAuthenticateFilter extends AuthenticateFilter
 {
-	private static Logger log = Logger.getLogger(SYSAuthenticateFilter.class);
+	private static Logger log = LoggerFactory.getLogger(SYSAuthenticateFilter.class);
 	private boolean iswebsealserver = false;
 	public SYSAuthenticateFilter()
 	{

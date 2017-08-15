@@ -1,21 +1,20 @@
 package org.frameworkset.platform.security.authorization.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
 import org.frameworkset.event.Event;
 import org.frameworkset.event.Listener;
 import org.frameworkset.event.NotifiableFactory;
 import org.frameworkset.event.ResourceChangeEventType;
-
 import org.frameworkset.platform.config.model.PermissionRoleMapInfo;
 import org.frameworkset.platform.security.authorization.AuthRole;
 import org.frameworkset.platform.security.context.AccessContext;
 import org.frameworkset.platform.security.event.ACLEventType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -26,7 +25,7 @@ import org.frameworkset.platform.security.event.ACLEventType;
  * @version 1.0
  */
 public abstract class PermissionRoleMap implements Listener {
-    private static Logger log = Logger.getLogger(PermissionRoleMap.class);
+    private static Logger log = LoggerFactory.getLogger(PermissionRoleMap.class);
     public static AuthRole NO_REQUIRED_ROLES[] = new AuthRole[0];
     public static AuthRole EMPTY_REQUIRED_ROLES[] = new AuthRole[0];
    
@@ -106,7 +105,7 @@ public abstract class PermissionRoleMap implements Listener {
             }
             this.inited = true;
         } catch (Exception e) {
-            log.error(e);
+            log.error("",e);
         }
 
     }

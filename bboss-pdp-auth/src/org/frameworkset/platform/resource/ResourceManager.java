@@ -2,8 +2,6 @@ package org.frameworkset.platform.resource;
 
 import java.util.List;
 
-import org.apache.log4j.Logger;
-
 import org.frameworkset.platform.config.ConfigException;
 import org.frameworkset.platform.config.ConfigManager;
 import org.frameworkset.platform.config.ResourceInfoQueue;
@@ -12,6 +10,8 @@ import org.frameworkset.platform.config.model.OperationGroup;
 import org.frameworkset.platform.config.model.OperationQueue;
 import org.frameworkset.platform.config.model.ResourceInfo;
 import org.frameworkset.platform.config.model.Resources;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * <p>Title: ResourceManager</p>
@@ -26,7 +26,7 @@ import org.frameworkset.platform.config.model.Resources;
  * @version 1.0
  */
 public class ResourceManager {
-    private static Logger log = Logger.getLogger(ResourceManager.class);
+    private static Logger log = LoggerFactory.getLogger(ResourceManager.class);
     public static final String DEFAULT_PERMISSION_TABLE = "TD_SM_ROLERESOP";
     public ResourceInfo getResourceInfoByTypeOfModule(String module,
             String type) {
@@ -38,8 +38,7 @@ public class ResourceManager {
 			}
 			catch (ConfigException e)
 			{
-				log.error(e);
-				e.printStackTrace();
+				log.error("",e);
 			}
 	    	
             return resInfo;
@@ -55,8 +54,7 @@ public class ResourceManager {
 			}
 			catch (ConfigException e)
 			{
-				log.error(e);
-				e.printStackTrace();
+				log.error("",e);
 			}
 	    	
             return resInfo;
@@ -74,7 +72,7 @@ public class ResourceManager {
 			}
 			catch (ConfigException e)
 			{
-				log.error(e);
+				log.error("",e);
 			}
 			return null;
         }
