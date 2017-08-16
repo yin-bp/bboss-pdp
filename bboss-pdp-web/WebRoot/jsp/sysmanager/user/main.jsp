@@ -4,7 +4,7 @@
 <%@ taglib uri="/WEB-INF/tld/admin-taglib.tld" prefix="admin"%>
 <%@ taglib uri="/WEB-INF/tld/dictionary.tld" prefix="dict"%>
 <!-- BEGIN PAGE LEVEL PLUGINS -->
-<%@ include file="/jsp/inc/css-link-metronic.inc"%>
+
 <link
 	href="${pageContext.request.contextPath}/assets/global/plugins/jstree/dist/themes/default/style.min.css"
 	rel="stylesheet" type="text/css" />
