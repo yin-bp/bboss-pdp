@@ -1,1 +1,1 @@
-java -jar bboss-rt-5.0.3.6.jar > startup.log
+java -jar bboss-rt-5.0.3.9.jar > startup.log
