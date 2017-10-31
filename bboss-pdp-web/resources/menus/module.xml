@@ -61,7 +61,7 @@
 
 			</workspace>
 			<authoration>
-
+				<!-- <url>/jsp/sysmanager/resource/main.jsp</url> -->
 			</authoration>
 		</publicitem>
 		<module name="一级菜单"
@@ -74,8 +74,6 @@
 					url="admin/content.page" menuType="type1" icon="icon-home">
 				<item name="二级菜单"
 					  i18n:en_US="pathvariable demo" id="pathvariabledemo21"  showleftmenu="false" menuType="type1">
-
-
 					<workspace>
 						<content>admin/content.page</content>
 					</workspace>

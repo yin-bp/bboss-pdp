@@ -92,13 +92,27 @@ public abstract class BaseAccessManager implements AccessManager {
         }
         //判断资源是否是受排斥的资源，如果是则拒绝访问
         if (isExcluded(accesscontext, sresource,method.toString(),resourceType)) {
-            String s2 = "资源[resource[" + sresource + "],action["+ method + "],resourceType[" + resourceType +"] is excluded";
+            String s2 = new StringBuilder()
+            		.append("资源[resourceId[")
+            		.append( sresource )
+            		.append(  "],action[" )
+            		.append(  method  )
+            		.append(  "],resourceType["  )
+            		.append(  resourceType  )
+            		.append( "] is excluded").toString();
             throw new AccessException(s2);
         }
         //判断资源的相应操作所需要的角色是否为空角色，如果是空角色则拒绝访问
         if (requiredRoles == PermissionRoleMap.EMPTY_REQUIRED_ROLES) {
             throw new AccessException(
-                    "资源[resource[" + sresource + "],action["+ method + "],resourceType[" + resourceType +"]，Empty required roles list defined in Authorization Constraint");
+            		new StringBuilder()
+            		.append("资源[resourceId[" )
+            		.append( sresource )
+            		.append( "],action[")
+            		.append( method )
+            		.append( "],resourceType[" )
+            		.append( resourceType )
+            		.append("]，Empty required roles list defined in Authorization Constraint").toString());
         }
 
         //如果所特定类型的资源的所有操作都没有赋给任何角色，则判断没有角色的资源是否可以访问
@@ -106,7 +120,14 @@ public abstract class BaseAccessManager implements AccessManager {
             if (allowIfNoRequiredRoles(accesscontext)) {
                 return;
             } else {
-                throw new AccessException("No required roles defined for 资源[resource[" + sresource + "],action["+ method + "],resourceType[" + resourceType +"]");
+                throw new AccessException(new StringBuilder()
+                		.append("No required roles defined for 资源[resourceId[" )
+                		.append( sresource )
+                		.append( "],action[")
+                		.append( method )
+                		.append( "],resourceType[" )
+                		.append( resourceType )
+                		.append("]").toString());
             }
         }
 
@@ -126,7 +147,13 @@ public abstract class BaseAccessManager implements AccessManager {
             stringbuffer.append(requiredRoles[l]).append(" ");
         }
 
-        String roleNameStr = stringbuffer.toString();
+        String roleNameStr = stringbuffer.append(" of 资源[resourceid[" )
+                                             		.append( sresource )
+                                            		.append( "],action[")
+                                            		.append( method )
+                                            		.append( "],resourceType[" )
+                                            		.append( resourceType )
+                                            		.append("]").toString();
         log.debug(roleNameStr);
         throw new AccessException(roleNameStr);
 
