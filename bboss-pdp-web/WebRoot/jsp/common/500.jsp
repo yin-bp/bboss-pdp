@@ -1,7 +1,34 @@
-<%@ page session="false" language="java"
-	contentType="text/html; charset=utf-8"%>
+<%@page import="com.frameworkset.util.StringUtil"%>
+<%@ page language="java" session="false"  isErrorPage="true" contentType="text/html; charset=UTF-8"%>	
 
 <%@ taglib uri="/WEB-INF/tld/admin-taglib.tld" prefix="admin" %>
+
+<%
+		String message = "后台处理异常！";
+		boolean sessionTimeOut = false;
+		if (exception != null) {
+			if (exception.getCause() instanceof org.frameworkset.platform.security.SessionTimeoutExcetpion){
+				//response.sendRedirect(request.getContextPath());
+				//return;
+				sessionTimeOut = true;
+			}
+			int remoteExceptionCount = 0;
+			Throwable e =  exception.getCause();
+			while (e != null){
+				
+				e = e.getCause();
+			}
+			
+			if (remoteExceptionCount > 1){
+				message = "";
+			}
+			else if (remoteExceptionCount == 1){
+				message = "";
+			}
+			//message = exception.getMessage();
+
+	%>	
+	
 <!-- BEGIN PAGE LEVEL STYLES -->
         <link href="${pageContext.request.contextPath}/assets/pages/css/error.min.css" rel="stylesheet" type="text/css" />
         <!-- END PAGE LEVEL STYLES -->
@@ -45,10 +72,10 @@
                                 <div class=" number font-red"> 500 </div>
                                 <div class=" details">
                                     <h3>Oops! Something went wrong.</h3>
-                                    <p> We are fixing it! Please come back in a while.
+                                    <p> <%=message %>
                                         <br/> </p>
                                     <p>
-                                        <a href="index.html" class="btn red btn-outline"> Return home </a>
+                                        <a href="/admin/index.page" class="btn red btn-outline"> Return home </a>
                                         <br> </p>
                                 </div>
                             </div>
