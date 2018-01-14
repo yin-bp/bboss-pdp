@@ -441,7 +441,7 @@ public class RoleController {
 				if (temp.size() > 0) {
 					AccessControl control = AccessControl.getAccessControl();
 					for (Role role : temp) {
-						if (control.checkPermission(role.getRoleName(), "roleset", "role"))
+						if (control.checkPermission(role.getRoleName(), "roleset", "role") || control.checkPermission(role.getRoleId(), "roleset", "role"))
 							rolesetPermissions.add(role);
 					}
 				}
