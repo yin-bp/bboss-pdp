@@ -16,31 +16,20 @@
 
 package com.frameworkset.platform.admin.service;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.log4j.Logger;
-import org.frameworkset.platform.config.model.ResourceInfo;
-import org.frameworkset.platform.resource.ResourceManager;
-import org.frameworkset.platform.security.authorization.AuthRole;
-
 import com.frameworkset.common.poolman.ConfigSQLExecutor;
 import com.frameworkset.common.poolman.Record;
 import com.frameworkset.common.poolman.handle.NullRowHandler;
 import com.frameworkset.common.poolman.handle.RowHandler;
 import com.frameworkset.orm.transaction.TransactionManager;
-import com.frameworkset.platform.admin.entity.AuthOPS;
-import com.frameworkset.platform.admin.entity.ResOpr;
-import com.frameworkset.platform.admin.entity.Role;
-import com.frameworkset.platform.admin.entity.RoleCondition;
-import com.frameworkset.platform.admin.entity.RoleUser;
-import com.frameworkset.platform.admin.entity.SmUser;
-import com.frameworkset.platform.admin.entity.UserRole;
+import com.frameworkset.platform.admin.entity.*;
 import com.frameworkset.util.ListInfo;
+import org.apache.log4j.Logger;
+import org.frameworkset.platform.config.model.ResourceInfo;
+import org.frameworkset.platform.resource.ResourceManager;
+import org.frameworkset.platform.security.authorization.AuthRole;
+
+import java.sql.SQLException;
+import java.util.*;
 
 /**
  * <p>Title: RoleServiceImpl</p> <p>Description: 角色管理管理业务处理类 </p> <p>bboss</p>
@@ -413,7 +402,7 @@ public class RoleServiceImpl implements RoleService {
 			authinfos.put("roleId", roleId);
 			authinfos.put("resourceType", resourceType);
 			authinfos.put("roleType", roleType);
-//			authinfos.put("resCode", globalresourceid);
+			authinfos.put("resCode", globalresourceid);
 			authinfos.put("permissionTable", permissionTable);
 			this.executor.deleteBean("cleanroleAuths", authinfos);
 //			if(StringUtil.isNotEmpty(globalresourceid)){
