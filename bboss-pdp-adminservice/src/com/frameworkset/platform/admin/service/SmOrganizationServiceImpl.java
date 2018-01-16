@@ -313,6 +313,16 @@ public class SmOrganizationServiceImpl implements SmOrganizationService {
 		return false;
 	}
 	
+	/**
+	 * 获取用户可管理的机构列表
+	 * @param userId
+	 * @return
+	 * @throws Exception 
+	 */
+	public List<SmOrganization> getManagerOrgs(String userId) throws Exception{
+		return  this.executor.queryList(SmOrganization.class, "getUserManagerOrgs", userId);
+	}
+	
 	
 	
 }

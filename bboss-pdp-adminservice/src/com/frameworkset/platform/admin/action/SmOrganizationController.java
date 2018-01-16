@@ -26,6 +26,7 @@ import org.frameworkset.event.EventImpl;
 import org.frameworkset.platform.common.DatagridBean;
 import org.frameworkset.platform.common.JSTreeNode;
 import org.frameworkset.platform.common.TreeNodeStage;
+import org.frameworkset.platform.security.AccessControl;
 import org.frameworkset.platform.security.event.ACLEventType;
 import org.frameworkset.platform.util.AdminUtil;
 import org.frameworkset.util.annotations.PagerParam;
@@ -56,7 +57,33 @@ public class SmOrganizationController {
 	private SmOrganizationService smOrganizationService;
 	private SmUserService userService;
 	private RoleService roleService;
-	public @ResponseBody List<JSTreeNode> getChildrens(String parent,boolean isuser,boolean chooseuser)
+	private List<SmOrganization> filterChildren(List<SmOrganization> childrens,List<SmOrganization> mangerOrgs){
+		List<SmOrganization> _childrens = new ArrayList<SmOrganization>();
+		for(SmOrganization chield:childrens){
+			String orgTreeLevel = chield.getOrgTreeLevel()+"|";
+			for(SmOrganization morg:mangerOrgs){
+				String parentOrgTreeLevel = morg.getOrgTreeLevel()+"|";
+				if(orgTreeLevel.equals(parentOrgTreeLevel)){
+					chield.setCanManager(true);
+					_childrens.add(chield);
+					break;
+				}
+				else if(orgTreeLevel.startsWith(parentOrgTreeLevel)){
+					chield.setCanManager(true);
+					_childrens.add(chield);
+					break;
+				}
+				else if(parentOrgTreeLevel.startsWith(orgTreeLevel))
+				{
+					chield.setCanManager(false);
+					_childrens.add(chield);
+					break;
+				}
+			}
+		}
+		return _childrens;
+	}
+	public @ResponseBody List<JSTreeNode> getChildrens(String parent,boolean isuser,boolean chooseuser) throws Exception
 	{
 		if(StringUtil.isEmpty(parent))
 			return null;
@@ -66,7 +93,12 @@ public class SmOrganizationController {
 			if(orgs == null || orgs.size() == 0)
 				return null;
 		}
-		
+		if(!AccessControl.getAccessControl().isAdmin() ){
+			List<SmOrganization> mangerOrgs = this.smOrganizationService.getManagerOrgs(AccessControl.getAccessControl().getUserID());
+			if(mangerOrgs == null || mangerOrgs.size() == 0)
+				return null;
+			orgs = filterChildren(orgs, mangerOrgs);
+		}
 		List<JSTreeNode> treeNodes = new ArrayList<JSTreeNode>();
 		for(SmOrganization org:orgs)
 		{
@@ -118,7 +150,7 @@ public class SmOrganizationController {
 		JSTreeNode.setText(org.getOrgName());
 		JSTreeNode.setIcon(null);
 		TreeNodeStage state = new TreeNodeStage();
-		state.setDisabled(false);
+		state.setDisabled(!org.isCanManager());
 		state.setOpened(false);
 		state.setSelected(false);
 		JSTreeNode.setState(state);

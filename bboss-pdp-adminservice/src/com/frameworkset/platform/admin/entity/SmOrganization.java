@@ -132,6 +132,11 @@ public class SmOrganization implements java.io.Serializable {
 	 */
 	private String remark5;
 	private String satrapjobid;
+	/**
+	 * true：标识机构可以被管理员管理
+	 * false：标识机构不可以被管理员管理，一般是没有权限的父机构设置为false
+	 */
+	private boolean canManager = true;
 	public SmOrganization() {
 	}
 	public void setOrgId(String orgId) {
@@ -396,6 +401,12 @@ public class SmOrganization implements java.io.Serializable {
 	}
 	public void setOrgleaderRealName(String orgleaderRealName) {
 		this.orgleaderRealName = orgleaderRealName;
+	}
+	public boolean isCanManager() {
+		return canManager;
+	}
+	public void setCanManager(boolean canManager) {
+		this.canManager = canManager;
 	}
 
 }

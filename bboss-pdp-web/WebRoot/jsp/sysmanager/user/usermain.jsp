@@ -72,8 +72,10 @@
                               
 		                                <option value="0">本机构</option>
 		                                <option value="1">含子机构</option>
-		                                <option value="2">所有机构</option>
-		                                <option value="3">所有用户</option>
+										<pg:true actual="${isAdmin}">
+											<option value="2">所有机构</option>
+											<option value="3">所有用户</option>
+										</pg:true>
 		                            </select>  
 									<div class="form-control-focus"></div>
 	

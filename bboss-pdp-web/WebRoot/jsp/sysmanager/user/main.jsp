@@ -3,6 +3,7 @@
 
 <%@ taglib uri="/WEB-INF/tld/admin-taglib.tld" prefix="admin"%>
 <%@ taglib uri="/WEB-INF/tld/dictionary.tld" prefix="dict"%>
+<%@ taglib uri="/WEB-INF/tld/pager-taglib.tld" prefix="pg" %>
 <!-- BEGIN PAGE LEVEL PLUGINS -->
 
 <link

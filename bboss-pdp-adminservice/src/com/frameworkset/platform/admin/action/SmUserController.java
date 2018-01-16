@@ -16,10 +16,14 @@
 
 package com.frameworkset.platform.admin.action;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
+import com.frameworkset.orm.transaction.TransactionManager;
+import com.frameworkset.platform.admin.entity.*;
+import com.frameworkset.platform.admin.service.RoleService;
+import com.frameworkset.platform.admin.service.SmOrganizationService;
+import com.frameworkset.platform.admin.service.SmUserException;
+import com.frameworkset.platform.admin.service.SmUserService;
+import com.frameworkset.util.ListInfo;
+import com.frameworkset.util.StringUtil;
 import org.apache.log4j.Logger;
 import org.frameworkset.event.Event;
 import org.frameworkset.event.EventHandle;
@@ -35,18 +39,9 @@ import org.frameworkset.util.annotations.PagerParam;
 import org.frameworkset.util.annotations.ResponseBody;
 import org.frameworkset.web.servlet.ModelMap;
 
-import com.frameworkset.orm.transaction.TransactionManager;
-import com.frameworkset.platform.admin.entity.HandleResult;
-import com.frameworkset.platform.admin.entity.MoveinUserCondition;
-import com.frameworkset.platform.admin.entity.SmUser;
-import com.frameworkset.platform.admin.entity.SmUserCondition;
-import com.frameworkset.platform.admin.entity.UserRole;
-import com.frameworkset.platform.admin.service.RoleService;
-import com.frameworkset.platform.admin.service.SmOrganizationService;
-import com.frameworkset.platform.admin.service.SmUserException;
-import com.frameworkset.platform.admin.service.SmUserService;
-import com.frameworkset.util.ListInfo;
-import com.frameworkset.util.StringUtil;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * <p>Title: SmUserController</p> <p>Description: 用户管理管理控制器处理类 </p> <p>bboss</p>
@@ -391,7 +386,8 @@ public class SmUserController {
 		model.addAttribute("departId",departId);
 		return "path:addSmUser";
 	}
-	public String index() {
+	public String index(ModelMap model) {
+		model.addAttribute("isAdmin",AccessControl.getAccessControl().isAdmin());
 		return "path:index";
 
 	}

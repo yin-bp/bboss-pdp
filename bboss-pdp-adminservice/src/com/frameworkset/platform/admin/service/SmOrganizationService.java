@@ -99,4 +99,11 @@ public interface SmOrganizationService {
 	 * @return
 	 */
 	public boolean isSubOrgManager(String userAccount, String orgId);
+	
+	/**
+	 * 获取用户可管理的机构列表
+	 * @param userId
+	 * @return
+	 */
+	public List<SmOrganization> getManagerOrgs(String userId) throws Exception;
 }

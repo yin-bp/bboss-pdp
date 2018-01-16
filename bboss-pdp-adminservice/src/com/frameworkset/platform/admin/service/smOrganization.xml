@@ -18,6 +18,15 @@
 			 where om.org_id =?
 		]]>
 	</property>
+	
+	<property name="getUserManagerOrgs">
+		<![CDATA[
+			select org.* from td_sm_organization org inner join td_sm_orgmanager om on org.org_ID = om.org_ID				
+			 where om.user_id =?
+		]]>
+	</property>
+	
+	
 	<property name="existManager">
 		<![CDATA[
 			select count(org_id) from td_sm_orgmanager om  where om.USER_ID = ? and om.org_id=? 
