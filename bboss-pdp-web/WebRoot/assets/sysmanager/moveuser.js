@@ -149,7 +149,7 @@ var SysMoveUsers = function(){
 				 ModelDialog.warn('请选择要调入的用户!');
 				 return;
 			}	 
-			
+			//debugger;
 			 $.ajax({
 		 		   type: "POST",
 		 			url : usercontextpath+'/sysmanager/user/saveMoveusers.page',
@@ -235,14 +235,16 @@ var SysMoveUsers = function(){
 				 return;
 			 }
 			 var userIds;
-	         $('input[name="userId"]:checked',$("#datatable_userlist")).each(function(){ 
+
+	         // $('input[name="userId"]:checked',$("#datatable_userlist")).each(function(){
+             $('input[name="userId"]:checked',$(".table-userlist")).each(function(){
 	        	 if(userIds != null)
 	    				userIds += ","+$(this).val();
 	    			else
 	    				userIds = $(this).val();
 	        	 
-	         }); 
-			 
+	         });
+			 //debugger;
 			 $.ajax({
 		 		   type: "POST",
 		 			url : usercontextpath+'/sysmanager/user/saveMoveusers.page',
