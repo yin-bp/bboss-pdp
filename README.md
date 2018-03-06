@@ -17,6 +17,10 @@ https://git.oschina.net/bboss/bboss-pdp
 ## bboss项目特色特点介绍文档：
 http://yin-bp.iteye.com/blog/1080824
 
+## pinpoint config
+
+-javaagent:F:/6_environment/blackcat/pinpoint-agent-1.6.2/pinpoint-bootstrap-1.6.2.jar -Dpinpoint.agentId=pdpagent -Dpinpoint.applicationName=pdp"
+
 ## License
 
 The BBoss Framework is released under version 2.0 of the [Apache License][].
