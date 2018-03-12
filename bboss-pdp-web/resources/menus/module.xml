@@ -342,7 +342,7 @@
 				<content>/sysmanager/user/tomodifyPassword.page?frompersonal=true</content>
 			</workspace>
 			<authoration>
-				<url>/sysmanager/user/modifypassword.page</url>
+				<url>/sysmanager/user/modifypassword.page,/sysmanager/user/resetpassword.page</url>
 			</authoration>
 
 		</item>
