@@ -269,6 +269,15 @@
 
 			</item>
 
+			<item name="Elasticsearch" id="Elasticsearch" showleftmenu="false" used="true" i18n:en_US="Elasticsearch">
+
+				<workspace>
+					<content>/jsp/test/testElasticsearch.jsp</content>
+				</workspace>
+
+
+			</item>
+
 			<item name="mq生产者" id="mqsend" showleftmenu="false" used="true" i18n:en_US="mqsend">
 
 				<workspace>
