@@ -88,7 +88,7 @@ public class AuthRole implements Serializable{
 			return false;
 		AuthRole role = (AuthRole)obj;
 		if(roleName == null || role == null || role.getRoleName() == null || roleType == null || role.getRoleType() == null)
-			System.out.println();
+			return false;
 		return this.roleName.equals(role.getRoleName()) && this.roleType.equals(role.getRoleType());
 	}
 	
