@@ -16,17 +16,16 @@
 
 package com.frameworkset.platform.admin.service;
 
-import java.sql.SQLException;
-import java.util.List;
-
-import org.apache.log4j.Logger;
-
 import com.frameworkset.common.poolman.ConfigSQLExecutor;
 import com.frameworkset.orm.transaction.TransactionManager;
 import com.frameworkset.platform.admin.entity.Resource;
 import com.frameworkset.platform.admin.entity.ResourceCondition;
 import com.frameworkset.platform.admin.entity.ResourceWithOPS;
 import com.frameworkset.util.ListInfo;
+import org.slf4j.LoggerFactory;
+
+import java.sql.SQLException;
+import java.util.List;
 
 /**
  * <p>Title: ResourceServiceImpl</p> <p>Description: 资源管理管理业务处理类 </p>
@@ -35,7 +34,7 @@ import com.frameworkset.util.ListInfo;
  */
 public class ResourceServiceImpl implements ResourceService {
 
-	private static Logger log = Logger.getLogger(com.frameworkset.platform.admin.service.ResourceServiceImpl.class);
+	private static org.slf4j.Logger log = LoggerFactory.getLogger(com.frameworkset.platform.admin.service.ResourceServiceImpl.class);
 
 	private ConfigSQLExecutor executor;
 	public void addResource(Resource resource) throws ResourceException {

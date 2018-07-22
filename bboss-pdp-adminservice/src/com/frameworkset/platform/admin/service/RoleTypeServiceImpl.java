@@ -16,12 +16,14 @@
 
 package com.frameworkset.platform.admin.service;
 
-import com.frameworkset.platform.admin.entity.*;
-import com.frameworkset.util.ListInfo;
 import com.frameworkset.common.poolman.ConfigSQLExecutor;
-import org.apache.log4j.Logger;
-import java.util.List;
 import com.frameworkset.orm.transaction.TransactionManager;
+import com.frameworkset.platform.admin.entity.RoleType;
+import com.frameworkset.platform.admin.entity.RoleTypeCondition;
+import com.frameworkset.util.ListInfo;
+import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 /**
  * <p>Title: RoleTypeServiceImpl</p> <p>Description: 角色类型管理管理业务处理类 </p>
@@ -30,7 +32,7 @@ import com.frameworkset.orm.transaction.TransactionManager;
  */
 public class RoleTypeServiceImpl implements RoleTypeService {
 
-	private static Logger log = Logger.getLogger(com.frameworkset.platform.admin.service.RoleTypeServiceImpl.class);
+	private static org.slf4j.Logger log = LoggerFactory.getLogger(com.frameworkset.platform.admin.service.RoleTypeServiceImpl.class);
 
 	private ConfigSQLExecutor executor;
 	public void addRoleType(RoleType roleType) throws RoleTypeException {

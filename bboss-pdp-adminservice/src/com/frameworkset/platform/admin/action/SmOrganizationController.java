@@ -16,10 +16,17 @@
 
 package com.frameworkset.platform.admin.action;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.log4j.Logger;
+import com.frameworkset.orm.transaction.TransactionManager;
+import com.frameworkset.platform.admin.entity.SmOrganization;
+import com.frameworkset.platform.admin.entity.SmOrganizationCondition;
+import com.frameworkset.platform.admin.entity.SmUser;
+import com.frameworkset.platform.admin.service.RoleService;
+import com.frameworkset.platform.admin.service.SmOrganizationException;
+import com.frameworkset.platform.admin.service.SmOrganizationService;
+import com.frameworkset.platform.admin.service.SmUserService;
+import com.frameworkset.platform.admin.util.OpResult;
+import com.frameworkset.util.ListInfo;
+import com.frameworkset.util.StringUtil;
 import org.frameworkset.event.Event;
 import org.frameworkset.event.EventHandle;
 import org.frameworkset.event.EventImpl;
@@ -32,18 +39,10 @@ import org.frameworkset.platform.util.AdminUtil;
 import org.frameworkset.util.annotations.PagerParam;
 import org.frameworkset.util.annotations.ResponseBody;
 import org.frameworkset.web.servlet.ModelMap;
+import org.slf4j.LoggerFactory;
 
-import com.frameworkset.orm.transaction.TransactionManager;
-import com.frameworkset.platform.admin.entity.SmOrganization;
-import com.frameworkset.platform.admin.entity.SmOrganizationCondition;
-import com.frameworkset.platform.admin.entity.SmUser;
-import com.frameworkset.platform.admin.service.RoleService;
-import com.frameworkset.platform.admin.service.SmOrganizationException;
-import com.frameworkset.platform.admin.service.SmOrganizationService;
-import com.frameworkset.platform.admin.service.SmUserService;
-import com.frameworkset.platform.admin.util.OpResult;
-import com.frameworkset.util.ListInfo;
-import com.frameworkset.util.StringUtil;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <p>Title: SmOrganizationController</p> <p>Description: 机构管理管理控制器处理类 </p>
@@ -52,7 +51,7 @@ import com.frameworkset.util.StringUtil;
  */
 public class SmOrganizationController {
 
-	private static Logger log = Logger.getLogger(SmOrganizationController.class);
+	private static org.slf4j.Logger log = LoggerFactory.getLogger(SmOrganizationController.class);
 
 	private SmOrganizationService smOrganizationService;
 	private SmUserService userService;

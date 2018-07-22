@@ -22,7 +22,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
 
 import com.frameworkset.common.poolman.ConfigSQLExecutor;
 import com.frameworkset.orm.transaction.TransactionManager;
@@ -30,6 +29,7 @@ import com.frameworkset.platform.admin.entity.SmOrganization;
 import com.frameworkset.platform.admin.entity.SmOrganizationCondition;
 import com.frameworkset.platform.admin.entity.SmUser;
 import com.frameworkset.util.ListInfo;
+import org.slf4j.LoggerFactory;
 
 /**
  * <p>Title: SmOrganizationServiceImpl</p> <p>Description: 机构管理管理业务处理类 </p>
@@ -38,7 +38,7 @@ import com.frameworkset.util.ListInfo;
  */
 public class SmOrganizationServiceImpl implements SmOrganizationService {
 
-	private static Logger log = Logger
+	private static org.slf4j.Logger log = LoggerFactory
 			.getLogger(com.frameworkset.platform.admin.service.SmOrganizationServiceImpl.class);
 
 	private ConfigSQLExecutor executor;

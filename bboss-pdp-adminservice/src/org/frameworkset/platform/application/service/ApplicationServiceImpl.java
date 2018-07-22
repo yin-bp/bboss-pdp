@@ -16,19 +16,18 @@
 
 package org.frameworkset.platform.application.service;
 
-import java.util.List;
-
+import com.frameworkset.common.poolman.ConfigSQLExecutor;
+import com.frameworkset.orm.transaction.TransactionManager;
+import com.frameworkset.util.ListInfo;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
 import org.frameworkset.platform.application.entity.Application;
 import org.frameworkset.platform.application.entity.ApplicationCondition;
 import org.frameworkset.security.ecc.SimpleKeyPair;
 import org.frameworkset.web.auth.ApplicationSecretEncrpy;
 import org.frameworkset.web.token.TokenHelper;
+import org.slf4j.LoggerFactory;
 
-import com.frameworkset.common.poolman.ConfigSQLExecutor;
-import com.frameworkset.orm.transaction.TransactionManager;
-import com.frameworkset.util.ListInfo;
+import java.util.List;
 
 /**
  * <p>Title: ApplicationServiceImpl</p> <p>Description: 应用管理管理业务处理类 </p>
@@ -37,7 +36,7 @@ import com.frameworkset.util.ListInfo;
  */
 public class ApplicationServiceImpl implements ApplicationService {
 
-	private static Logger log = Logger
+	private static org.slf4j.Logger log = LoggerFactory
 			.getLogger(org.frameworkset.platform.application.service.ApplicationServiceImpl.class);
 
 	private ConfigSQLExecutor executor;

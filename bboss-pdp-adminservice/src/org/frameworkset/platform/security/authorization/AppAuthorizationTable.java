@@ -2,16 +2,15 @@
 
 package org.frameworkset.platform.security.authorization;
 
-import java.util.List;
-
-import org.apache.log4j.Logger;
-import org.frameworkset.platform.security.AdminServiceUtil;
-import org.frameworkset.platform.security.authorization.impl.BaseAuthorizationTable;
-
 import com.frameworkset.orm.transaction.TransactionManager;
 import com.frameworkset.platform.admin.entity.Role;
 import com.frameworkset.platform.admin.entity.SmUser;
 import com.frameworkset.platform.admin.entity.UserRole;
+import org.frameworkset.platform.security.AdminServiceUtil;
+import org.frameworkset.platform.security.authorization.impl.BaseAuthorizationTable;
+import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 /**
  * 
@@ -21,7 +20,7 @@ import com.frameworkset.platform.admin.entity.UserRole;
  * @version 1.0
  */
 public class AppAuthorizationTable extends BaseAuthorizationTable{
-	private static final Logger log = Logger
+	private static final org.slf4j.Logger log = LoggerFactory
 			.getLogger(AppAuthorizationTable.class);
 //	private String[][] roles = new String[][]{
 //		{"1","administrator",AuthRole.TYPE_ROLE},

@@ -3,11 +3,11 @@
  */
 package org.frameworkset.platform.security.authoration;
 
-import org.apache.log4j.Logger;
 import org.frameworkset.platform.security.authorization.AuthRole;
 import org.frameworkset.platform.security.authorization.AuthUser;
 import org.frameworkset.platform.security.authorization.impl.BaseAuthorizationTable;
 import org.frameworkset.spi.SPIException;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author yinbp
@@ -15,7 +15,7 @@ import org.frameworkset.spi.SPIException;
  * @Date:2017-01-03 13:24:45
  */
 public class ConfigAppAuthorizationTable  extends BaseAuthorizationTable{
-	private static final Logger log = Logger
+	private static final org.slf4j.Logger log = LoggerFactory
 			.getLogger(ConfigAppAuthorizationTable.class);
 	private String[][] roles = new String[][]{
 		{"1","administrator",AuthRole.TYPE_ROLE},

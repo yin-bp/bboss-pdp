@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
 import org.frameworkset.platform.common.Constants;
 import org.frameworkset.platform.entity.Leader;
 import org.frameworkset.platform.security.AccessControl;
@@ -40,6 +39,7 @@ import com.frameworkset.platform.admin.entity.SmUser;
 import com.frameworkset.platform.admin.entity.SmUserCondition;
 import com.frameworkset.util.ListInfo;
 import com.frameworkset.util.StringUtil;
+import org.slf4j.LoggerFactory;
 
 /**
  * <p>Title: SmUserServiceImpl</p> <p>Description: 用户管理管理业务处理类 </p> <p>bboss</p>
@@ -48,7 +48,7 @@ import com.frameworkset.util.StringUtil;
  */
 public class SmUserServiceImpl implements SmUserService {
 
-	private static Logger log = Logger.getLogger(com.frameworkset.platform.admin.service.SmUserServiceImpl.class);
+	private static org.slf4j.Logger log = LoggerFactory.getLogger(com.frameworkset.platform.admin.service.SmUserServiceImpl.class);
 	private SmOrganizationService smOrganizationService;
 	private ConfigSQLExecutor executor;
 	private void handlLisan(SmUser smUser){

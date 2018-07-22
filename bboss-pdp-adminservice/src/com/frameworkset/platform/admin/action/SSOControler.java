@@ -1,33 +1,10 @@
 package com.frameworkset.platform.admin.action;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.net.URLDecoder;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
-
-import javax.imageio.ImageIO;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-import org.apache.log4j.Logger;
+import com.frameworkset.util.StringUtil;
 import org.frameworkset.platform.action.SysInfo;
 import org.frameworkset.platform.config.ConfigManager;
-import org.frameworkset.platform.framework.Framework;
-import org.frameworkset.platform.framework.Item;
-import org.frameworkset.platform.framework.MenuHelper;
+import org.frameworkset.platform.framework.*;
 import org.frameworkset.platform.framework.MenuItem;
-import org.frameworkset.platform.framework.Module;
-import org.frameworkset.platform.framework.SubSystem;
 import org.frameworkset.platform.security.AccessControl;
 import org.frameworkset.platform.security.PermissionModule;
 import org.frameworkset.platform.security.authorization.AccessException;
@@ -39,13 +16,28 @@ import org.frameworkset.web.interceptor.AuthenticateFilter;
 import org.frameworkset.web.servlet.ModelMap;
 import org.frameworkset.web.servlet.support.RequestContextUtils;
 import org.frameworkset.web.token.TokenStore;
+import org.slf4j.LoggerFactory;
 
-import com.frameworkset.util.StringUtil;
- 
+import javax.imageio.ImageIO;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.net.URLDecoder;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Random;
+
 
 public class SSOControler {
 
-    private static Logger log = Logger.getLogger(SSOControler.class);
+    private static org.slf4j.Logger log = LoggerFactory.getLogger(SSOControler.class);
     private boolean enableuseraccountsso = false;
 //    public @ResponseBody String recive(ModelMap model, HttpServletRequest request, HttpServletResponse response)
 //			throws IOException {

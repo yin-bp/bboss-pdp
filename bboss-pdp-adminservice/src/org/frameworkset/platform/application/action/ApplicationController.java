@@ -16,10 +16,9 @@
 
 package org.frameworkset.platform.application.action;
 
-import java.io.InputStream;
-import java.util.List;
-
-import org.apache.log4j.Logger;
+import com.frameworkset.util.ListInfo;
+import com.frameworkset.util.SimpleStringUtil;
+import com.frameworkset.util.StringUtil;
 import org.frameworkset.http.FileBlob;
 import org.frameworkset.platform.application.entity.Application;
 import org.frameworkset.platform.application.entity.ApplicationCondition;
@@ -31,10 +30,10 @@ import org.frameworkset.util.annotations.ResponseBody;
 import org.frameworkset.web.auth.AuthorHelper;
 import org.frameworkset.web.servlet.ModelMap;
 import org.frameworkset.web.token.TokenHelper;
+import org.slf4j.LoggerFactory;
 
-import com.frameworkset.util.ListInfo;
-import com.frameworkset.util.SimpleStringUtil;
-import com.frameworkset.util.StringUtil;
+import java.io.InputStream;
+import java.util.List;
 
 /**
  * <p>Title: ApplicationController</p> <p>Description: 应用管理管理控制器处理类 </p>
@@ -43,7 +42,7 @@ import com.frameworkset.util.StringUtil;
  */
 public class ApplicationController {
 
-	private static Logger log = Logger.getLogger(ApplicationController.class);
+	private static org.slf4j.Logger log = LoggerFactory.getLogger(ApplicationController.class);
 
 	private ApplicationService applicationService;
 	public @ResponseBody String addApplication(Application application) {

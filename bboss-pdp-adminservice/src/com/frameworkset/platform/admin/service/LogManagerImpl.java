@@ -1,24 +1,18 @@
 package com.frameworkset.platform.admin.service;
 
+import com.frameworkset.common.poolman.ConfigSQLExecutor;
+import com.frameworkset.common.poolman.PreparedDBUtil;
+import com.frameworkset.orm.transaction.TransactionManager;
+import com.frameworkset.platform.admin.entity.*;
+import com.frameworkset.util.ListInfo;
+import org.frameworkset.platform.security.AccessControl;
+import org.slf4j.LoggerFactory;
+
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.log4j.Logger;
-import org.apache.log4j.Priority;
-import org.frameworkset.platform.security.AccessControl;
-
-import com.frameworkset.common.poolman.ConfigSQLExecutor;
-import com.frameworkset.common.poolman.PreparedDBUtil;
-import com.frameworkset.orm.transaction.TransactionManager;
-import com.frameworkset.platform.admin.entity.Log;
-import com.frameworkset.platform.admin.entity.LogCondition;
-import com.frameworkset.platform.admin.entity.LogModule;
-import com.frameworkset.platform.admin.entity.LogSetting;
-import com.frameworkset.platform.admin.entity.LogStatic;
-import com.frameworkset.util.ListInfo;
 
 /**
  * <p>
@@ -36,7 +30,7 @@ public class LogManagerImpl  implements LogManager {
 	 
 	/* 序列化id */
 	private static final long serialVersionUID = 1L;
-	private static Logger logger = Logger.getLogger(LogManagerImpl.class);
+	private static org.slf4j.Logger logger = LoggerFactory.getLogger(LogManagerImpl.class);
 
 	/* 日志主表的序列 */
 	// public static final String LOG_SEQ_NAME = "SEQ_LOG" ;
@@ -171,7 +165,6 @@ public class LogManagerImpl  implements LogManager {
 	 *            操作人
 	 * @param operContent
 	 *            日志内容
-	 * @param operModule
 	 *            日志类型
 	 * @param operSource
 	 *            操作来源（模块，ip）
@@ -200,7 +193,6 @@ public class LogManagerImpl  implements LogManager {
 	 *            操作人
 	 * @param operContent
 	 *            日志内容
-	 * @param operModule
 	 *            日志类型
 	 * @param operSource
 	 *            操作来源（模块，ip）
@@ -224,7 +216,6 @@ public class LogManagerImpl  implements LogManager {
 	 * 
 	 * @param operContent
 	 *            日志内容
-	 * @param operModule
 	 *            日志模块
 	 * @throws LogException
 	 */
@@ -313,7 +304,6 @@ public class LogManagerImpl  implements LogManager {
 	 * @param operOrg
 	 * @param logModule
 	 * @param visitorial
-	 * @param oper
 	 * @param remark1
 	 * @param operType
 	 * @return String 主键
@@ -347,7 +337,7 @@ public class LogManagerImpl  implements LogManager {
 			this.executor.insertBean("addLog", log);
 			return log.getLogId();
 		} catch (Exception e1) {
-			 if(logger.isEnabledFor(Priority.ERROR))
+			 if(logger.isErrorEnabled())
 				 logger.error("记录日志失败",e1);
 			 
 		}

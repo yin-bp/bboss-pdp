@@ -16,10 +16,12 @@
 
 package com.frameworkset.platform.admin.action;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.log4j.Logger;
+import com.frameworkset.platform.admin.entity.Resource;
+import com.frameworkset.platform.admin.entity.ResourceCondition;
+import com.frameworkset.platform.admin.service.ResourceException;
+import com.frameworkset.platform.admin.service.ResourceService;
+import com.frameworkset.util.ListInfo;
+import com.frameworkset.util.StringUtil;
 import org.frameworkset.platform.config.ResourceInfoQueue;
 import org.frameworkset.platform.config.model.OperationQueue;
 import org.frameworkset.platform.config.model.ResourceInfo;
@@ -28,13 +30,10 @@ import org.frameworkset.platform.security.AccessControl;
 import org.frameworkset.util.annotations.PagerParam;
 import org.frameworkset.util.annotations.ResponseBody;
 import org.frameworkset.web.servlet.ModelMap;
+import org.slf4j.LoggerFactory;
 
-import com.frameworkset.platform.admin.entity.Resource;
-import com.frameworkset.platform.admin.entity.ResourceCondition;
-import com.frameworkset.platform.admin.service.ResourceException;
-import com.frameworkset.platform.admin.service.ResourceService;
-import com.frameworkset.util.ListInfo;
-import com.frameworkset.util.StringUtil;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <p>Title: ResourceController</p> <p>Description: 资源管理管理控制器处理类 </p>
@@ -43,7 +42,7 @@ import com.frameworkset.util.StringUtil;
  */
 public class ResourceController {
 
-	private static Logger log = Logger.getLogger(ResourceController.class);
+	private static org.slf4j.Logger log = LoggerFactory.getLogger(ResourceController.class);
 	private ResourceManager resourceManager = new ResourceManager();
 	private ResourceService resourceService;
 	public String loadResourceMaintain(String resourceType,ModelMap model){

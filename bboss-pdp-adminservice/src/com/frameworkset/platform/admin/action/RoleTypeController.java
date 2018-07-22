@@ -16,17 +16,18 @@
 
 package com.frameworkset.platform.admin.action;
 
-import com.frameworkset.platform.admin.entity.*;
+import com.frameworkset.platform.admin.entity.RoleType;
+import com.frameworkset.platform.admin.entity.RoleTypeCondition;
+import com.frameworkset.platform.admin.service.RoleTypeException;
+import com.frameworkset.platform.admin.service.RoleTypeService;
 import com.frameworkset.util.ListInfo;
-import org.apache.log4j.Logger;
-import java.util.List;
-import java.util.Map;
 import com.frameworkset.util.StringUtil;
-import com.frameworkset.platform.admin.service.*;
+import org.frameworkset.util.annotations.PagerParam;
 import org.frameworkset.util.annotations.ResponseBody;
 import org.frameworkset.web.servlet.ModelMap;
-import org.frameworkset.util.annotations.PagerParam;
-import org.frameworkset.util.annotations.MapKey;
+import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 /**
  * <p>Title: RoleTypeController</p> <p>Description: 角色类型管理管理控制器处理类 </p>
@@ -35,7 +36,7 @@ import org.frameworkset.util.annotations.MapKey;
  */
 public class RoleTypeController {
 
-	private static Logger log = Logger.getLogger(RoleTypeController.class);
+	private static org.slf4j.Logger log = LoggerFactory.getLogger(RoleTypeController.class);
 
 	private RoleTypeService roleTypeService;
 	public @ResponseBody String addRoleType(RoleType roleType) {

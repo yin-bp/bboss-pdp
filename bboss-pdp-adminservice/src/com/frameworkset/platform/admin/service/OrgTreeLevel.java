@@ -8,16 +8,14 @@
  */
 package com.frameworkset.platform.admin.service;
 
-import java.util.LinkedHashMap;
-import java.util.List;
-
-import javax.transaction.RollbackException;
-
-import org.apache.log4j.Logger;
-
 import com.frameworkset.common.poolman.PreparedDBUtil;
 import com.frameworkset.orm.transaction.TransactionManager;
 import com.frameworkset.platform.admin.entity.SmOrganization;
+import org.slf4j.LoggerFactory;
+
+import javax.transaction.RollbackException;
+import java.util.LinkedHashMap;
+import java.util.List;
 
 /**
  * 构建组织机构树层级
@@ -30,7 +28,7 @@ public class OrgTreeLevel {
     
     public static final String CUT_UP = "|";
     
-    private static Logger logger = Logger.getLogger(OrgTreeLevel.class);
+    private static org.slf4j.Logger logger = LoggerFactory.getLogger(OrgTreeLevel.class);
     
     /**
      * 构建组织机构树层级
@@ -84,7 +82,6 @@ public class OrgTreeLevel {
 
     /**
      * 递归求出父结构层级，并保存
-     * @param temp
      */
     private static void getTreeLevel(LinkedHashMap<String, SmOrganization> orgMap, String key) {
         

@@ -24,7 +24,6 @@ import com.frameworkset.platform.admin.service.SmUserException;
 import com.frameworkset.platform.admin.service.SmUserService;
 import com.frameworkset.util.ListInfo;
 import com.frameworkset.util.StringUtil;
-import org.apache.log4j.Logger;
 import org.frameworkset.event.Event;
 import org.frameworkset.event.EventHandle;
 import org.frameworkset.event.EventImpl;
@@ -38,6 +37,7 @@ import org.frameworkset.platform.security.event.ACLEventType;
 import org.frameworkset.util.annotations.PagerParam;
 import org.frameworkset.util.annotations.ResponseBody;
 import org.frameworkset.web.servlet.ModelMap;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +50,7 @@ import java.util.Map;
  */
 public class SmUserController {
 
-	private static Logger log = Logger.getLogger(SmUserController.class);
+	private static org.slf4j.Logger log = LoggerFactory.getLogger(SmUserController.class);
 
 	private SmUserService smUserService;
 	private RoleService roleService;

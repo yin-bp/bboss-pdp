@@ -3,11 +3,11 @@
  */
 package com.frameworkset.platform.admin.action;
 
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-import java.util.List;
-
-import org.apache.log4j.Logger;
+import com.frameworkset.platform.admin.entity.*;
+import com.frameworkset.platform.admin.service.LogException;
+import com.frameworkset.platform.admin.service.LogManager;
+import com.frameworkset.util.ListInfo;
+import com.frameworkset.util.StringUtil;
 import org.frameworkset.platform.config.ConfigManager;
 import org.frameworkset.platform.security.AccessControl;
 import org.frameworkset.platform.util.LogManagerInf;
@@ -15,16 +15,12 @@ import org.frameworkset.util.DataFormatUtil;
 import org.frameworkset.util.annotations.PagerParam;
 import org.frameworkset.util.annotations.ResponseBody;
 import org.frameworkset.web.servlet.ModelMap;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import com.frameworkset.platform.admin.entity.Log;
-import com.frameworkset.platform.admin.entity.LogCondition;
-import com.frameworkset.platform.admin.entity.LogModule;
-import com.frameworkset.platform.admin.entity.LogSetting;
-import com.frameworkset.platform.admin.entity.LogStatic;
-import com.frameworkset.platform.admin.service.LogException;
-import com.frameworkset.platform.admin.service.LogManager;
-import com.frameworkset.util.ListInfo;
-import com.frameworkset.util.StringUtil;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.List;
 
 /**
  * @author yinbp
@@ -97,7 +93,7 @@ public class LogController {
 		}
 
 	}
-	private static Logger logger = Logger.getLogger(LogController.class);
+	private static Logger log = LoggerFactory.getLogger(LogController.class);
 	/**
 	 * 日志归档
 	 */
@@ -123,7 +119,7 @@ public class LogController {
 					openModle, AccessControl.getAccessControl().getMachinedID());
 			return "success";
 		}  catch (Exception e) {
-			logger.error("", e);
+			log.error("", e);
 			return StringUtil.exceptionToString(e);
 		}
 	}

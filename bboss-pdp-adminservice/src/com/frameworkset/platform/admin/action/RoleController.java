@@ -22,7 +22,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.log4j.Logger;
 import org.frameworkset.event.Event;
 import org.frameworkset.event.EventHandle;
 import org.frameworkset.event.EventImpl;
@@ -54,6 +53,7 @@ import com.frameworkset.platform.admin.service.RoleTypeService;
 import com.frameworkset.platform.admin.service.SmUserService;
 import com.frameworkset.util.ListInfo;
 import com.frameworkset.util.StringUtil;
+import org.slf4j.LoggerFactory;
 
 /**
  * <p>
@@ -72,7 +72,7 @@ import com.frameworkset.util.StringUtil;
  */
 public class RoleController {
 
-	private static Logger log = Logger.getLogger(RoleController.class);
+	private static org.slf4j.Logger log = LoggerFactory.getLogger(RoleController.class);
 	private RoleTypeService roleTypeService;
 	private ResourceService resourceService;
 	private SmUserService userService;

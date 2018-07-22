@@ -23,10 +23,10 @@ import com.frameworkset.common.poolman.handle.RowHandler;
 import com.frameworkset.orm.transaction.TransactionManager;
 import com.frameworkset.platform.admin.entity.*;
 import com.frameworkset.util.ListInfo;
-import org.apache.log4j.Logger;
 import org.frameworkset.platform.config.model.ResourceInfo;
 import org.frameworkset.platform.resource.ResourceManager;
 import org.frameworkset.platform.security.authorization.AuthRole;
+import org.slf4j.LoggerFactory;
 
 import java.sql.SQLException;
 import java.util.*;
@@ -38,7 +38,7 @@ import java.util.*;
  */
 public class RoleServiceImpl implements RoleService {
 
-	private static Logger log = Logger.getLogger(com.frameworkset.platform.admin.service.RoleServiceImpl.class);
+	private static org.slf4j.Logger log = LoggerFactory.getLogger(com.frameworkset.platform.admin.service.RoleServiceImpl.class);
 
 	private ConfigSQLExecutor executor;
 	private ResourceManager resourceManager = new ResourceManager();

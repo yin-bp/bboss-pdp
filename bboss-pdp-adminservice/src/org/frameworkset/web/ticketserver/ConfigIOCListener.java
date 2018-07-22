@@ -3,16 +3,15 @@
  */
 package org.frameworkset.web.ticketserver;
 
-import java.sql.SQLException;
-import java.util.Map;
-
-import org.apache.log4j.Logger;
-import org.frameworkset.spi.BaseApplicationContext;
-import org.frameworkset.spi.event.IocLifeCycleEventListener;
-
 import com.frameworkset.common.poolman.DBUtil;
 import com.frameworkset.common.poolman.SQLExecutor;
 import com.frameworkset.orm.adapter.DB;
+import org.frameworkset.spi.BaseApplicationContext;
+import org.frameworkset.spi.event.IocLifeCycleEventListener;
+import org.slf4j.LoggerFactory;
+
+import java.sql.SQLException;
+import java.util.Map;
 
 /**
  * @author yinbp
@@ -20,7 +19,7 @@ import com.frameworkset.orm.adapter.DB;
  * @Date:2016-11-27 12:38:09
  */
 public class ConfigIOCListener implements IocLifeCycleEventListener {
-	private static Logger log = Logger.getLogger(ConfigIOCListener.class);
+	private static org.slf4j.Logger log = LoggerFactory.getLogger(ConfigIOCListener.class);
 	 
 	public ConfigIOCListener() {
 		// TODO Auto-generated constructor stub

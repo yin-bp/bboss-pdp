@@ -1,15 +1,14 @@
 package org.frameworkset.platform.security.authenticate;
 
-import org.apache.log4j.Logger;
+import com.frameworkset.platform.admin.service.SmUserException;
+import com.frameworkset.util.StringUtil;
 import org.frameworkset.platform.entity.User;
 import org.frameworkset.platform.entity.UserUtil;
 import org.frameworkset.platform.security.authentication.ACLLoginModule;
 import org.frameworkset.platform.security.authentication.CheckCallBackWrapper;
 import org.frameworkset.platform.security.authentication.LoginException;
 import org.frameworkset.spi.SPIException;
-
-import com.frameworkset.platform.admin.service.SmUserException;
-import com.frameworkset.util.StringUtil;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -28,7 +27,7 @@ import com.frameworkset.util.StringUtil;
 
 public class ConfigUserPasswordLoginModule extends ACLLoginModule
 {
-    private static Logger log = Logger.getLogger(ConfigUserPasswordLoginModule.class);
+    private static org.slf4j.Logger log = LoggerFactory.getLogger(ConfigUserPasswordLoginModule.class);
 
   
    public ConfigUserPasswordLoginModule()
