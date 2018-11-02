@@ -1,8 +1,6 @@
 package org.frameworkset.platform.security.service;
 
 import com.frameworkset.common.poolman.ConfigSQLExecutor;
-import com.frameworkset.common.poolman.PreparedDBUtil;
-import com.frameworkset.common.poolman.SQLExecutor;
 import com.frameworkset.orm.transaction.TransactionManager;
 import com.frameworkset.platform.admin.entity.SmOrganization;
 import com.frameworkset.platform.admin.entity.SmUser;
@@ -10,22 +8,20 @@ import com.frameworkset.platform.admin.service.SmOrganizationService;
 import com.frameworkset.platform.admin.service.SmUserService;
 import com.frameworkset.platform.admin.service.UserOrgParamManager;
 import com.frameworkset.util.StringUtil;
+import org.frameworkset.event.Event;
+import org.frameworkset.event.EventHandle;
+import org.frameworkset.event.EventImpl;
 import org.frameworkset.platform.config.ConfigManager;
 import org.frameworkset.platform.security.AccessControl;
-import org.frameworkset.platform.security.authentication.EncrpyPwd;
-import org.frameworkset.platform.security.service.entity.CommonOrganization;
-import org.frameworkset.platform.security.service.entity.CommonUser;
+import org.frameworkset.platform.security.event.ACLEventType;
 import org.frameworkset.platform.security.service.entity.Result;
 import org.frameworkset.platform.util.EventUtil;
 import org.frameworkset.platform.util.LogManagerInf;
-import org.frameworkset.spi.support.MessageSource;
-import org.frameworkset.web.servlet.support.WebApplicationContextUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.Date;
 
 public class CommonUserManger implements CommonUserManagerInf{
 	private static Logger log = LoggerFactory.getLogger(CommonUserManger.class);
@@ -607,114 +603,64 @@ public class CommonUserManger implements CommonUserManagerInf{
 			return result;
 		}
 
-		OrgManager orgManager = SecurityDatabase.getOrgManager();
 
 
-		//Organization org = orgManager.getOrgById(orgId);
-
-		//String orgId = org.getOrgId();
-		//String parentId = org.getParentId();
-		//request.setAttribute("orgId", orgId);
-		//request.setAttribute("parentId", parentId);
-		AccessControl control = AccessControl.getAccessControl();
-		//--记日志-----
-		String operContent = "";
-		String operSource = control.getMachinedID();
-		String openModle = "部门管理";
-		String userName = control.getUserName();
-		String description = "";
-		LogManagerInf logManager = ConfigManager.getInstance().getLogManager();
-		operContent = userName + "删除"
-				+ LogGetNameById.getOrgNameByOrgId(orgid);
-		description = "";
-		//--------
-
-
-
-		//获取当前机构下的所有用户的ID
-		//String  sql = " select distinct b.USER_ID from TD_SM_USERJOBORG b where b.ORG_ID in ( "
-	//	+ "select distinct a.ORG_ID from TD_SM_ORGANIZATION a start with a.ORG_ID = '" + orgId
-		//+ "' connect by prior a.ORG_ID = a.PARENT_ID)";
-		String sql = "select distinct b.USER_ID from TD_SM_USERJOBORG b where b.ORG_ID in ("
-
-  +"select a.ORG_ID from TD_SM_ORGANIZATION a where a.org_tree_level like  "
-+"	(select concat(org_tree_level, '%') from TD_SM_ORGANIZATION c where c.ORG_ID = ?))" ;
-
-
-
-		//根据用户ID删除用户所拥有的一切资源(除超级管理员外)
-		UserManager userManager = SecurityDatabase.getUserManager() ;
 		TransactionManager tm = new TransactionManager();
-		String[] userIds = null;
-		boolean tag = true;
 
-		try
-		{
+		try {
 			tm.begin();
-			PreparedDBUtil db = new PreparedDBUtil();
-			db.preparedSelect(sql);
-			db.setString(1, orgid);
-			db.executePrepared();
-			//如果使用了离散用户，删除机构只将机构下的用户的资源和关系删掉，变为离散用户。如果没有离散用户将机构下的用户彻底删除
-			boolean islisan = ConfigManager.getInstance().getConfigBooleanValue("enableorgusermove",true);
-			if(db.size()>0)
-			{
-				 userIds = new String[db.size()];
-				for(int i= 0; i<db.size(); i++)
-				{
-					userIds[i] = String.valueOf(db.getInt(i,"USER_ID"));
-				}
-				if(userIds.length > 0){
-					if(islisan){
-						userManager.deleteBatchUserRes(userIds,false);
-					}else{
-						userManager.deleteBatchUser(userIds,false);
-					}
-				}
+
+
+			StringBuilder hasnosonOrgs = new StringBuilder();
+			StringBuilder hassonOrgs = new StringBuilder();
+			//帅选出可以删除的部门
+			int i = 0;
+			boolean hasManagers = false;
+
+
+			if(!organizationService.hasSon(orgid)){
+
+					hasnosonOrgs.append(orgid);
+					if(organizationService.hasManager(orgid))
+						hasManagers = true;
 			}
-			//递归删除机构
-			tag = orgManager.deleteOrg(orgid,false);
+			else
+			{
+
+					hassonOrgs.append(orgid);
+
+			}
+
+
+			if(hasnosonOrgs.length() > 0) {
+				organizationService.deleteBatchSmOrganization(hasnosonOrgs.toString().split(","));
+				result.setCode(result.ok);
+				result.setErrormessage("删除部门成功！");
+			}
+			else {
+				if (hassonOrgs.length() > 0)
+					result.setErrormessage("删除部门完毕，忽略删除的部门（有下级的部门）：" + hassonOrgs.toString());
+				else
+					result.setErrormessage("删除部门完毕!");
+			}
 			tm.commit();
-			if(userIds != null)
-			{
-				result.setOperationData("remove users");
+			if(hasManagers){
+				Event event = new EventImpl("",
+						ACLEventType.USER_ROLE_INFO_CHANGE);
+				EventHandle.sendEvent(event);
 			}
-			if(triggerEvent)
-			{
-				EventUtil.sendORGUNIT_DELETEEVENT(result.getOperationData(), orgid);
-//				if(userIds != null)
-//					EventUtil.sendUSER_INFO_DELETEEvent(userIds);
-//				EventUtil.sendUSER_ROLE_INFO_CHANGEEvent(orgid);
-//				EventUtil.sendORGUNIT_INFO_DELETEEvent(orgid);
-			}
-		}
-		catch(Exception e)
-		{
-			tag = false ;
-			result.setCode(result.fail);
-			result.setErrormessage(StringUtil.exceptionToString(e));
+			return result;
+		} catch (Throwable e) {
+			log.error("delete Batch orgIds failed:", e);
+			result.setErrormessage(StringUtil.formatBRException(e));
+			return result;
 		}
 		finally
 		{
 			tm.release();
 		}
-		if (tag)
-		{
-			try {
-				logManager.log(control.getUserAccount() ,
-					operContent, openModle, operSource, description);
-			} catch (ManagerException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			result.setCode(result.ok);
-			result.setErrormessage("删除部门成功");
-		}
-		else
-	    {
 
-		}
-		return result;
+
 	}
 
 

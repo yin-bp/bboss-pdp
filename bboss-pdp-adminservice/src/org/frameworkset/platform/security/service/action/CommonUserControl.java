@@ -1,32 +1,34 @@
 package org.frameworkset.platform.security.service.action;
 
-import com.frameworkset.platform.security.service.CommonUserManagerInf;
-import com.frameworkset.platform.security.service.entity.CommonOrganization;
-import com.frameworkset.platform.security.service.entity.CommonUser;
-import com.frameworkset.platform.security.service.entity.Result;
+
+import com.frameworkset.platform.admin.entity.SmOrganization;
+import com.frameworkset.platform.admin.entity.SmUser;
+import org.frameworkset.platform.security.service.CommonUserManagerInf;
+import org.frameworkset.platform.security.service.entity.Result;
 import org.frameworkset.util.annotations.ResponseBody;
 
 import javax.jws.WebService;
 
 @WebService(name = "commonuserService", targetNamespace = "com.frameworkset.platform.security.service.CommonuserService")
-public class CommonUserControl implements CommonUserManagerInf{
+public class CommonUserControl implements CommonUserManagerInf {
 	private CommonUserManagerInf commonUserManager;
 	public CommonUserControl() {
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
-	public @ResponseBody Result createUser(CommonUser user) {
-		// TODO Auto-generated method stub
-		return commonUserManager.createUser(user);
-	}
+	public @ResponseBody
+				Result createUser(SmUser user) {
+					// TODO Auto-generated method stub
+					return commonUserManager.createUser(user);
+				}
 
-	public @ResponseBody Result createTempUser(CommonUser user) {
+	public @ResponseBody Result createTempUser(SmUser user) {
 		return commonUserManager.createTempUser(user);
 	}
 
 	@Override
-	public @ResponseBody Result updateUser(CommonUser user) {
+	public @ResponseBody Result updateUser(SmUser user) {
 		return commonUserManager.updateUser(user);
 	}
 
@@ -36,7 +38,7 @@ public class CommonUserControl implements CommonUserManagerInf{
 	}
 
 	@Override
-	public @ResponseBody Result deleteUserByID(int userid) {
+	public @ResponseBody Result deleteUserByID(String userid) {
 		return commonUserManager.deleteUserByID(userid);
 	}
 
@@ -51,7 +53,7 @@ public class CommonUserControl implements CommonUserManagerInf{
 	}
 
 	@Override
-	public@ResponseBody  Result disableUserByID(int userid) {
+	public@ResponseBody  Result disableUserByID(String userid) {
 		return commonUserManager.disableUserByID(userid);
 	}
 
@@ -61,8 +63,8 @@ public class CommonUserControl implements CommonUserManagerInf{
 	}
 
 	@Override
-	public @ResponseBody Result updatePassword(int user_id, String password) {
-		return commonUserManager.updatePassword(  user_id,   password);
+	public @ResponseBody Result updatePassword(String user_id, String password,String newPasswordSecond,String oldPassword) {
+		return commonUserManager.updatePassword(  user_id,   password,newPasswordSecond,oldPassword);
 	}
 
 	@Override
@@ -71,7 +73,7 @@ public class CommonUserControl implements CommonUserManagerInf{
 	}
 
 	@Override
-	public @ResponseBody Result getUserById(int user_id) {
+	public @ResponseBody Result getUserById(String user_id) {
 		return commonUserManager.getUserById(user_id);
 	}
 
@@ -91,7 +93,7 @@ public class CommonUserControl implements CommonUserManagerInf{
 	}
 
 	@Override
-	public @ResponseBody Result openUserByID(int userid) {
+	public @ResponseBody Result openUserByID(String userid) {
 		return commonUserManager.openUserByID(userid);
 	}
 
@@ -101,36 +103,32 @@ public class CommonUserControl implements CommonUserManagerInf{
 	}
 
 	@Override
-	public Result buildUserOrgRelation(int userid, String orgid,boolean deleteotherorgjobrelation) {
+	public Result buildUserOrgRelation(String userid, String orgid) {
 
-		return commonUserManager.buildUserOrgRelation(  userid,   orgid,deleteotherorgjobrelation);
+		return commonUserManager.buildUserOrgRelation(  userid,   orgid);
 	}
 
 	@Override
-	public Result addOrganization(CommonOrganization org) {
+	public Result addOrganization(SmOrganization org) {
 		// TODO Auto-generated method stub
 		return commonUserManager.addOrganization(  org);
 	}
 
 	@Override
-	public Result addOrganizationWithEventTrigger(CommonOrganization org, boolean triggerEvent) {
+	public Result addOrganizationWithEventTrigger(SmOrganization org, boolean triggerEvent) {
 		// TODO Auto-generated method stub
 		return commonUserManager.addOrganizationWithEventTrigger(  org,triggerEvent);
 	}
 
 	@Override
-	public Result buildUserOrgRelationWithEventTrigger(int userid, String orgid, boolean broadcastevent,boolean deleteotherorgjobrelation) {
+	public Result buildUserOrgRelationWithEventTrigger(String userid, String orgid, boolean broadcastevent ) {
 		// TODO Auto-generated method stub
-		return commonUserManager.buildUserOrgRelationWithEventTrigger(  userid,   orgid,   broadcastevent, deleteotherorgjobrelation) ;
+		return commonUserManager.buildUserOrgRelationWithEventTrigger(  userid,   orgid,   broadcastevent ) ;
 	}
 
-	@Override
-	public Result createOnlyUser(CommonUser user) {
-		return commonUserManager.createOnlyUser(  user) ;
-	}
 
 	@Override
-	public Result updateOrganization(CommonOrganization org, boolean broadcastevent) {
+	public Result updateOrganization(SmOrganization org, boolean broadcastevent) {
 		// TODO Auto-generated method stub
 		return commonUserManager.updateOrganization(  org,   broadcastevent);
 	}

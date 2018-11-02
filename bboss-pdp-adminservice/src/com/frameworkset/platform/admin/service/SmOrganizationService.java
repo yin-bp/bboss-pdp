@@ -112,4 +112,6 @@ public interface SmOrganizationService {
 	public boolean existJobReleation(String userId, String orgid) throws SmOrganizationException;
 
 	public void buildUserOrgRelationWithEventTrigger(String userid,String orgid) throws SmOrganizationException;
+
+	void updateOrganizationStatus(String orgid, String status)throws SmOrganizationException;
 }

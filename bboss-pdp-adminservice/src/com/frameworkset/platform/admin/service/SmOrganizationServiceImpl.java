@@ -16,13 +16,6 @@
 
 package com.frameworkset.platform.admin.service;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-
 import com.frameworkset.common.poolman.ConfigSQLExecutor;
 import com.frameworkset.orm.transaction.TransactionManager;
 import com.frameworkset.platform.admin.entity.SmOrganization;
@@ -30,6 +23,12 @@ import com.frameworkset.platform.admin.entity.SmOrganizationCondition;
 import com.frameworkset.platform.admin.entity.SmUser;
 import com.frameworkset.util.ListInfo;
 import org.slf4j.LoggerFactory;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * <p>Title: SmOrganizationServiceImpl</p> <p>Description: 机构管理管理业务处理类 </p>
@@ -92,6 +91,8 @@ public class SmOrganizationServiceImpl implements SmOrganizationService {
 	}
 	public void deleteSmOrganization(String orgId) throws SmOrganizationException {
 		try {
+			executor.update("moveUsertoDaigang", orgId);
+			executor.delete("removeOrgManager", orgId);
 			executor.delete("deleteByKey", orgId);
 		} catch (Throwable e) {
 			throw new SmOrganizationException("delete SmOrganization failed::orgId=" + orgId, e);
@@ -174,7 +175,6 @@ public class SmOrganizationServiceImpl implements SmOrganizationService {
 
 	}
 	/** (non-Javadoc)
-	 * @see com.frameworkset.platform.admin.service.SmOrganizationService#getChildres(java.lang.String)
 	 */
 	@Override
 	public List<SmOrganization> getChildren(String parent,boolean choosenormalorg) {
@@ -361,6 +361,14 @@ public class SmOrganizationServiceImpl implements SmOrganizationService {
 	public void buildUserOrgRelationWithEventTrigger(String userId,String orgid) throws SmOrganizationException{
 		try {
 			this.executor.update("buildUserOrgRelationWithEventTrigger", orgid,userId) ;
+		}
+		catch (SQLException e){
+			throw new SmOrganizationException(e);
+		}
+	}
+	public void updateOrganizationStatus(String orgid, String status)throws SmOrganizationException{
+		try {
+			this.executor.update("updateOrganizationStatus", status,orgid) ;
 		}
 		catch (SQLException e){
 			throw new SmOrganizationException(e);

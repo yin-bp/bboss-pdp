@@ -16,11 +16,10 @@
 
 package com.frameworkset.platform.admin.entity;
 
-import java.sql.Timestamp;
-
+import com.frameworkset.orm.annotation.PrimaryKey;
 import org.frameworkset.util.annotations.RequestParam;
 
-import com.frameworkset.orm.annotation.PrimaryKey;
+import java.util.Date;
 /**
  * <p>Title: SmUser</p> <p>Description: 用户管理管理服务实体类 </p> <p>bboss</p>
  * <p>Copyright (c) 2007</p> @Date 2016-11-29 21:14:30 @author yinbp @version
@@ -51,7 +50,7 @@ public class SmUser implements java.io.Serializable {
 	/**
 	 * 最后登录时间
 	 */
-	private Timestamp lastloginDate;
+	private Date lastloginDate;
 	/**
 	 * 登录IP
 	 */
@@ -67,11 +66,11 @@ public class SmUser implements java.io.Serializable {
 	/**
 	 * 口令更新时间
 	 */
-	private Timestamp passwordUpdatetime;
+	private Date passwordUpdatetime;
 	/**
 	 * 过期时间
 	 */
-	private Timestamp pastTime;
+	private Date pastTime;
 	/**
 	 * 用户策略
 	 */
@@ -99,7 +98,7 @@ public class SmUser implements java.io.Serializable {
 	/**
 	 * 更新时间
 	 */
-	private Timestamp updateTime;
+	private Date updateTime;
 	/**
 	 * 用户地址
 	 */
@@ -108,7 +107,7 @@ public class SmUser implements java.io.Serializable {
 	 * 出生日期
 	 */
 	@RequestParam(dateformat="yyyy-MM-dd")
-	private Timestamp userBirthday;
+	private Date userBirthday;
 	/**
 	 * 邮箱地址
 	 */
@@ -168,7 +167,7 @@ public class SmUser implements java.io.Serializable {
 	/**
 	 * 注册日志
 	 */
-	private Timestamp userRegdate;
+	private Date userRegdate;
 	/**
 	 * 用户性别
 	 */
@@ -253,11 +252,11 @@ public class SmUser implements java.io.Serializable {
 		return istaxmanager;
 	}
 
-	public void setLastloginDate(Timestamp lastloginDate) {
+	public void setLastloginDate(Date lastloginDate) {
 		this.lastloginDate = lastloginDate;
 	}
 
-	public Timestamp getLastloginDate() {
+	public Date getLastloginDate() {
 		return lastloginDate;
 	}
 
@@ -285,19 +284,19 @@ public class SmUser implements java.io.Serializable {
 		return passwordText;
 	}
 
-	public void setPasswordUpdatetime(Timestamp passwordUpdatetime) {
+	public void setPasswordUpdatetime(Date passwordUpdatetime) {
 		this.passwordUpdatetime = passwordUpdatetime;
 	}
 
-	public Timestamp getPasswordUpdatetime() {
+	public Date getPasswordUpdatetime() {
 		return passwordUpdatetime;
 	}
 
-	public void setPastTime(Timestamp pastTime) {
+	public void setPastTime(Date pastTime) {
 		this.pastTime = pastTime;
 	}
 
-	public Timestamp getPastTime() {
+	public Date getPastTime() {
 		return pastTime;
 	}
 
@@ -349,11 +348,11 @@ public class SmUser implements java.io.Serializable {
 		return remark5;
 	}
 
-	public void setUpdateTime(Timestamp updateTime) {
+	public void setUpdateTime(Date updateTime) {
 		this.updateTime = updateTime;
 	}
 
-	public Timestamp getUpdateTime() {
+	public Date getUpdateTime() {
 		return updateTime;
 	}
 
@@ -365,11 +364,11 @@ public class SmUser implements java.io.Serializable {
 		return userAddress;
 	}
 
-	public void setUserBirthday(Timestamp userBirthday) {
+	public void setUserBirthday(Date userBirthday) {
 		this.userBirthday = userBirthday;
 	}
 
-	public Timestamp getUserBirthday() {
+	public Date getUserBirthday() {
 		return userBirthday;
 	}
 
@@ -485,11 +484,11 @@ public class SmUser implements java.io.Serializable {
 		return userRealname;
 	}
 
-	public void setUserRegdate(Timestamp userRegdate) {
+	public void setUserRegdate(Date userRegdate) {
 		this.userRegdate = userRegdate;
 	}
 
-	public Timestamp getUserRegdate() {
+	public Date getUserRegdate() {
 		return userRegdate;
 	}
 

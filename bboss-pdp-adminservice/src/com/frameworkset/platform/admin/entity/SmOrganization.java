@@ -16,9 +16,9 @@
 
 package com.frameworkset.platform.admin.entity;
 
-import java.sql.Timestamp;
-
 import com.frameworkset.orm.annotation.PrimaryKey;
+
+import java.util.Date;
 /**
  * <p>Title: SmOrganization</p> <p>Description: 机构管理管理服务实体类 </p> <p>bboss</p>
  * <p>Copyright (c) 2007</p> @Date 2016-11-28 16:33:16 @author yinbp @version
@@ -47,7 +47,7 @@ public class SmOrganization implements java.io.Serializable {
 	/**
 	 * 创建时间
 	 */
-	private Timestamp creatingtime;
+	private Date creatingtime;
 	/**
 	 * 创建人
 	 */
@@ -171,11 +171,11 @@ public class SmOrganization implements java.io.Serializable {
 		return code;
 	}
 
-	public void setCreatingtime(Timestamp creatingtime) {
+	public void setCreatingtime(Date creatingtime) {
 		this.creatingtime = creatingtime;
 	}
 
-	public Timestamp getCreatingtime() {
+	public Date getCreatingtime() {
 		return creatingtime;
 	}
 
