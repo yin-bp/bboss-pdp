@@ -55,6 +55,13 @@
                         <span class="nav-label">用户管理</span>
                     </a>
                 </li>
+                <li>
+                    <a class="J_menuItem" href="http://localhost:9091/pdp/sysmanager/user/index.page?menupath_menuid=usermanager">
+                        <i class="fa fa-users"></i>
+                        <span class="nav-label">用户集成</span>
+                    </a>
+                </li>
+
                 
                 
                 <!-- 菜单栏结束 -->

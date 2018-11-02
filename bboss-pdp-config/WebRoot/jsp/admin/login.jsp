@@ -93,13 +93,13 @@
 		</div>
 	</div>
 	<div id="footer">
-	<div class="container">
-		<div class="row">
-			<div class="col-lg-6 col-lg-offset-3">
-					<p class="copyright">Copyright &copy; 2016 - bbossgroups.com</p>
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-6 col-lg-offset-3">
+						<p class="copyright">Copyright &copy; 2016 - bbossgroups.com</p>
+				</div>
 			</div>
-		</div>		
-	</div>	
+		</div>
 	</div>
 
     <script src="${pageContext.request.contextPath}/static/js/jquery.min.js"></script>
