@@ -42,6 +42,27 @@ public class SmOrganizationServiceImpl implements SmOrganizationService {
 			.getLogger(com.frameworkset.platform.admin.service.SmOrganizationServiceImpl.class);
 
 	private ConfigSQLExecutor executor;
+
+	@Override
+	public boolean existOrg(String orgId) {
+		try {
+			return executor.queryObject(int.class, "existOrg", orgId) > 0;
+		}
+		catch (Exception e){
+			throw new SmOrganizationException("Exist Org Failed:"+orgId,e);
+		}
+	}
+
+	@Override
+	public boolean existOrgCode(String orgCode) {
+		try {
+			return executor.queryObject(int.class, "existOrgCode", orgCode) > 0;
+		}
+		catch (Exception e){
+			throw new SmOrganizationException("Exist OrgCode Failed:"+orgCode,e);
+		}
+	}
+
 	public void addSmOrganization(SmOrganization smOrganization) throws SmOrganizationException {
 		// 业务组件
 		TransactionManager tm = new TransactionManager();
@@ -319,8 +340,31 @@ public class SmOrganizationServiceImpl implements SmOrganizationService {
 	 * @return
 	 * @throws Exception 
 	 */
-	public List<SmOrganization> getManagerOrgs(String userId) throws Exception{
-		return  this.executor.queryList(SmOrganization.class, "getUserManagerOrgs", userId);
+	public List<SmOrganization> getManagerOrgs(String userId) throws SmOrganizationException{
+		try {
+			return this.executor.queryList(SmOrganization.class, "getUserManagerOrgs", userId);
+		}
+		catch (SQLException e){
+			throw new SmOrganizationException(e);
+		}
+	}
+
+	public boolean existJobReleation(String userId, String orgid) throws SmOrganizationException{
+		try {
+			return this.executor.queryObject(int.class, "existJobReleation", userId,orgid) > 0 ;
+		}
+		catch (SQLException e){
+			throw new SmOrganizationException(e);
+		}
+	}
+
+	public void buildUserOrgRelationWithEventTrigger(String userId,String orgid) throws SmOrganizationException{
+		try {
+			this.executor.update("buildUserOrgRelationWithEventTrigger", orgid,userId) ;
+		}
+		catch (SQLException e){
+			throw new SmOrganizationException(e);
+		}
 	}
 	
 	

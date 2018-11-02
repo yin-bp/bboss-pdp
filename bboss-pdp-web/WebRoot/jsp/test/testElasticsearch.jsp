@@ -15,6 +15,8 @@
 	out.println("twitter exist:"+exist1);
 	boolean exist = clientUtil.existIndice("agentinfo");
 	out.println("agentinfo exist:"+exist);
+	long count = clientUtil.countAll("demo");
+	out.println(count);
 
 %>
 <div>

@@ -64,6 +64,29 @@
 			update td_sm_organization set ORG_ID=#[orgId],CHARGEORGID=#[chargeorgid],CHILDREN=#[children],CODE=#[code],CREATINGTIME=#[creatingtime],CREATOR=#[creator],ISDIRECTGUANHU=#[isdirectguanhu],ISDIRECTLYPARTY=#[isdirectlyparty],ISFOREIGNPARTY=#[isforeignparty],ISJICHAPARTY=#[isjichaparty],ISPARTYBUSSINESS=#[ispartybussiness],JP=#[jp],LAYER=#[layer],ORG_LEVEL=#[orgLevel],ORG_NAME=#[orgName],ORG_SN=#[orgSn],ORG_TREE_LEVEL=#[orgTreeLevel],ORG_XZQM=#[orgXzqm],ORGDESC=#[orgdesc],ORGLEADER=#[orgleader],ORGNUMBER=#[orgnumber],PARENT_ID=#[parentId],PATH=#[path],QP=#[qp],REMARK1=#[remark1],REMARK2=#[remark2],REMARK3=#[remark3],REMARK4=#[remark4],REMARK5=#[remark5],SATRAPJOBID=#[satrapjobid] where ORG_ID=#[orgId]
 		]]>
 	</property>
+	<property name="existOrg">
+		<![CDATA[
+			select count(*) from td_sm_organization where ORG_ID=?
+		]]>
+	</property>
+
+	<property name="existOrgCode">
+		<![CDATA[
+			select count(*) from td_sm_organization where CODE=?
+		]]>
+	</property>
+	<property name="existJobReleation">
+		<![CDATA[
+			select count(*) from td_sm_user where user_id=? and DEPART_ID = ?
+		]]>
+	</property>
+	<property name="buildUserOrgRelationWithEventTrigger">
+		<![CDATA[
+			update td_sm_user set DEPART_ID = ? where user_id=?
+		]]>
+	</property>
+
+
 	<property name="selectById">
 		<![CDATA[
 			select o.*,u.USER_NAME as orgleaderName,u.USER_REALNAME as orgleaderRealName  from td_sm_organization  o left join td_sm_user u on u.user_id = o.orgleader where o.ORG_ID=?

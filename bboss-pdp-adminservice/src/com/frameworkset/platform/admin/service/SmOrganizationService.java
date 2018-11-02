@@ -26,6 +26,8 @@ import java.util.List;
  * yinbp @version v1.0
  */
 public interface SmOrganizationService {
+	public boolean existOrg(String orgId) throws SmOrganizationException;
+	public boolean existOrgCode(String orgCode) throws SmOrganizationException;
 	public void addSmOrganization(SmOrganization smOrganization) throws SmOrganizationException;
 	public void deleteSmOrganization(String orgId) throws SmOrganizationException;
 	public void deleteBatchSmOrganization(String... orgIds) throws SmOrganizationException;
@@ -105,5 +107,9 @@ public interface SmOrganizationService {
 	 * @param userId
 	 * @return
 	 */
-	public List<SmOrganization> getManagerOrgs(String userId) throws Exception;
+	public List<SmOrganization> getManagerOrgs(String userId) throws SmOrganizationException;
+
+	public boolean existJobReleation(String userId, String orgid) throws SmOrganizationException;
+
+	public void buildUserOrgRelationWithEventTrigger(String userid,String orgid) throws SmOrganizationException;
 }

@@ -18,6 +18,9 @@ public interface LogManagerInf {
 	public static final int AUTHENTICATE_OPER_TYPE = 5 ;
 	void log(String userName, String operContent,
 			String openModle, String operSource);
+
+	void log(String userName, String operContent,
+			 String openModle, String operSource,String remark1);
 	/**
 	 * <p>记录一条不带明细的日志</p>
 	 * @param operUser
@@ -28,7 +31,6 @@ public interface LogManagerInf {
 	 * @param remark1
 	 * @param operType
 	 * @return
-	 * @throws ManagerException
 	 */
 	public void log(String operUser,String operOrg,String logModule, String visitorial,
 			String oper ,String remark1, int operType)  ;

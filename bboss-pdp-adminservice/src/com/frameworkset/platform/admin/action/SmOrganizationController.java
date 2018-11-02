@@ -257,6 +257,7 @@ public class SmOrganizationController {
 		}
 
 	}
+
 	public String getSmOrganization(String orgId, ModelMap model) throws SmOrganizationException {
 		try {
 			SmOrganization smOrganization = smOrganizationService.getSmOrganization(orgId);

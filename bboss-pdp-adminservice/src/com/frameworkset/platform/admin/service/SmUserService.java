@@ -16,15 +16,14 @@
 
 package com.frameworkset.platform.admin.service;
 
-import java.util.List;
-
-import org.frameworkset.platform.entity.Leader;
-
 import com.frameworkset.platform.admin.entity.MoveinUserCondition;
 import com.frameworkset.platform.admin.entity.QueryUserCondition;
 import com.frameworkset.platform.admin.entity.SmUser;
 import com.frameworkset.platform.admin.entity.SmUserCondition;
 import com.frameworkset.util.ListInfo;
+import org.frameworkset.platform.entity.Leader;
+
+import java.util.List;
 
 /**
  * <p>Title: SmUserService</p> <p>Description: 用户管理管理服务接口 </p> <p>bboss</p>
@@ -84,7 +83,7 @@ public interface SmUserService {
 	 */
 	public void saveRoleUsers(String userIds, String roleId,boolean needcheckSpecialRole)  throws SmUserException;
 	/**
-	 * @param roleName
+	 * @param roleId
 	 * @param userIds
 	 */
 	public void deleteRoleUsers(String roleId, String userIds,boolean needcheckSpecialRole) throws SmUserException;
@@ -126,8 +125,10 @@ public interface SmUserService {
 	 */
 	public String getChargeOrgId(String userAccount)throws SmUserException;
 	/**
-	 * @param departId
+	 * @param departTreeLevel
 	 * @return
 	 */
 	public Leader getLeader(String departTreeLevel)throws SmUserException;
+
+	public SmUser getUserByWorknumber(String userWorknumber)throws SmUserException;
 }

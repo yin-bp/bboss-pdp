@@ -23,6 +23,15 @@ public class DefaultLogManager implements LogManagerInf {
 	}
 
 	@Override
+	public void log(String userName, String operContent, String openModle, String operSource,String remarks) {
+		StringBuilder log = new StringBuilder();
+		log.append("操作人：").append(userName).append(",操作内容：").append(operContent).append(",操作模块：").append(openModle).append(",操作来源：")
+				.append(operSource).append(",备注：")
+				.append(remarks);
+		logger.debug(log.toString());
+	}
+
+	@Override
 	public void log(String operUser, String operOrg, String logModule, String visitorial, String oper, String remark1,
 			int operType) {
 		StringBuilder log = new StringBuilder();

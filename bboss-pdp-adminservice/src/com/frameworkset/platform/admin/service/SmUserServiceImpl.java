@@ -173,13 +173,20 @@ public class SmUserServiceImpl implements SmUserService {
 		}
 
 	}
-	
+	public SmUser getUserByWorknumber(String userWorknumber)throws SmUserException{
+		try {
+			SmUser bean = executor.queryObject(SmUser.class, "getUserByWorknumber", userWorknumber);
+			return bean;
+		} catch (Throwable e) {
+			throw new SmUserException("get SmUser failed::userWorknumber=" + userWorknumber, e);
+		}
+	}
 	public SmUser getSmUserByIDNAMECNName(String userId) throws SmUserException {
 		try {
 			SmUser bean = executor.queryObject(SmUser.class, "getSmUserByNAMECNName", userId,userId, userId,userId,userId);
 			return bean;
 		} catch (Throwable e) {
-			throw new SmUserException("get SmUser failed::userId=" + userId, e);
+			throw new SmUserException("get SmUser failed::IDNAMECNName=" + userId, e);
 		}
 
 	}

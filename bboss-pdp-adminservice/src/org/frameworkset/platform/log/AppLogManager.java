@@ -22,4 +22,9 @@ public class AppLogManager extends DefaultLogManager{
 		 
 	}
 
+	@Override
+	public void log(String userName, String operContent, String openModle, String operSource,String remarks) {
+		logManager.log(  userName,   operContent,   openModle,   operSource,   remarks);
+	}
+
 }
