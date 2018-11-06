@@ -22,6 +22,7 @@ import com.frameworkset.platform.admin.entity.SmUser;
 import com.frameworkset.platform.admin.entity.SmUserCondition;
 import com.frameworkset.util.ListInfo;
 import org.frameworkset.platform.entity.Leader;
+import org.frameworkset.platform.security.authorization.AuthUser;
 
 import java.util.List;
 
@@ -131,4 +132,6 @@ public interface SmUserService {
 	public Leader getLeader(String departTreeLevel)throws SmUserException;
 
 	public SmUser getUserByWorknumber(String userWorknumber)throws SmUserException;
+
+	AuthUser getUser(String account)throws SmUserException;
 }

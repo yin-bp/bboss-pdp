@@ -1,7 +1,7 @@
 <property name="datasource" class="com.frameworkset.commons.dbcp2.BasicDataSource">
 	<property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-	<property name="url"><![CDATA[jdbc:mysql://localhost:3306/pdp?useUnicode=true&characterEncoding=utf-8]]></property>
-	<!--<property name="url"><![CDATA[jdbc:mysql://localhost:3306/testdb?useUnicode=true&characterEncoding=utf-8]]></property> -->
+	<!--<property name="url"><![CDATA[jdbc:mysql://localhost:3306/pdp?useUnicode=true&characterEncoding=utf-8]]></property>-->
+	<property name="url"><![CDATA[jdbc:mysql://localhost:3306/testdb?useUnicode=true&characterEncoding=utf-8]]></property>
 	<!-- <property name="url"><![CDATA[jdbc:mysql://localhost:3306/itwork?useUnicode=true&characterEncoding=utf-8]]></property> -->
 
 	<property name="username" value="root"/>

@@ -103,5 +103,10 @@
 	<property name="security.rememberme" value="true"/>
 	<!-- 记住登陆的时长 -->
 	<property name="security.rememberme.timeinterval" value="86400"/>
+	<!--客户端ip头部名称-->
+	<property name="realipheader" value="X-Forwarded-For,x-forwarded-for,Proxy-Client-IP,WL-Proxy-Client-IP"/>
+
+
+
 
 </properties>

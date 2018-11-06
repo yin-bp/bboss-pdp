@@ -104,7 +104,7 @@ public class AppAuthorizationTable extends BaseAuthorizationTable{
 //			for(int i = 0; i < authUsers.length; i ++)
 //			{
 //				AuthUser authUser = new AuthUser();
-//				User user = (User)list.get(i);
+//				AuthUser user = (AuthUser)list.get(i);
 //				authUser.setUserAccount(user.getUserName());
 //				authUser.setUserID(user.getUserId() + "");
 //				authUser.setUserName(user.getUserRealname());

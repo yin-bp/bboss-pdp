@@ -1,17 +1,23 @@
 package org.frameworkset.platform.security;
 
+import org.frameworkset.platform.security.authorization.AccessException;
+import org.frameworkset.platform.security.authorization.AuthUser;
+import org.frameworkset.platform.util.AdminUtil;
+
+import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 import java.util.Date;
 import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.frameworkset.platform.security.authorization.AccessException;
 
 public class DefaultPermissionModule implements PermissionModule {
 
 	public DefaultPermissionModule() {
 		// TODO Auto-generated constructor stub
+	}
+
+	@Override
+	public AuthUser getUser(String account) throws AccessException {
+		return null;
 	}
 
 	@Override
@@ -69,9 +75,8 @@ public class DefaultPermissionModule implements PermissionModule {
 	}
 
 	@Override
-	public Date getPasswordExpiredTimeByUserAccount(String userAccount) {
-		// TODO Auto-generated method stub
-		return null;
+	public Date getPasswordExpiredTimeByUserAccount(AuthUser authUser) {
+		return AdminUtil.getPasswordExpiredTime(authUser.getPasswordUpdatetime(),authUser.getPasswordDualtime());
 	}
 
 	@Override

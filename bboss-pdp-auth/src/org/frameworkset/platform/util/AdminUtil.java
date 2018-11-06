@@ -3,7 +3,15 @@
  */
 package org.frameworkset.platform.util;
 
+import com.frameworkset.util.StringUtil;
+import org.frameworkset.platform.config.ConfigManager;
 import org.frameworkset.platform.security.AccessControl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * @author yinbp
@@ -11,8 +19,10 @@ import org.frameworkset.platform.security.AccessControl;
  * @Date:2017-01-01 14:39:31
  */
 public class AdminUtil {
+	private static Logger logger = LoggerFactory.getLogger(AdminUtil.class);
 	public static final String role_orgmanager = "orgmanager";
 	public static final String role_orgmanagerroletemplate = "orgmanagerroletemplate";
+	private static String[] realIpHeaders = null;
 	/**
 	 * 
 	 */
@@ -78,6 +88,47 @@ public class AdminUtil {
 		}
 		else			
 			return "";
+	}
+
+	public static String getClientIP(HttpServletRequest request)
+	{
+		if(realIpHeaders == null) {
+			synchronized (AdminUtil.class) {
+				if(realIpHeaders == null) {
+					String realipheader = ConfigManager.getInstance().getConfigValue("realipheader",
+							"X-Forwarded-For,x-forwarded-for,Proxy-Client-IP,WL-Proxy-Client-IP");
+					realIpHeaders = realipheader.split(",");
+				}
+			}
+		}
+		return StringUtil.getClientIP(realIpHeaders,request);
+
+	}
+	public static int getDefaultPasswordDualTime()
+	{
+		return ConfigManager.getInstance().getConfigIntValue("password_dualtime", -1);
+	}
+	public static boolean isUserScopePasswordExpiredDays()
+	{
+		return ConfigManager.getInstance().getConfigBooleanValue("enableUserScopePasswordExpiredDays", false);
+	}
+	/**
+	 * 获取密码过期时间，如果返回为null,表示密码永不过期
+	 * @param passwordupdatetime
+	 * @return
+	 */
+	public static Date getPasswordExpiredTime(Date passwordupdatetime, int expiredays)
+	{
+		if(passwordupdatetime == null)
+			return null;
+		if(!isUserScopePasswordExpiredDays())
+			expiredays = getDefaultPasswordDualTime();
+		if(expiredays <= 0)
+			return null;
+		Calendar calendar=Calendar.getInstance();
+		calendar.setTime(passwordupdatetime);
+		calendar.set(Calendar.DAY_OF_MONTH,calendar.get(Calendar.DAY_OF_MONTH)+expiredays);
+		return new Date(calendar.getTime().getTime());
 	}
 	
 

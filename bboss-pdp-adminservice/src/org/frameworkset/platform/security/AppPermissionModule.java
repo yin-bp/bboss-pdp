@@ -1,17 +1,21 @@
 package org.frameworkset.platform.security;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.frameworkset.platform.security.authorization.AccessException;
-
 import com.frameworkset.platform.admin.service.SmOrganizationService;
 import com.frameworkset.platform.admin.service.SmUserService;
+import org.frameworkset.platform.security.authorization.AccessException;
+import org.frameworkset.platform.security.authorization.AuthUser;
+
+import javax.servlet.http.HttpServletRequest;
 
 public class AppPermissionModule extends DefaultPermissionModule {
 	private SmOrganizationService organizationService;
 	private SmUserService userService;
 	public AppPermissionModule() {
 		// TODO Auto-generated constructor stub
+	}
+
+	public AuthUser getUser(String account) throws AccessException{
+		return userService.getUser(account);
 	}
 
 	/**
@@ -24,8 +28,7 @@ public class AppPermissionModule extends DefaultPermissionModule {
                             if (session_rand == null || (!session_rand.equalsIgnoreCase(rand))) {
                                 throw new AccessException("验证码错误!");
                             }
-	 * @param code
-	 * @param session
+	 * @param request
 	 * @return
 	 */
 	public boolean validatecode(HttpServletRequest request) throws AccessException

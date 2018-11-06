@@ -16,20 +16,6 @@
 
 package com.frameworkset.platform.admin.service;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.commons.lang.StringUtils;
-import org.frameworkset.platform.common.Constants;
-import org.frameworkset.platform.entity.Leader;
-import org.frameworkset.platform.security.AccessControl;
-import org.frameworkset.platform.security.authentication.EncrpyPwd;
-import org.frameworkset.platform.util.AdminUtil;
-
 import com.frameworkset.common.poolman.ConfigSQLExecutor;
 import com.frameworkset.common.poolman.handle.ResultSetNullRowHandler;
 import com.frameworkset.orm.transaction.TransactionManager;
@@ -39,7 +25,21 @@ import com.frameworkset.platform.admin.entity.SmUser;
 import com.frameworkset.platform.admin.entity.SmUserCondition;
 import com.frameworkset.util.ListInfo;
 import com.frameworkset.util.StringUtil;
+import org.apache.commons.lang.StringUtils;
+import org.frameworkset.platform.common.Constants;
+import org.frameworkset.platform.entity.Leader;
+import org.frameworkset.platform.security.AccessControl;
+import org.frameworkset.platform.security.authentication.EncrpyPwd;
+import org.frameworkset.platform.security.authorization.AuthUser;
+import org.frameworkset.platform.util.AdminUtil;
 import org.slf4j.LoggerFactory;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * <p>Title: SmUserServiceImpl</p> <p>Description: 用户管理管理业务处理类 </p> <p>bboss</p>
@@ -179,6 +179,14 @@ public class SmUserServiceImpl implements SmUserService {
 			return bean;
 		} catch (Throwable e) {
 			throw new SmUserException("get SmUser failed::userWorknumber=" + userWorknumber, e);
+		}
+	}
+	public AuthUser getUser(String account)throws SmUserException{
+		try {
+			AuthUser bean = executor.queryObject(AuthUser.class, "getSmUserByNAMECNName", account,account, account,account,account);
+			return bean;
+		} catch (Throwable e) {
+			throw new SmUserException("get SmUser failed::IDNAMECNName=" + account, e);
 		}
 	}
 	public SmUser getSmUserByIDNAMECNName(String userId) throws SmUserException {

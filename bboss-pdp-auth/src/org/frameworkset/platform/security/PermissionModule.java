@@ -1,12 +1,12 @@
 package org.frameworkset.platform.security;
 
+import org.frameworkset.platform.security.authorization.AccessException;
+import org.frameworkset.platform.security.authorization.AuthUser;
+
+import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 import java.util.Date;
 import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.frameworkset.platform.security.authorization.AccessException;
 
 /**
  * 应用自定义的权限扩展
@@ -16,6 +16,7 @@ import org.frameworkset.platform.security.authorization.AccessException;
 public interface PermissionModule {
 	public final String USER_NAME_KEY = "USER_NAME";
 	public final String USER_PASSWORD_KEY = "USER_PASSWORD";
+	public AuthUser getUser(String account) throws AccessException;
 	/**
 	 * 优先执行，如果返回true，说明用户可以直接访问对应资源，不需要进行后续的权限检查
 	 * @param userAccount
@@ -70,10 +71,10 @@ public interface PermissionModule {
 	public int getUserPasswordDualTimeByUserAccount(String userAccount);
 	/**
 	 * 获取用户口令过期时间
-	 * @param userAccount
+	 * @param   authUser
 	 * @return
 	 */
-	public Date getPasswordExpiredTimeByUserAccount(String userAccount);
+	public Date getPasswordExpiredTimeByUserAccount(AuthUser authUser);
 	/**
 	 * 特殊用户特殊对待，返回ip对应得用户，则用户可以直接登录系统
 	 * @param ip
@@ -96,8 +97,7 @@ public interface PermissionModule {
                             if (session_rand == null || (!session_rand.equalsIgnoreCase(rand))) {
                                 throw new AccessException("验证码错误!");
                             }
-	 * @param code
-	 * @param session
+	 * @param request
 	 * @return
 	 */
 	public boolean validatecode(HttpServletRequest request) throws AccessException;

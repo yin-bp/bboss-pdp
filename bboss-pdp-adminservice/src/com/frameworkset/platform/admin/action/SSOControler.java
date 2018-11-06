@@ -1,5 +1,6 @@
 package com.frameworkset.platform.admin.action;
 
+import com.frameworkset.platform.admin.entity.AuthResponse;
 import com.frameworkset.util.StringUtil;
 import org.frameworkset.platform.action.SysInfo;
 import org.frameworkset.platform.config.ConfigManager;
@@ -8,10 +9,13 @@ import org.frameworkset.platform.framework.MenuItem;
 import org.frameworkset.platform.security.AccessControl;
 import org.frameworkset.platform.security.PermissionModule;
 import org.frameworkset.platform.security.authorization.AccessException;
+import org.frameworkset.platform.security.authorization.AuthUser;
+import org.frameworkset.platform.util.AdminUtil;
 import org.frameworkset.util.FileCopyUtils;
 import org.frameworkset.util.I18NUtil;
 import org.frameworkset.util.annotations.AssertDToken;
 import org.frameworkset.util.annotations.AssertTicket;
+import org.frameworkset.util.annotations.ResponseBody;
 import org.frameworkset.web.interceptor.AuthenticateFilter;
 import org.frameworkset.web.servlet.ModelMap;
 import org.frameworkset.web.servlet.support.RequestContextUtils;
@@ -37,9 +41,9 @@ import java.util.Random;
 
 public class SSOControler {
 
-    private static org.slf4j.Logger log = LoggerFactory.getLogger(SSOControler.class);
-    private boolean enableuseraccountsso = false;
-//    public @ResponseBody String recive(ModelMap model, HttpServletRequest request, HttpServletResponse response)
+	private static org.slf4j.Logger log = LoggerFactory.getLogger(SSOControler.class);
+	private boolean enableuseraccountsso = false;
+	//    public @ResponseBody String recive(ModelMap model, HttpServletRequest request, HttpServletResponse response)
 //			throws IOException {
 //		log.info("消息接收接口");
 //
@@ -88,22 +92,23 @@ public class SSOControler {
 //		return sEchoStr;
 //
 //	}
-    
+	//设置字母的大小,大小
+	private Font mFont = new Font("Times New Roman", Font.PLAIN, 17);
 
-//	/**
+	//	/**
 //	 * 配置微信菜单 //redirect_uri=http://domain/contextpath/sso/wxsso.page?loginMenu=
 //	 * appbommanager
-//	 * 
+//	 *
 //	 * redirect_uri=http://domain/contextpath/sso/wxsso.page?successRedirect=<%=
 //	 * URLEncoder.encode("/appbom/aaa.page")
-//	 * 
+//	 *
 //	 * 微信跳转过来的地址
 //	 * redirect_uri=http://domain/contextpath/sso/wxsso.page?loginMenu=
 //	 * appbommanager&app=zqztpy&code=CODE&state=STATE
-//	 * 
+//	 *
 //	 * redirect_uri=http://domain/contextpath/sso/wxsso.page?successRedirect=/
 //	 * appbom/aaa.page&code=CODE&state=STATE
-//	 * 
+//	 *
 //	 * @param request
 //	 * @param response
 //	 */
@@ -274,86 +279,85 @@ public class SSOControler {
 //		}
 //
 //	}
-    public String sso(ModelMap model) {
-    	model.addAttribute("enableuseraccountsso", new Boolean(enableuseraccountsso));
-    	if(enableuseraccountsso)
-    		return "path:sso";
-    	else
-    		return "path:ssofailed";
-    }
-    public void generateVerifyCode(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // 得到会话信息
-        HttpSession session = request.getSession();
+	public String sso(ModelMap model) {
+		model.addAttribute("enableuseraccountsso", new Boolean(enableuseraccountsso));
+		if (enableuseraccountsso)
+			return "path:sso";
+		else
+			return "path:ssofailed";
+	}
 
-        createVerifyCode (request, response, session);
-    }
-    //设置字母的大小,大小
-    private Font mFont = new Font("Times New Roman", Font.PLAIN, 17);
-    /**
-     * 生成验证码
-     *
-     * @param
-     * @return
-     * @create 2016/10/31
-     * @version V1.0.0
-     */
-    private void createVerifyCode(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws ServletException, IOException {
-        response.setHeader("Pragma", "No-cache");
-        response.setHeader("Cache-Control", "no-cache");
-        response.setDateHeader("Expires", 0);
-        //表明生成的响应是图片
-        response.setContentType("image/jpeg");
+	public void generateVerifyCode(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// 得到会话信息
+		HttpSession session = request.getSession();
 
-        int width = 100, height = 18;
-        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+		createVerifyCode(request, response, session);
+	}
 
-        Graphics g = image.getGraphics();
-        Random random = new Random();
-        g.setColor(getRandColor(200, 250));
-        g.fillRect(1, 1, width - 1, height - 1);
-        g.setColor(new Color(102, 102, 102));
-        g.drawRect(0, 0, width - 1, height - 1);
-        g.setFont(mFont);
+	/**
+	 * 生成验证码
+	 *
+	 * @param
+	 * @return
+	 * @create 2016/10/31
+	 * @version V1.0.0
+	 */
+	private void createVerifyCode(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws ServletException, IOException {
+		response.setHeader("Pragma", "No-cache");
+		response.setHeader("Cache-Control", "no-cache");
+		response.setDateHeader("Expires", 0);
+		//表明生成的响应是图片
+		response.setContentType("image/jpeg");
 
-        g.setColor(getRandColor(160, 200));
+		int width = 100, height = 18;
+		BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 
-        //画随机线
-        for (int i = 0; i < 155; i++) {
-            int x = random.nextInt(width - 1);
-            int y = random.nextInt(height - 1);
-            int xl = random.nextInt(6) + 1;
-            int yl = random.nextInt(12) + 1;
-            g.drawLine(x, y, x + xl, y + yl);
-        }
+		Graphics g = image.getGraphics();
+		Random random = new Random();
+		g.setColor(getRandColor(200, 250));
+		g.fillRect(1, 1, width - 1, height - 1);
+		g.setColor(new Color(102, 102, 102));
+		g.drawRect(0, 0, width - 1, height - 1);
+		g.setFont(mFont);
 
-        //从另一方向画随机线
-        for (int i = 0; i < 70; i++) {
-            int x = random.nextInt(width - 1);
-            int y = random.nextInt(height - 1);
-            int xl = random.nextInt(12) + 1;
-            int yl = random.nextInt(6) + 1;
-            g.drawLine(x, y, x - xl, y - yl);
-        }
+		g.setColor(getRandColor(160, 200));
 
-        //生成随机数,并将随机数字转换为字母
-        String sRand = "";
-        for (int i = 0; i < 6; i++) {
-            int itmp = random.nextInt(26) + 65;
-            char ctmp = (char) itmp;
-            sRand += String.valueOf(ctmp);
-            g.setColor(new Color(20 + random.nextInt(110), 20 + random.nextInt(110), 20 + random.nextInt(110)));
-            g.drawString(String.valueOf(ctmp), 15 * i + 10, 16);
-        }
+		//画随机线
+		for (int i = 0; i < 155; i++) {
+			int x = random.nextInt(width - 1);
+			int y = random.nextInt(height - 1);
+			int xl = random.nextInt(6) + 1;
+			int yl = random.nextInt(12) + 1;
+			g.drawLine(x, y, x + xl, y + yl);
+		}
 
-        session.setAttribute("verifyCode", sRand);
-        g.dispose();
-        ImageIO.write(image, "JPEG", response.getOutputStream());
-    }
-    public String cookieLocale(String language,HttpServletResponse response,HttpServletRequest request)
-	{
-	
-		
-		
+		//从另一方向画随机线
+		for (int i = 0; i < 70; i++) {
+			int x = random.nextInt(width - 1);
+			int y = random.nextInt(height - 1);
+			int xl = random.nextInt(12) + 1;
+			int yl = random.nextInt(6) + 1;
+			g.drawLine(x, y, x - xl, y - yl);
+		}
+
+		//生成随机数,并将随机数字转换为字母
+		String sRand = "";
+		for (int i = 0; i < 6; i++) {
+			int itmp = random.nextInt(26) + 65;
+			char ctmp = (char) itmp;
+			sRand += String.valueOf(ctmp);
+			g.setColor(new Color(20 + random.nextInt(110), 20 + random.nextInt(110), 20 + random.nextInt(110)));
+			g.drawString(String.valueOf(ctmp), 15 * i + 10, 16);
+		}
+
+		session.setAttribute("verifyCode", sRand);
+		g.dispose();
+		ImageIO.write(image, "JPEG", response.getOutputStream());
+	}
+
+	public String cookieLocale(String language, HttpServletResponse response, HttpServletRequest request) {
+
+
 //		StringUtil.addCookieValue(request, response, "cookie.localkey", language, 3600 * 24);
 //		
 //		
@@ -365,505 +369,686 @@ public class SSOControler {
 //		{
 //			request.getSession().setAttribute("session.localkey",java.util.Locale.CHINA);
 //		}
-		
+
 		try {
 			I18NUtil.setLocale(request, response, language);
 		} catch (Exception e) {
-			log.error("",e);
+			log.error("", e);
 		}
 //			loginPathCookie.setPath(request.getContextPath());
-		
+
 		return AccessControl.redirectpathloginPage;
 	}
-    private String getSuccessRedirect(String loginStyle, String subsystem) {
-        StringBuilder ret = new StringBuilder();
-        if (StringUtil.isEmpty(subsystem))
-        {
-        	subsystem = AccessControl.getDefaultSUBSystemID();
-        }
-        if (StringUtil.isEmpty(subsystem)) {
 
-            if (loginStyle == null || loginStyle.equals("5") || loginStyle.equals("6")) {
-                ret.append("sanydesktop/indexcommon.page");
-            } else if (loginStyle.equals("1")) {
-                ret.append("index.jsp?subsystem_id=").append(subsystem);
-            } else if (loginStyle.equals("3")) {
-                ret.append("sanydesktop/index.page");
-            } else if (loginStyle.equals("2")) {
-                ret.append("desktop/desktop1.page");
-            } else if (loginStyle.equals("4")) {
-                ret.append("sanydesktop/webindex.page");
-            } else {
-                ret.append("sanydesktop/indexcommon.page");
-            }
-        } else {
-            if (subsystem.equals("cms")) {
-                ret.append("index.jsp?subsystem_id=").append(subsystem);
-                return ret.toString();
-            }
-            SubSystem sys = Framework.getSubSystem(subsystem);
-            if (sys != null && !StringUtil.isEmpty(sys.getSuccessRedirect()))
-                ret.append(sys.getSuccessRedirect());
-            else {
-                if (loginStyle == null || loginStyle.equals("5") || loginStyle.equals("6")) {
-                    ret.append("sanydesktop/indexcommon.page");
-                } else if (loginStyle.equals("1")) {
-                    ret.append("index.jsp?subsystem_id=").append(subsystem);
-                } else if (loginStyle.equals("3")) {
-                    ret.append("sanydesktop/index.page");
-                } else if (loginStyle.equals("2")) {
-                    ret.append("desktop/desktop1.page");
-                } else if (loginStyle.equals("4")) {
-                    ret.append("sanydesktop/webindex.page");
-                } else {
-                    ret.append("sanydesktop/indexcommon.page");
-                }
-            }
-        }
-        return ret.toString();
-    }
+	private String getSuccessRedirect(String loginStyle, String subsystem) {
+		StringBuilder ret = new StringBuilder();
+		if (StringUtil.isEmpty(subsystem)) {
+			subsystem = AccessControl.getDefaultSUBSystemID();
+		}
+		if (StringUtil.isEmpty(subsystem)) {
 
-    public String login(HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception,
-            Exception {
-        HttpSession session = request.getSession(false);
-        
+			if (loginStyle == null || loginStyle.equals("5") || loginStyle.equals("6")) {
+				ret.append("sanydesktop/indexcommon.page");
+			} else if (loginStyle.equals("1")) {
+				ret.append("index.jsp?subsystem_id=").append(subsystem);
+			} else if (loginStyle.equals("3")) {
+				ret.append("sanydesktop/index.page");
+			} else if (loginStyle.equals("2")) {
+				ret.append("desktop/desktop1.page");
+			} else if (loginStyle.equals("4")) {
+				ret.append("sanydesktop/webindex.page");
+			} else {
+				ret.append("sanydesktop/indexcommon.page");
+			}
+		} else {
+			if (subsystem.equals("cms")) {
+				ret.append("index.jsp?subsystem_id=").append(subsystem);
+				return ret.toString();
+			}
+			SubSystem sys = Framework.getSubSystem(subsystem);
+			if (sys != null && !StringUtil.isEmpty(sys.getSuccessRedirect()))
+				ret.append(sys.getSuccessRedirect());
+			else {
+				if (loginStyle == null || loginStyle.equals("5") || loginStyle.equals("6")) {
+					ret.append("sanydesktop/indexcommon.page");
+				} else if (loginStyle.equals("1")) {
+					ret.append("index.jsp?subsystem_id=").append(subsystem);
+				} else if (loginStyle.equals("3")) {
+					ret.append("sanydesktop/index.page");
+				} else if (loginStyle.equals("2")) {
+					ret.append("desktop/desktop1.page");
+				} else if (loginStyle.equals("4")) {
+					ret.append("sanydesktop/webindex.page");
+				} else {
+					ret.append("sanydesktop/indexcommon.page");
+				}
+			}
+		}
+		return ret.toString();
+	}
 
-        String u = "", p = "", ck = "";
-        boolean fromredirect = false;
+	public @ResponseBody(datatype = "json")
+	AuthResponse applogin(HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception,
+			Exception {
+		HttpSession session = request.getSession(false);
+		AuthResponse authResponse = new AuthResponse();
 
-        String successRedirect = request.getParameter(AuthenticateFilter.referpath_parametername);
-        if (successRedirect != null) {
-            if ((successRedirect.equals(request.getContextPath())
-                    || successRedirect.equals(request.getContextPath() + "/jsp") || successRedirect.equals("login.jsp") || successRedirect
-                        .equals("login.page"))) {
-                successRedirect = null;
-            } else {
-                fromredirect = true;
-                model.addAttribute("successRedirect", successRedirect);
-            }
+		String u = "", p = "", ck = "";
 
-        }
-        String language = request.getParameter("language");
-        PermissionModule permissionModule = ConfigManager.getInstance().getPermissionModule();
-        boolean enable_login_validatecode = ConfigManager.getInstance().getConfigBooleanValue(
-                "enable_login_validatecode", true);
 
-        model.addAttribute("enable_login_validatecode", enable_login_validatecode);
-        String errorMessage = null;
+		String language = request.getParameter("language");
+		authResponse.setLanguage(language);
+		PermissionModule permissionModule = ConfigManager.getInstance().getPermissionModule();
 
-        String userName = request.getParameter("userName");
-        int expiredays = userName != null ? permissionModule.getUserPasswordDualTimeByUserAccount(
-                userName) : 0;
-        String expriedtime_ = "";
-        Date expiretime = expiredays > 0 && userName != null ? permissionModule.getPasswordExpiredTimeByUserAccount(userName) : null;
-        if (expiretime != null) {
-            SimpleDateFormat dateformt = new SimpleDateFormat("yyyy-MM-dd");
-            expriedtime_ = dateformt.format(expiretime);
-            model.addAttribute("expriedtime_", expriedtime_);
-            model.addAttribute("userName", userName);
-            model.addAttribute("expiredays", expiredays);
+		String errorMessage = null;
 
-        }
-        String loginStyle = null;
-        String system_id = null;
-        if (language == null) {
-            language = RequestContextUtils.getLocaleResolver(request).resolveLocaleCode(request);
+		String userName = request.getParameter("userName");
 
-        }
-        else
-        {
-        	RequestContextUtils.getLocaleResolver(request).setLocale(request, response, language);
-        }
-        model.addAttribute("language", language);
+		/*
+		 * if(language.equals("zh_CN")){
+		 * request.getSession().setAttribute("languageKey",
+		 * java.util.Locale.CHINA); } else if(language.equals("en_US")){
+		 * request.getSession().setAttribute("languageKey",
+		 * java.util.Locale.US); }
+		 */
+		String subsystem = request.getParameter("subsystem_id");
 
-        /*
-         * if(language.equals("zh_CN")){
-         * request.getSession().setAttribute("languageKey",
-         * java.util.Locale.CHINA); } else if(language.equals("en_US")){
-         * request.getSession().setAttribute("languageKey",
-         * java.util.Locale.US); }
-         */
-        String loginPath = request.getParameter("loginPath");//登陆界面风格
-        String subsystem_id = request.getParameter("subsystem_id");
-       
+		if (subsystem == null)
+			subsystem = StringUtil.getCookieValue(request, "subsystem_id");
+		if (subsystem == null)
+			subsystem = AccessControl.getDefaultSUBSystemID();
+		authResponse.setSystemid(subsystem);
+		authResponse.setSystemName(Framework.getSystemName(authResponse.getSystemid()));
 
-        loginStyle = StringUtil.getCookieValue(request, "loginStyle");
-        system_id = StringUtil.getCookieValue(request, "subsystem_id");
+		String machineIP = AdminUtil.getClientIP(request);
+		authResponse.setClientIP(machineIP);
+		String specialuser = permissionModule.isSpesialUser(machineIP);
+		if ((specialuser != null) && userName == null) {
 
-        if (loginPath != null) {
-            StringUtil.addCookieValue(request, response, "loginStyle", loginPath);
-            loginStyle = loginPath; 
+			try// uim检测
+			{
+				userName = specialuser;
+				AccessControl control = AccessControl.getInstance();
+				control.checkAccess(request, response, false);
+				String user = control.getUserAccount();
+				authResponse.setFromsso(true);
+				if (user == null || "".equals(user) || !userName.equals(user)) {
 
-        }
-        if(loginStyle == null)
-        	loginStyle = "5";
-        if (subsystem_id != null) {
-            StringUtil.addCookieValue(request, response, "subsystem_id", subsystem_id);
+					try {
+						if (!userName.equals(user))
+							control.resetSession(session);
+						AuthUser authUser = permissionModule.getUser(userName);
+//						String password = permissionModule.getUserPassword(userName);
+						control = AccessControl.getInstance();
+						control.login(request, response, userName, authUser.getPasswordText());
+						if (session == null)
+							session = request.getSession(false);
+						authResponse.setSessionId(session.getId());
+						authResponse.setCode("200");
+						authResponse.setMessage("success");
+						authResponse.setUser(authUser);
+					} catch (Exception e) {
+						authResponse.setCode("500");
+						authResponse.setMessage(StringUtil.exceptionToString(e));
+					}
 
-        }
-        model.addAttribute("system_id", system_id);
-        model.addAttribute("loginStyle", loginStyle);
-        model.addAttribute("defaultmodulename", Framework.getSystemName("module", request));
-      
+				} else {
 
-        String machineIP = StringUtil.getClientIP(request);
-        String specialuser = permissionModule.isSpesialUser(machineIP);
-        if ((specialuser != null ) && userName == null) {
+					authResponse.setCode("200");
+					authResponse.setMessage("success");
+				}
 
-            String subsystem = request.getParameter("subsystem_id");
-            try// uim检测
-            {
-                 
-                userName = specialuser;
-                    
-                AccessControl control = AccessControl.getInstance();
-                control.checkAccess(request, response, false);
-                String user = control.getUserAccount();
-                request.setAttribute("fromsso", "true");
-                if (user == null || "".equals(user) || !userName.equals(user)) {
 
-                    try {
-                        if (!userName.equals(user))
-                            control.resetSession(session);
-                        String password = permissionModule.getUserPassword(userName);
-                        control = AccessControl.getInstance();
-                        control.login(request, response, userName, password);
+			} catch (Exception e)// 检测失败,继续平台登录
+			{
+				authResponse.setCode("500");
+				authResponse.setMessage(StringUtil.exceptionToString(e));
+			}
+			return authResponse;
 
-                        if (subsystem == null)
-                            subsystem = AccessControl.getDefaultSUBSystemID();
-                        if (successRedirect == null) {
-                            successRedirect = getSuccessRedirect(loginPath, subsystem);
-                        }
-                        if (!fromredirect) {
-                            AccessControl.recordIndexPage(request, successRedirect);
-                            AccessControl.recordeSystemLoginPage(request, response);
-                        }
-                        response.sendRedirect(successRedirect);
-                        return null;
-                    } catch (Exception e) {
+		} else {
+			AuthUser authUser = permissionModule.getUser(userName);
+			if(authUser == null){
+				authResponse.setCode("500");
+				authResponse.setMessage("用户["+userName+"]不存在!");
+				return authResponse;
+			}
 
-                        response.sendRedirect(new StringBuilder().append(request.getContextPath() ).append( "/jsp/common/ssofail.jsp?userName=").append(userName ).append( "&ip=" ).append( machineIP).toString());
-                        return null;
-                    }
 
-                } else {
+			String password = request.getParameter("password");
+			if(StringUtil.isEmpty(userName) || StringUtil.isEmpty(password))
+			{
+				authResponse.setCode("500");
+				authResponse.setMessage("请输入正确的账号或者口令!");
+			}
+			else{
 
-                    if (subsystem == null)
-                        subsystem = AccessControl.getDefaultSUBSystemID();
-                    if (successRedirect == null) {
-                        successRedirect = getSuccessRedirect(loginPath, subsystem);
+				//判断口令是否过期
+				boolean enablePasswordExpiredDays = ConfigManager.getInstance().getConfigBooleanValue("enablePasswordExpiredDays", false);
+				if(enablePasswordExpiredDays) {
+					int expiredays = userName != null ? authUser.getPasswordDualtime() : 0;
+					String expriedtime_ = "";
+					Date expiretime = expiredays > 0 ? permissionModule.getPasswordExpiredTimeByUserAccount(authUser) : null;
+					if (expiretime != null) {
+						SimpleDateFormat dateformt = new SimpleDateFormat("yyyy-MM-dd");
+						expriedtime_ = dateformt.format(expiretime);
+						authResponse.setCode("500");
+						authResponse.setMessage(new StringBuilder().append("口令过期，有效期:").append(expiredays).append(",过期时间：").append(expriedtime_).toString());
+						return authResponse;
+					}
+				}
+				//判断校验码是否正确
+				boolean enable_login_validatecode = ConfigManager.getInstance().getConfigBooleanValue(
+						"enable_login_validatecode", false);
+				try {
+					if (enable_login_validatecode) {
+						permissionModule.validatecode(request);
+					}
 
-                    }
-                    if (!fromredirect) {
-                        AccessControl.recordIndexPage(request, successRedirect);
-                        AccessControl.recordeSystemLoginPage(request, response);
-                    }
-                    response.sendRedirect(successRedirect);
-                    return null;
-                }
+					AccessControl.getInstance().login(request, response, userName, password);
+					if (session == null)
+						session = request.getSession(false);
+					authResponse.setSessionId(session.getId());
+					authResponse.setUser(authUser);
+					authResponse.setCode("200");
 
-            } catch (Exception e)// 检测失败,继续平台登录
-            {
+					// response.sendRedirect("sysmanager/refactorwindow.jsp?subsystem_id="
+					// + subsystem);
+				} catch (AccessException ex) {
 
-            }
+					errorMessage = ex.getMessage();
+					if (errorMessage != null) {
 
-        } else {
-           String flag = request.getParameter("flag"); // 是否触发提交
+					} else {
+						errorMessage = org.frameworkset.web.servlet.support.RequestContextUtils.getI18nMessage(
+								"sany.pdp.login.failed", request);
+					}
+					authResponse.setCode("500");
+					authResponse.setMessage(errorMessage);
 
-            
+					// if(errorMessage==null){
+					// out.print("登陆失败，请确保输入的用户名和口令是否正确！");
+					// }
+					// else{
+					// out.print(errorMessage);
+					// }
 
-            if (flag == null) {
-            } else {
-                // String successRedirect =
-                // request.getParameter("successRedirect");
+				} catch (Exception ex) {
+					errorMessage = ex.getMessage();
 
-                String password = request.getParameter("password");
-               
+					if (errorMessage != null) {
+						// errorMessage = errorMessage.replaceAll("\\n",
+						// "\\\\n");
+						// errorMessage = errorMessage.replaceAll("\\r",
+						// "\\\\r");
+					} else {
+						errorMessage = org.frameworkset.web.servlet.support.RequestContextUtils.getI18nMessage(
+								"sany.pdp.login.failed", request);
+					}
+					authResponse.setCode("500");
+					authResponse.setMessage(errorMessage);
+				}
+			}
 
-                if (userName != null) {
-                    try {
-                        if (enable_login_validatecode) {
-                            permissionModule.validatecode(request);
-                        }
+		}
+		return authResponse;
+	}
 
-                        AccessControl.getInstance().login(request, response, userName, password);
-                        String subsystem = request.getParameter("subsystem_id");
-                       
-                        if (subsystem == null)
-                            subsystem = AccessControl.getDefaultSUBSystemID();
-                        /**
-                         * 需要全屏时，将response.sendRedirect("index.jsp");注释掉，
-                         * 将response.sendRedirect(
-                         * "sysmanager/refactorwindow.jsp");打开
-                         */
-                        if (successRedirect == null) {
-                            successRedirect = getSuccessRedirect(loginPath, subsystem);
+	public String login(HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception,
+			Exception {
+		HttpSession session = request.getSession(false);
 
-                        }
-                        if (!fromredirect) {
-                            AccessControl.recordIndexPage(request, successRedirect);
-                            AccessControl.recordeSystemLoginPage(request, response);
-                        }
-                        response.sendRedirect(successRedirect);
-                        return null;
-                        // response.sendRedirect("sysmanager/refactorwindow.jsp?subsystem_id="
-                        // + subsystem);
-                    } catch (AccessException ex) {
 
-                        errorMessage = ex.getMessage();
-                        if (errorMessage != null) {
-                           
-                        } else {
-                            errorMessage = org.frameworkset.web.servlet.support.RequestContextUtils.getI18nMessage(
-                                    "sany.pdp.login.failed", request);
-                        }
+		boolean fromredirect = false;
 
-                        // if(errorMessage==null){
-                        // out.print("登陆失败，请确保输入的用户名和口令是否正确！");
-                        // }
-                        // else{
-                        // out.print(errorMessage);
-                        // }
+		String successRedirect = request.getParameter(AuthenticateFilter.referpath_parametername);
+		if (successRedirect != null) {
+			if ((successRedirect.equals(request.getContextPath())
+					|| successRedirect.equals(request.getContextPath() + "/jsp") || successRedirect.equals("login.jsp") || successRedirect
+					.equals("login.page"))) {
+				successRedirect = null;
+			} else {
+				fromredirect = true;
+				model.addAttribute("successRedirect", successRedirect);
+			}
 
-                    } catch (Exception ex) {
-                        errorMessage = ex.getMessage();
+		}
+		String language = request.getParameter("language");
+		PermissionModule permissionModule = ConfigManager.getInstance().getPermissionModule();
+		boolean enable_login_validatecode = ConfigManager.getInstance().getConfigBooleanValue(
+				"enable_login_validatecode", true);
 
-                        if (errorMessage != null) {
-                            // errorMessage = errorMessage.replaceAll("\\n",
-                            // "\\\\n");
-                            // errorMessage = errorMessage.replaceAll("\\r",
-                            // "\\\\r");
-                        } else {
-                            errorMessage = org.frameworkset.web.servlet.support.RequestContextUtils.getI18nMessage(
-                                    "sany.pdp.login.failed", request);
-                        }
-                        // out.print(errorMessage+ "登陆失败，请确保输入的用户名和口令是否正确！");
+		model.addAttribute("enable_login_validatecode", enable_login_validatecode);
+		String errorMessage = null;
 
-                    }
-                }
+		String userName = request.getParameter("userName");
 
-            }
+		String loginStyle = null;
+		String system_id = null;
+		if (language == null) {
+			language = RequestContextUtils.getLocaleResolver(request).resolveLocaleCode(request);
 
-        }
-        if (errorMessage != null)
-            model.addAttribute("errorMessage", errorMessage);
-        List<SubSystem> subsystemList = Framework.getInstance().getSubsystemList();
-        List<SysInfo> syses = new ArrayList<SysInfo>();
-        SysInfo sys = new SysInfo();
-        sys.setName(Framework.getSystemName("module", request));
-        sys.setSysid("module");
-        syses.add(sys);
-        if (subsystemList != null && subsystemList.size() > 0) {
-            for (SubSystem sub : subsystemList) {
-                sys = new SysInfo();
-                sys.setName(Framework.getSystemName(sub.getId(), request));
-                sys.setSysid(sub.getId());
-                if (system_id != null && system_id.equals(sys.getSysid()))
-                    sys.setSelected(true);
-                syses.add(sys);
-            }
+		} else {
+			RequestContextUtils.getLocaleResolver(request).setLocale(request, response, language);
+		}
+		model.addAttribute("language", language);
 
-        }
-        model.addAttribute("systemList", syses);
-        return "path:login";
-    }
+		/*
+		 * if(language.equals("zh_CN")){
+		 * request.getSession().setAttribute("languageKey",
+		 * java.util.Locale.CHINA); } else if(language.equals("en_US")){
+		 * request.getSession().setAttribute("languageKey",
+		 * java.util.Locale.US); }
+		 */
+		String loginPath = request.getParameter("loginPath");//登陆界面风格
+		String subsystem_id = request.getParameter("subsystem_id");
 
-    @AssertTicket
-    public void ssowithticket(HttpServletRequest request, HttpServletResponse response) {
-        _ssowithtoken(request, response);
-    }
 
-    @AssertDToken
-    public void ssowithtoken(HttpServletRequest request, HttpServletResponse response) {
-        _ssowithtoken(request, response);
-    }
+		loginStyle = StringUtil.getCookieValue(request, "loginStyle");
+		system_id = StringUtil.getCookieValue(request, "subsystem_id");
 
-    
-    /**
-     * 强制要求系统必须携带令牌
-     * 
-     * @return
-     */
+		if (loginPath != null) {
+			StringUtil.addCookieValue(request, response, "loginStyle", loginPath);
+			loginStyle = loginPath;
 
-    public void _ssowithtoken(HttpServletRequest request, HttpServletResponse response) {
-        // return "path:sso";
+		}
+		if (loginStyle == null)
+			loginStyle = "5";
+		if (subsystem_id != null) {
+			StringUtil.addCookieValue(request, response, "subsystem_id", subsystem_id);
 
-        String u = "", p = "", ck = "";
+		}
+		model.addAttribute("system_id", system_id);
+		model.addAttribute("loginStyle", loginStyle);
+		model.addAttribute("defaultmodulename", Framework.getSystemName("module", request));
 
-        String successRedirect = request.getParameter("successRedirect");
-        
-        if (!StringUtil.isEmpty(successRedirect)) {
-            successRedirect = StringUtil.getRealPath(request, successRedirect, true);
-        }
-        String userName = (String) request.getAttribute(TokenStore.token_request_account_key);
-        String worknumber = (String) request.getAttribute(TokenStore.token_request_worknumber_key);
-        String loginType = "1";
-        if (StringUtil.isEmpty(userName)) {
-            userName = worknumber;
-            loginType = "2";
-        }
-        PermissionModule permissionModule = ConfigManager.getInstance().getPermissionModule();
-        String loginMenu = request.getParameter("loginMenu");
-        String contextpath = request.getContextPath();
-        String menuid = "newGetDoc";
-        if (loginMenu != null) {
 
-            menuid = loginMenu;
+		String machineIP = StringUtil.getClientIP(request);
+		String specialuser = permissionModule.isSpesialUser(machineIP);
+		if ((specialuser != null) && userName == null) {
 
-        }
-        HttpSession session = request.getSession();
-         
-        try {
-            AccessControl control = AccessControl.getInstance();
-            control.checkAccess(request, response, false);
-            String user = control.getUserAccount();
+			String subsystem = request.getParameter("subsystem_id");
+			try// uim检测
+			{
 
-            worknumber = control.getUserAttribute("userWorknumber");
-            boolean issameuser = false;
-            if (loginType.equals("2")) {
-                if (worknumber != null && !worknumber.equals(""))
-                    issameuser = userName.equals(worknumber);
-            } else {
-                if (user != null && !user.equals(""))
-                    issameuser = userName.equals(user);
-            }
+				userName = specialuser;
 
-            if (user == null || "".equals(user) || !issameuser) {
+				AccessControl control = AccessControl.getInstance();
+				control.checkAccess(request, response, false);
+				String user = control.getUserAccount();
+				request.setAttribute("fromsso", "true");
+				if (user == null || "".equals(user) || !userName.equals(user)) {
 
-                if (!issameuser) {
-                    control.resetSession(session);
-                }
+					try {
+						if (!userName.equals(user))
+							control.resetSession(session);
+						String password = permissionModule.getUserPassword(userName);
+						control = AccessControl.getInstance();
+						control.login(request, response, userName, password);
 
-                try {
-                    // 1-域账号登录 2-工号登录
-                    String password = null;
-                    if (loginType.equals("1")) {
+						if (subsystem == null)
+							subsystem = AccessControl.getDefaultSUBSystemID();
+						if (successRedirect == null) {
+							successRedirect = getSuccessRedirect(loginPath, subsystem);
+						}
+						if (!fromredirect) {
+							AccessControl.recordIndexPage(request, successRedirect);
+							AccessControl.recordeSystemLoginPage(request, response);
+						}
+						response.sendRedirect(successRedirect);
+						return null;
+					} catch (Exception e) {
 
-                        password = permissionModule.getUserPassword(userName);
-                        if (password == null)
-                            throw new AccessException("用户" + userName + "不存在。");
-                    } else {
-                        java.util.Map data = permissionModule.getUserNameAndPasswordByWorknumber(userName);
-                        if (data == null)
-                            throw new AccessException("工号为" + userName + "的用户不存在。");
-                        userName = (String) data.get("USER_NAME");
-                        password = (String) data.get("USER_PASSWORD");
-                    }
-                    control = AccessControl.getInstance();
-                    request.setAttribute("fromsso", "true");
-                    // System.out.println("-----------userName="+userName+",password="+password);
-                    control.login(request, response, userName, password);
-                    if (StringUtil.isEmpty(successRedirect)) {
-                        Framework framework = Framework.getInstance(control.getCurrentSystemID());
-                        MenuItem menuitem = framework.getMenuByID(menuid);
-                        if (menuitem instanceof Item) {
+						response.sendRedirect(new StringBuilder().append(request.getContextPath()).append("/jsp/common/ssofail.jsp?userName=").append(userName).append("&ip=").append(machineIP).toString());
+						return null;
+					}
 
-                            Item menu = (Item) menuitem;
-                            successRedirect = MenuHelper.getRealUrl(contextpath,
-                                    Framework.getWorkspaceContent(menu, control), MenuHelper.menupath_menuid,
-                                    menu.getId());
-                        } else {
+				} else {
 
-                            Module menu = (Module) menuitem;
-                            StringBuilder framepath = new StringBuilder();
-                            framepath .append(contextpath ).append( "/sanydesktop/singleframe.page?").append(MenuHelper.menupath ).append( "=").append( menu.getPath());
-                            successRedirect = framepath.toString();
-                        }
-                        AccessControl.recordIndexPage(request, successRedirect);
-                    } else {
-                        successRedirect = URLDecoder.decode(successRedirect);
-                    }
-                    response.sendRedirect(successRedirect);
-                    return;
-                } catch (Exception e) {
-                    log.info("", e);
-                    String msg = e.getMessage();
-                    if (msg == null)
-                        msg = "";
-                    StringBuilder builder = new StringBuilder();
-                    builder.append(contextpath ).append( "/webseal/websealloginfail.jsp?userName=").append( userName)
-                	.append( "&ip=").append(StringUtil.getClientIP(request) ).append( "&errormsg=" ).append( java.net.URLEncoder.encode(java.net.URLEncoder.encode(msg, "UTF-8"),"UTF-8"));
-                    response.sendRedirect(builder.toString());
-                    return;
-                }
+					if (subsystem == null)
+						subsystem = AccessControl.getDefaultSUBSystemID();
+					if (successRedirect == null) {
+						successRedirect = getSuccessRedirect(loginPath, subsystem);
 
-            } else {
-                control.resetUserAttributes();
-                if (StringUtil.isEmpty(successRedirect)) {
-                    Framework framework = Framework.getInstance(control.getCurrentSystemID());
-                    MenuItem menuitem = framework.getMenuByID(menuid);
-                    if (menuitem instanceof Item) {
+					}
+					if (!fromredirect) {
+						AccessControl.recordIndexPage(request, successRedirect);
+						AccessControl.recordeSystemLoginPage(request, response);
+					}
+					response.sendRedirect(successRedirect);
+					return null;
+				}
 
-                        Item menu = (Item) menuitem;
-                        successRedirect = MenuHelper.getRealUrl(contextpath,
-                                Framework.getWorkspaceContent(menu, control), MenuHelper.menupath_menuid,
-                                menu.getId());
-                    } else {
+			} catch (Exception e)// 检测失败,继续平台登录
+			{
 
-                        Module menu = (Module) menuitem;
-                        StringBuilder framepath = new StringBuilder();
-                        framepath .append(contextpath ).append( "/sanydesktop/singleframe.page?" ).append( MenuHelper.menupath
-                        		).append( "=" ).append( menu.getPath());
-                        successRedirect = framepath.toString();
-                    }
-                    AccessControl.recordIndexPage(request, successRedirect);
-                } else {
-                    successRedirect = URLDecoder.decode(successRedirect);
-                }
-                response.sendRedirect(successRedirect);
-                return;
-            }
+			}
 
-        } catch (Throwable ex) {
-            log.info("", ex);
-            String errorMessage = ex.getMessage();
-            if (errorMessage == null)
-                errorMessage = "";
+		} else {
+			String flag = request.getParameter("flag"); // 是否触发提交
 
-            try {
-                FileCopyUtils.copy(errorMessage + "," + userName + "登陆失败，请确保输入的用户名和口令是否正确！",
-                        new OutputStreamWriter(response.getOutputStream(), "UTF-8"));
-            } catch (IOException e) {
-                log.info("", e);
-            }
 
-        }
-         
+			if (flag == null) {
+			} else {
+				// String successRedirect =
+				// request.getParameter("successRedirect");
 
-    }
-    
-    /**
-     * 随机取颜色
-     *
-     * @return
-   
-     * @version V1.0.0
-     */
-    private Color getRandColor(int fc, int bc) {
-        Random random = new Random();
-        if (fc > 255) fc = 255;
-        if (bc > 255) bc = 255;
-        int r = fc + random.nextInt(bc - fc);
-        int g = fc + random.nextInt(bc - fc);
-        int b = fc + random.nextInt(bc - fc);
-        return new Color(r, g, b);
-    }
-    
+				String password = request.getParameter("password");
+
+				 if(StringUtil.isEmpty(userName) || StringUtil.isEmpty(password))
+				{
+					errorMessage = ("请输入正确的账号或者口令!");
+				}
+				else {
+
+
+					 try {
+						 AuthUser authUser = permissionModule.getUser(userName);
+						 if(authUser == null){
+							 errorMessage = ("用户["+userName+"]不存在!");
+							 throw new AccessException(errorMessage);
+						 }
+
+//判断口令是否过期
+						 boolean enablePasswordExpiredDays = ConfigManager.getInstance().getConfigBooleanValue("enablePasswordExpiredDays", false);
+						 if (enablePasswordExpiredDays) {
+							 int expiredays = userName != null ? authUser.getPasswordDualtime() : 0;
+							 String expriedtime_ = "";
+							 Date expiretime = expiredays > 0 ? permissionModule.getPasswordExpiredTimeByUserAccount(authUser) : null;
+							 if (expiretime != null && expiretime.before(new Date())) {
+
+								 SimpleDateFormat dateformt = new SimpleDateFormat("yyyy-MM-dd");
+								 expriedtime_ = dateformt.format(expiretime);
+								 model.addAttribute("expriedtime_", expriedtime_);
+								 model.addAttribute("userName", userName);
+								 model.addAttribute("expiredays", expiredays);
+								 errorMessage = new StringBuilder().append("口令过期，有效期:").append(expiredays).append(",过期时间：").append(expriedtime_).toString();
+								 throw new AccessException(errorMessage);
+
+							 }
+						 }
+						 if (enable_login_validatecode) {
+							 permissionModule.validatecode(request);
+						 }
+
+						 AccessControl.getInstance().login(request, response, userName, password);
+						 String subsystem = request.getParameter("subsystem_id");
+
+						 if (subsystem == null)
+							 subsystem = AccessControl.getDefaultSUBSystemID();
+						 /**
+						  * 需要全屏时，将response.sendRedirect("index.jsp");注释掉，
+						  * 将response.sendRedirect(
+						  * "sysmanager/refactorwindow.jsp");打开
+						  */
+						 if (successRedirect == null) {
+							 successRedirect = getSuccessRedirect(loginPath, subsystem);
+
+						 }
+						 if (!fromredirect) {
+							 AccessControl.recordIndexPage(request, successRedirect);
+							 AccessControl.recordeSystemLoginPage(request, response);
+						 }
+						 response.sendRedirect(successRedirect);
+						 return null;
+						 // response.sendRedirect("sysmanager/refactorwindow.jsp?subsystem_id="
+						 // + subsystem);
+					 } catch (AccessException ex) {
+
+						 errorMessage = ex.getMessage();
+						 if (errorMessage != null) {
+
+						 } else {
+							 errorMessage = org.frameworkset.web.servlet.support.RequestContextUtils.getI18nMessage(
+									 "sany.pdp.login.failed", request);
+						 }
+
+						 // if(errorMessage==null){
+						 // out.print("登陆失败，请确保输入的用户名和口令是否正确！");
+						 // }
+						 // else{
+						 // out.print(errorMessage);
+						 // }
+
+					 } catch (Exception ex) {
+						 errorMessage = ex.getMessage();
+
+						 if (errorMessage != null) {
+							 // errorMessage = errorMessage.replaceAll("\\n",
+							 // "\\\\n");
+							 // errorMessage = errorMessage.replaceAll("\\r",
+							 // "\\\\r");
+						 } else {
+							 errorMessage = org.frameworkset.web.servlet.support.RequestContextUtils.getI18nMessage(
+									 "sany.pdp.login.failed", request);
+						 }
+						 // out.print(errorMessage+ "登陆失败，请确保输入的用户名和口令是否正确！");
+
+					 }
+
+				}
+
+			}
+
+		}
+		if (errorMessage != null)
+			model.addAttribute("errorMessage", errorMessage);
+		List<SubSystem> subsystemList = Framework.getInstance().getSubsystemList();
+		List<SysInfo> syses = new ArrayList<SysInfo>();
+		SysInfo sys = new SysInfo();
+		sys.setName(Framework.getSystemName("module", request));
+		sys.setSysid("module");
+		syses.add(sys);
+		if (subsystemList != null && subsystemList.size() > 0) {
+			for (SubSystem sub : subsystemList) {
+				sys = new SysInfo();
+				sys.setName(Framework.getSystemName(sub.getId(), request));
+				sys.setSysid(sub.getId());
+				if (system_id != null && system_id.equals(sys.getSysid()))
+					sys.setSelected(true);
+				syses.add(sys);
+			}
+
+		}
+		model.addAttribute("systemList", syses);
+		return "path:login";
+	}
+
+	@AssertTicket
+	public void ssowithticket(HttpServletRequest request, HttpServletResponse response) {
+		_ssowithtoken(request, response);
+	}
+
+	@AssertDToken
+	public void ssowithtoken(HttpServletRequest request, HttpServletResponse response) {
+		_ssowithtoken(request, response);
+	}
+
+
+	/**
+	 * 强制要求系统必须携带令牌
+	 *
+	 * @return
+	 */
+
+	public void _ssowithtoken(HttpServletRequest request, HttpServletResponse response) {
+		// return "path:sso";
+
+		String u = "", p = "", ck = "";
+
+		String successRedirect = request.getParameter("successRedirect");
+
+		if (!StringUtil.isEmpty(successRedirect)) {
+			successRedirect = StringUtil.getRealPath(request, successRedirect, true);
+		}
+		String userName = (String) request.getAttribute(TokenStore.token_request_account_key);
+		String worknumber = (String) request.getAttribute(TokenStore.token_request_worknumber_key);
+		String loginType = "1";
+		if (StringUtil.isEmpty(userName)) {
+			userName = worknumber;
+			loginType = "2";
+		}
+		PermissionModule permissionModule = ConfigManager.getInstance().getPermissionModule();
+		String loginMenu = request.getParameter("loginMenu");
+		String contextpath = request.getContextPath();
+		String menuid = "newGetDoc";
+		if (loginMenu != null) {
+
+			menuid = loginMenu;
+
+		}
+		HttpSession session = request.getSession();
+
+		try {
+			AccessControl control = AccessControl.getInstance();
+			control.checkAccess(request, response, false);
+			String user = control.getUserAccount();
+
+			worknumber = control.getUserAttribute("userWorknumber");
+			boolean issameuser = false;
+			if (loginType.equals("2")) {
+				if (worknumber != null && !worknumber.equals(""))
+					issameuser = userName.equals(worknumber);
+			} else {
+				if (user != null && !user.equals(""))
+					issameuser = userName.equals(user);
+			}
+
+			if (user == null || "".equals(user) || !issameuser) {
+
+				if (!issameuser) {
+					control.resetSession(session);
+				}
+
+				try {
+					// 1-域账号登录 2-工号登录
+					String password = null;
+					if (loginType.equals("1")) {
+
+						password = permissionModule.getUserPassword(userName);
+						if (password == null)
+							throw new AccessException("用户" + userName + "不存在。");
+					} else {
+						java.util.Map data = permissionModule.getUserNameAndPasswordByWorknumber(userName);
+						if (data == null)
+							throw new AccessException("工号为" + userName + "的用户不存在。");
+						userName = (String) data.get("USER_NAME");
+						password = (String) data.get("USER_PASSWORD");
+					}
+					control = AccessControl.getInstance();
+					request.setAttribute("fromsso", "true");
+					// System.out.println("-----------userName="+userName+",password="+password);
+					control.login(request, response, userName, password);
+					if (StringUtil.isEmpty(successRedirect)) {
+						Framework framework = Framework.getInstance(control.getCurrentSystemID());
+						MenuItem menuitem = framework.getMenuByID(menuid);
+						if (menuitem instanceof Item) {
+
+							Item menu = (Item) menuitem;
+							successRedirect = MenuHelper.getRealUrl(contextpath,
+									Framework.getWorkspaceContent(menu, control), MenuHelper.menupath_menuid,
+									menu.getId());
+						} else {
+
+							Module menu = (Module) menuitem;
+							StringBuilder framepath = new StringBuilder();
+							framepath.append(contextpath).append("/sanydesktop/singleframe.page?").append(MenuHelper.menupath).append("=").append(menu.getPath());
+							successRedirect = framepath.toString();
+						}
+						AccessControl.recordIndexPage(request, successRedirect);
+					} else {
+						successRedirect = URLDecoder.decode(successRedirect);
+					}
+					response.sendRedirect(successRedirect);
+					return;
+				} catch (Exception e) {
+					log.info("", e);
+					String msg = e.getMessage();
+					if (msg == null)
+						msg = "";
+					StringBuilder builder = new StringBuilder();
+					builder.append(contextpath).append("/webseal/websealloginfail.jsp?userName=").append(userName)
+							.append("&ip=").append(AdminUtil.getClientIP(request)).append("&errormsg=").append(java.net.URLEncoder.encode(java.net.URLEncoder.encode(msg, "UTF-8"), "UTF-8"));
+					response.sendRedirect(builder.toString());
+					return;
+				}
+
+			} else {
+				control.resetUserAttributes();
+				if (StringUtil.isEmpty(successRedirect)) {
+					Framework framework = Framework.getInstance(control.getCurrentSystemID());
+					MenuItem menuitem = framework.getMenuByID(menuid);
+					if (menuitem instanceof Item) {
+
+						Item menu = (Item) menuitem;
+						successRedirect = MenuHelper.getRealUrl(contextpath,
+								Framework.getWorkspaceContent(menu, control), MenuHelper.menupath_menuid,
+								menu.getId());
+					} else {
+
+						Module menu = (Module) menuitem;
+						StringBuilder framepath = new StringBuilder();
+						framepath.append(contextpath).append("/sanydesktop/singleframe.page?").append(MenuHelper.menupath
+						).append("=").append(menu.getPath());
+						successRedirect = framepath.toString();
+					}
+					AccessControl.recordIndexPage(request, successRedirect);
+				} else {
+					successRedirect = URLDecoder.decode(successRedirect);
+				}
+				response.sendRedirect(successRedirect);
+				return;
+			}
+
+		} catch (Throwable ex) {
+			log.info("", ex);
+			String errorMessage = ex.getMessage();
+			if (errorMessage == null)
+				errorMessage = "";
+
+			try {
+				FileCopyUtils.copy(errorMessage + "," + userName + "登陆失败，请确保输入的用户名和口令是否正确！",
+						new OutputStreamWriter(response.getOutputStream(), "UTF-8"));
+			} catch (IOException e) {
+				log.info("", e);
+			}
+
+		}
+
+
+	}
+
+	/**
+	 * 随机取颜色
+	 *
+	 * @return
+	 * @version V1.0.0
+	 */
+	private Color getRandColor(int fc, int bc) {
+		Random random = new Random();
+		if (fc > 255) fc = 255;
+		if (bc > 255) bc = 255;
+		int r = fc + random.nextInt(bc - fc);
+		int g = fc + random.nextInt(bc - fc);
+		int b = fc + random.nextInt(bc - fc);
+		return new Color(r, g, b);
+	}
+
 	/**
 	 * 在系统首页切换平台
+	 *
 	 * @param request
 	 * @return
 	 */
-	public String switchSystem(HttpServletRequest request,ModelMap model)
-	{
-		MenuHelper menuHelper = MenuHelper.getMenuHelper(request,true);
-		
+	public String switchSystem(HttpServletRequest request, ModelMap model) {
+		MenuHelper menuHelper = MenuHelper.getMenuHelper(request, true);
+
 		String indexpage = AccessControl.getIndexPage(request);
-		if(!indexpage.startsWith("/"))
-			indexpage = "/"+indexpage;
+		if (!indexpage.startsWith("/"))
+			indexpage = "/" + indexpage;
 		model.addAttribute("selected", AccessControl.getAccessControl().getCurrentSystemID());
 		return indexpage;
-			
+
 	}
 
 }
