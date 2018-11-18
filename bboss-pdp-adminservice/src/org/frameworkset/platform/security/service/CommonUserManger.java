@@ -1,6 +1,5 @@
 package org.frameworkset.platform.security.service;
 
-import com.frameworkset.common.poolman.ConfigSQLExecutor;
 import com.frameworkset.orm.transaction.TransactionManager;
 import com.frameworkset.platform.admin.entity.SmOrganization;
 import com.frameworkset.platform.admin.entity.SmUser;
@@ -25,7 +24,7 @@ import java.sql.Timestamp;
 
 public class CommonUserManger implements CommonUserManagerInf{
 	private static Logger log = LoggerFactory.getLogger(CommonUserManger.class);
-	private ConfigSQLExecutor executor ;
+//	private ConfigSQLExecutor executor ;
 	private SmUserService userService;
 	private SmOrganizationService organizationService;
 	private UserOrgParamManager userOrgParamManager = new UserOrgParamManager();
@@ -108,6 +107,7 @@ public class CommonUserManger implements CommonUserManagerInf{
 
 			user.setUserRegdate(new Timestamp(System.currentTimeMillis()));
 
+			this.userService.addSmUser(user);
 			result.setCode(Result.ok);
 			result.setUser(user);
 			tm.commit();
@@ -326,10 +326,10 @@ public class CommonUserManger implements CommonUserManagerInf{
 
 		return this.organizationService.existJobReleation(userid, orgid);
 	}
-	private boolean existOrgReleation(String userid) throws SQLException {
-
-		return executor.queryObject(int.class, "existOrgReleation",  userid) > 0;
-	}
+//	private boolean existOrgReleation(String userid) throws SQLException {
+//
+//		return executor.queryObject(int.class, "existOrgReleation",  userid) > 0;
+//	}
 	public Result updateUser(SmUser user) {
 		Result result = new Result();
 		try {
