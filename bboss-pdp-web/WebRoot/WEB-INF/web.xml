@@ -222,7 +222,7 @@
         <url-pattern>*.freepage</url-pattern>
     </servlet-mapping>
 	
-
+<!--
  <servlet> 
 <servlet-name>DruidStatView</servlet-name> 
 <servlet-class>com.alibaba.druid.support.http.StatViewServlet</servlet-class> 
@@ -231,7 +231,7 @@
 <servlet-mapping> 
 <servlet-name>DruidStatView</servlet-name> 
 <url-pattern>/druid/*</url-pattern> 
-</servlet-mapping>
+</servlet-mapping>-->
  <servlet>
 		<display-name>cxf</display-name>
 		<servlet-name>cxf</servlet-name>
@@ -296,6 +296,7 @@
   
   	<security-constraint>
 		<web-resource-collection>
+			<web-resource-name>h</web-resource-name>
 			<url-pattern>/*</url-pattern>
 			<http-method>PUT</http-method>
 			<http-method>HEAD</http-method>

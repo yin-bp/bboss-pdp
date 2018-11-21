@@ -127,7 +127,7 @@ compile([group: 'com.bbossgroups', name: 'bboss-schedule', version: "${bboss_ver
 			[group: 'batik', name: 'batik-dom', version: '1.6-1', transitive: false],
 			[group: 'batik', name: 'batik-svggen', version: '1.6-1', transitive: false],
 			[group: 'batik', name: 'batik-util', version: '1.6-1', transitive: false],
- 			[group: 'com.alibaba', name: 'druid', version: '1.0.11', transitive: false],
+ 			//[group: 'com.alibaba', name: 'druid', version: '1.0.11', transitive: false],
            	[group: 'exml', name: 'exml', version: '7.0', transitive: false],
            	[group: 'org.fontbox', name: 'fontbox', version: '0.1.0', transitive: false],
 			//[group: 'com.lowagie', name: 'itext', version: '4.2.1', transitive: false],
