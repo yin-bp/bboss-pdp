@@ -244,7 +244,7 @@ public class CommonUserManger implements CommonUserManagerInf{
 			user.setUserType("0");
 
 			user.setUserRegdate(new Timestamp(System.currentTimeMillis()));
-
+			this.userService.addSmUser(user);
 			result.setCode(Result.ok);
 			result.setUser(user);
 			tm.commit();
