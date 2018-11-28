@@ -31,43 +31,15 @@
  *****************************************************************************/
 package org.frameworkset.platform.security;
 
-import java.io.IOException;
-import java.security.Principal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import javax.servlet.jsp.JspWriter;
-import javax.servlet.jsp.PageContext;
-
+import com.frameworkset.util.StringUtil;
 import org.frameworkset.platform.config.ConfigManager;
 import org.frameworkset.platform.config.model.Operation;
 import org.frameworkset.platform.config.model.OperationQueue;
 import org.frameworkset.platform.config.model.ResourceInfo;
-import org.frameworkset.platform.framework.Framework;
-import org.frameworkset.platform.framework.Item;
-import org.frameworkset.platform.framework.MenuHelper;
-import org.frameworkset.platform.framework.MenuItem;
-import org.frameworkset.platform.framework.MenuQueue;
-import org.frameworkset.platform.framework.Module;
-import org.frameworkset.platform.framework.ModuleQueue;
-import org.frameworkset.platform.framework.SubSystem;
+import org.frameworkset.platform.framework.*;
 import org.frameworkset.platform.resource.Resource;
 import org.frameworkset.platform.resource.ResourceManager;
-import org.frameworkset.platform.security.authentication.Credential;
-import org.frameworkset.platform.security.authentication.LoginContext;
-import org.frameworkset.platform.security.authentication.LoginException;
-import org.frameworkset.platform.security.authentication.LogoutCallbackHandler;
-import org.frameworkset.platform.security.authentication.SimpleLoginContext;
-import org.frameworkset.platform.security.authentication.Subject;
-import org.frameworkset.platform.security.authentication.UsernamePasswordCallbackHandler;
+import org.frameworkset.platform.security.authentication.*;
 import org.frameworkset.platform.security.authorization.AccessException;
 import org.frameworkset.platform.security.authorization.AuthPrincipal;
 import org.frameworkset.platform.security.authorization.AuthRole;
@@ -86,7 +58,15 @@ import org.frameworkset.web.token.TokenStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.frameworkset.util.StringUtil;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import javax.servlet.jsp.JspWriter;
+import javax.servlet.jsp.PageContext;
+import java.io.IOException;
+import java.security.Principal;
+import java.util.*;
 
 /**
  * @author biaoping.yin created on 2005-9-29 version 1.0
@@ -653,10 +633,9 @@ public class AccessControl implements AccessControlInf {
 	 * 属性列表： ssoCookie在登录时创建，将作为令牌在门户中的各应用系统之间传递的，从而实现单点登录。
 	 * 当用户关闭浏览器或者退出登录时，ssoCookie自动失效
 	 * 
-	 * @param pageContext
+	 * @param request
 	 * @param userName
 	 * @param password
-	 * @param decode
 	 *            是否对密码加密
 	 * @return
 	 */
@@ -856,7 +835,6 @@ public class AccessControl implements AccessControlInf {
 	 * @param response
 	 * @param userName
 	 * @param password
-	 * @param enablelog
 	 * @return
 	 * @throws AccessException
 	 */
@@ -881,7 +859,6 @@ public class AccessControl implements AccessControlInf {
 	 * @param response
 	 * @param userName
 	 * @param password
-	 * @param enablelog
 	 * @return
 	 * @throws AccessException
 	 */
@@ -1400,7 +1377,6 @@ public class AccessControl implements AccessControlInf {
 	 * @param response
 	 * @param userName
 	 * @param password
-	 * @param userType
 	 *            用户类型 0-标识外部用户，1-标识内部用户
 	 * @return
 	 * @throws AccessException
@@ -1426,7 +1402,6 @@ public class AccessControl implements AccessControlInf {
 	 * @param response
 	 * @param userName
 	 * @param password
-	 * @param userType
 	 *            用户类型 0-标识外部用户，1-标识内部用户
 	 * @return
 	 * @throws AccessException
@@ -1591,7 +1566,7 @@ public class AccessControl implements AccessControlInf {
 	/**
 	 * 判断当前登录的用户类型是否与要求的用户类型一致，一致返回true，否则返回false
 	 * 
-	 * @param userType
+	 * @param userTypes
 	 * @return
 	 */
 	private boolean checkUserType(String[] userTypes) {
@@ -1625,7 +1600,6 @@ public class AccessControl implements AccessControlInf {
 	 * @param request
 	 * @param response
 	 * @param out
-	 * @param protect
 	 * @deprecated 请参考方法 checkAccess(String userType,HttpServletRequest request,
 	 *             HttpServletResponse response)
 	 * @return
@@ -1643,7 +1617,6 @@ public class AccessControl implements AccessControlInf {
 	 *            用户类型
 	 * @param request
 	 * @param response
-	 * @param protect
 	 * @return
 	 */
 	public boolean checkAccess(String userType, HttpServletRequest request, HttpServletResponse response) {
@@ -2317,8 +2290,8 @@ public class AccessControl implements AccessControlInf {
 	/**
 	 * 检查用户userAccount是否拥有资源resourceId的操作action的权限
 	 * 
-	 * @param pageContext
-	 *            PageContext
+	 * @param principal
+	 *            principal
 	 * @param resourceID
 	 *            String
 	 * @return boolean
@@ -2330,7 +2303,6 @@ public class AccessControl implements AccessControlInf {
 	/**
 	 * 检查用户userAccount是否拥有资源resourceId的操作action的权限
 	 * 
-	 * @param pageContext
 	 *            PageContext
 	 * @param resourceID
 	 *            String
@@ -2407,7 +2379,6 @@ public class AccessControl implements AccessControlInf {
 	/**
 	 * 检查用户userAccount是否拥有资源resourceId的操作action的权限
 	 * 
-	 * @param pageContext
 	 *            PageContext
 	 * @param resourceID
 	 *            String
@@ -2453,9 +2424,7 @@ public class AccessControl implements AccessControlInf {
 	/**
 	 * 检测当前系统用户是否拥有访问资源的权限
 	 * 
-	 * @param resourceID
-	 * @param action
-	 * @param resourceType
+	 * @param uri
 	 * @return
 	 */
 	public boolean checkURLPermission(String uri) {
@@ -2716,8 +2685,8 @@ public class AccessControl implements AccessControlInf {
 	/**
 	 * 如果系统没有正常退出系统，强制用户退出,当session实效之前， 如果用户还没有退出，调用该方法强制当前用户退出系统
 	 * 
-	 * @param pageContext
-	 *            PageContext
+	 * @param session
+	 *            session
 	 */
 	public static void logoutdirect(HttpSession session) {
 
@@ -2767,7 +2736,6 @@ public class AccessControl implements AccessControlInf {
 	/**
 	 * 用户登录退出
 	 * 
-	 * @param pageContext
 	 *            PageContext
 	 */
 	public void logout() {
@@ -3166,7 +3134,6 @@ public class AccessControl implements AccessControlInf {
 	 * 
 	 * @return
 	 * @deprecated
-	 * @see use getCurrentSystemID()
 	 */
 	public String getCurrentSystem() {
 		return getCurrentSystemID();
@@ -3227,8 +3194,8 @@ public class AccessControl implements AccessControlInf {
 	/**
 	 * 判断当前用户是否授予给定的角色
 	 * 
-	 * @param roleName
-	 *            String
+	 * @param role
+	 *            AuthRole
 	 * @return boolean
 	 */
 	public boolean isGrantedRole(AuthRole role) {
@@ -3240,7 +3207,7 @@ public class AccessControl implements AccessControlInf {
 	/**
 	 * 判断当前用户是否授予给定的角色
 	 * 
-	 * @param roleName
+	 * @param role
 	 *            String
 	 * @return boolean
 	 */
@@ -3291,6 +3258,10 @@ public class AccessControl implements AccessControlInf {
 		} catch (Exception e) {
 			return "";
 		}
+	}
+
+	public Map<String,Object> getUserAttributes(){
+		return credential.getCheckCallBack().getCallBacks();
 	}
 
 	/**
@@ -3428,7 +3399,6 @@ public class AccessControl implements AccessControlInf {
 	 * 
 	 * @param resourceType
 	 * @param resourceId
-	 * @param operation
 	 * @return
 	 */
 	public static boolean isExcluded(String resourceId, String resourceType) {

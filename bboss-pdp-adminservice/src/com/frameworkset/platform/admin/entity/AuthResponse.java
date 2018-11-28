@@ -15,7 +15,7 @@ package com.frameworkset.platform.admin.entity;
  * limitations under the License.
  */
 
-import org.frameworkset.platform.security.authorization.AuthUser;
+import java.util.Map;
 
 /**
  * <p>Description: </p>
@@ -31,7 +31,7 @@ public class AuthResponse {
 	 */
 	private String code = "200";
 	private String message = null;
-	private AuthUser user;
+	private Map<String,Object> user;
 	private String systemid;
 	private String systemName;
 	private String language;
@@ -55,13 +55,13 @@ public class AuthResponse {
 		this.message = message;
 	}
 
-	public AuthUser getUser() {
+	public Map<String,Object> getUser() {
 		return user;
 	}
 
-	public void setUser(AuthUser user) {
-		user.setPasswordText(null);
-		user.setUserPassword(null);
+	public void setUser(Map<String,Object> user) {
+//		user.setPasswordText(null);
+//		user.setUserPassword(null);
 		this.user = user;
 	}
 

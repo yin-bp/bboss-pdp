@@ -116,10 +116,10 @@
     		/jsp/logoutredirect.jsp,
     		/jsp/login.jsp,
     		/login.page,
-    		 /jsp/logout.jsp,
-    			/test/testmmssso.jsp,
+		    /jsp/logout.jsp,
+    		/test/testmmssso.jsp,
     		/test/testssowithtoken.jsp,
-    		
+		    /sso/applogin.page
     		/sso/sso.page,
     		/sso/wxsso.page,
     		/sso/recive.page,

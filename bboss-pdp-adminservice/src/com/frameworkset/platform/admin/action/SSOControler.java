@@ -486,7 +486,7 @@ public class SSOControler {
 						authResponse.setSessionId(session.getId());
 						authResponse.setCode("200");
 						authResponse.setMessage("success");
-						authResponse.setUser(authUser);
+						authResponse.setUser(control.getUserAttributes());
 					} catch (Exception e) {
 						authResponse.setCode("500");
 						authResponse.setMessage(StringUtil.exceptionToString(e));
@@ -544,14 +544,14 @@ public class SSOControler {
 					if (enable_login_validatecode) {
 						permissionModule.validatecode(request);
 					}
-
-					AccessControl.getInstance().login(request, response, userName, password);
+					AccessControl accessControl = AccessControl.getInstance();
+					accessControl.login(request, response, userName, password);
 					if (session == null)
 						session = request.getSession(false);
 					authResponse.setSessionId(session.getId());
-					authResponse.setUser(authUser);
+					authResponse.setUser(accessControl.getUserAttributes());
 					authResponse.setCode("200");
-
+					authResponse.setMessage("success");
 					// response.sendRedirect("sysmanager/refactorwindow.jsp?subsystem_id="
 					// + subsystem);
 				} catch (AccessException ex) {
@@ -1049,6 +1049,27 @@ public class SSOControler {
 		model.addAttribute("selected", AccessControl.getAccessControl().getCurrentSystemID());
 		return indexpage;
 
+	}
+
+	public @ResponseBody String logout(HttpServletRequest request,HttpServletResponse response){
+		HttpSession session = request.getSession(false);
+		String _redirectPath = request.getParameter("_redirectPath");
+		AccessControl accesscontroler = AccessControl.getInstance();
+		try
+		{
+			boolean success = accesscontroler.checkAccess(request, response,false);
+			if(success) {
+				String account = accesscontroler.getUserAccount();
+				accesscontroler.logout(false, false);
+				return new StringBuilder().append(account).append(" logout success.").toString();
+			}
+			return "not login.";
+
+		}
+		catch(Exception e)
+		{
+			return "logout failed:"+e.getMessage();
+		}
 	}
 
 }
