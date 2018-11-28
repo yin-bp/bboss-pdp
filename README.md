@@ -65,6 +65,10 @@ http://localhost/sso/applogin.page?userName=admin&password=1234567
 	"sessionId": "BB03A9A4BD7BCA6A7D07AA77ACBDCA8A"
 }
 
+登录成功后每次请求应用带sessionId对应的cookie信息：
+cookie名称：JSESSIONID
+cookie值：对应返回数据的sessionid的值
+
 ## 登出
 http://localhost/sso/logout.page
 登录失败返回值：
