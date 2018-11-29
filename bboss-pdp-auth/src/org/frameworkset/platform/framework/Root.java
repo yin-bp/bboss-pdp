@@ -136,5 +136,8 @@ public class Root extends BaseMenuItem{
 		// TODO Auto-generated method stub
 		return "";
 	}
+	public boolean isRoot(){
+		return true;
+	}
 
 }

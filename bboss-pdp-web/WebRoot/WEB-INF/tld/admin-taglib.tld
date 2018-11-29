@@ -39,7 +39,13 @@
         <tagclass>org.frameworkset.platform.desktop.tag.MenuTag</tagclass>
         <bodycontent>empty</bodycontent>
  		 
-    </tag> 
+    </tag>
+    <tag>
+        <name>topmenu</name>
+        <tagclass>org.frameworkset.platform.desktop.tag.TopMenuTag</tagclass>
+        <bodycontent>empty</bodycontent>
+
+    </tag>
     <tag>
         <name>globalpagemenu</name>
         <tagclass>org.frameworkset.platform.desktop.tag.GlobalpageMenuTag</tagclass>

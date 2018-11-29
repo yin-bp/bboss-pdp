@@ -1,8 +1,7 @@
 package org.frameworkset.platform.framework;
 
-import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 
 /**
@@ -66,4 +65,6 @@ public interface MenuItem  {
 	public String getOption();
 	public void setOption(String option);
 
+	String getStringExtendAttribute(String icon, String s);
+	public boolean isRoot();
 }

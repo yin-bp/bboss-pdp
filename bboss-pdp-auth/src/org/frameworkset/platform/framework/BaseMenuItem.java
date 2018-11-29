@@ -1,13 +1,11 @@
 package org.frameworkset.platform.framework;
 
-import java.util.Locale;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
+import org.frameworkset.platform.security.AuthorResource;
 import org.frameworkset.web.servlet.support.RequestContextUtils;
 
-import org.frameworkset.platform.security.AuthorResource;
+import javax.servlet.http.HttpServletRequest;
+import java.util.Locale;
+import java.util.Map;
 
 public abstract class BaseMenuItem extends AuthorResource implements MenuItem {
 	protected String name;
@@ -335,7 +333,11 @@ public abstract class BaseMenuItem extends AuthorResource implements MenuItem {
 
 	public void setDesktop_height(String desktop_height) {
 		this.desktop_height = desktop_height;
-	}	
+	}
+
+	public boolean isRoot(){
+		return false;
+	}
 	
 	private boolean showleftmenu = false; 
 	public boolean isShowleftmenu() {

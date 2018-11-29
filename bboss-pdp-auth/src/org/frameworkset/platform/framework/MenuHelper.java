@@ -1,19 +1,13 @@
 package org.frameworkset.platform.framework;
 
-import java.security.Principal;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.servlet.http.HttpServletRequest;
-
+import com.frameworkset.util.StringUtil;
+import org.frameworkset.platform.security.AccessControl;
 import org.frameworkset.security.AccessControlInf;
 import org.frameworkset.spi.BaseApplicationContext;
 
-import org.frameworkset.platform.security.AccessControl;
-import com.frameworkset.util.StringUtil;
+import javax.servlet.http.HttpServletRequest;
+import java.security.Principal;
+import java.util.*;
 
 
 
@@ -159,12 +153,16 @@ public class MenuHelper  {
         return getRootUrl(context, menuPath, externalparams, "");
     }
 
+    public MenuItem getMenuById(String menuId){
+		return getFramework().getMenuByID(menuId);
+	}
     /**
      * 获取菜单的根url地址，通过本地址将生成包含整个栏目所配置的块的系统框架
      * 
      * @param context
-     * @param menu
-     * @param params
+     * @param menuPath
+     * @param externalparams
+	 * @param subsystem
      * @return
      */
     public static String getRootUrl(String context, String menuPath, Map externalparams, String subsystem) {
