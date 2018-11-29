@@ -226,7 +226,7 @@ public class TopMenuTag  extends BaseTag {
 
 		try{
 			String selectedmenuid = request.getParameter(MenuHelper.menupath_menuid);//查找选择的菜单项path,待处理
-			String selectRootPath = MenuHelper.selectRootPath(menuHelper ,selectedmenuid);
+			String selectRootPath = menuHelper.selectRootPath(selectedmenuid);
 
 			String contextpath = request.getContextPath();
 			Item publicitem = menuHelper.getPublicItem();

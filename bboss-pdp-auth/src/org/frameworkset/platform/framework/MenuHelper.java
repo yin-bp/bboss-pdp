@@ -804,6 +804,9 @@ public class MenuHelper  {
         public AuthorModule(Module module) {
             this.module = module;
         }
+		public boolean isTopLevel(){
+			return module.isTopLevel();
+		}
         public String getOption() {
     		return module.getOption();
     	}
@@ -1005,6 +1008,9 @@ public class MenuHelper  {
 
     class AuthorItem extends Item {
         Item item;
+		public boolean isTopLevel(){
+			return item.isTopLevel();
+		}
         public String getUrl(){
         	return this.getWorkspaceContent();
         }
@@ -1440,13 +1446,13 @@ public class MenuHelper  {
         return menus = menuitemQueue.getMenuItems();
 	}
 
-	public static String selectRootPath(MenuHelper menuHelper,String selectedmenuid){
+	public String selectRootPath(String selectedmenuid){
 
 		if(StringUtil.isEmpty(selectedmenuid))
 			return null;
-		if(menuHelper.getPublicItem().getId().equals(selectedmenuid))
+		if(getPublicItem().getId().equals(selectedmenuid))
 			return null;
-		MenuItem menuItem = menuHelper.getMenuById(selectedmenuid);
+		MenuItem menuItem = getMenuById(selectedmenuid);
 		MenuItem parent = menuItem.getParent();
 		do {
 			if (parent == null || parent.isRoot()) {
@@ -1455,6 +1461,24 @@ public class MenuHelper  {
 			menuItem = parent;
 			parent = parent.getParent();
 		}while(true);
+	}
+
+	public String selectParentPath(String selectedmenuid){
+
+		if(StringUtil.isEmpty(selectedmenuid))
+			return null;
+
+		MenuItem menuItem = getMenuById(selectedmenuid);
+		MenuItem parent = menuItem.getParent();
+
+		if (parent == null || parent.isRoot()) {
+			return menuItem.getPath();
+		}
+		else{
+			return parent.getPath();
+		}
+
+
 	}
 	
 }

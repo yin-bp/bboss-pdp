@@ -347,5 +347,8 @@ public abstract class BaseMenuItem extends AuthorResource implements MenuItem {
 	public void setShowleftmenu(boolean showleftmenu) {
 		this.showleftmenu = showleftmenu;
 	}
+	public boolean isTopLevel(){
+		return this.getParent() instanceof Root;
+	}
 
 }

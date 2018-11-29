@@ -66,13 +66,13 @@
 		</publicitem>
 		<module name="一级菜单"
 				i18n:en_US="Line Information Query"
-				id="veh_line_query1" used="false"
+				id="veh_line_query1" used="true"
 				menuType="type1" icon="icon-home">
-			<module name="一级菜单"
+			<module name="二级菜单"
 					i18n:en_US="Line Information Query"
 					id="veh_line_query11" used="true"
 					url="admin/content.page" menuType="type1" icon="icon-home">
-				<item name="二级菜单"
+				<item name="三级菜单"
 					  i18n:en_US="pathvariable demo" id="pathvariabledemo21"  showleftmenu="false" menuType="type1">
 					<workspace>
 						<content>admin/content.page</content>
@@ -109,7 +109,7 @@
 				</item>
 
 			</module>
-			<item name="二级菜单"
+			<item name="测试菜单"
 				  i18n:en_US="pathvariable demo" id="pathvariabledemo2"  showleftmenu="false" menuType="type1">
 
 

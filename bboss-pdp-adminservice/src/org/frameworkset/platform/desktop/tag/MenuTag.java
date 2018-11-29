@@ -363,7 +363,7 @@ public class MenuTag extends BaseTag {
 		
 	}
 
-	private void allMenus(AccessControl control,MenuHelper menuHelper,String selectPath,StringBuilder datas,String theme,String selectedmenuid){
+	private void allMenus(AccessControl control,MenuHelper menuHelper,String selectRootPath,StringBuilder datas,String theme,String selectedmenuid){
 
 		try{
 
@@ -376,7 +376,7 @@ public class MenuTag extends BaseTag {
 //				.append("    <h3 class=\"uppercase\">Features</h3>")
 //				.append("</li>");
 				boolean selected = false;
-				if(selectPath == null)
+				if(selectRootPath == null)
 				{
 					selected = true;
 					hasputfirst = true;
@@ -392,7 +392,7 @@ public class MenuTag extends BaseTag {
 				if (!mi.isUsed()) {
 					continue;
 				}
-				boolean selected = selectPath != null && selectPath.equals(mi.getPath());
+				boolean selected = selectRootPath != null && selectRootPath.equals(mi.getPath());
 				if(!hasputfirst)
 				{
 					if(mi instanceof Item)
@@ -450,6 +450,100 @@ public class MenuTag extends BaseTag {
 		}
 
 	}
+
+	private void selectMenus(AccessControl control,MenuHelper menuHelper,String selectRootPath,StringBuilder datas,String theme,String selectedmenuid){
+
+		try{
+
+			String contextpath = request.getContextPath();
+
+			boolean hasputfirst = false;
+			String selectParentPath = menuHelper.selectParentPath(selectedmenuid);
+			MenuItem menuItem = menuHelper.getMenuById(selectedmenuid);
+			if(menuItem instanceof Item && menuItem.isTopLevel()){
+				this.renderItem(contextpath, control, menuHelper, (Item)menuItem,
+						true,
+						datas, true,selectedmenuid);
+				return;
+			}
+
+			ModuleQueue menus = menuHelper.getSubModules(selectRootPath);
+			for (int i = 0; menus != null && i < menus.size(); i++) {
+				Module module = menus.getModule(i);
+				if (!module.isUsed()) {
+					continue;
+				}
+				boolean selected = selectParentPath != null && selectParentPath.equals(module.getPath());
+				if(!hasputfirst)
+				{
+
+
+					if(module.getMenus() != null && module.getMenus().size() > 0)
+						renderModule(  contextpath,  control,  menuHelper,module,
+								selected,datas,true,0, theme,selectedmenuid);
+					else
+					{
+						renderNosonModule(  contextpath,  control,  menuHelper,module,
+								selected,datas,true);
+
+					}
+
+					hasputfirst = true;
+				}
+				else
+				{
+
+
+
+					if(module.getMenus() != null && module.getMenus().size() > 0)
+						renderModule(  contextpath,  control,  menuHelper,module,
+								selected,datas,false,0, theme,selectedmenuid);
+					else
+					{
+						renderNosonModule(  contextpath,  control,  menuHelper,module,
+								selected,datas,false);
+
+					}
+
+
+				}
+
+
+			}
+
+			ItemQueue items = menuHelper.getSubItems(selectRootPath);
+			for (int i = 0; items != null && i < items.size(); i++) {
+				Item item = items.getItem(i);
+				if (!item.isUsed()) {
+					continue;
+				}
+				boolean selected = selectParentPath != null && selectParentPath.equals(item.getPath());
+				if(!hasputfirst)
+				{
+
+					this.renderItem(contextpath, control, menuHelper, item,
+							selected,
+							datas, true,selectedmenuid);
+
+
+					hasputfirst = true;
+				}
+				else
+				{
+					this.renderItem(contextpath, control, menuHelper, item, selected, datas, false,selectedmenuid);
+
+				}
+
+
+			}
+
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+
+	}
 	
 	@Override
 	public int doStartTag() throws JspException {	
@@ -460,7 +554,7 @@ public class MenuTag extends BaseTag {
 		String theme = control.getUserAttribute("theme");
 		header(  control,  menuHelper,datas,theme );
 		String selectedmenuid = request.getParameter(MenuHelper.menupath_menuid);//查找选择的菜单项path,待处理
-		String selectRootPath = MenuHelper.selectRootPath(menuHelper ,selectedmenuid);
+		String selectRootPath = menuHelper.selectRootPath(selectedmenuid);
 		String fromtop = request.getParameter("fromtop");
 		//添加首页
 		
@@ -468,8 +562,12 @@ public class MenuTag extends BaseTag {
 		
 //		String selectedmenuid = request.getParameter(MenuHelper.selectedmodule);//查找选择的菜单项path,待处理
 
-		if(fromtop == null || fromtop.equals("false")) {
+		if(fromtop == null || fromtop.equals("false") || selectRootPath == null) {
 			allMenus(control, menuHelper, selectRootPath, datas, theme,selectedmenuid);
+		}
+		else{
+			selectMenus(  control,  menuHelper,  selectRootPath,  datas,  theme,  selectedmenuid);
+
 		}
 		
 		

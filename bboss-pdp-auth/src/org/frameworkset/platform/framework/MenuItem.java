@@ -67,4 +67,5 @@ public interface MenuItem  {
 
 	String getStringExtendAttribute(String icon, String s);
 	public boolean isRoot();
+	public boolean isTopLevel();
 }

@@ -46,6 +46,8 @@ var DesktopMenus = function() {
     		  }
         	  
           }
+            Layout.fixContentHeight(); // fix content height
+            App.initAjax(); // initialize core stuff
             var resBreakpointMd = App.getResponsiveBreakpoint('md');
             if (App.getViewPort().width < resBreakpointMd && $('.page-sidebar').hasClass("in")) { // close the menu on mobile view while laoding a page
                 $('.page-header .responsive-toggler').click();
@@ -75,21 +77,20 @@ var DesktopMenus = function() {
           }
           else
     	  {
-    	  	 Layout.fixContentHeight(); // fix content height
-             App.initAjax(); // initialize core stuff
-             if(!firsted){
-           	  	 var menuContainer = $('.page-sidebar ul');
-                 var resBreakpointMd = App.getResponsiveBreakpoint('md');
-                 menuContainer.children('li.active').removeClass('active');
-                // menuContainer.children('arrow.open').removeClass('open');
-                 $(thiselement).parents('li').each(function () {
-                       $(this).addClass('active');
-                        $(this).children('a > span.arrow').addClass('open');
-                 });
-                $(thiselement).parents('li').addClass('active');
 
 
-             }
+			 var menuContainer = $('.page-sidebar ul');
+			 var resBreakpointMd = App.getResponsiveBreakpoint('md');
+			 menuContainer.children('li.active').removeClass('active');
+			// menuContainer.children('arrow.open').removeClass('open');
+			 $(thiselement).parents('li').each(function () {
+				   $(this).addClass('active');
+					$(this).children('a > span.arrow').addClass('open');
+			 });
+			$(thiselement).parents('li').addClass('active');
+
+
+              
     	  }
         });
         return false;
@@ -155,9 +156,9 @@ var DesktopMenus = function() {
 	    	//parent.height=id.document.body.scrollHeight+10;
 	    	//id.document.body.scrollWidth = parent.width;
 	    },
-	    gotomenu:function(menuid,thiselement,e)
+	    gotomenu:function(menuid,thiselement,e,fromtop)
 	    {
-	    	gotomenu(menuid,thiselement,e);
+	    	gotomenu(menuid,thiselement,e,fromtop);
 	    },
 	    changeModelFrameHeight:function(iframeid,modelwindow){
 	    	
