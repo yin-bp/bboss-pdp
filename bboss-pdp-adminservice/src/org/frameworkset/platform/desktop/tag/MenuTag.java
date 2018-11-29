@@ -1,19 +1,12 @@
 package org.frameworkset.platform.desktop.tag;
 
-import java.io.IOException;
-
-import javax.servlet.jsp.JspException;
-
-import org.frameworkset.platform.framework.Framework;
-import org.frameworkset.platform.framework.Item;
-import org.frameworkset.platform.framework.MenuHelper;
-import org.frameworkset.platform.framework.MenuItem;
-import org.frameworkset.platform.framework.MenuQueue;
-import org.frameworkset.platform.framework.Module;
-import org.frameworkset.platform.security.AccessControl;
-
 import com.frameworkset.common.tag.BaseTag;
 import com.frameworkset.util.StringUtil;
+import org.frameworkset.platform.framework.*;
+import org.frameworkset.platform.security.AccessControl;
+
+import javax.servlet.jsp.JspException;
+import java.io.IOException;
 
 /**
  *
@@ -66,7 +59,8 @@ public class MenuTag extends BaseTag {
 //		datas.append(" </li>"); 
 	}
 	
-	private void renderItem(String contextpath,AccessControl control,MenuHelper menuHelper,Item item,boolean selected,StringBuilder datas,boolean isfirst)
+	private void renderItem(String contextpath,AccessControl control,
+							MenuHelper menuHelper,Item item,boolean selected,StringBuilder datas,boolean isfirst,String selectedmenuid)
 	{ 
 		String selectedclass = "";
 		if(selected)
@@ -81,12 +75,26 @@ public class MenuTag extends BaseTag {
 		}	
 		else
 		{
-			if(!isfirst)
-				selectedclass = "class=\"nav-item \"";
+			if(!isfirst) {
+				if(selectedmenuid != null && selectedmenuid.equals(item.getId())){
+					selectedclass = "class=\"nav-item active \"";
+				}
+				else{
+					selectedclass = "class=\"nav-item \"";
+				}
+
+			}
+
 			else
 			{
-				selectedclass = "class=\"nav-item start \"";
+				if(selectedmenuid != null && selectedmenuid.equals(item.getId())){
+					selectedclass = "class=\"nav-item start active \"";
+				}
+				else{
+					selectedclass = "class=\"nav-item start \"";
+				}
 			}
+
 			 
 		} 
 	
@@ -96,7 +104,8 @@ public class MenuTag extends BaseTag {
 		if(fullpageload.equals("true"))
 		{
 			datas.append("<li ").append(selectedclass).append(">")
-			 .append("<a id=\"left__").append(item.getId()).append("\"  href=\"javascript:void(0);\" onclick=\"javascript:DesktopMenus.gotomenu('").append(item.getId()).append("',this,event)\" class=\"nav-link \">");
+			 .append("<a id=\"left__").append(item.getId()).append("\"  href=\"javascript:void(0);\" onclick=\"javascript:DesktopMenus.gotomenu('")
+					.append(item.getId()).append("',this,event,false)\" class=\"nav-link \">");
 
 		}
 		else
@@ -172,7 +181,9 @@ public class MenuTag extends BaseTag {
 	//		}
 			if(url != null && !item.isUsesubpermission())
 				datas.append("<li ").append(selectedclass).append(">")
-					 .append("<a id=\"left__").append(item.getId()).append("\" href=\"javascript:void(0);\" onclick=\"javascript:DesktopMenus.gotomenu('").append(item.getId()).append("',this,event)\" class=\"nav-link \">");
+					 .append("<a id=\"left__").append(item.getId())
+						.append("\" href=\"javascript:void(0);\" onclick=\"javascript:DesktopMenus.gotomenu('").append(item.getId())
+						.append("',this,event,false)\" class=\"nav-link \">");
 			else
 			{
 				datas.append("<li ").append(selectedclass).append(">")
@@ -219,7 +230,9 @@ public class MenuTag extends BaseTag {
 	
 	 
 	
-	private void renderModule(String contextpath,AccessControl control,MenuHelper menuHelper,Module item,boolean selected,StringBuilder datas,boolean isfirst,int current_level,String theme)
+	private void renderModule(String contextpath,AccessControl control,MenuHelper menuHelper,
+							  Module item,boolean selected,StringBuilder datas,boolean isfirst,
+							  int current_level,String theme,String selectedmenuid)
 	{ 
 		String selectedclass = "";
 		if(selected)
@@ -290,11 +303,14 @@ public class MenuTag extends BaseTag {
 	//				url =  MenuHelper.getRealUrl(contextpath, MenuHelper.iframeurl,MenuHelper.selecturl,StringUtil.urlencode(url,"UTF-8"));
 	//			}
 				if(theme == null || theme.equals("admin_3"))
-					datas.append("<a id=\"left__").append(item.getId()).append("\"  href=\"javascript:void(0);\" onclick=\"javascript:DesktopMenus.gotomenu('").append(item.getId()).append("',this,event)\" class=\"nav-link nav-toggle\">");
+					datas.append("<a id=\"left__").append(item.getId())
+							.append("\"  href=\"javascript:void(0);\" onclick=\"javascript:DesktopMenus.gotomenu('")
+							.append(item.getId()).append("',this,event,false)\" class=\"nav-link nav-toggle\">");
 				else
 				{
 					//ondblclick
-					datas.append("<a id=\"left__").append(item.getId()).append("\"  href=\"javascript:void(0);\" onclick=\"javascript:DesktopMenus.gotomenu('").append(item.getId()).append("',this,event)\" class=\"nav-link nav-toggle\">");
+					datas.append("<a id=\"left__").append(item.getId()).append("\"  href=\"javascript:void(0);\" onclick=\"javascript:DesktopMenus.gotomenu('")
+							.append(item.getId()).append("',this,event,false)\" class=\"nav-link nav-toggle\">");
 				 
 				}
 			}
@@ -325,13 +341,13 @@ public class MenuTag extends BaseTag {
 				continue;
 			if(mi instanceof Item)
 			{
-				this.renderItem(contextpath, control, menuHelper, (Item)mi, false, datas, false);
+				this.renderItem(contextpath, control, menuHelper, (Item)mi, false, datas, false,selectedmenuid);
 			}
 			else
 			{
 				Module module = (Module)mi;
 				if(module.getMenus() != null && module.getMenus().size() > 0)
-					renderModule(  contextpath,  control,  menuHelper,module,false,datas,false,0, theme);
+					renderModule(  contextpath,  control,  menuHelper,module,false,datas,false,0, theme,selectedmenuid);
 				else
 				{
 					renderNosonModule(  contextpath,  control,  menuHelper,module,false,datas,false);
@@ -346,24 +362,11 @@ public class MenuTag extends BaseTag {
 			 .append(" </li>  ");
 		
 	}
-	
-	@Override
-	public int doStartTag() throws JspException {	
-		int ret = super.doStartTag();
-		AccessControl control = AccessControl.getAccessControl();
-		MenuHelper menuHelper =  MenuHelper.getMenuHelper(request);
-		StringBuilder datas = new StringBuilder();
-		String theme = control.getUserAttribute("theme");
-		header(  control,  menuHelper,datas,theme );
-		//添加首页
-		
-//		String personcenter = Framework.getInstance(control.getCurrentSystemID()).getMessage("sany.pdp.module.personcenter", RequestContextUtils.getRequestContextLocal(request));
-		
-		String selectedmenuid = request.getParameter(MenuHelper.selectedmodule);//查找选择的菜单项path,待处理
-		 
-		
+
+	private void allMenus(AccessControl control,MenuHelper menuHelper,String selectPath,StringBuilder datas,String theme,String selectedmenuid){
+
 		try{
-			
+
 			String contextpath = request.getContextPath();
 			Item publicitem = menuHelper.getPublicItem();
 			boolean hasputfirst = false;
@@ -373,76 +376,101 @@ public class MenuTag extends BaseTag {
 //				.append("    <h3 class=\"uppercase\">Features</h3>")
 //				.append("</li>");
 				boolean selected = false;
-				if(selectedmenuid == null || selectedmenuid.equals("publicitem"))
+				if(selectPath == null)
 				{
 					selected = true;
 					hasputfirst = true;
 				}
-				renderItem(  contextpath,  control,  menuHelper,publicitem,  selected,  datas,true);
-				
+				renderItem(  contextpath,  control,  menuHelper,publicitem,  selected,  datas,true,selectedmenuid);
+
 			}
-			
-			
+
+
 			MenuQueue menus = menuHelper.getMenus();
 			for (int i = 0; menus != null && i < menus.size(); i++) {
 				MenuItem mi = menus.getMenuItem(i);
 				if (!mi.isUsed()) {
 					continue;
 				}
-			 
+				boolean selected = selectPath != null && selectPath.equals(mi.getPath());
 				if(!hasputfirst)
 				{
 					if(mi instanceof Item)
 					{
-						this.renderItem(contextpath, control, menuHelper, (Item)mi, true, datas, true);
+						this.renderItem(contextpath, control, menuHelper, (Item)mi,
+								selected,
+								datas, true,selectedmenuid);
 					}
 					else
 					{
 						Module module = (Module) mi;
 						if(module.getMenus() != null && module.getMenus().size() > 0)
-							renderModule(  contextpath,  control,  menuHelper,module,true,datas,true,0, theme);
+							renderModule(  contextpath,  control,  menuHelper,module,
+									selected,datas,true,0, theme,selectedmenuid);
 						else
 						{
-							renderNosonModule(  contextpath,  control,  menuHelper,module,true,datas,true);
-							
+							renderNosonModule(  contextpath,  control,  menuHelper,module,
+									selected,datas,true);
+
 						}
 					}
 					hasputfirst = true;
 				}
 				else
 				{
-				
+
 					if(mi instanceof Item)
 					{
-						this.renderItem(contextpath, control, menuHelper, (Item)mi, false, datas, false);
+						this.renderItem(contextpath, control, menuHelper, (Item)mi, selected, datas, false,selectedmenuid);
 					}
 					else
 					{
-//						datas.append(" <li class=\"heading\">")
-//						.append("    <h3 class=\"uppercase\">Features</h3>")
-//						.append("</li>");
+
 						Module module = (Module) mi;
 						if(module.getMenus() != null && module.getMenus().size() > 0)
-							renderModule(  contextpath,  control,  menuHelper,module,false,datas,false,0, theme);
+							renderModule(  contextpath,  control,  menuHelper,module,
+									selected,datas,false,0, theme,selectedmenuid);
 						else
 						{
-							renderNosonModule(  contextpath,  control,  menuHelper,module,false,datas,false);
-							
+							renderNosonModule(  contextpath,  control,  menuHelper,module,
+									selected,datas,false);
+
 						}
-							
+
 					}
 				}
-				
-			    
+
+
 			}
-			
+
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
 		}
+
+	}
+	
+	@Override
+	public int doStartTag() throws JspException {	
+		int ret = super.doStartTag();
+		AccessControl control = AccessControl.getAccessControl();
+		MenuHelper menuHelper =  MenuHelper.getMenuHelper(request);
+		StringBuilder datas = new StringBuilder();
+		String theme = control.getUserAttribute("theme");
+		header(  control,  menuHelper,datas,theme );
+		String selectedmenuid = request.getParameter(MenuHelper.menupath_menuid);//查找选择的菜单项path,待处理
+		String selectRootPath = MenuHelper.selectRootPath(menuHelper ,selectedmenuid);
+		String fromtop = request.getParameter("fromtop");
+		//添加首页
 		
-			
+//		String personcenter = Framework.getInstance(control.getCurrentSystemID()).getMessage("sany.pdp.module.personcenter", RequestContextUtils.getRequestContextLocal(request));
+		
+//		String selectedmenuid = request.getParameter(MenuHelper.selectedmodule);//查找选择的菜单项path,待处理
+
+		if(fromtop == null || fromtop.equals("false")) {
+			allMenus(control, menuHelper, selectRootPath, datas, theme,selectedmenuid);
+		}
 		
 		
 		datas.append("</ul>");

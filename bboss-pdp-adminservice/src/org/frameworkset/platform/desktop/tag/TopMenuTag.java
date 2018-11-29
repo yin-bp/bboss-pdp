@@ -16,7 +16,6 @@ package org.frameworkset.platform.desktop.tag;
  */
 
 import com.frameworkset.common.tag.BaseTag;
-import com.frameworkset.util.StringUtil;
 import org.frameworkset.platform.framework.*;
 import org.frameworkset.platform.security.AccessControl;
 
@@ -52,7 +51,7 @@ public class TopMenuTag  extends BaseTag {
 		if(selected)
 			content.append("active");
 		content.append("\" aria-haspopup=\"true\">")
-				.append("<a href=\"javascript:void(0);\" onclick=\"javascript:DesktopMenus.gotomenu('").append(item.getId()).append("',this,event)\"> ")
+				.append("<a href=\"javascript:void(0);\" onclick=\"javascript:DesktopMenus.gotomenu('").append(item.getId()).append("',this,event,true)\"> ")
 				.append(mname);
 		if(selected)
 			content.append("<span class=\"selected\"> </span>");
@@ -65,70 +64,17 @@ public class TopMenuTag  extends BaseTag {
 	}
 	private void renderItem(String contextpath, AccessControl control, MenuHelper menuHelper, MenuItem item,   StringBuilder datas)
 	{
-//		String selectedclass = "";
-//		if(selected)
-//		{
-//			if(!isfirst)
-//				selectedclass = "class=\"nav-item active open\"";
-//			else
-//			{
-//				selectedclass = "class=\"nav-item start active open\"";
-//			}
-//
-//		}
-//		else
-//		{
-//			if(!isfirst)
-//				selectedclass = "class=\"nav-item \"";
-//			else
-//			{
-//				selectedclass = "class=\"nav-item start \"";
-//			}
-//
-//		}
+
 
 		String mname = item.getName(request);
 		String icon = item.getStringExtendAttribute("icon","icon-settings");
-//		String fullpageload = item.getStringExtendAttribute("fullpageload","false");
-//		if(fullpageload.equals("true"))
-		{
+
 			datas.append("<li>")
-					.append("<a href=\"javascript:;\" onclick=\"javascript:DesktopMenus.gotomenu('").append(item.getId()).append("',this,event)\">")
+					.append("<a href=\"javascript:;\" onclick=\"javascript:DesktopMenus.gotomenu('").append(item.getId()).append("',this,event,true)\">")
 					.append("<i class=\"").append(icon).append("\"></i> ").append(mname).append(" </a>\n" +
 					"                                    </li>");
-//					.append("<a id=\"left__").append(item.getId()).append("\"  href=\"javascript:void(0);\" onclick=\"javascript:DesktopMenus.gotomenu('").append(item.getId()).append("',this,event)\" class=\"nav-link \">");
 
-		}
-//		else
-//		{
-//			String iframe = item.getStringExtendAttribute("iframe");
-//			String url =  null;
-//			if(iframe == null || !iframe.equals("true"))
-//			{
-//				url =  MenuHelper.getRealUrl(contextpath, Framework.getWorkspaceContent(item,control),MenuHelper.menupath_menuid,item.getId());
-//			}
-//			else
-//			{
-//
-//				url =  MenuHelper.getRealUrl(contextpath, Framework.getWorkspaceContent(item,control),MenuHelper.menupath_menuid,item.getId());
-//				url =  MenuHelper.getRealUrl(contextpath, MenuHelper.iframeurl,MenuHelper.selecturl, StringUtil.urlencode(url,"UTF-8"));
-//			}
-//			datas.append("<li ").append(selectedclass).append(">")
-//					.append("<a href=\"javascript:void(0);\" onclick=\"DesktopMenus.gotoworkspace('','").append(url)
-//					.append("','").append(item.getId()).append("',false,this)\" class=\"nav-link \">");
-//		}
-//		if(icon != null && !icon.equals(""))
-//		{
-//			datas.append("    <i class=\"").append(icon).append("\"></i>");
-//		}
-//		datas.append("    <span class=\"title\">").append(mname).append("</span>");
-//		if(selected)
-//		{
-//			datas.append("   <span class=\"selected\"></span>");
-//		}
 
-//		datas.append("</a>")
-//				.append("</li>");
 	}
 
 	private void renderNosonModule(String contextpath, AccessControl control, MenuHelper menuHelper, Module item,   StringBuilder datas ,boolean selected)
@@ -140,7 +86,7 @@ public class TopMenuTag  extends BaseTag {
 			datas.append("active");
 		datas.append("\" aria-haspopup=\"true\">")
 				.append("<a href=\"javascript:void(0);\" onclick=\"javascript:DesktopMenus.gotomenu('").append(item.getId())
-				.append("',this,event)\"> ").append(mname);
+				.append("',this,event,true)\"> ").append(mname);
 		if(selected)
 			datas.append("<span class=\"selected\"> </span>");
 		datas.append("                </a>")
@@ -156,91 +102,31 @@ public class TopMenuTag  extends BaseTag {
 
 //		String icon = item.getStringExtendAttribute("icon","icon-settings");
 		String mname = item.getName(request);
-//		datas.append("<li ").append(selectedclass).append(">");
 		MenuQueue menus = item.getMenus();
 		if(item.getUrl() == null || item.getUrl().equals("") || item.isUsesubpermission()) {
 			datas.append("<li class=\"mega-menu-dropdown ");
-		if(selected)
-			datas.append("active");
-		datas.append("\" aria-haspopup=\"true\">\n" )
-					.append("                                <a href=\"javascript:;\" class=\"dropdown-toggle\" data-hover=\"megamenu-dropdown\" data-close-others=\"true\"> ")
-					.append(mname);
-		if(selected)
-			datas.append("<span class=\"selected\"> </span>");
-//		datas.append("                                    <i class=\"").append(icon).append("\"></i>\n" )
-				datas.append("                                </a>");
-//			datas.append("<a id=\"left__").append(item.getId()).append("\" href=\"javascript:;\" hasurl=\"false\" class=\"nav-link nav-toggle\">");
+			if(selected)
+				datas.append("active");
+			datas.append("\" aria-haspopup=\"true\">\n" )
+						.append("                                <a href=\"javascript:;\" class=\"dropdown-toggle\" data-hover=\"megamenu-dropdown\" data-close-others=\"true\"> ")
+						.append(mname);
+			if(selected)
+				datas.append("<span class=\"selected\"> </span>");
+	//		datas.append("                                    <i class=\"").append(icon).append("\"></i>\n" )
+					datas.append("                                </a>");
 		}
 		else
 		{
-//			String url = MenuHelper.getModuleUrl(item, contextpath,  control);
-			String fullpageload = item.getStringExtendAttribute("fullpageload","false");
-//			if(!fullpageload.equals("true")){
-//				String iframe = item.getStringExtendAttribute("iframe");
-//				String url =  null;
-//				if(iframe == null || !iframe.equals("true"))
-//				{
-//					url =  MenuHelper.getModuleUrl(item, contextpath,  control);
-//				}
-//				else
-//				{
-//					url = MenuHelper.getModuleUrl(item, contextpath,  control);
-//					url =  MenuHelper.getRealUrl(contextpath, MenuHelper.iframeurl,MenuHelper.selecturl,StringUtil.urlencode(url,"UTF-8"));
-//				}
-////				if(theme == null || theme.equals("admin_3"))
-//					datas.append("<a href=\"javascript:void(0);\" onclick=\"DesktopMenus.gotoworkspace('','").append(url)
-//							.append("','").append(item.getId()).append("',false,this)\" class=\"nav-link nav-toggle\">");
-////				else
-////				{
-////					//ondblclick
-////					datas.append("<a href=\"javascript:void(0);\" onclick=\"DesktopMenus.gotoworkspace('','").append(url)
-////							.append("','").append(item.getId()).append("',false,this)\" class=\"nav-link nav-toggle\">");
-////
-////				}
-//			}
-//			else
-			{
-				//String iframe = item.getStringExtendAttribute("iframe");
-				String url =  item.getUrl();
-				//			if(iframe == null || !iframe.equals("true"))
-				//			{
-				//				url =  MenuHelper.getModuleUrl(item, contextpath,  control);
-				//			}
-				//			else
-				//			{
-				//				url = MenuHelper.getModuleUrl(item, contextpath,  control);
-				//				url =  MenuHelper.getRealUrl(contextpath, MenuHelper.iframeurl,MenuHelper.selecturl,StringUtil.urlencode(url,"UTF-8"));
-				//			}
-//				if(theme == null || theme.equals("admin_3"))
-//					datas.append("<a id=\"left__").append(item.getId()).append("\"  href=\"javascript:void(0);\" onclick=\"javascript:DesktopMenus.gotomenu('").append(item.getId()).append("',this,event)\" class=\"nav-link nav-toggle\">");
-//				else
-//				{
-//					//ondblclick
-//					datas.append("<a id=\"left__").append(item.getId()).append("\"  href=\"javascript:void(0);\" onclick=\"javascript:DesktopMenus.gotomenu('").append(item.getId()).append("',this,event)\" class=\"nav-link nav-toggle\">");
-//
-//				}
+
+
 				datas.append(" <li class=\"classic-menu-dropdown\" aria-haspopup=\"true\">" )
 						.append("                                <a href=\"javascript:;\" class=\"dropdown-toggle\"" )
-						.append(" onclick=\"javascript:DesktopMenus.gotomenu('").append(item.getId()).append("',this,event)\"  data-hover=\"megamenu-dropdown\" data-close-others=\"true\"> ")
+						.append(" onclick=\"javascript:DesktopMenus.gotomenu('").append(item.getId()).append("',this,event,true)\"  data-hover=\"megamenu-dropdown\" data-close-others=\"true\"> ")
 						.append(mname)
 //						.append("                                    <i class=\"").append(icon).append("\"></i>\n" )
 						.append("                                </a>");
-			}
-		}
 
-//		if(icon != null && !icon.equals(""))
-//		{
-//			datas.append("    <i class=\"").append(icon).append("\"></i>");
-//		}
-//		datas.append("    <span class=\"title\">").append(mname).append("</span>");
-//		if(selected)
-//		{
-//			datas.append("   <span class=\"selected\"></span>").append("    <span class=\"arrow open\"></span>");
-//		}
-//		else
-//		{
-//			datas.append("    <span class=\"arrow  \"></span>");
-//		}
+		}
 
 		if(menus != null && menus.size() > 0 ) {
 			datas.append("<ul class=\"dropdown-menu pull-left\">");
@@ -273,91 +159,30 @@ public class TopMenuTag  extends BaseTag {
 	private void renderSubModule(String contextpath,AccessControl control,MenuHelper menuHelper,
 							  Module item, StringBuilder datas, int current_level)
 	{
-		String selectedclass = "";
 
 		String icon = item.getStringExtendAttribute("icon","icon-settings");
 		String mname = item.getName(request);
-//		datas.append("<li ").append(selectedclass).append(">");
 		MenuQueue menus = item.getMenus();
 		if(item.getUrl() == null || item.getUrl().equals("") || item.isUsesubpermission()) {
 			datas.append("<li class=\"dropdown-submenu\" aria-haspopup=\"true\">" )
 					.append("<a href=\"javascript:;\"><i class=\"fa fa-envelope-o\"></i> ")
 					.append(mname)
 					.append(" </a>" );
-//			datas.append("<a id=\"left__").append(item.getId()).append("\" href=\"javascript:;\" hasurl=\"false\" class=\"nav-link nav-toggle\">");
 		}
 		else
 		{
-//			String url = MenuHelper.getModuleUrl(item, contextpath,  control);
-			String fullpageload = item.getStringExtendAttribute("fullpageload","false");
-//			if(!fullpageload.equals("true")){
-//				String iframe = item.getStringExtendAttribute("iframe");
-//				String url =  null;
-//				if(iframe == null || !iframe.equals("true"))
-//				{
-//					url =  MenuHelper.getModuleUrl(item, contextpath,  control);
-//				}
-//				else
-//				{
-//					url = MenuHelper.getModuleUrl(item, contextpath,  control);
-//					url =  MenuHelper.getRealUrl(contextpath, MenuHelper.iframeurl,MenuHelper.selecturl,StringUtil.urlencode(url,"UTF-8"));
-//				}
-////				if(theme == null || theme.equals("admin_3"))
-//					datas.append("<a href=\"javascript:void(0);\" onclick=\"DesktopMenus.gotoworkspace('','").append(url)
-//							.append("','").append(item.getId()).append("',false,this)\" class=\"nav-link nav-toggle\">");
-////				else
-////				{
-////					//ondblclick
-////					datas.append("<a href=\"javascript:void(0);\" onclick=\"DesktopMenus.gotoworkspace('','").append(url)
-////							.append("','").append(item.getId()).append("',false,this)\" class=\"nav-link nav-toggle\">");
-////
-////				}
-//			}
-//			else
-			{
-				//String iframe = item.getStringExtendAttribute("iframe");
-				String url =  item.getUrl();
-				//			if(iframe == null || !iframe.equals("true"))
-				//			{
-				//				url =  MenuHelper.getModuleUrl(item, contextpath,  control);
-				//			}
-				//			else
-				//			{
-				//				url = MenuHelper.getModuleUrl(item, contextpath,  control);
-				//				url =  MenuHelper.getRealUrl(contextpath, MenuHelper.iframeurl,MenuHelper.selecturl,StringUtil.urlencode(url,"UTF-8"));
-				//			}
-//				if(theme == null || theme.equals("admin_3"))
-//					datas.append("<a id=\"left__").append(item.getId()).append("\"  href=\"javascript:void(0);\" onclick=\"javascript:DesktopMenus.gotomenu('").append(item.getId()).append("',this,event)\" class=\"nav-link nav-toggle\">");
-//				else
-//				{
-//					//ondblclick
-//					datas.append("<a id=\"left__").append(item.getId()).append("\"  href=\"javascript:void(0);\" onclick=\"javascript:DesktopMenus.gotomenu('").append(item.getId()).append("',this,event)\" class=\"nav-link nav-toggle\">");
-//
-//				}
 
 				datas.append("<li class=\"dropdown-submenu\" aria-haspopup=\"true\">" )
 						.append("<a href=\"javascript:;\" " )
 						.append(" onclick=\"javascript:DesktopMenus.gotomenu('").append(item.getId())
-						.append("',this,event)\" ><i class=\"fa fa-envelope-o\"></i> ")
+						.append("',this,event,true)\" ><i class=\"fa fa-envelope-o\"></i> ")
 						.append(mname)
 						.append(" </a>" );
 
-			}
+
 		}
 
-//		if(icon != null && !icon.equals(""))
-//		{
-//			datas.append("    <i class=\"").append(icon).append("\"></i>");
-//		}
-//		datas.append("    <span class=\"title\">").append(mname).append("</span>");
-//		if(selected)
-//		{
-//			datas.append("   <span class=\"selected\"></span>").append("    <span class=\"arrow open\"></span>");
-//		}
-//		else
-//		{
-//			datas.append("    <span class=\"arrow  \"></span>");
-//		}
+
 
 		if(menus != null && menus.size() > 0 ) {
 			datas.append("<ul class=\"dropdown-menu\">");
@@ -382,27 +207,11 @@ public class TopMenuTag  extends BaseTag {
 			datas.append("   </ul>");
 		}
 
-//		datas.append("   </ul>")
 		datas.append(" </li>  ");
 
 	}
 
-	private String selectPath(MenuHelper menuHelper ){
-		String selectedmenuid = request.getParameter(MenuHelper.menupath_menuid);//查找选择的菜单项path,待处理
-		if(StringUtil.isEmpty(selectedmenuid))
-			return null;
-		if(menuHelper.getPublicItem().getId().equals(selectedmenuid))
-			return null;
-		MenuItem menuItem = menuHelper.getMenuById(selectedmenuid);
-		MenuItem parent = menuItem.getParent();
-		do {
-			if (parent == null || parent.isRoot()) {
-				return menuItem.getPath();
-			}
-			menuItem = parent;
-			parent = parent.getParent();
-		}while(true);
-	}
+
 	@Override
 	public int doStartTag() throws JspException {
 		int ret = super.doStartTag();
@@ -412,15 +221,12 @@ public class TopMenuTag  extends BaseTag {
 		String theme = control.getUserAttribute("theme");
 		datas.append(menu_header);
 
-		//添加首页
-
-//		String personcenter = Framework.getInstance(control.getCurrentSystemID()).getMessage("sany.pdp.module.personcenter", RequestContextUtils.getRequestContextLocal(request));
-
 
 
 
 		try{
-			String selectPath = selectPath(menuHelper );
+			String selectedmenuid = request.getParameter(MenuHelper.menupath_menuid);//查找选择的菜单项path,待处理
+			String selectRootPath = MenuHelper.selectRootPath(menuHelper ,selectedmenuid);
 
 			String contextpath = request.getContextPath();
 			Item publicitem = menuHelper.getPublicItem();
@@ -428,11 +234,7 @@ public class TopMenuTag  extends BaseTag {
 			if(this.enableindex && publicitem != null && publicitem.isMain())
 			{
 
-//				datas.append(" <li class=\"heading\">")
-//				.append("    <h3 class=\"uppercase\">Features</h3>")
-//				.append("</li>");
-
-				renderIndex(  datas,contextpath,  control,   menuHelper, publicitem ,selectPath == null);
+				renderIndex(  datas,contextpath,  control,   menuHelper, publicitem ,selectRootPath == null);
 
 			}
 
@@ -443,19 +245,19 @@ public class TopMenuTag  extends BaseTag {
 				if (!mi.isUsed()) {
 					continue;
 				}
-
+				boolean selected = selectRootPath != null && selectRootPath.equals(mi.getPath());
 				if(mi instanceof Item)
 				{
-					renderIndex(  datas,contextpath,  control,   menuHelper, (Item)mi,selectPath != null && selectPath.equals(mi.getPath()));
+					renderIndex(  datas,contextpath,  control,   menuHelper, (Item)mi,selected);
 				}
 				else
 				{
 					Module module = (Module) mi;
 					if(module.getMenus() != null && module.getMenus().size() > 0)
-						renderModule(  contextpath,  control,  menuHelper,module,datas,0,selectPath != null && selectPath.equals(mi.getPath()));
+						renderModule(  contextpath,  control,  menuHelper,module,datas,0,selected);
 					else
 					{
-						renderNosonModule(  contextpath,  control,  menuHelper,module,datas,selectPath != null && selectPath.equals(mi.getPath()));
+						renderNosonModule(  contextpath,  control,  menuHelper,module,datas,selected);
 
 					}
 				}

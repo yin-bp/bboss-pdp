@@ -1439,5 +1439,22 @@ public class MenuHelper  {
             return menus;
         return menus = menuitemQueue.getMenuItems();
 	}
+
+	public static String selectRootPath(MenuHelper menuHelper,String selectedmenuid){
+
+		if(StringUtil.isEmpty(selectedmenuid))
+			return null;
+		if(menuHelper.getPublicItem().getId().equals(selectedmenuid))
+			return null;
+		MenuItem menuItem = menuHelper.getMenuById(selectedmenuid);
+		MenuItem parent = menuItem.getParent();
+		do {
+			if (parent == null || parent.isRoot()) {
+				return menuItem.getPath();
+			}
+			menuItem = parent;
+			parent = parent.getParent();
+		}while(true);
+	}
 	
 }
