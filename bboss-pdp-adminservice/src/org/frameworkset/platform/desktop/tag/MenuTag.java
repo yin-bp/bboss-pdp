@@ -536,6 +536,10 @@ public class MenuTag extends BaseTag {
 
 
 			}
+			if(!hasputfirst){
+				menuItem = menuHelper.getMenuItem(selectRootPath);
+				this.renderNosonModule(contextpath,control,menuHelper,(Module)menuItem,true,datas,true);
+			}
 
 		}
 		catch(Exception e)

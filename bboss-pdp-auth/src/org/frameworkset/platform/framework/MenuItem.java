@@ -22,21 +22,21 @@ public interface MenuItem  {
     public MenuItem getParent();
     public String getUrl();
 
-    public String getName(HttpServletRequest pageContext) ;
+    public String getName(HttpServletRequest request) ;
     public String getName();
 
-    public String getMouseclickimg(HttpServletRequest pageContext) ;
+    public String getMouseclickimg(HttpServletRequest request) ;
 
-    public String getMouseoutimg(HttpServletRequest pageContext) ;
+    public String getMouseoutimg(HttpServletRequest request) ;
 
-    public String getMouseoverimg(HttpServletRequest pageContext) ;
-    public String getHeadimg(HttpServletRequest pageContext) ;
+    public String getMouseoverimg(HttpServletRequest request) ;
+    public String getHeadimg(HttpServletRequest request) ;
 
 	public void setHeadimg(String headimg) ;
-	 public String getMouseupimg(HttpServletRequest pageContext) ;
+	 public String getMouseupimg(HttpServletRequest request) ;
 //	 public String getName(HttpServletRequest pageContext);
 
-    public String getTitle(HttpServletRequest pageContext) ;
+    public String getTitle(HttpServletRequest request) ;
 
     public String getPath();
     

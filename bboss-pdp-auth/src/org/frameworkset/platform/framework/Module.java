@@ -1,11 +1,10 @@
 package org.frameworkset.platform.framework;
 
-import java.util.Locale;
-import java.util.Map;
+import org.frameworkset.web.servlet.support.RequestContextUtils;
 
 import javax.servlet.http.HttpServletRequest;
-
-import org.frameworkset.web.servlet.support.RequestContextUtils;
+import java.util.Locale;
+import java.util.Map;
 
 
 
@@ -174,4 +173,18 @@ public class Module extends BaseMenuItem{
 		return menus;
 	}
 
+	public void addMenuItem(MenuItem menuItem) {
+    	this.menus.addMenuItem(menuItem);
+    	if(menuItem instanceof Item){
+    		this.items.addItem((Item)menuItem);
+		}
+    	else
+		{
+			this.subModules.addModule((Module)menuItem);
+		}
+	}
+
+	public boolean hasSon() {
+    	return this.menus != null && this.menus.size() > 0;
+	}
 }

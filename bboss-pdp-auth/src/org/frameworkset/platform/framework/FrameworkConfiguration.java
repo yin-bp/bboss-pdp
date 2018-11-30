@@ -1,17 +1,16 @@
 package org.frameworkset.platform.framework;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * <p>Title: </p>
@@ -31,7 +30,8 @@ public class FrameworkConfiguration  {
     private String configFile = "module.xml" ;
     private ConfigParser handler;
     private ModuleQueue modules;
-    private MenuQueue menus; 
+    private MenuQueue menus;
+    private int topMenus = -1;
     /**
      * 一级items是否显示左侧菜单，true显示，false不显示
      */
@@ -189,6 +189,7 @@ public class FrameworkConfiguration  {
             this.localeDescriptions = handler.getLocaleDescriptions();
             this.logoutredirect = handler.getLogoutredirect();
             this.successRedirect = handler.getSuccessRedirect();
+            this.topMenus = handler.getTopMenus();
     }
 
     private static ClassLoader getTCL()
@@ -310,5 +311,9 @@ public class FrameworkConfiguration  {
 
 	public String getLogoutredirect() {
 		return logoutredirect;
+	}
+
+	public int getTopMenus() {
+		return topMenus;
 	}
 }

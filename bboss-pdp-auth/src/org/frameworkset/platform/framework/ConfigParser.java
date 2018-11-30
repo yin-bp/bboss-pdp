@@ -17,13 +17,7 @@ package org.frameworkset.platform.framework;
 
 
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Stack;
-
+import com.frameworkset.util.StringUtil;
 import org.frameworkset.platform.config.ConfigManager;
 import org.frameworkset.platform.util.I18nXMLParser;
 import org.frameworkset.spi.BaseApplicationContext;
@@ -32,7 +26,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.Attributes;
 
-import com.frameworkset.util.StringUtil;
+import java.util.*;
 
 /**
  * SAXParser used by Configurator to parse the
@@ -48,6 +42,7 @@ public class ConfigParser extends I18nXMLParser  {
     private SubSystem ownersubsystem;
     private String file;
     private String systemid;
+    private int topMenus;
     /**
      * 系统模块菜单索引,
      * Map<String menuPath,MenuItem>
@@ -222,6 +217,7 @@ public class ConfigParser extends I18nXMLParser  {
             this.showhidden_width = StringUtil.replaceNull(attributes.getValue("showhidden_width"),"12");
             this.global_target = StringUtil.replaceNull(attributes.getValue("global_target"),"perspective_content");
             this.showrootleftmenu = StringUtil.getBoolean(attributes.getValue("showrootleftmenu"),false);
+            this.topMenus = StringUtil.getInt(attributes.getValue("topMenus"),-1);
             this.logoutredirect = attributes.getValue("logoutredirect");
             this.successRedirect = attributes.getValue("successRedirect");
             String tempfiles = attributes.getValue("messagesource");
@@ -845,7 +841,11 @@ public class ConfigParser extends I18nXMLParser  {
         }
     }
 
-    class ConfigElement {
+	public int getTopMenus() {
+		return topMenus;
+	}
+
+	class ConfigElement {
         String name;
         String value;
         String datatype;

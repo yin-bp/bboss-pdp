@@ -119,7 +119,10 @@ public class TopMenuTag  extends BaseTag {
 		{
 
 
-				datas.append(" <li class=\"classic-menu-dropdown\" aria-haspopup=\"true\">" )
+				datas.append(" <li class=\"classic-menu-dropdown ");
+				if(selected)
+					datas.append("active");
+				datas.append("\" aria-haspopup=\"true\">" )
 						.append("                                <a href=\"javascript:;\" class=\"dropdown-toggle\"" )
 						.append(" onclick=\"javascript:DesktopMenus.gotomenu('").append(item.getId()).append("',this,event,true)\"  data-hover=\"megamenu-dropdown\" data-close-others=\"true\"> ")
 						.append(mname)
@@ -212,6 +215,8 @@ public class TopMenuTag  extends BaseTag {
 	}
 
 
+
+
 	@Override
 	public int doStartTag() throws JspException {
 		int ret = super.doStartTag();
@@ -237,34 +242,66 @@ public class TopMenuTag  extends BaseTag {
 				renderIndex(  datas,contextpath,  control,   menuHelper, publicitem ,selectRootPath == null);
 
 			}
-
+			int topMenus = menuHelper.getTopMenus();
 
 			MenuQueue menus = menuHelper.getMenus();
-			for (int i = 0; menus != null && i < menus.size(); i++) {
+			int i = 0;
+			int j = 0;
+			for (; menus != null && i < menus.size() ; i++) {
+				if (topMenus > 0 && j >= topMenus){
+					break;
+				}
 				MenuItem mi = menus.getMenuItem(i);
 				if (!mi.isUsed()) {
 					continue;
 				}
+				j ++;
 				boolean selected = selectRootPath != null && selectRootPath.equals(mi.getPath());
-				if(mi instanceof Item)
-				{
-					renderIndex(  datas,contextpath,  control,   menuHelper, (Item)mi,selected);
-				}
-				else
-				{
+				if (mi instanceof Item) {
+					renderIndex(datas, contextpath, control, menuHelper, (Item) mi, selected);
+				} else {
 					Module module = (Module) mi;
-					if(module.getMenus() != null && module.getMenus().size() > 0)
-						renderModule(  contextpath,  control,  menuHelper,module,datas,0,selected);
-					else
-					{
-						renderNosonModule(  contextpath,  control,  menuHelper,module,datas,selected);
+					if (module.getMenus() != null && module.getMenus().size() > 0)
+						renderModule(contextpath, control, menuHelper, module, datas, 0, selected);
+					else {
+						renderNosonModule(contextpath, control, menuHelper, module, datas, selected);
 
 					}
 				}
 
-
-
 			}
+			if (topMenus > 0 && j < menus.size() ){
+
+				Module moreModule = new Module();
+				moreModule.setId("moreModule________");
+				moreModule.setName("更多>>");
+
+				boolean selected = false;
+				for( ; i < menus.size(); i ++){
+
+					MenuItem menuItem = menus.getMenuItem(i);
+					if (!menuItem.isUsed()) {
+						continue;
+					}
+					if(!selected) {
+						selected = selectRootPath != null && selectRootPath.equals(menuItem.getPath());
+						if (selected) {
+							moreModule.setId(menuItem.getId());
+							moreModule.setName(menuItem.getName(request)+"&nbsp;更多>>");
+							moreModule.setUrl(menuItem.getUrl());
+							if (menuItem instanceof Module)
+								moreModule.setUsesubpermission(((Module) menuItem).isUsesubpermission());
+						}
+					}
+					moreModule.addMenuItem(menuItem);
+				}
+				if(moreModule.hasSon()) {
+					renderModule(contextpath, control,
+							menuHelper, moreModule,
+							datas, 0, selected);
+				}
+			}
+
 
 		}
 		catch(Exception e)

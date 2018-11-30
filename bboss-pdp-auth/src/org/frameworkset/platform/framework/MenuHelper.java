@@ -256,8 +256,8 @@ public class MenuHelper  {
      * 获取菜单的根url地址，通过本地址将生成包含整个栏目所配置的块的系统框架
      * 
      * @param context
-     * @param menu
-     * @param params
+     * @param menuPath
+     * @param externalparams
      * @return
      */
     public static String getRootUrl(String context, String menuPath, String externalparams, String subsystem) {
@@ -1479,6 +1479,14 @@ public class MenuHelper  {
 		}
 
 
+	}
+
+	/**
+	 * top菜单最多现实多少个菜单，如果超过最多菜单数据，就将其他的菜单整理为更多下拉菜单来显示
+	 * @return
+	 */
+	public int getTopMenus(){
+		return this.framework.getTopMenus();
 	}
 	
 }

@@ -45,7 +45,9 @@
 	<sysmenu name="spplatform"
 			 successRedirect="admin/index.page"
 			 logoutredirect="login.page"
-			 showrootleftmenu="true" messagesource="menus/messages_module"
+			 showrootleftmenu="true"
+			 topMenus="2"
+			 messagesource="menus/messages_module"
 
 	>
 		<description i18n:en_US="Public Develop Platform" >BBOSS开发平台</description>

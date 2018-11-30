@@ -1,18 +1,7 @@
 package org.frameworkset.platform.framework;
 
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-
+import com.frameworkset.util.DaemonThread;
+import com.frameworkset.util.ResourceInitial;
 import org.frameworkset.platform.config.ConfigManager;
 import org.frameworkset.platform.framework.Item.ItemUrlStruction;
 import org.frameworkset.platform.framework.Item.Variable;
@@ -32,8 +21,11 @@ import org.frameworkset.web.servlet.support.RequestContextUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.frameworkset.util.DaemonThread;
-import com.frameworkset.util.ResourceInitial;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import java.io.PrintWriter;
+import java.util.*;
+import java.util.Map.Entry;
 
 /**
  * <p>
@@ -90,7 +82,7 @@ public class Framework implements ResourceInitial,MessageSource {
 	public final static String MENU_TYPE = "menu_type";
 	public final static String MENU_PATH = "menu_path";
 	public final static String SUBSYSTEM = "subsystem_id";
-
+	private int topMenus = -1;
 	/**
 	 * 栏目外部参数定义，系统不能覆盖外部参数。
 	 */
@@ -560,6 +552,7 @@ public class Framework implements ResourceInitial,MessageSource {
 			inited = true;
 			buildPermissionTokenMap();
 			this.showrootleftmenu = config.isShowrootleftmenu();
+			this.topMenus = config.getTopMenus();
 			
 			
 
@@ -1061,6 +1054,7 @@ public class Framework implements ResourceInitial,MessageSource {
 			this.root.setSubSystem(null);
 		this.messagesource = null;
 		this.messagesourcefiles = null;
+		this.topMenus = -1;
 		// this.frameworkmeta = null;
 		// subsystemFrameworks.clear();
 		// this.subsystems.clear();
@@ -1366,11 +1360,8 @@ public class Framework implements ResourceInitial,MessageSource {
 		return frameworkmeta;
 	}
 
-	
 
-	
-	
-
-	
-
+	public int getTopMenus() {
+		return topMenus;
+	}
 }
