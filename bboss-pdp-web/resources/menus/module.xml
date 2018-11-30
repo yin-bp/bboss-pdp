@@ -41,6 +41,8 @@
 		
 		
 		logoimage:需要国际化
+		topMenus: 在sysmenu元素上指定顶部菜单最多显示个数topMenus，默认-1，全部显示，顶部菜单增加更多项，
+		           可以指定默认显示几个顶部菜单，超过的菜单放到更多下拉中
 	-->
 	<sysmenu name="spplatform"
 			 successRedirect="admin/index.page"
