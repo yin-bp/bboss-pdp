@@ -60,7 +60,7 @@ public class MenuTag extends BaseTag {
 	}
 	
 	private void renderItem(String contextpath,AccessControl control,
-							MenuHelper menuHelper,Item item,boolean selected,StringBuilder datas,boolean isfirst,String selectedmenuid)
+							MenuHelper menuHelper,Item item,boolean selected,StringBuilder datas,boolean isfirst,String selectedmenuid,int level)
 	{ 
 		String selectedclass = "";
 		if(selected)
@@ -77,10 +77,10 @@ public class MenuTag extends BaseTag {
 		{
 			if(!isfirst) {
 				if(selectedmenuid != null && selectedmenuid.equals(item.getId())){
-					selectedclass = "class=\"nav-item active \"";
+					selectedclass = level > 0?"class=\"nav-item active sub \"":"class=\"nav-item active \"";
 				}
 				else{
-					selectedclass = "class=\"nav-item \"";
+					selectedclass = level > 0?"class=\"nav-item sub \"":"class=\"nav-item \"";
 				}
 
 			}
@@ -88,10 +88,10 @@ public class MenuTag extends BaseTag {
 			else
 			{
 				if(selectedmenuid != null && selectedmenuid.equals(item.getId())){
-					selectedclass = "class=\"nav-item start active \"";
+					selectedclass = level > 0?"class=\"nav-item start active sub \"":"class=\"nav-item start active \"";
 				}
 				else{
-					selectedclass = "class=\"nav-item start \"";
+					selectedclass = level > 0?"class=\"nav-item start sub \"":"class=\"nav-item start \"";
 				}
 			}
 
@@ -140,7 +140,8 @@ public class MenuTag extends BaseTag {
 			 .append("</li>");
 	}
 	
-	private void renderNosonModule(String contextpath,AccessControl control,MenuHelper menuHelper,Module item,boolean selected,StringBuilder datas,boolean isfirst)
+	private void renderNosonModule(String contextpath,AccessControl control,MenuHelper menuHelper,Module item,
+								   boolean selected,StringBuilder datas,boolean isfirst,int level)
 	{ 
 		String selectedclass = "";
 		if(selected)
@@ -156,10 +157,10 @@ public class MenuTag extends BaseTag {
 		else
 		{
 			if(!isfirst)
-				selectedclass = "class=\"nav-item \"";
+				selectedclass = level > 0?"class=\"nav-item sub \"":"class=\"nav-item \"";
 			else
 			{
-				selectedclass = "class=\"nav-item start \"";
+				selectedclass = level > 0?"class=\"nav-item start sub \"":"class=\"nav-item start \"";
 			}
 			 
 		} 
@@ -233,7 +234,8 @@ public class MenuTag extends BaseTag {
 	private void renderModule(String contextpath,AccessControl control,MenuHelper menuHelper,
 							  Module item,boolean selected,StringBuilder datas,boolean isfirst,
 							  int current_level,String theme,String selectedmenuid)
-	{ 
+	{
+
 		String selectedclass = "";
 		if(selected)
 		{
@@ -247,11 +249,19 @@ public class MenuTag extends BaseTag {
 		}	
 		else
 		{
-			if(!isfirst)
-				selectedclass = "class=\"nav-item \"";
-			else
-			{
-				selectedclass = "class=\"nav-item start \"";
+			if(current_level > 0) {
+				if (!isfirst)
+					selectedclass = "class=\"nav-item sub\"";
+				else {
+					selectedclass = "class=\"nav-item start sub\"";
+				}
+			}
+			else{
+				if (!isfirst)
+					selectedclass = "class=\"nav-item \"";
+				else {
+					selectedclass = "class=\"nav-item start \"";
+				}
 			}
 			 
 		} 
@@ -333,7 +343,7 @@ public class MenuTag extends BaseTag {
 		
 		datas.append("</a>")
 			 .append("<ul class=\"sub-menu\">");
-		
+		current_level ++;
 		for(int i = 0; menus != null && i < menus.size() ; i ++)
 		{
 			MenuItem mi = menus.getMenuItem(i);
@@ -341,16 +351,16 @@ public class MenuTag extends BaseTag {
 				continue;
 			if(mi instanceof Item)
 			{
-				this.renderItem(contextpath, control, menuHelper, (Item)mi, false, datas, false,selectedmenuid);
+				this.renderItem(contextpath, control, menuHelper, (Item)mi, false, datas, false,selectedmenuid,current_level);
 			}
 			else
 			{
 				Module module = (Module)mi;
 				if(module.getMenus() != null && module.getMenus().size() > 0)
-					renderModule(  contextpath,  control,  menuHelper,module,false,datas,false,0, theme,selectedmenuid);
+					renderModule(  contextpath,  control,  menuHelper,module,false,datas,false,current_level, theme,selectedmenuid);
 				else
 				{
-					renderNosonModule(  contextpath,  control,  menuHelper,module,false,datas,false);
+					renderNosonModule(  contextpath,  control,  menuHelper,module,false,datas,false,current_level);
 					
 				}
 				
@@ -381,7 +391,7 @@ public class MenuTag extends BaseTag {
 					selected = true;
 					hasputfirst = true;
 				}
-				renderItem(  contextpath,  control,  menuHelper,publicitem,  selected,  datas,true,selectedmenuid);
+				renderItem(  contextpath,  control,  menuHelper,publicitem,  selected,  datas,true,selectedmenuid,0);
 
 			}
 
@@ -399,7 +409,7 @@ public class MenuTag extends BaseTag {
 					{
 						this.renderItem(contextpath, control, menuHelper, (Item)mi,
 								selected,
-								datas, true,selectedmenuid);
+								datas, true,selectedmenuid,0);
 					}
 					else
 					{
@@ -410,7 +420,7 @@ public class MenuTag extends BaseTag {
 						else
 						{
 							renderNosonModule(  contextpath,  control,  menuHelper,module,
-									selected,datas,true);
+									selected,datas,true,0);
 
 						}
 					}
@@ -421,7 +431,7 @@ public class MenuTag extends BaseTag {
 
 					if(mi instanceof Item)
 					{
-						this.renderItem(contextpath, control, menuHelper, (Item)mi, selected, datas, false,selectedmenuid);
+						this.renderItem(contextpath, control, menuHelper, (Item)mi, selected, datas, false,selectedmenuid,0);
 					}
 					else
 					{
@@ -433,7 +443,7 @@ public class MenuTag extends BaseTag {
 						else
 						{
 							renderNosonModule(  contextpath,  control,  menuHelper,module,
-									selected,datas,false);
+									selected,datas,false,0);
 
 						}
 
@@ -463,7 +473,7 @@ public class MenuTag extends BaseTag {
 			if(menuItem instanceof Item && menuItem.isTopLevel()){
 				this.renderItem(contextpath, control, menuHelper, (Item)menuItem,
 						true,
-						datas, true,selectedmenuid);
+						datas, true,selectedmenuid,0);
 				return;
 			}
 
@@ -484,7 +494,7 @@ public class MenuTag extends BaseTag {
 					else
 					{
 						renderNosonModule(  contextpath,  control,  menuHelper,module,
-								selected,datas,true);
+								selected,datas,true,0);
 
 					}
 
@@ -501,7 +511,7 @@ public class MenuTag extends BaseTag {
 					else
 					{
 						renderNosonModule(  contextpath,  control,  menuHelper,module,
-								selected,datas,false);
+								selected,datas,false,0);
 
 					}
 
@@ -523,14 +533,14 @@ public class MenuTag extends BaseTag {
 
 					this.renderItem(contextpath, control, menuHelper, item,
 							selected,
-							datas, true,selectedmenuid);
+							datas, true,selectedmenuid,0);
 
 
 					hasputfirst = true;
 				}
 				else
 				{
-					this.renderItem(contextpath, control, menuHelper, item, selected, datas, false,selectedmenuid);
+					this.renderItem(contextpath, control, menuHelper, item, selected, datas, false,selectedmenuid,0);
 
 				}
 
@@ -538,7 +548,7 @@ public class MenuTag extends BaseTag {
 			}
 			if(!hasputfirst){
 				menuItem = menuHelper.getMenuItem(selectRootPath);
-				this.renderNosonModule(contextpath,control,menuHelper,(Module)menuItem,true,datas,true);
+				this.renderNosonModule(contextpath,control,menuHelper,(Module)menuItem,true,datas,true,0);
 			}
 
 		}
