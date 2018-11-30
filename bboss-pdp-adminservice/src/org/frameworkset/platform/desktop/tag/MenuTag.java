@@ -15,9 +15,12 @@ import java.io.IOException;
  */
 public class MenuTag extends BaseTag {
 
-	private static String dashboard3_header = "<ul class=\"page-sidebar-menu  page-header-fixed page-sidebar-menu-hover-submenu \" data-keep-expanded=\"false\" data-auto-scroll=\"true\" data-slide-speed=\"200\" style=\"padding-top: 0px\">"; 
-	private static String dashboard1_header = "<ul class=\"page-sidebar-menu  \" data-keep-expanded=\"false\" data-auto-scroll=\"true\" data-slide-speed=\"200\" style=\"padding-top: 0px\">"; 
-	
+	private static String dashboard3_header = "<ul class=\"page-sidebar-menu page-header-fixed page-sidebar-menu-hover-submenu \" data-keep-expanded=\"false\" data-auto-scroll=\"true\" data-slide-speed=\"200\" style=\"padding-top: 0px\">";
+	private static String dashboard3_header_closesidebar = "<ul class=\"page-sidebar-menu  page-header-fixed page-sidebar-menu-hover-submenu page-sidebar-menu-closed\" data-keep-expanded=\"false\" data-auto-scroll=\"true\" data-slide-speed=\"200\" style=\"padding-top: 0px\">";
+	private static String dashboard1_header = "<ul class=\"page-sidebar-menu  \" data-keep-expanded=\"false\" data-auto-scroll=\"true\" data-slide-speed=\"200\" style=\"padding-top: 0px\">";
+	private static String dashboard1_header_closesidebar = "<ul class=\"page-sidebar-menu page-sidebar-menu-closed\" data-keep-expanded=\"false\" data-auto-scroll=\"true\" data-slide-speed=\"200\" style=\"padding-top: 0px\">";
+
+
 	public static final String personcenter_name = "personal_center";
 	
 	
@@ -25,10 +28,32 @@ public class MenuTag extends BaseTag {
 	private boolean enableindex = true;
 	private int level = 3;
 	
-	private void header(AccessControl control,MenuHelper menuHelper,StringBuilder datas,String theme )
+	private void header(AccessControl control,MenuHelper menuHelper,StringBuilder datas,String theme ,MenuItem menuItem)
 	{
-		 
-		datas.append(theme == null || theme.equals("admin_3")?dashboard3_header:dashboard1_header);	
+
+
+//		boolean sideBarClosed  = false;
+//		if(menuItem == null  ) {
+//			sideBarClosed = true;
+//		}
+//		else{
+//			if(menuItem.isTopLevel()){
+//				if(menuItem instanceof Item){
+//					sideBarClosed = true;
+//				}
+//				else if(!((Module)menuItem).hasSon()) {
+//						sideBarClosed = true;
+//
+//				}
+//			}
+//		}
+		boolean sideBarClosed = menuHelper.isSideBarClosed();//在admincontroller的index方法中初始化
+		if(sideBarClosed ){
+			datas.append(theme == null || theme.equals("admin_3") ? dashboard3_header_closesidebar : dashboard1_header_closesidebar);
+		}
+		else{
+			datas.append(theme == null || theme.equals("admin_3") ? dashboard3_header : dashboard1_header);
+		}
 		datas.append("<!-- DOC: To remove the sidebar toggler from the sidebar you just need to completely remove the below \"sidebar-toggler-wrapper\" LI element -->");
 		datas.append("<li class=\"sidebar-toggler-wrapper hide\">")	;
 		datas.append("    <!-- BEGIN SIDEBAR TOGGLER BUTTON -->");
@@ -461,19 +486,19 @@ public class MenuTag extends BaseTag {
 
 	}
 
-	private void selectMenus(AccessControl control,MenuHelper menuHelper,String selectRootPath,StringBuilder datas,String theme,String selectedmenuid){
+	private void selectMenus(AccessControl control,MenuHelper menuHelper,String selectRootPath,StringBuilder datas,String theme,MenuItem selectedmenu){
 
 		try{
 
 			String contextpath = request.getContextPath();
 
 			boolean hasputfirst = false;
-			String selectParentPath = menuHelper.selectParentPath(selectedmenuid);
-			MenuItem menuItem = menuHelper.getMenuById(selectedmenuid);
-			if(menuItem instanceof Item && menuItem.isTopLevel()){
-				this.renderItem(contextpath, control, menuHelper, (Item)menuItem,
+			String selectParentPath = menuHelper.selectParentPath(selectedmenu);
+
+			if(selectedmenu instanceof Item && selectedmenu.isTopLevel()){
+				this.renderItem(contextpath, control, menuHelper, (Item)selectedmenu,
 						true,
-						datas, true,selectedmenuid,0);
+						datas, true,selectedmenu.getId(),0);
 				return;
 			}
 
@@ -490,7 +515,7 @@ public class MenuTag extends BaseTag {
 
 					if(module.getMenus() != null && module.getMenus().size() > 0)
 						renderModule(  contextpath,  control,  menuHelper,module,
-								selected,datas,true,0, theme,selectedmenuid);
+								selected,datas,true,0, theme,selectedmenu.getId());
 					else
 					{
 						renderNosonModule(  contextpath,  control,  menuHelper,module,
@@ -507,7 +532,7 @@ public class MenuTag extends BaseTag {
 
 					if(module.getMenus() != null && module.getMenus().size() > 0)
 						renderModule(  contextpath,  control,  menuHelper,module,
-								selected,datas,false,0, theme,selectedmenuid);
+								selected,datas,false,0, theme,selectedmenu.getId());
 					else
 					{
 						renderNosonModule(  contextpath,  control,  menuHelper,module,
@@ -533,22 +558,22 @@ public class MenuTag extends BaseTag {
 
 					this.renderItem(contextpath, control, menuHelper, item,
 							selected,
-							datas, true,selectedmenuid,0);
+							datas, true,selectedmenu.getId(),0);
 
 
 					hasputfirst = true;
 				}
 				else
 				{
-					this.renderItem(contextpath, control, menuHelper, item, selected, datas, false,selectedmenuid,0);
+					this.renderItem(contextpath, control, menuHelper, item, selected, datas, false,selectedmenu.getId(),0);
 
 				}
 
 
 			}
 			if(!hasputfirst){
-				menuItem = menuHelper.getMenuItem(selectRootPath);
-				this.renderNosonModule(contextpath,control,menuHelper,(Module)menuItem,true,datas,true,0);
+				selectedmenu = menuHelper.getMenuItem(selectRootPath);
+				this.renderNosonModule(contextpath,control,menuHelper,(Module)selectedmenu,true,datas,true,0);
 			}
 
 		}
@@ -565,10 +590,12 @@ public class MenuTag extends BaseTag {
 		AccessControl control = AccessControl.getAccessControl();
 		MenuHelper menuHelper =  MenuHelper.getMenuHelper(request);
 		StringBuilder datas = new StringBuilder();
-		String theme = control.getUserAttribute("theme");
-		header(  control,  menuHelper,datas,theme );
 		String selectedmenuid = request.getParameter(MenuHelper.menupath_menuid);//查找选择的菜单项path,待处理
-		String selectRootPath = menuHelper.selectRootPath(selectedmenuid);
+		MenuItem menuItem = menuHelper.getMenuById(selectedmenuid);
+		String theme = control.getUserAttribute("theme");
+		header(  control,  menuHelper,datas,theme ,menuItem);
+
+		String selectRootPath = menuHelper.selectRootPath(menuItem);
 		String fromtop = request.getParameter("fromtop");
 		//添加首页
 		
@@ -577,10 +604,11 @@ public class MenuTag extends BaseTag {
 //		String selectedmenuid = request.getParameter(MenuHelper.selectedmodule);//查找选择的菜单项path,待处理
 
 		if(fromtop == null || fromtop.equals("false") || selectRootPath == null) {
-			allMenus(control, menuHelper, selectRootPath, datas, theme,selectedmenuid);
+//			allMenus(control, menuHelper, selectRootPath, datas, theme,selectedmenuid);
+			selectMenus(  control,  menuHelper,  selectRootPath,  datas,  theme,  menuHelper.getPublicItem());
 		}
 		else{
-			selectMenus(  control,  menuHelper,  selectRootPath,  datas,  theme,  selectedmenuid);
+			selectMenus(  control,  menuHelper,  selectRootPath,  datas,  theme,  menuItem);
 
 		}
 		

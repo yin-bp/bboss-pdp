@@ -49,7 +49,8 @@ public class MenuHelper  {
     public static final int SUB_VISIBLE_PERMISSION = 1;
     public static final int UNVISIBLE_PERMISSION = 0;
 
-    Framework framework;
+    private Framework framework;
+	private boolean sideBarClosed;
 
     public MenuHelper(List menuQueue, Principal principal, Map permissionIndexs, String subsystem) {
         this.subsystem = subsystem;
@@ -469,7 +470,11 @@ public class MenuHelper  {
     	return (Item)getMenuItem(path);
     }
 
-    class AuthMenuItemQueue {
+	public boolean isSideBarClosed() {
+		return sideBarClosed;
+	}
+
+	class AuthMenuItemQueue {
 
         private List menuItemQueue;
 
@@ -1383,7 +1388,24 @@ public class MenuHelper  {
 	{
 		return getItemUrl(subitem,contextpath,framepath,(String)null,control);
 	}
-	
+	public boolean sideBarClosed(MenuItem menuItem){
+//		boolean sideBarClosed  = false;
+		if(menuItem == null  ) {
+			sideBarClosed = true;
+		}
+		else{
+			if(menuItem.isTopLevel()){
+				if(menuItem instanceof Item){
+					sideBarClosed = true;
+				}
+				else if(!((Module)menuItem).hasSon()) {
+					sideBarClosed = true;
+
+				}
+			}
+		}
+		return sideBarClosed;
+	}
 	public static String getItemUrl(Item subitem,String contextpath,String framepath,String selecturl,AccessControl control)
 	{
 		String area = subitem.getArea();
@@ -1446,13 +1468,13 @@ public class MenuHelper  {
         return menus = menuitemQueue.getMenuItems();
 	}
 
-	public String selectRootPath(String selectedmenuid){
+	public String selectRootPath(MenuItem menuItem){
 
-		if(StringUtil.isEmpty(selectedmenuid))
+		if(menuItem == null)
 			return null;
-		if(getPublicItem().getId().equals(selectedmenuid))
+		if(getPublicItem().getId().equals(menuItem.getId()))
 			return null;
-		MenuItem menuItem = getMenuById(selectedmenuid);
+//		MenuItem menuItem = getMenuById(selectedmenuid);
 		MenuItem parent = menuItem.getParent();
 		do {
 			if (parent == null || parent.isRoot()) {
@@ -1463,12 +1485,12 @@ public class MenuHelper  {
 		}while(true);
 	}
 
-	public String selectParentPath(String selectedmenuid){
+	public String selectParentPath(MenuItem menuItem){
 
-		if(StringUtil.isEmpty(selectedmenuid))
+		if(menuItem == null)
 			return null;
 
-		MenuItem menuItem = getMenuById(selectedmenuid);
+//		MenuItem menuItem = getMenuById(selectedmenuid);
 		MenuItem parent = menuItem.getParent();
 
 		if (parent == null || parent.isRoot()) {

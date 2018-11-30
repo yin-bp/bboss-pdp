@@ -77,7 +77,7 @@ License: You must have a valid license purchased only from themeforest(the above
         <link rel="shortcut icon" href="favicon.ico" /> </head>
     <!-- END HEAD -->
 
-    <body class="page-header-fixed page-sidebar-closed-hide-logo <pg:true actual="${theme eq 'admin_1'}">page-content-white page-sidebar-fixed</pg:true> page-footer-fixed  page-md">
+    <body class="page-header-fixed page-sidebar-closed-hide-logo <pg:true actual="${sideBarClosed}">page-sidebar-closed</pg:true> <pg:true actual="${theme eq 'admin_1'}">page-content-white page-sidebar-fixed</pg:true>  page-md">
         <div class="page-wrapper">
             <!-- BEGIN HEADER -->
             <div class="page-header navbar navbar-fixed-top">
@@ -85,7 +85,7 @@ License: You must have a valid license purchased only from themeforest(the above
                 <div class="page-header-inner ">
                     <!-- BEGIN LOGO -->
                     <div class="page-logo">
-                        <a href="index.html">
+                        <a href="index.page">
                             <img src="${pageContext.request.contextPath}/assets/layouts/layout/img/logo.png" alt="logo" class="logo-default" /> </a>
                         <div class="menu-toggler sidebar-toggler">
                             <span></span>
@@ -468,8 +468,8 @@ License: You must have a valid license purchased only from themeforest(the above
                         <!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing -->
                         <!-- DOC: Set data-keep-expand="true" to keep the submenues expanded -->
                         <!-- DOC: Set data-auto-speed="200" to adjust the sub menu slide up/down speed -->
-                       
-                       <admin:menu/>	
+
+                       <admin:menu/>
                        <!-- END SIDEBAR MENU -->
                         <!-- END SIDEBAR MENU -->
                     </div>
@@ -1125,9 +1125,15 @@ License: You must have a valid license purchased only from themeforest(the above
         <script src="${pageContext.request.contextPath}/assets/global/scripts/pager.js" type="text/javascript"></script>
         
         <!-- END THEME LAYOUT SCRIPTS -->
-        <script   type="text/javascript"> 
+        <script   type="text/javascript">
+        if (App.isAngularJsApp() === false) {
+            jQuery(document).ready(function() {
+                Layout.setSideBarClosed(${sideBarClosed})
+                Layout.init(); // init metronic core componets
+            });
+        }
         jQuery(document).ready(function() {
-        
+
         	App.setAssetsPath('${pageContext.request.contextPath}/assets/'); // init metronic core componets
         	DesktopMenus.gotoworkspace('','${workspaceurl}','${menupath_menuid}',true); // init metronic core componets
         	

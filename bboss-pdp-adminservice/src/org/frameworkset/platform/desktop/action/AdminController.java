@@ -1,16 +1,11 @@
 package org.frameworkset.platform.desktop.action;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.frameworkset.platform.framework.Framework;
-import org.frameworkset.platform.framework.Item;
-import org.frameworkset.platform.framework.MenuHelper;
-import org.frameworkset.platform.framework.MenuItem;
-import org.frameworkset.platform.framework.Module;
+import com.frameworkset.util.StringUtil;
+import org.frameworkset.platform.framework.*;
 import org.frameworkset.platform.security.AccessControl;
 import org.frameworkset.web.servlet.ModelMap;
 
-import com.frameworkset.util.StringUtil;
+import javax.servlet.http.HttpServletRequest;
 
 public class AdminController {
 
@@ -32,10 +27,13 @@ public class AdminController {
 //		System.out.println(successed);
 		Framework  framework = Framework.getInstance(control.getCurrentSystemID());
 		String menuid = request.getParameter(MenuHelper.menupath_menuid);
+		MenuHelper menuHelper =  MenuHelper.getMenuHelper(request);
+		MenuItem menuItem = menuHelper.getMenuById(menuid);
+		boolean sideBarClosed = menuHelper.sideBarClosed(menuItem);
 		String selecturl = request.getParameter(MenuHelper.selecturl);
 		if(selecturl == null || selecturl.equals(""))
 		{
-			MenuItem publicitem = menuid == null || menuid.equals("")?framework.getPublicItem():framework.getMenuByID(menuid);
+			MenuItem publicitem = menuid == null || menuid.equals("")?framework.getPublicItem():menuItem;
 			if(publicitem == null) publicitem = framework.getPublicItem();
 			if(publicitem instanceof Item)
 			{
@@ -87,7 +85,7 @@ public class AdminController {
 		model.addAttribute("theme", theme);
 		model.addAttribute("theme_style", theme_style);
 		model.addAttribute("princpal",AccessControl.getAccessControl().getUserAttribute("title"));
-
+		model.addAttribute("sideBarClosed",sideBarClosed);
 		return "path:index_admin_1";
 	}
 	
