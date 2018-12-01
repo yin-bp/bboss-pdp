@@ -104,13 +104,7 @@
 					</workspace>
 
 				</item>
-				<item name="用户管理"
-					  i18n:en_US="usermanager demo" id="usermanagerManage1"  showleftmenu="true" menuType="type1">
-					<top>header.page</top>
-					<workspace>
-						<content>/jsp/usermanager/index.page</content>
-					</workspace>
-				</item>
+
 
 			</module>
 			<item name="测试菜单"
