@@ -168,7 +168,7 @@ public class TopMenuTag  extends BaseTag {
 		MenuQueue menus = item.getMenus();
 		if(item.getUrl() == null || item.getUrl().equals("") || item.isUsesubpermission()) {
 			datas.append("<li class=\"dropdown-submenu\" aria-haspopup=\"true\">" )
-					.append("<a href=\"javascript:;\"><i class=\"fa fa-envelope-o\"></i> ")
+					.append("<a href=\"javascript:;\"><i class=\"").append(icon).append("\"></i> ")
 					.append(mname)
 					.append(" </a>" );
 		}
@@ -178,7 +178,7 @@ public class TopMenuTag  extends BaseTag {
 				datas.append("<li class=\"dropdown-submenu\" aria-haspopup=\"true\">" )
 						.append("<a href=\"javascript:;\" " )
 						.append(" onclick=\"javascript:DesktopMenus.gotomenu('").append(item.getId())
-						.append("',this,event,true)\" ><i class=\"fa fa-envelope-o\"></i> ")
+						.append("',this,event,true)\" ><i class=\"").append(icon).append("\"></i> ")
 						.append(mname)
 						.append(" </a>" );
 
