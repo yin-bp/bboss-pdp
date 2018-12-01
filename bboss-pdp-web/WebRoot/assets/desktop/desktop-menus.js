@@ -62,7 +62,21 @@ var DesktopMenus = function() {
             }
         
           if(firsted){
-
+              // if(menuid != '')
+              // {
+              //     // var menuContainer = $('.page-sidebar ul');
+              //
+              //     // menuContainer.children('li.active').removeClass('active');
+              //     // menuContainer.children('arrow.open').removeClass('open');
+              //     thiselement = $("#left__"+menuid);
+              //     thiselement.parents('li').each(function () {
+              //         $(this).addClass('active');
+              //         $(this).children('a > span.arrow').addClass('open');
+              //     });
+              //     thiselement.parents('li').addClass('active');
+              //
+              //
+              // }
 
           }
           else

@@ -86,6 +86,7 @@ public class AdminController {
 		model.addAttribute("theme_style", theme_style);
 		model.addAttribute("princpal",AccessControl.getAccessControl().getUserAttribute("title"));
 		model.addAttribute("sideBarClosed",sideBarClosed);
+
 		return "path:index_admin_1";
 	}
 	

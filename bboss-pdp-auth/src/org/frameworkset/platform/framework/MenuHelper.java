@@ -385,8 +385,13 @@ public class MenuHelper  {
 //        }
     	return (Module)getMenuItem(path);
     }
-    
-    public MenuItem getMenuItem(String path) {
+
+	/**
+	 * 根据path获取带权限的菜单对象
+	 * @param path
+	 * @return
+	 */
+	public MenuItem getMenuItem(String path) {
     	
     	MenuItem m = (MenuItem)this.permissionMenuIndex.get(path);
         if (m != null)

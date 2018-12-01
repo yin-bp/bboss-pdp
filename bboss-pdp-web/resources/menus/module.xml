@@ -52,7 +52,7 @@
 			 messagesource="menus/messages_module"
 
 	>
-		<description i18n:en_US="Public Develop Platform" >BBOSS开发平台</description>
+		<description i18n:en_US="Public Develop Platform" >BBOSS-开发平台</description>
 		<!-- 公共缺省的栏目，如果用户登录系统后无访问权限，或者main为true时，将显示该栏目 -->
 		<publicitem name="首页"
 					i18n:en_US="Index" iframe="true"

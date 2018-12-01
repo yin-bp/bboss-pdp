@@ -501,26 +501,33 @@ public class MenuTag extends BaseTag {
 						datas, true,selectedmenu.getId(),0);
 				return;
 			}
-
-			ModuleQueue menus = menuHelper.getSubModules(selectRootPath);
+			Module selectRootModule = (Module)menuHelper.getMenuItem(selectRootPath);
+			MenuQueue menus = selectRootModule.getMenus();
+//			ModuleQueue menus = menuHelper.getSubModules(selectRootPath);
 			for (int i = 0; menus != null && i < menus.size(); i++) {
-				Module module = menus.getModule(i);
-				if (!module.isUsed()) {
+				MenuItem mi = menus.getMenuItem(i);
+				if (!mi.isUsed()) {
 					continue;
 				}
-				boolean selected = selectParentPath != null && selectParentPath.equals(module.getPath());
+				boolean selected = selectParentPath != null && selectParentPath.equals(mi.getPath());
 				if(!hasputfirst)
 				{
-
-
-					if(module.getMenus() != null && module.getMenus().size() > 0)
-						renderModule(  contextpath,  control,  menuHelper,module,
-								selected,datas,true,0, theme,selectedmenu.getId());
-					else
+					if(mi instanceof Item)
 					{
-						renderNosonModule(  contextpath,  control,  menuHelper,module,
-								selected,datas,true,0);
+						this.renderItem(contextpath, control, menuHelper, (Item)mi,
+								selected,
+								datas, true,selectedmenu.getId(),0);
+					}
+					else {
+						Module module = (Module) mi;
+						if (module.getMenus() != null && module.getMenus().size() > 0)
+							renderModule(contextpath, control, menuHelper, module,
+									selected, datas, true, 0, theme, selectedmenu.getId());
+						else {
+							renderNosonModule(contextpath, control, menuHelper, module,
+									selected, datas, true, 0);
 
+						}
 					}
 
 					hasputfirst = true;
@@ -528,16 +535,22 @@ public class MenuTag extends BaseTag {
 				else
 				{
 
-
-
-					if(module.getMenus() != null && module.getMenus().size() > 0)
-						renderModule(  contextpath,  control,  menuHelper,module,
-								selected,datas,false,0, theme,selectedmenu.getId());
-					else
+					if(mi instanceof Item)
 					{
-						renderNosonModule(  contextpath,  control,  menuHelper,module,
-								selected,datas,false,0);
+						this.renderItem(contextpath, control, menuHelper,
+								(Item)mi, selected, datas, false,selectedmenu.getId(),0);
+					}
+					else {
 
+						Module module = (Module) mi;
+						if (module.getMenus() != null && module.getMenus().size() > 0)
+							renderModule(contextpath, control, menuHelper, module,
+									selected, datas, false, 0, theme, selectedmenu.getId());
+						else {
+							renderNosonModule(contextpath, control, menuHelper, module,
+									selected, datas, false, 0);
+
+						}
 					}
 
 
@@ -546,31 +559,6 @@ public class MenuTag extends BaseTag {
 
 			}
 
-			ItemQueue items = menuHelper.getSubItems(selectRootPath);
-			for (int i = 0; items != null && i < items.size(); i++) {
-				Item item = items.getItem(i);
-				if (!item.isUsed()) {
-					continue;
-				}
-				boolean selected = selectParentPath != null && selectParentPath.equals(item.getPath());
-				if(!hasputfirst)
-				{
-
-					this.renderItem(contextpath, control, menuHelper, item,
-							selected,
-							datas, true,selectedmenu.getId(),0);
-
-
-					hasputfirst = true;
-				}
-				else
-				{
-					this.renderItem(contextpath, control, menuHelper, item, selected, datas, false,selectedmenu.getId(),0);
-
-				}
-
-
-			}
 			if(!hasputfirst){
 				selectedmenu = menuHelper.getMenuItem(selectRootPath);
 				this.renderNosonModule(contextpath,control,menuHelper,(Module)selectedmenu,true,datas,true,0);
