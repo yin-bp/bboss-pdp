@@ -1493,7 +1493,9 @@ public class MenuHelper  {
 //		MenuItem menuItem = getMenuById(selectedmenuid);
 		MenuItem parent = menuItem.getParent();
 
-		if (parent == null || parent.isRoot()) {
+//		if (parent == null || parent.isRoot()) {
+
+		if (parent == null || parent.isTopLevel() || parent.isRoot()) {
 			return menuItem.getPath();
 		}
 		else{
