@@ -27,6 +27,7 @@ public class MenuTag extends BaseTag {
 	
 	private boolean enableindex = true;
 	private int level = 3;
+	private boolean showAll = false;
 	
 	private void header(AccessControl control,MenuHelper menuHelper,StringBuilder datas,String theme ,MenuItem menuItem)
 	{
@@ -591,7 +592,10 @@ public class MenuTag extends BaseTag {
 		
 //		String selectedmenuid = request.getParameter(MenuHelper.selectedmodule);//查找选择的菜单项path,待处理
 
-		if(fromtop == null || fromtop.equals("false") || selectRootPath == null) {
+		if(showAll){
+			allMenus(control, menuHelper, selectRootPath, datas, theme,selectedmenuid);
+		}
+		else if(fromtop == null || fromtop.equals("false") || selectRootPath == null) {
 //			allMenus(control, menuHelper, selectRootPath, datas, theme,selectedmenuid);
 			selectMenus(  control,  menuHelper,  selectRootPath,  datas,  theme,  menuHelper.getPublicItem());
 		}
@@ -634,6 +638,7 @@ public class MenuTag extends BaseTag {
 		super.doFinally();
 		this.level = 3;
 		enableindex = true;
+		showAll = false;
 	}
 
 	
@@ -651,5 +656,12 @@ public class MenuTag extends BaseTag {
 	public void setEnableindex(boolean enableindex) {
 		this.enableindex = enableindex;
 	}
-	
+
+	public boolean isShowAll() {
+		return showAll;
+	}
+
+	public void setShowAll(boolean showAll) {
+		this.showAll = showAll;
+	}
 }
