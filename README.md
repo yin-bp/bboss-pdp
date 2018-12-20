@@ -48,7 +48,9 @@ gradle install
 
 bboss-pdp-web/build/libs/bboss-pdp-web-5.1.2.war
 
+默认访问账号和口令(线上系统请注意修改默认口令):
 
+admin/123456
 
 ## 搭建基于平台的开发环境参考文档
 
