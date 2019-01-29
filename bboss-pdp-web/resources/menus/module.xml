@@ -56,7 +56,7 @@
 		<!-- 公共缺省的栏目，如果用户登录系统后无访问权限，或者main为true时，将显示该栏目 -->
 		<publicitem name="首页"
 					i18n:en_US="Index" iframe="true"
-					id="indexpage" icon="icon-home" main="true">
+					id="indexpage" icon="icon-home" main="false">
 			<mouseclickimg>html/images/date_work.jpg</mouseclickimg>
 
 			<workspace>
@@ -68,6 +68,45 @@
 				<!-- <url>/jsp/sysmanager/resource/main.jsp</url> -->
 			</authoration>
 		</publicitem>
+		<module name="服务共享"
+				i18n:en_US="servicemanager"
+				id="servicemanager" used="true"
+				menuType="type1" icon="icon-home" url="admin/content.page">
+			<item name="应用管理"
+				  i18n:en_US="appmanager" id="service.appmanager"  showleftmenu="false" menuType="type1">
+				<workspace>
+					<content>admin/content.page</content>
+				</workspace>
+
+			</item>
+
+			<item name="数据库配置" iframe="true"
+				  i18n:en_US="dbmanager" id="service.dbmanager" menuType="type1">
+				<workspace>
+					<content>http://www.baidu.com</content>
+				</workspace>
+
+			</item>
+
+
+			<item name="接口管理"
+				  i18n:en_US="infmanager" id="service.infmanager" menuType="type1">
+
+				<workspace>
+					<content>jsp/sysmanager/user/main.jsp</content>
+				</workspace>
+
+			</item>
+			<item name="查询日志"
+				  i18n:en_US="querylog" id="service.querylog" menuType="type1">
+
+				<workspace>
+					<content>jsp/sysmanager/user/main.jsp</content>
+				</workspace>
+
+			</item>
+
+		</module>
 		<module name="一级菜单"
 				i18n:en_US="Line Information Query"
 				id="veh_line_query1" used="true"
