@@ -48,7 +48,7 @@
 			 successRedirect="admin/index.page"
 			 logoutredirect="login.page"
 			 showrootleftmenu="true"
-			 topMenus="2"
+			 topMenus="5"
 			 messagesource="menus/messages_module"
 
 	>

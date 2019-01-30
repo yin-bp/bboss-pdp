@@ -31,6 +31,16 @@
     <filter>
         <filter-name>HeaderFilter</filter-name>
         <filter-class>com.frameworkset.common.filter.HeaderFilter</filter-class>
+        <!--是否启用跨站域名防火墙，为true，则启用，如果来源域名不在refererwallwhilelist中，则拒绝访问-->
+        <init-param>
+            <param-name>refererDefender</param-name>
+            <param-value>false</param-value>
+
+        </init-param>
+        <init-param>
+            <param-name>refererwallwhilelist</param-name>
+            <param-value>*.sany.com.cn</param-value>
+        </init-param>
         <init-param>
             <param-name>Timing-Allow-Origin</param-name>
             <param-value>*</param-value>
@@ -42,7 +52,7 @@
         </init-param>
         <init-param>
             <param-name>cors.allowed.methods</param-name>
-            <param-value>GET,POST,HEAD,OPTIONS,PUT</param-value></init-param>
+            <param-value>GET,POST,OPTIONS</param-value></init-param>
         <init-param>
             <param-name>cors.allowed.headers</param-name>
             <param-value>Content-Type,X-Requested-With,accept,Origin,Access-Control-Request-Method,Access-Control-Request-Headers</param-value>
@@ -72,15 +82,7 @@
             <param-value>UTF-8</param-value>
         </init-param>
 
-        <init-param>
-            <param-name>refererDefender</param-name>
-            <param-value>false</param-value>
 
-        </init-param>
-        <init-param>
-            <param-name>refererwallwhilelist</param-name>
-            <param-value>*.sany.com.cn</param-value>
-        </init-param>
         <init-param>
             <param-name>wallfilterrules</param-name>
             <param-value>
@@ -329,9 +331,10 @@
         <web-resource-collection>
             <web-resource-name>h</web-resource-name>
             <url-pattern>/*</url-pattern>
+            <!--HeaderFilter cors.allowed.methods参数中的值需要允许访问，不能配置在这里-->
             <http-method>PUT</http-method>
             <http-method>HEAD</http-method>
-            <http-method>OPTIONS</http-method>
+            <!--<http-method>OPTIONS</http-method>-->
         </web-resource-collection>
         <auth-constraint>
         </auth-constraint>
