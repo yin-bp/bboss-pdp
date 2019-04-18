@@ -811,6 +811,7 @@ public class SSOControler {
 						 // }
 
 					 } catch (Exception ex) {
+						 log.error("login failed:",ex);
 						 errorMessage = ex.getMessage();
 
 						 if (errorMessage != null) {
