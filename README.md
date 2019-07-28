@@ -113,3 +113,4 @@ http://localhost/sso/logout.page
 }
 
 
+-javaagent:d:/workspace/pinpoint/agent/target/pinpoint-agent-1.9.0-SNAPSHOT/pinpoint-bootstrap-1.9.0-SNAPSHOT.jar -Dpinpoint.agentId=estest -Dpinpoint.applicationName=pdpes
