@@ -24,15 +24,15 @@ sourceSets {
 
  dependencies {
 	   
-	 	compile project(':bboss-pdp-adminservice')
-	   compile project(':bboss-pdp-dict')
-	   compile project(':bboss-pdp-fastwx')
-	   compile project(':bboss-pdp-dubbo-inf')
-	  compile 'io.jsonwebtoken:jjwt:0.7.0' 
+	 	api project(':bboss-pdp-adminservice')
+	   api project(':bboss-pdp-dict')
+	   api project(':bboss-pdp-fastwx')
+	   api project(':bboss-pdp-dubbo-inf')
+	  api 'io.jsonwebtoken:jjwt:0.7.0'
 	  // https://mvnrepository.com/artifact/org.apache.commons/commons-dbcp2
-compile group: 'org.apache.commons', name: 'commons-dbcp2', version: '2.2.0'
+api group: 'org.apache.commons', name: 'commons-dbcp2', version: '2.2.0'
 	  
-      compile (
+      api (
 			  [group: 'com.bbossgroups.plugins', name: 'bboss-elasticsearch-rest-jdbc', version: "${bboss_es_version}", transitive: true],
       	 [group: 'com.bbossgroups.plugins', name: 'bboss-plugin-dubbo', version: "${bbossplugin_version}", transitive: true],
           [group: 'com.bbossgroups.plugins', name: 'bboss-plugin-activemq', version: "${bbossplugin_version}", transitive: true],
@@ -47,7 +47,7 @@ compile group: 'org.apache.commons', name: 'commons-dbcp2', version: '2.2.0'
 
 task releaseArchives(type: Zip,dependsOn:"war") {
     //appendix = 'wrapper'
-   baseName='dbinit-system'
+	archiveBaseName='dbinit-system'
    from '../dbinit-system'   
 }
 

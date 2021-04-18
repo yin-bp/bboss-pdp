@@ -16,7 +16,7 @@ sourceSets {
 //project.tasks.compileJava.dependsOn(project(':activiti-bpmn-model').tasks.install)
 dependencies {
 	
-   compile (
+   api (
               
 [group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25', transitive: false],
            	[group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.7.25', transitive: false],

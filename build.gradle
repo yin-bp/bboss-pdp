@@ -9,7 +9,7 @@ configure(allprojects) { project ->
 	apply plugin: "eclipse"
 	apply plugin: "idea"
 	apply plugin: "signing"
-	apply plugin: "maven"
+	apply plugin: "java-library"
 	if(project.getProperty('skipTest'))
 	{
 		compileTestJava.enabled=false
@@ -59,11 +59,11 @@ configure(allprojects) { project ->
 	}
 
 	dependencies {
-		testCompile 'junit:junit:4.12'
+		testImplementation 'junit:junit:4.12'
 		 compileOnly(
     		 fileTree(dir: '../lib-compile', include: '**/*.jar'),    
    		 )
-   		 compile(
+   		 api(
    		 //  [group: 'org.slf4j', name: 'slf4j-api', version: '1.7.2', transitive: false],
          //  	[group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.7.2', transitive: false],
         //  [group: 'org.slf4j', name: 'jcl-over-slf4j', version: '1.7.2', transitive: false],
@@ -76,7 +76,7 @@ configure(allprojects) { project ->
 	repositories {
 		mavenLocal()		
 		 maven {
-	        url "http://maven.aliyun.com/nexus/content/groups/public"
+	        url "https://maven.aliyun.com/nexus/content/groups/public"
 	    }	    
 		mavenCentral()
 		
@@ -85,17 +85,19 @@ configure(allprojects) { project ->
 
 configure(subprojects) { subproject ->
 	task sourcesJar(type: Jar) {
-		classifier = "sources"
+		archiveClassifier = "sources"
 		from sourceSets.main.allJava
+		duplicatesStrategy = DuplicatesStrategy.INCLUDE
 	}
-
+	processResources{
+		duplicatesStrategy = DuplicatesStrategy.INCLUDE
+	}
 	task javaDocJar(type: Jar, dependsOn: javadoc) {
-		classifier = "javadoc"
+		archiveClassifier = "javadoc"
 		from javadoc.destinationDir
 	}
-
 	artifacts {
-	    archives sourcesJar, javaDocJar
+		archives sourcesJar, javaDocJar
 	}
 
 	 
@@ -103,54 +105,81 @@ configure(subprojects) { subproject ->
 		 
 
 configure([project(":bboss-pdp-auth"),project(":bboss-pdp-adminservice"),project(":bboss-pdp-dict"),project(":bboss-pdp-fastwx"),project(":bboss-pdp-dubbo-inf"),project(":bboss-pdp-dubbo")]) { subproject ->
-	ext.uploadtocenter=uploadArchivesToMavenCenter.equals("true")	
-	if(uploadtocenter)
-	{
-		signing {
-		        //required { uploadtocenter }
-		        sign configurations.archives
-		 }
-	}
-	uploadArchives {
-		  repositories {		   
-			 mavenDeployer {
-					beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
-			     	repository(url: proxysonatype_url) {
-			     		
-					         authentication(userName: proxysonatype_username, password: proxysonatype_password)
+	publishing {
+		publications {
+			mavenJava(MavenPublication) {
+				groupId project.group
+				artifactId project.name
+				version "${version}"
+				from components.java
+				artifact sourcesJar
+				artifact javaDocJar
+//				versionMapping {
+//					usage('java-api') {
+//						fromResolutionOf('runtimeClasspath')
+//					}
+//					usage('java-runtime') {
+//						fromResolutionResult()
+//					}
+//				}
+//				from components.java
+				pom {
+					name = project.name
+					packaging = 'jar'
+					// optionally artifactId can be defined here
+					description = PROJ_DESCRIPTION
+					url = PROJ_WEBSITEURL
+
+					scm {
+						connection = scm_connection
+						developerConnection = scm_developerConnection
+						url = scm_url
 					}
-					pom.project {
-				        name subproject.name
-				        packaging 'jar'
-				        // optionally artifactId can be defined here 
-				        description PROJ_DESCRIPTION
-				        url PROJ_WEBSITEURL
-			
-				        scm {
-				          connection scm_connection
-				          developerConnection scm_developerConnection
-				          url scm_url
-				        }
-			
-				        licenses {
-				          license {
-				            name PROJ_LICENCE_NAME
-				            url PROJ_LICENCE_URL
-				          }
-				        }
-			
-				        developers {
-				          developer {
-				            id DEVELOPER_ID
-				            name DEVELOPER_NAME
-				            email DEVELOPER_EMAIL
-				          }
-				        }
-				    }//pom.project
-			   }//mavenDeployer
-		     
-		}//repositories
-	}//uploadArchives
+
+					licenses {
+						license {
+							name = PROJ_LICENCE_NAME
+							url = PROJ_LICENCE_URL
+						}
+					}
+
+					developers {
+						developer {
+							id = DEVELOPER_ID
+							name = DEVELOPER_NAME
+							email = DEVELOPER_EMAIL
+						}
+					}
+
+				}
+			}
+		}
+		repositories {
+//			maven {
+//				// change URLs to point to your repos, e.g. http://my.org/repo
+//				def releasesRepoUrl = layout.buildDirectory.dir('repos/releases')
+//				def snapshotsRepoUrl = layout.buildDirectory.dir('repos/snapshots')
+//				url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+//			}
+			maven {
+				// change URLs to point to your repos, e.g. http://my.org/repo
+				allowInsecureProtocol = true
+				url = sonatype_url
+				credentials {
+					username = sonatype_username
+					password = sonatype_password
+				}
+
+			}
+
+
+		}
+	}
+
+	signing {
+		sign publishing.publications.mavenJava
+//		sign configurations.archives
+	}
 }//configure
 
 
@@ -168,7 +197,7 @@ configure([project(":bboss-pdp-web"),project(":bboss-pdp-config")]) { subproject
 	
 	dependencies {
 	   
-	 	compile project(':bboss-pdp-auth')
+	 	api project(':bboss-pdp-auth')
 	   
 	  
 	   compileOnly (            

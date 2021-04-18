@@ -17,14 +17,14 @@ sourceSets {
 }
 
 dependencies {
-		compile project(':bboss-pdp-dubbo-inf')
-   compile (
+		api project(':bboss-pdp-dubbo-inf')
+   api (
                
        [group: 'com.bbossgroups.plugins', name: 'bboss-plugin-dubbo', version: "${bbossplugin_version}", transitive: true],
          
     )
     
-    runtime(
+    runtimeOnly(
 		[group: 'com.bbossgroups', name: 'bboss-rt', version: "${bboss_version}", transitive: false],
     )
     
@@ -35,7 +35,10 @@ task copyJarFiles(type: Sync,dependsOn:'jar'){
 
 
 
-	 from configurations.compile
+	 from configurations.api{
+		 canBeResolved=true
+
+	 }
 	 from jar.outputs
 	 exclude { details -> details.file.name.startsWith('bboss-rt')  }
 	 into 'build/dist/lib'
@@ -43,7 +46,13 @@ task copyJarFiles(type: Sync,dependsOn:'jar'){
 }
 
 task copyRTJarFiles(type: Copy,dependsOn:'copyJarFiles'){
-	 from configurations.runtime - configurations.compile
+	 from configurations.runtimeOnly{
+		 canBeResolved=true
+
+	 } - configurations.api{
+		 canBeResolved=true
+
+	 }
 	 into 'build/dist'
      rename ("bboss-rt-${bboss_version}.jar", "${project.name}-${bboss_version}.jar")
 }

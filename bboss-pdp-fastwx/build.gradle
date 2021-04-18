@@ -26,7 +26,7 @@ sourceSets {
 //project.tasks.compileJava.dependsOn(project(':activiti-bpmn-model').tasks.install)
 dependencies {
 	//compile project(':bboss-pdp-adminservice')
-   compile (
+   api (
  
             
 			   [group: 'com.alibaba', name: 'fastjson', version: "1.2.24", transitive: false],

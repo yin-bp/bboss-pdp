@@ -22,9 +22,9 @@ sourceSets {
    
 }
 dependencies {    
-	compile project(':bboss-pdp-adminservice')
-		 compile 'io.jsonwebtoken:jjwt:0.7.0' 
-      compile (
+	api project(':bboss-pdp-adminservice')
+		 api 'io.jsonwebtoken:jjwt:0.7.0'
+      api (
 		  [group: 'mysql', name: 'mysql-connector-java', version: '5.1.39', transitive: false],
 		)
 }            

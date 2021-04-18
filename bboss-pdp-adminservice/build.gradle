@@ -14,10 +14,10 @@ sourceSets {
 }
 
 dependencies {
-	    compile project(':bboss-pdp-dict')
-	 	compile project(':bboss-pdp-auth')
-	 	compile project(':bboss-pdp-fastwx')
-	   compile(
+	    api project(':bboss-pdp-dict')
+	 	api project(':bboss-pdp-auth')
+	 	api project(':bboss-pdp-fastwx')
+	   api(
             [group: 'commons-io', name: 'commons-io', version: '2.0', transitive: false],
             [group: 'commons-beanutils', name: 'commons-beanutils', version: '1.8.0', transitive: false],
              [group: 'org.apache.poi', name: 'poi', version: '3.10-FINAL', transitive: false],

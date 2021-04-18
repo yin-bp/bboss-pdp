@@ -22,25 +22,25 @@ sourceSets {
 }
 
 dependencies {
-compile([group: 'com.bbossgroups', name: 'bboss-schedule', version: "${bboss_version}", transitive: true], )    
+api([group: 'com.bbossgroups', name: 'bboss-schedule', version: "${bboss_version}", transitive: true], )
     {
    		exclude group: 'log4j', module: 'log4j'
     }
     
-    compile(  [group: 'com.bbossgroups', name: 'bboss-persistent', version: "${bboss_version}", transitive: true],)    
+    api(  [group: 'com.bbossgroups', name: 'bboss-persistent', version: "${bboss_version}", transitive: true],)
      
     
-    compile(   [group: 'com.bbossgroups', name: 'bboss-hession', version: "${bboss_version}", transitive: true],)    
+    api(   [group: 'com.bbossgroups', name: 'bboss-hession', version: "${bboss_version}", transitive: true],)
     {
    		exclude group: 'log4j', module: 'log4j'
     }
     
-    compile(   [group: 'com.bbossgroups', name: 'bboss-data', version: "${bboss_version}", transitive: true],)    
+    api(   [group: 'com.bbossgroups', name: 'bboss-data', version: "${bboss_version}", transitive: true],)
     {
    		exclude group: 'log4j', module: 'log4j'
     }
 
-    compile (
+    api (
               [group: 'com.bbossgroups', name: 'bboss-soa', version: "${bboss_version}", transitive: false],
             [group: 'com.bbossgroups', name: 'bboss-taglib', version: "${bboss_version}", transitive: false],
             
@@ -64,7 +64,7 @@ compile([group: 'com.bbossgroups', name: 'bboss-schedule', version: "${bboss_ver
                [group: 'cglib', name: 'cglib-nodep', version: '3.1', transitive: false],
               [group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: "${jacksonversion}",transitive: false],
             [group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: "${jacksonversion}",transitive: false],
-            [group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: "${jacksonversion}",transitive: false],
+            [group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: "${jacksondatabaindversion}",transitive: false],
             [group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-xml', version: "${jacksonversion}",transitive: false],
               [group: 'com.github.penggle', name: 'kaptcha', version: '2.3.2',transitive: false],
               
@@ -158,7 +158,7 @@ compile([group: 'com.bbossgroups', name: 'bboss-schedule', version: "${bboss_ver
             [group: 'javax.servlet.jsp', name: 'javax.servlet.jsp-api', version: '2.3.1', transitive: false],
           
     )
-     testCompile (            
+	testImplementation (
             
             fileTree(dir: 'lib-compile', include: '**/*.jar')
     )
