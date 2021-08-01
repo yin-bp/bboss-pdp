@@ -1,13 +1,12 @@
 package org.frameworkset.filter;
 
-import javax.servlet.ServletRequestEvent;
-import javax.servlet.http.HttpServletRequest;
-
+import com.frameworkset.orm.transaction.TransactionManager;
 import org.frameworkset.platform.security.AccessControl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.frameworkset.orm.transaction.TransactionManager;
+import javax.servlet.ServletRequestEvent;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * 
@@ -44,7 +43,7 @@ public class BSServletRequestListener implements javax.servlet.ServletRequestLis
 				boolean state = TransactionManager.destroyTransaction();
 				if(state){
 					log.warn("A DB transaction leaked in Page ["+ uri +"] has been forcibly destoried. ");
-					System.out.println("A DB transaction leaked in Page ["+ uri +"] has been forcibly destoried. ");
+//					System.out.println("A DB transaction leaked in Page ["+ uri +"] has been forcibly destoried. ");
 				}
 				AccessControl.init(null);
 
@@ -74,7 +73,7 @@ public class BSServletRequestListener implements javax.servlet.ServletRequestLis
 				boolean state = TransactionManager.destroyTransaction();
 				if(state){
 					log.warn("A DB transaction leaked before Page ["+ uri +"] has been forcibly destoried. ");
-					System.out.println("A DB transaction leaked before Page ["+ uri +"] has been forcibly destoried. ");
+//					System.out.println("A DB transaction leaked before Page ["+ uri +"] has been forcibly destoried. ");
 				}
 				AccessControl.init(null);
 
