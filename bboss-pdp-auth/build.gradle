@@ -35,7 +35,7 @@ api([group: 'com.bbossgroups', name: 'bboss-schedule', version: "${bboss_version
    		exclude group: 'log4j', module: 'log4j'
     }
     
-    api(   [group: 'com.bbossgroups', name: 'bboss-data', version: "${bboss_version}", transitive: true],)
+    api(   [group: 'com.bbossgroups', name: 'bboss-data', version: "${PROJ_BBOSS_DATA_VERSION}", transitive: true],)
     {
    		exclude group: 'log4j', module: 'log4j'
     }
