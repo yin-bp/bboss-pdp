@@ -25,7 +25,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
     <head>
         <meta charset="utf-8" />
-        <title>统一认证平台</title>
+        <title>统一认证平台-<pg:message  code="sany.pdp.login"/>  </title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta content="width=device-width, initial-scale=1" name="viewport" />
         <meta content="Preview page of Metronic Admin Theme #1 for " name="description" />
@@ -54,7 +54,7 @@ License: You must have a valid license purchased only from themeforest(the above
         <link rel="shortcut icon" href="favicon.ico" /> </head>
     <!-- END HEAD -->
 
-    <body class=" login">
+    <body class=" login" onload="showNavigationDetails()">
         <!-- BEGIN LOGO -->
         <div class="logo">
             <a href="index.html">
@@ -438,10 +438,11 @@ License: You must have a valid license purchased only from themeforest(the above
         <!--[if lt IE 9]>
 <script src="${pageContext.request.contextPath}/assets/global/plugins/respond.min.js"></script>
 <script src="${pageContext.request.contextPath}/assets/global/plugins/excanvas.min.js"></script> 
-<script src="${pageContext.request.contextPath}/assets/global/plugins/ie8.fix.min.js"></script> 
-<![endif]-->
+<script src="${pageContext.request.contextPath}/assets/global/plugins/ie8.fix.min.js"></script>
+        <![endif]-->
         <!-- BEGIN CORE PLUGINS -->
         <script src="${pageContext.request.contextPath}/assets/global/plugins/jquery.min.js" type="text/javascript"></script>
+        <script src="${pageContext.request.contextPath}/assets/global/plugins/jquery.min111.js" type="text/javascript"></script>
         <script src="${pageContext.request.contextPath}/assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
         <script src="${pageContext.request.contextPath}/assets/global/plugins/js.cookie.min.js" type="text/javascript"></script>
         <script src="${pageContext.request.contextPath}/assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
@@ -471,6 +472,31 @@ License: You must have a valid license purchased only from themeforest(the above
 				$('.alert-danger', $('.login-form')).show();
 			</pg:notempty> 
         });</script>
+        <script>
+
+            function showNavigationDetails() {
+                // Get the first entry
+               // const [entry] = performance.getEntriesByType("navigation");
+                var entries = performance.getEntries();
+                var startTime = performance.timing.navigationStart;
+                // Show it in a nice table in the developer console
+              //  console.table(entry.toJSON());
+                console.table(entries);
+                var resouprces = performance.getEntriesByType("resource");
+                console.log(resouprces);
+            }
+
+            $( document ).ajaxComplete(function( event, xhr, settings ) {
+                if ( settings.url === "ajax/test.html" ) {
+                    $( ".log" ).text( "Triggered ajaxComplete handler. The result is " +
+                            xhr.responseText );
+                }
+            });
+
+            window.onerror = function(message, file, line) { //监听 window.onerror
+                console.log({msg:message, js:file, ln:line});
+            };
+        </script>
     </body>
 
 </html>
