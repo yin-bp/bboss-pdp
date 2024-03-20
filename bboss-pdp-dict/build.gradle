@@ -18,8 +18,8 @@ dependencies {
 	
    api (
               
-[group: 'org.slf4j', name: 'slf4j-api', version: '2.0.12', transitive: false],
-           	[group: 'org.slf4j', name: 'slf4j-log4j12', version: '2.0.12', transitive: false],
+[group: 'org.slf4j', name: 'slf4j-api', version: '1.7.36', transitive: false],
+           	[group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.7.36', transitive: false],
         [group: 'com.bbossgroups', name: 'bboss-persistent', version: "${bboss_version}", transitive: true],
              [group: 'com.bbossgroups', name: 'bboss-event', version: "${bboss_version}", transitive: false],
 			  [group: 'com.bbossgroups', name: 'bboss-taglib', version: "${bboss_version}", transitive: false],
