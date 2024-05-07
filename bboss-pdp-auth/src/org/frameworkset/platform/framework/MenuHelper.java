@@ -559,7 +559,7 @@ public class MenuHelper  {
 
         /**
          * 
-         * 根据模块路径获取带权限的栏目 修改：2007-4-5 zhuo.wang
+         * 根据模块路径获取带权限的栏目 修改：2007-4-5 bboss
          * 
          * @param modulePath
          * @return
