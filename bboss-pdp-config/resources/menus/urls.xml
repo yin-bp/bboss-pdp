@@ -1,5 +1,5 @@
 <properties>
 	
-	<property name="hrmappurl" value="http://hrm.sany.com.cn/NHRM"/>
-	<property name="pdp" value="http://ec.asiainfo.com/ecsystem"/>
+	<property name="hrmappurl" value="http://hrm.bboss.com.cn/NHRM"/>
+	<property name="pdp" value="http://ec.bboss.com/ecsystem"/>
 </properties>
