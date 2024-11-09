@@ -17,6 +17,7 @@ package org.frameworkset.platform.desktop.tag;
 
 import com.frameworkset.common.tag.BaseTag;
 import org.frameworkset.platform.framework.*;
+import org.frameworkset.platform.framework.Module;
 import org.frameworkset.platform.security.AccessControl;
 
 import javax.servlet.jsp.JspException;

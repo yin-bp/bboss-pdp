@@ -37,6 +37,7 @@ import org.frameworkset.platform.config.model.Operation;
 import org.frameworkset.platform.config.model.OperationQueue;
 import org.frameworkset.platform.config.model.ResourceInfo;
 import org.frameworkset.platform.framework.*;
+import org.frameworkset.platform.framework.Module;
 import org.frameworkset.platform.resource.Resource;
 import org.frameworkset.platform.resource.ResourceManager;
 import org.frameworkset.platform.security.authentication.*;

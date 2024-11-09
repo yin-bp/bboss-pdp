@@ -6,7 +6,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 
-import sun.misc.BASE64Decoder;
+import org.frameworkset.coder.BASE64Decoder;
 
 public class Base64 implements Serializable {
 	/**
@@ -16,14 +16,14 @@ public class Base64 implements Serializable {
 	 */
 	public  String getEncodeBase64(String s){
 		if (s == null) return null;
-		  return (new sun.misc.BASE64Encoder()).encode( s.getBytes() );
+		  return (new org.frameworkset.coder.BASE64Encoder()).encode( s.getBytes() );
 
 	}
 	
 	/**
 	 */
 	public String encode(byte[] bytes){
-		return (new sun.misc.BASE64Encoder()).encode(bytes);
+		return (new org.frameworkset.coder.BASE64Encoder()).encode(bytes);
 	}
 	/**
 	 * base64 decode arithmetic

@@ -33,7 +33,7 @@ dependencies {
             [group: 'com.bbossgroups.activiti', name: 'activiti-engine', version: "${WF_VERSION}", transitive: false],
             [group: 'com.belerweb', name: 'pinyin4j', version: "2.5.1", transitive: false],
 	   )
-	  
+    compileOnly 'javax.jws:javax.jws-api:1.1'
 	   compileOnly (            
 	          
 	            [group: 'javax.servlet', name: 'javax.servlet-api', version: "3.0.1", transitive: false],
