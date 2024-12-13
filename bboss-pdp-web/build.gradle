@@ -37,7 +37,7 @@ api group: 'org.apache.commons', name: 'commons-dbcp2', version: '2.2.0'
       	 [group: 'com.bbossgroups.plugins', name: 'bboss-plugin-dubbo', version: "${bbossplugin_version}", transitive: true],
           [group: 'com.bbossgroups.plugins', name: 'bboss-plugin-activemq', version: "${bbossplugin_version}", transitive: true],
 
-              [group: 'com.mysql', name: 'mysql-connector-j', version: '9.1.0', transitive: false],
+              [group: 'com.mysql', name: 'mysql-connector-j', version: '8.2.0', transitive: false],
 		   fileTree(dir: '../lib', include: '**/*.jar'),    
 		)
 	    
