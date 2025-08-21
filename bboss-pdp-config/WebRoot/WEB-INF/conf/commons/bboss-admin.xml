@@ -1,7 +1,7 @@
 <properties>
 	<!-- 
 	author：biaoping.yin
-    CopyRight：湖南亚信软件有限公司
+    CopyRight：bboss
     Date:2016.10.25
 	-->
 	<property name="/admin/*.page"	
