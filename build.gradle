@@ -64,7 +64,7 @@ configure(allprojects) { project ->
          //  	[group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.7.2', transitive: false],
         //  [group: 'org.slf4j', name: 'jcl-over-slf4j', version: '1.7.2', transitive: false],
                 //add on 20170223 begin
-          [group: 'com.bbossgroups', name: 'bboss-http', version: "${BBOSS_HTTP_VERSION}", transitive: true],
+          [group: 'com.bbossgroups', name: 'bboss-http5', version: "${BBOSS_HTTP_VERSION}", transitive: true],
    		 )
    		  
 	}
