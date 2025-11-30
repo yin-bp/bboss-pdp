@@ -9,7 +9,7 @@ import com.github.sd4324530.fastweixin.handle.ApiConfigChangeHandle;
 import com.github.sd4324530.fastweixin.util.JSONUtil;
 import com.github.sd4324530.fastweixin.util.NetWorkCenter;
 import com.github.sd4324530.fastweixin.util.StrUtil;
-import org.apache.http.HttpStatus;
+import org.apache.hc.core5.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

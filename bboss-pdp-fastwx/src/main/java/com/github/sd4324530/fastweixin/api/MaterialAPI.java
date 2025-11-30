@@ -8,18 +8,19 @@ import com.github.sd4324530.fastweixin.api.response.*;
 import com.github.sd4324530.fastweixin.util.JSONUtil;
 import com.github.sd4324530.fastweixin.util.NetWorkCenter;
 import com.github.sd4324530.fastweixin.util.StrUtil;
-import org.apache.http.Header;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.config.RequestConfig;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.ContentType;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.util.EntityUtils;
+import org.apache.hc.client5.http.classic.methods.HttpGet;
+import org.apache.hc.client5.http.classic.methods.HttpPost;
+import org.apache.hc.client5.http.config.RequestConfig;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
+import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
+import org.apache.hc.core5.http.ContentType;
+import org.apache.hc.core5.http.Header;
+import org.apache.hc.core5.http.HttpEntity;
+import org.apache.hc.core5.http.HttpStatus;
+import org.apache.hc.core5.http.io.entity.EntityUtils;
+import org.apache.hc.core5.http.io.entity.StringEntity;
+import org.apache.hc.core5.util.Timeout;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -105,7 +106,7 @@ public class MaterialAPI extends BaseAPI {
     public DownloadMaterialResponse downloadMaterial(String mediaId, MaterialType type){
         DownloadMaterialResponse response = new DownloadMaterialResponse();
         String url = BASE_API_URL + "cgi-bin/material/get_material?access_token=" + config.getAccessToken();
-        RequestConfig config = RequestConfig.custom().setConnectionRequestTimeout(NetWorkCenter.CONNECT_TIMEOUT).setConnectTimeout(NetWorkCenter.CONNECT_TIMEOUT).setSocketTimeout(NetWorkCenter.CONNECT_TIMEOUT).build();
+        RequestConfig config = RequestConfig.custom().setConnectionRequestTimeout(Timeout.ofDays(NetWorkCenter.CONNECT_TIMEOUT)).setConnectTimeout(Timeout.ofMilliseconds(NetWorkCenter.CONNECT_TIMEOUT)).build();
         CloseableHttpClient client = HttpClientBuilder.create().setDefaultRequestConfig(config).build();
         HttpPost request = new HttpPost(url);
         StringEntity mediaEntity = new StringEntity("{\"media_id\":\"" + mediaId + "\"}", ContentType.APPLICATION_JSON);
@@ -114,7 +115,8 @@ public class MaterialAPI extends BaseAPI {
         CloseableHttpResponse httpResponse = null;
         try{
             httpResponse = client.execute(request);
-            if(HttpStatus.SC_OK == httpResponse.getStatusLine().getStatusCode()){
+            
+            if(HttpStatus.SC_OK == httpResponse.getCode()){
                 HttpEntity entity;
                 String resultJson;
                 switch (type){
@@ -151,7 +153,7 @@ public class MaterialAPI extends BaseAPI {
                         break;
                 }
             }else{
-                response.setErrcode(String.valueOf(httpResponse.getStatusLine().getStatusCode()));
+                response.setErrcode(String.valueOf(httpResponse.getCode()));
                 response.setErrmsg("请求失败");
             }
         } catch (IOException e) {
@@ -217,17 +219,17 @@ public class MaterialAPI extends BaseAPI {
     private void downloadVideo(DownloadMaterialResponse response){
         String url = response.getDownUrl();
         LOG.debug("Download url: " + url);
-        RequestConfig config = RequestConfig.custom().setConnectionRequestTimeout(NetWorkCenter.CONNECT_TIMEOUT).setConnectTimeout(NetWorkCenter.CONNECT_TIMEOUT).setSocketTimeout(NetWorkCenter.CONNECT_TIMEOUT).build();
+        RequestConfig config = RequestConfig.custom().setConnectionRequestTimeout(Timeout.ofMilliseconds(NetWorkCenter.CONNECT_TIMEOUT)).setConnectTimeout(Timeout.ofMilliseconds(NetWorkCenter.CONNECT_TIMEOUT)).build();
         CloseableHttpClient client = HttpClientBuilder.create().setDefaultRequestConfig(config).build();
         HttpGet get = new HttpGet(url);
         try {
             CloseableHttpResponse r = client.execute(get);
-            if (HttpStatus.SC_OK == r.getStatusLine().getStatusCode()) {
+            if (HttpStatus.SC_OK == r.getCode()) {
                 InputStream inputStream = r.getEntity().getContent();
                 Header[] headers = r.getHeaders("Content-disposition");
                 Header length = r.getHeaders("Content-Length")[0];
                 response.setContent(inputStream, Integer.valueOf(length.getValue()));
-                response.setFileName(headers[0].getElements()[0].getParameterByName("filename").getValue());
+                response.setFileName(headers[0].getValue());
             }
         } catch (IOException e){
             LOG.error("IO异常处理", e);

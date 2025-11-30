@@ -25,7 +25,7 @@ import com.frameworkset.platform.admin.entity.SmUser;
 import com.frameworkset.platform.admin.entity.SmUserCondition;
 import com.frameworkset.util.ListInfo;
 import com.frameworkset.util.StringUtil;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.frameworkset.platform.common.Constants;
 import org.frameworkset.platform.entity.Leader;
 import org.frameworkset.platform.security.AccessControl;
@@ -364,7 +364,6 @@ public class SmUserServiceImpl implements SmUserService {
 	/**
 	 * 查询需要调入的用户列表
 	 * (non-Javadoc)
-	 * @see com.frameworkset.platform.admin.service.SmUserService#getMoveinUsers(com.frameworkset.platform.admin.entity.MoveinUserCondition)
 	 */
 	public ListInfo getMoveinUsers(MoveinUserCondition condition,long offset,
 			int pagesize) throws SmUserException{
@@ -577,7 +576,6 @@ public class SmUserServiceImpl implements SmUserService {
 		
 	}
 	/**
-	 * @param roleName
 	 * @param userIds
 	 */
 	public void deleteRoleUsers(String roleId, String userIds,boolean needcheckSpecialRole) throws SmUserException{
@@ -663,7 +661,6 @@ public class SmUserServiceImpl implements SmUserService {
 		}
 	}
 	/** (non-Javadoc)
-	 * @see com.frameworkset.platform.admin.service.SmUserService#checkworknumberexist(java.lang.String)
 	 */
 	@Override
 	public boolean checkworknumberexist(String userWorknumber,String userId) throws SmUserException {
@@ -690,7 +687,6 @@ public class SmUserServiceImpl implements SmUserService {
 		}
 	}
 	/** (non-Javadoc)
-	 * @see com.frameworkset.platform.admin.service.SmUserService#genworknumber()
 	 */
 	@Override
 	public String genworknumber(String userId) throws SmUserException {

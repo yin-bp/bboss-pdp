@@ -19,7 +19,7 @@ package org.frameworkset.platform.application.service;
 import com.frameworkset.common.poolman.ConfigSQLExecutor;
 import com.frameworkset.orm.transaction.TransactionManager;
 import com.frameworkset.util.ListInfo;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.frameworkset.platform.application.entity.Application;
 import org.frameworkset.platform.application.entity.ApplicationCondition;
 import org.frameworkset.security.ecc.SimpleKeyPair;
